@@ -1,0 +1,39 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AligningColumnsinDataGrid</title>
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+    <h2>数据表格列对齐</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>使用align和halign来设置列和他们的列头对齐.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <table class="easyui-datagrid" title="数据表格列对齐" style="width:700px;height:250px"
+           data-options="singleSelect:true,collapsible:true,url:'/EasyUI_Areas/AdminSys/GetUserInfo'">
+        <thead>
+            <tr>
+                <th data-options="field:'uId', width:80,halign:'center'">编号</th>
+                <th data-options="field:'uLoginName', width:100,halign:'center'">登录名</th>
+                <th data-options="field:'uRemark',width:80,align:'right',halign:'center'">描述</th>
+                <th data-options="field:'uPost',width:80,align:'right',halign:'center'">邮编</th>
+                <th data-options="field:'uGender',width:250,halign:'center'">性别</th>
+
+            </tr>
+        </thead>
+    </table>
+</body>
+</html>

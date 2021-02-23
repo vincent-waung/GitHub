@@ -1,0 +1,65 @@
+﻿<link href="~/Content/css/editview.css" rel="stylesheet" />
+<div id="div_EidtBanner">
+    <div style="float:left;">
+        <img src="~/Content/images/b.jpg" />
+    </div>
+    <span class="titleFont">通权系统--设置用户特权</span>
+</div>
+<div id="div_EditView">
+    <form method="post">
+        <table>
+            <tr style="height:0px;">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input name="uId" type="hidden" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>用户名:</td>
+                <td>
+                    <input name="uLoginName" class="easyui-validatebox" style="width:150px;" data-options="required:true,missingMessage:'必填用户名称!'" />
+                </td>
+                <td>联系电话:</td>
+                <td>
+                    <input name="uPost" class="easyui-validatebox" style="width:150px;" />
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>所属部门:</td>
+                <td>
+                    <input name="uDepId" class="easyui-validatebox" style="width:150px;" data-options="missingMessage:'必填所属部门!'" />
+                </td>
+                <td>性&nbsp;&nbsp;&nbsp;&nbsp;别:</td>
+                <td>
+                    <input name="uGender" class="easyui-validatebox" style="width:150px;" data-options="missingMessage:'必填性别!'" />
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>是否禁用:</td>
+                <td>
+                    <input name="uIsDel" class="easyui-validatebox" style="width:150px;" />
+                </td>
+                <td>说&nbsp;&nbsp;&nbsp;&nbsp;明:</td>
+                <td>
+                    <input name="uRemark" class="easyui-validatebox" style="width:150px;" />
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>特&nbsp;&nbsp;&nbsp;&nbsp;权:</td>
+                <td colspan="3">
+                    <input name="vipIds" class="easyui-validatebox" style="width:100%;" />
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </form>
+</div>

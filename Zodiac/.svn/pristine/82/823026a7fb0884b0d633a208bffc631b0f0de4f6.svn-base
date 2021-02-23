@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Reports using TreeGrid - jQuery EasyUI Demo</title>
+	<link rel="stylesheet" type="text/css" href="../../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="../demo.css">
+	<script type="text/javascript" src="../../jquery.min.js"></script>
+	<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+</head>
+<body>
+	<h2>Reports using TreeGrid</h2>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>Using TreeGrid to show complex reports.</div>
+	</div>
+	<div style="margin:10px 0;"></div>
+	<table title="Reports using TreeGrid" class="easyui-treegrid" style="width:700px;height:250px"
+			data-options="
+				url: '/AdminIndex/GetAllDeptsTwo',
+				rownumbers: true,
+				showFooter: true,
+				idField: 'id',
+				treeField: 'text'
+			">
+		<thead frozen="true">
+			<tr>
+				<th field="text" width="200">部门名称</th>
+			</tr>
+		</thead>
+		<thead>
+			<tr>
+				<th colspan="4">基本信息</th>
+				<th >其他</th>
+			</tr>
+			<tr>
+			    <th data-options="field:'id'" >部门编号</th>
+                <th data-options="field:'text'">部门名称</th>
+                <th data-options="field:'depRemark'">说明</th>
+                <th data-options="field:'depAddTime'">操作日期</th>
+                <th data-options="field:'progress'">人气比</th>
+			</tr>
+		</thead>
+	</table>
+
+</body>
+</html>

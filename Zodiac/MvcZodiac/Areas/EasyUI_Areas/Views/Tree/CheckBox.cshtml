@@ -1,0 +1,43 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>CheckBox</title>
+      <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+     <h2>复选框树</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>带复选框的树节点.</div>
+    </div>
+    <div style="margin:10px 0;">
+        <a href="#" class="easyui-linkbutton" onclick="getChecked()">获取选中值</a>
+        <br/>
+        <input type="checkbox" checked onchange="$('#tt').tree({cascadeCheck:$(this).is(':checked')})">级联选中
+        <input type="checkbox" onchange="$('#tt').tree({onlyLeafCheck:$(this).is(':checked')})">只有叶子节点有复选框
+    </div>
+    <ul id="tt" class="easyui-tree" data-options="url:'/EasyUI_Areas/AdminIndex/GetAllDepts',animate:true,checkbox:true"></ul>
+    <script type="text/javascript">
+        function getChecked() {
+            var nodes = $('#tt').tree('getChecked');
+            var s = '';
+            for (var i = 0; i < nodes.length; i++) {
+                if (s != '') s += ',';
+                s += nodes[i].text;
+            }
+            alert(s);
+        }
+    </script>
+</body>
+</html>

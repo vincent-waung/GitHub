@@ -1,0 +1,90 @@
+﻿<link href="~/Content/css/editview.css" rel="stylesheet" />
+<div id="div_EidtBanner">
+    <div style="float:left;">
+        <img src="~/Content/images/b.jpg" />
+    </div>
+    <span class="titleFont">通权系统--编辑权限信息</span>
+</div>
+<div id="div_EditView">
+    <form method="post">
+        <table>
+            <tr style="height:0px;">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input name="pid" type="hidden" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>权限名称:</td>
+                <td>
+                    <input name="pName" class="easyui-validatebox" style="width:150px;" data-options="required:true,missingMessage:'必填权限名称!'" />
+                </td>
+                <td>排&nbsp;&nbsp;&nbsp;&nbsp;序:</td>
+                <td>
+                    <input name="pOrder" class="easyui-numberspinner" style="width:150px;"
+                           data-options="min:0,max:11111,editable:false,required:true,missingMessage:'必填权限排序!'" value="10" />
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>上级权限:</td>
+                <td>
+                    <input name="_parentId" class="easyui-validatebox" style="width:150px;" data-options="missingMessage:'必填上级权限!'" />
+                </td>
+                <td>图&nbsp;&nbsp;&nbsp;&nbsp;标:</td>
+                <td>
+                    <input name="pIco" class="easyui-validatebox" style="width:150px;" />
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>区域名称:</td>
+                <td>
+                    <input name="pAreaName" class="easyui-validatebox" style="width:150px;"  />
+                </td>
+                <td>控制器名称:</td>
+                <td>
+                    <input name="pControllerName" class="easyui-validatebox" style="width:150px;" />
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>操作方法:</td>
+                <td>
+                    <input name="pActionName" class="easyui-validatebox" style="width:150px;" />
+                </td>
+                <td>请求方式:</td>
+                <td>
+                    <input name="pFormMethod" class="easyui-validatebox" style="width:150px;" />
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>是否禁用:</td>
+                <td>
+                    <input name="pIsDel" class="easyui-validatebox" style="width:150px;" />
+                </td>
+                <td>是否菜单:</td>
+                <td>
+                    <input name="pIsShow" class="easyui-validatebox" style="width:150px;" />
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>说&nbsp;&nbsp;&nbsp;&nbsp;明:</td>
+                <td colspan="3">               
+                    <textarea name="pRemark" class="easyui-validatebox" style="height:50px; width:100%;" ></textarea>
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </form>
+</div>

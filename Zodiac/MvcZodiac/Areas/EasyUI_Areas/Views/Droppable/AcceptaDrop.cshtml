@@ -1,0 +1,85 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AcceptaDrop</title>
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+   <h2>接受一个拖拽物</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>不接受一些拖拽物.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div id="source" style="border:1px solid #ccc;width:300px;height:400px;float:left;margin:5px;">
+        来拖我!
+        <div id="d1" class="drag">拖拽物1</div>
+        <div id="d2" class="drag">拖拽物2</div>
+        <div id="d3" class="drag">拖拽物3</div>
+    </div>
+    <div id="target" style="border:1px solid #ccc;width:300px;height:400px;float:left;margin:5px;">
+        拖到这里！
+    </div>
+    <div style="clear:both"></div>
+    <style type="text/css">
+        .drag{
+            width:100px;
+            height:50px;
+            padding:10px;
+            margin:5px;
+            border:1px solid #ccc;
+            background:#AACCFF;
+        }
+        .dp{
+            opacity:0.5;
+            filter:alpha(opacity=50);
+        }
+        .over{
+            background:#FBEC88;
+        }
+    </style>
+    <script>
+        $(function () {
+            $('.drag').draggable({
+                proxy: 'clone',
+                revert: true,
+                cursor: 'auto',
+                onStartDrag: function () {
+                    $(this).draggable('options').cursor = 'not-allowed';
+                    $(this).draggable('proxy').addClass('dp');
+                },
+                onStopDrag: function () {
+                    $(this).draggable('options').cursor = 'auto';
+                }
+            });
+            $('#target').droppable({
+                accept: '#d1,#d3',
+                onDragEnter: function (e, source) {
+                    $(source).draggable('options').cursor = 'auto';
+                    $(source).draggable('proxy').css('border', '1px solid red');
+                    $(this).addClass('over');
+                },
+                onDragLeave: function (e, source) {
+                    $(source).draggable('options').cursor = 'not-allowed';
+                    $(source).draggable('proxy').css('border', '1px solid #ccc');
+                    $(this).removeClass('over');
+                },
+                onDrop: function (e, source) {
+                    $(this).append(source)
+                    $(this).removeClass('over');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

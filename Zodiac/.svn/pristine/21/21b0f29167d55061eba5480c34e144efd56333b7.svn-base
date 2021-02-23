@@ -1,0 +1,110 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>RowEditingDataGrid</title>
+     <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+    <h2>数据表格中的行编辑</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>点击行就可以开始编辑.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <table id="dg" class="easyui-datagrid" title="数据表格中的行编辑" style="width:700px;height:auto"
+           data-options="
+                iconCls: 'icon-edit',
+                singleSelect: true,
+                toolbar: '#tb',
+                url:'/EasyUI_Areas/AdminSys/GetUserInfo',
+                onClickRow: onClickRow
+            ">
+        <thead>
+            <tr>
+                <th data-options="field: 'uId', title: '用户编号', width: 100"></th>
+
+                <th data-options="field:'uLoginName',width:80,align:'right',editor:'text'">登录名</th>
+                <th data-options="field:'uRemark',width:80,align:'right',editor:'text'">备注</th>
+                <th data-options="field:'uPost',width:250,editor:'text'">邮编</th>
+                <th data-options="field:'uGender',width:60,align:'center',editor:{type:'checkbox'}">性别</th>
+            </tr>
+        </thead>
+    </table>
+    <div id="tb" style="height:auto">
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="append()">添加</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="remove()">删除</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="accept()">接受改变</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="reject()">撤销改变</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="getChanges()">获取改变</a>
+    </div>
+    <script type="text/javascript">
+        var editIndex = undefined;
+        function endEditing() {
+            if (editIndex == undefined) { return true }
+            if ($('#dg').datagrid('validateRow', editIndex)) {                             
+                $('#dg').datagrid('endEdit', editIndex);
+                editIndex = undefined;
+                return true;
+            } else {
+                return false;
+            }
+        }
+        function onClickRow(index) {
+            if (editIndex != index) {
+                if (endEditing()) {
+                    $('#dg').datagrid('selectRow', index)
+                            .datagrid('beginEdit', index);
+                    editIndex = index;
+                } else {
+                    $('#dg').datagrid('selectRow', editIndex);
+                }
+            }
+        }
+        function append() {
+            if (endEditing()) {
+                $('#dg').datagrid('appendRow',
+                    {
+                        uId: '19',
+                        uLoginName: 'Bf001',
+                        uRemark: '备注一',
+                        uPost: '461200',
+                        uGender: 'true'
+                    });
+                editIndex = $('#dg').datagrid('getRows').length - 1;
+                $('#dg').datagrid('selectRow', editIndex)
+                        .datagrid('beginEdit', editIndex);
+            }
+        }
+        function remove() {
+            if (editIndex == undefined) { return }
+            $('#dg').datagrid('cancelEdit', editIndex)
+                    .datagrid('deleteRow', editIndex);
+            editIndex = undefined;
+        }
+        function accept() {
+            if (endEditing()) {
+                $('#dg').datagrid('acceptChanges');
+            }
+        }
+        function reject() {
+            $('#dg').datagrid('rejectChanges');
+            editIndex = undefined;
+        }
+        function getChanges() {
+            var rows = $('#dg').datagrid('getChanges');
+            alert(rows.length + ' rows are changed!');
+        }
+    </script>
+</body>
+</html>

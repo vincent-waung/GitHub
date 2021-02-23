@@ -1,0 +1,65 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ToolbarandButtons</title>
+       <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#dlg").dialog({
+                iconCls: 'icon-save',
+                toolbar: [{
+                    text: '添加',
+                    iconCls: 'icon-add',
+                    handler: function () {
+                        alert('添加')
+                    }
+                }, '-', {
+                    text: '保存',
+                    iconCls: 'icon-save',
+                    handler: function () {
+                        alert('保存')
+                    }
+                }],
+                buttons: [{
+                    text: '确定',
+                    iconCls: 'icon-ok',
+                    handler: function () {
+                        alert('确定');
+                    }
+                }, {
+                    text: '关闭',
+                    handler: function () {
+                        alert('关闭');;
+                    }
+                }]
+            });
+        });
+    </script>
+</head>
+<body>
+  <h2>工具栏和按钮</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>工具栏和按钮可以添加到对话框体里去.</div>
+    </div>
+    <div style="margin:10px 0;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="$('#dlg').dialog('open')">打开</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="$('#dlg').dialog('close')">关闭</a>
+    </div>
+    <div id="dlg"  title="工具栏和按钮" style="width:400px;height:200px;padding:10px">
+        对话窗体内容.
+    </div>
+</body>
+</html>

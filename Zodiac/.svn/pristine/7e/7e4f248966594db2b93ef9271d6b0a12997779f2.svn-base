@@ -1,0 +1,37 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>FirstDayofWeek</title>
+      <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+     <h2>一周的第一天</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>选择一周的第一天.</div>
+    </div>
+    <div style="margin:10px 0">
+        <select onchange="$('#cc').calendar({firstDay:this.value})">
+            <option value="1">周一</option>
+            <option value="2">周二</option>
+            <option value="3">周三</option>
+            <option value="4">周四</option>
+            <option value="5">周五</option>
+            <option value="6">周六</option>
+            <option value="0">周日</option>
+        </select>
+    </div>
+    <div id="cc" class="easyui-calendar" style="width:180px;height:180px;"></div>
+</body>
+</html>

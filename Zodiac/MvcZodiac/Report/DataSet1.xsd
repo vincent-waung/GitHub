@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet1" targetNamespace="http://tempuri.org/DataSet1.xsd" xmlns:mstns="http://tempuri.org/DataSet1.xsd" xmlns="http://tempuri.org/DataSet1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="ZodiacReportConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="ZodiacReportConnectionString (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.ZodiacReportConnectionString.ConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="DataTable1TableAdapter" GeneratorDataComponentClassName="DataTable1TableAdapter" Name="DataTable1" UserDataComponentName="DataTable1TableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="ZodiacReportConnectionString (Web.config)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT   u.uId, u.uLoginName, d.depName, CASE WHEN u.uGender = 1 THEN '男' ELSE '女' END AS uGender, u.uPost, 
+                u.uRemark, CASE WHEN u.uIsDel = 1 THEN '禁用' ELSE '户用' END AS uIsDel, u.uAddTime
+FROM      Sys_UserInfo AS u LEFT OUTER JOIN
+                Sys_Department AS d ON u.uDepId = d.depId</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="uId" DataSetColumn="uId" />
+              <Mapping SourceColumn="uLoginName" DataSetColumn="uLoginName" />
+              <Mapping SourceColumn="depName" DataSetColumn="depName" />
+              <Mapping SourceColumn="uGender" DataSetColumn="uGender" />
+              <Mapping SourceColumn="uPost" DataSetColumn="uPost" />
+              <Mapping SourceColumn="uRemark" DataSetColumn="uRemark" />
+              <Mapping SourceColumn="uIsDel" DataSetColumn="uIsDel" />
+              <Mapping SourceColumn="uAddTime" DataSetColumn="uAddTime" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet1" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet1" msprop:Generator_UserDSName="DataSet1">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowClassName="DataTable1Row">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="uId" msdata:ReadOnly="true" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnVarNameInTable="columnuId" msprop:Generator_ColumnPropNameInRow="uId" msprop:Generator_ColumnPropNameInTable="uIdColumn" msprop:Generator_UserColumnName="uId" type="xs:int" />
+              <xs:element name="uLoginName" msprop:Generator_ColumnVarNameInTable="columnuLoginName" msprop:Generator_ColumnPropNameInRow="uLoginName" msprop:Generator_ColumnPropNameInTable="uLoginNameColumn" msprop:Generator_UserColumnName="uLoginName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="depName" msprop:Generator_ColumnVarNameInTable="columndepName" msprop:Generator_ColumnPropNameInRow="depName" msprop:Generator_ColumnPropNameInTable="depNameColumn" msprop:Generator_UserColumnName="depName" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="uGender" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnuGender" msprop:Generator_ColumnPropNameInRow="uGender" msprop:Generator_ColumnPropNameInTable="uGenderColumn" msprop:Generator_UserColumnName="uGender" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="uPost" msprop:Generator_ColumnVarNameInTable="columnuPost" msprop:Generator_ColumnPropNameInRow="uPost" msprop:Generator_ColumnPropNameInTable="uPostColumn" msprop:Generator_UserColumnName="uPost" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="uRemark" msprop:Generator_ColumnVarNameInTable="columnuRemark" msprop:Generator_ColumnPropNameInRow="uRemark" msprop:Generator_ColumnPropNameInTable="uRemarkColumn" msprop:Generator_UserColumnName="uRemark" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="uIsDel" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnuIsDel" msprop:Generator_ColumnPropNameInRow="uIsDel" msprop:Generator_ColumnPropNameInTable="uIsDelColumn" msprop:Generator_UserColumnName="uIsDel" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="4" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="uAddTime" msprop:Generator_ColumnVarNameInTable="columnuAddTime" msprop:Generator_ColumnPropNameInRow="uAddTime" msprop:Generator_ColumnPropNameInTable="uAddTimeColumn" msprop:Generator_UserColumnName="uAddTime" type="xs:dateTime" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:DataTable1" />
+      <xs:field xpath="mstns:uId" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

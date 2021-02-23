@@ -1,0 +1,54 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>NavigateComboBox</title>
+      <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+  <h2>导航下拉框</h2>
+    <div class="demo-info" style="margin-bottom:10px">
+        <div class="demo-tip icon-tip"></div>
+        <div>导航下拉框时选中一个值.</div>
+    </div>
+    <div style="margin:10px 0;">
+        <input type="checkbox" checked onchange="$('#cc').combobox({selectOnNavigation:$(this).is(':checked')})">
+        <span>导航选中</span>
+    </div>
+    <select id="cc" class="easyui-combobox" name="sheng" style="width:200px;">
+        <option value="河北省">河北省</option>
+        <option value="山东省">山东省</option>
+        <option value="辽宁省">辽宁省</option>
+        <option value="黑龙江省">黑龙江省</option>
+        <option value="吉林省">吉林省</option>
+        <option value="甘肃省">甘肃省</option>
+        <option value="青海省">青海省</option>
+        <option value="河南省">河南省</option>
+        <option value="江苏省">江苏省</option>
+        <option value="湖北省">湖北省</option>
+        <option value="湖南省">湖南省</option>
+        <option value="江西省">江西省</option>
+        <option value="浙江省">浙江省</option>
+        <option value="广东省">广东省</option>
+        <option value="云南省">云南省</option>
+        <option value="福建省">福建省</option>
+        <option value="台湾省">台湾省</option>
+        <option value="海南省">海南省</option>
+        <option value="山西省">山西省</option>
+        <option value="四川省">四川省</option>
+        <option value="陕西省">陕西省</option>
+        <option value="贵州省">贵州省</option>
+        <option value="安徽省">安徽省</option>
+    </select>
+</body>
+</html>

@@ -1,0 +1,49 @@
+﻿<link href="~/Content/css/editview.css" rel="stylesheet" />
+<div id="div_EidtBanner">
+    <div style="float:left;">
+        <img src="~/Content/images/b.jpg" />
+    </div>
+    <span class="titleFont">通权系统--设置角色权限</span>
+</div>
+<div id="div_EditView">
+    <form method="post">
+        <table>
+            <tr style="height:0px;">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>角色编号:</td>
+                <td>
+                    <input name="rId" class="easyui-validatebox" style="width:150px;" data-options="required:true,missingMessage:'必填用户名称!'" />
+                </td>
+                <td>角色名称:</td>
+                <td>
+                    <input name="rName" class="easyui-validatebox" style="width:150px;" data-options="required:true,missingMessage:'必填用户名称!'" />
+                </td>
+                <td></td>
+            </tr>          
+            <tr>
+                <td></td>               
+                <td>说&nbsp;&nbsp;&nbsp;&nbsp;明:</td>
+                <td colspan="3">
+                    <input name="rRemark" class="easyui-validatebox" style="width:100%;" />
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>权&nbsp;&nbsp;&nbsp;&nbsp;限:</td>
+                <td colspan="3">
+                    <input name="perIds" class="easyui-validatebox" style="width:100%;" />
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </form>
+</div>

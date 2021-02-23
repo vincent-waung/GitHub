@@ -1,0 +1,230 @@
+﻿@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+
+ <form id="fData" method="post" action="/OnlineBooking_Areas/LoadPlanQuery/ExportLoadPlan">
+     @*<div id="divConsol"  style="display:none"> <input type="text" id="tConsol" name="tConsol"></div>
+     <div id="divTKNo"  style="display:none"> <input type="text" id="tTKNo" name="tTKNo"></div>*@
+     <div id="divConsol" style="display:none"> </div><input type="text" id="tConsol" name="tConsol" style="display:none">
+     <div id="divTKNo" style="display:none"> </div><input type="text" id="tTKNo" name="tTKNo" style="display:none">
+ 
+    <div style="height:280px;">
+        <table id="dgPod" height="200" width="280"></table>
+    </div>
+</form>
+<script type="text/javascript">
+    var dgPODFile;
+    
+    $(function () {
+        dgPODFile = $("#dgPod").datagrid({
+            iconCls: 'icon-save',
+            fit: true,
+            fitColumns: false,
+            rownumbers: true,
+            nowrap: true, //如果为true，则在同一行中显示数据。设置为true可以提高加载性能。
+            animate: false,
+            border: false,
+            method: 'post',
+            singleSelect: true,
+            loadMsg: 'Loading……',
+            cache: false,
+            //idField: 'id',
+            //把表单元素序列化成对象
+            queryParams: { STO: 'XX', Item: 'XX',Consol:'XXXXX' },
+            pagination: false,
+            pageSize: 50,
+            pageList: [50, 100, 150, 200, 250],
+            //url: '/OnlineBooking_Areas/LoadPlanQuery/getTKBooking',
+
+            columns: [[
+                { field: 'Pod_UploadTime', title: 'Pod UploadTime' ,hidden:true  },
+                { field: 'Cont_Date', title: 'Cont Date', hidden: true },
+                { field: 'Booking_Number', title: 'Booking NO./CNTR NO.', width: 150 },
+             
+                {
+                    field: 'Oper', title: 'POD', width: 120, align: 'center',
+                    width: 100,
+                    formatter: function (value, row) {
+                        if (row.Pod_UploadTime != null) {
+                        
+                            var filename = row.Booking_Number
+                            
+                            var html = '<a href="/OnlineBooking_Areas/LoadPlanQuery/downloadContNoPOD?ContNo=' + filename + '&ContDate=' + row.Cont_Date + '" ><span class="icon-d1" style="display:inline-block;vertical-align:middle;width:16px;height:16px;">&nbsp;</span>[POD]</a>';
+                         
+                            return html;
+                       }
+                    }
+                }
+                ,
+                 {  
+                     field: 'LP', title: 'Load Plan', width: 120, align: 'center',
+                     width: 100,
+                     formatter: function (value, row) {
+                         //if (row.Pod_UploadTime != null) {
+                         var html = '<a href="#" onclick=\'showLoadPlanView()\'><span style="display:inline-block;vertical-align:middle;width:16px;height:16px;">&nbsp;</span>[Load Plan]</a>';
+
+                         return html;
+                         //}
+                     }
+                 } 
+                    
+
+            ]],
+
+            onRowContextMenu: function (e, rowIndex, rowData) {
+
+            },
+
+            onLoadSuccess: function (data) {
+
+            }
+
+        });
+    });
+ 
+    function showLoadPlanView() {
+           var SelectNode2 = dgPODFile.datagrid('getSelected');
+           $("#tTKNo").val(SelectNode2.Booking_Number);
+            $.validateUrl('/OnlineBooking_Areas/LoadPlanQuery/ShowLoadPlan', showLoadPlan, xz.dealWith, 'Get');
+    }
+
+    function showLoadPlan() {
+
+        var node2 = dgPODFile.datagrid('getSelected');
+        if (node2) {
+            var pLoadPlan = xz.dialog({
+                title: 'Load Plan',
+                width: 800,
+                height: 400,
+                cache: false,
+                queryParams: {
+                    //uID: node.b_key, RegID: node.RegDID
+                },
+                iconCls: 'icon-edit',
+
+                href: '/OnlineBooking_Areas/LoadPlanQuery/ShowLoadPlan',
+                buttons: [
+
+                {
+                    text: 'Close',
+                    iconCls: 'icon-cancel',
+                    handler: function () {
+                        // pAddscan.dialog('close');
+
+                        //var fm = pAddscan.find('form');
+                        //var pScan_CTN = ff.find("#divScan_CTN").html();
+
+                        //updateSelectedRowScanNumber(node2, pScan_CTN );
+
+                        pLoadPlan.dialog('destroy');//销毁
+                    }
+
+                },
+
+
+                {
+                    text: 'Export',
+                    iconCls: 'icon-export',
+                    handler: function () {
+                        // pAddscan.dialog('close');
+                        //document.getElementById("fData").submit();
+                       
+                    
+                        //var pLPDg = document.getElementById("fData");
+
+                        //var strLPlist = JSON.stringify($("#dgPod").datagrid('getRows'));
+                     
+
+                        //$.post("/OnlineBooking_Areas/LoadPlanQuery/ExportLoadPlan", { BookingNumber: node2.Booking_Number, Consol: document.getElementById("divConsol").innerText }, function (data, textStatus) {
+
+                        //    if (textStatus = "success") {
+                             
+
+
+                        //    } else {
+
+                               
+                        //    }
+
+                        //})
+
+
+                        document.getElementById("fData").submit();
+
+
+
+
+                        //$("#fData").form("submit", {//form({})相当于表单的构造函数
+                        //    //easyui提交数据给后台是通过jQuery ajax中的序列化将数据提交给后台  + strLPlist
+
+                        //   // url: "/OnlineBooking_Areas/LoadPlanQuery/ExportLoadPlan?lpList=" + strLPlist,
+                        //    url: "/OnlineBooking_Areas/LoadPlanQuery/ExportLoadPlan",
+                       
+                        //                             onSubmit : function() {
+                        //                               //表单验证
+                        //                            //return $(this).form("validate");
+                        //                         },
+                        //                             success : function() {
+                        //                              //$("#addClassesBtn").dialog({
+                        //                              //              closed : true
+                        //                              //     });
+                        //                              //  $("#addClassesForm").form("clear");
+                        //                              //  $("#myGrid").datagrid("reload");
+                        //                              //   $.messager.alert("消息提示", "添加成功!", "info");
+                        //                             }
+                        //  });
+
+
+
+
+
+
+
+
+
+
+
+                        //var pScan_CTN = ff.find("#divScan_CTN").html();
+
+                        //updateSelectedRowScanNumber(node2, pScan_CTN );
+
+                        //pLoadPlan.dialog('destroy');//销毁
+ 
+                    }
+
+                }
+
+                ],
+                onLoad: function () {
+                    var ff = pLoadPlan.find('form');
+                    var pdgLP = ff.find("#dgLP");
+                    //pUnloadingDtlID.html($.trim(node2.udID));
+                    //pRec_CTN.html($.trim(node2.ctn));
+                    var fd = document.getElementById("divConsol").innerText;
+                   
+                    var parambarcode = { BookingNumber: node2.Booking_Number, Consol: document.getElementById("divConsol").innerText };
+
+                    var optionsbarcode = pdgLP.datagrid('options');
+
+                    optionsbarcode.url = '/OnlineBooking_Areas/LoadPlanQuery/GetLoadPlanList';
+                    optionsbarcode.queryParams = parambarcode;
+                    pdgLP.datagrid(optionsbarcode);
+
+                   
+                },
+
+                onClose: function () {
+
+                    pLoadPlan.dialog('destroy');//销毁
+
+
+                }
+
+            });
+        }
+
+    }
+</script>

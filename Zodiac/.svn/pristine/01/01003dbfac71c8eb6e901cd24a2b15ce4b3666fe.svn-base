@@ -1,0 +1,379 @@
+﻿@{
+    ViewBag.Title = "TruckingMaintenance2";
+}
+
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>TruckingOrderSearchIndex</title>
+        <script src="~/Areas/Scripts/easyui/jquery.min.js"></script>
+        <script src="~/Areas/Scripts/easyui/jquery.easyui.min.js"></script>
+        <script src="~/Areas/Scripts/ToolKit.js"></script>
+
+        <link href="~/Areas/Content/Site.css" rel="stylesheet" />
+        <link href="~/Areas/Content/easyui/icon.css" rel="stylesheet" />
+        <link href="~/Areas/Content/easyui/bootstrap/easyui.css" rel="stylesheet" />
+        <script type="text/javascript">
+        $(function () {
+            GetList();
+            GetTimeList();
+            $('#ccFees').combobox({
+                url: '/TMS_Areas/TruckingCompany/GetTruckingCharge',
+                method: 'post',
+                valueField: 'name',
+                textField: 'name',
+                selected: 'selected'
+            });
+
+            $(".Add").click(function () {
+
+                var Fees = $("#ccFees").combobox('getValue');
+                var Cost = $("#ttCost").textbox('getValue');
+                var Currency = $("#ccCurrency").textbox('getValue');
+                $('#tbody1').empty();
+                $.ajax({
+                    url: '/TMS_Areas/TruckingCompany/AddTruckingCharge2',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { Fees: Fees, Cost: Cost, Currency: Currency },
+                    success:
+                        function (json) {
+                            var tbody = $("#tbody1");
+                            var json = eval(json);
+                            if (json.msg == "0") {
+                                window.parent.$.messager.alert('温馨提示', 'Please upload the file first!', 'info');
+          
+                            } else {
+                                $.each(json, function (index, item) {
+                                    tbody.append("<tr >" +
+                                        "<td width='120px'>" +
+                                        item.Seq +
+                                        "</td>" +
+                                        "<td width='120px'>" +
+                                        item.Charge +
+                                        "</td>" +
+                                        "<td width='120px'>" +
+                                        item.ChargeName +
+                                        "</td>" +
+                                        "<td width='120px'>" +
+                                        item.Currency +
+                                        "</td>" +
+                                        "<td width='120px'>" +
+                                        item.Remark +
+                                        "</td>" +
+                                        "<td width='120px'>" +
+                                        item.Booking_Number +
+                                        "</td>" +
+                                        "<td width='90px'><a href='javascript:void();' id='btnDel' onclick='DelList(" + item.Seq + ")'>Delete</a></td>" +
+                                        "<td width='90px'><a href='javascript:void();' id='btnDow' onclick='Download(\"" + item.Booking_Number + "\")'>Download</a></td>" +
+                                        "</tr>");
+                                });
+                            }
+                        }
+                })
+            });
+            $(".Save").click(function () {
+
+                $.ajax({
+                    url: '/TMS_Areas/TruckingCompany/SaveTruckingCharge2',
+                    type: 'POST',
+                    dataType: 'json',
+                    success:
+                        function (json) {
+                            var json = eval(json);
+                            if (json.msg == "0") {
+                                window.parent.$.messager.alert('温馨提示', 'Save successful!', 'info');
+                            }
+                            if (json.msg == "1") {
+                                window.parent.$.messager.alert('温馨提示', 'Save failed,' + json.err, 'info');
+                            }
+
+                        }
+                })
+            });
+            $(".SaveTime").click(function () {
+                var Arrive_factory_time = $("#ddArrivalFactory").datetimebox('getValue');
+                var Arrive_Whs_time = $("#ddArrivalWarehouse").datetimebox('getValue');
+                var Leave_factory_time = $("#ddLeaveFactory").datetimebox('getValue');
+                var Leave_customs_time = $("#ddLeaveWarehouse").datetimebox('getValue');
+                var Terminal_Time = $("#ddArrivalTerminal").datetimebox('getValue');
+                var Start_Unloading_time = $("#ddStartUnloading").datetimebox('getValue');
+                var Leave_Terminal_time = $("#ddLeaveTerminal").datetimebox('getValue');
+                $.ajax({
+                    url: '/TMS_Areas/TruckingCompany/SaveTruckingTime2',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { Arrive_factory_time: Arrive_factory_time, Arrive_Whs_time: Arrive_Whs_time, Leave_factory_time: Leave_factory_time, Leave_customs_time: Leave_customs_time, Terminal_Time: Terminal_Time, Start_Unloading_time: Start_Unloading_time, Leave_Terminal_time: Leave_Terminal_time, },
+                    success:
+                        function (json) {
+                            var json = eval(json);
+                            if (json.msg == "0") {
+                                window.parent.$.messager.alert('温馨提示', 'Save successful!', 'info');
+                            }
+                            if (json.msg == "1") {
+                                window.parent.$.messager.alert('温馨提示', 'Save failed,' + json.err, 'info');
+                            }
+
+                        }
+                })
+            });
+            $(".Upload").click(function () {
+                document.getElementById("image").click();
+            });
+        });
+        function DelList(id) {
+
+            $('#tbody1').empty();
+            $.ajax({
+                url: '/TMS_Areas/TruckingCompany/DelTruckingCharge2',
+                type: 'POST',
+                dataType: 'json',
+                data: { id: id },
+                success:
+                    function (json) {
+                        var tbody = $("#tbody1");
+                        var json = eval(json);
+                        $.each(json, function (index, item) {
+                            tbody.append("<tr >" +
+                                "<td width='120px'>" +
+                                item.Seq +
+                                "</td>" +
+                                "<td width='120px'>" +
+                                item.Charge +
+                                "</td>" +
+                                "<td width='120px'>" +
+                                item.ChargeName +
+                                "</td>" +
+                                "<td width='120px'>" +
+                                item.Currency +
+                                "</td>" +
+                                "<td width='120px'>" +
+                                item.Remark +
+                                "</td>" +
+                                "<td width='120px'>" +
+                                item.Booking_Number +
+                                "</td>" +
+                                "<td width='90px'><a href='javascript:void();' id='btnDel' onclick='DelList(" + item.Seq + ")'>Delete</a></td>" +
+                                "<td width='90px'><a href='javascript:void();' id='btnDow' onclick='Download(\"" + item.Booking_Number + "\")'>Download</a></td>" +
+                                "</tr>");
+                        });
+                    }
+            })
+            }
+        function Download(id) {
+                if (id == "N") {
+                    window.parent.$.messager.alert('reminder', 'No file was found!', 'info');
+                    return;
+                }
+                window.location = '/TMS_Areas/TruckingCompany/DownloadTruckingCharge';
+            }
+        function GetList() {
+
+            $.ajax({
+                url: '/TMS_Areas/TruckingCompany/GetTruckingChargeList2',
+                type: 'POST',
+                dataType: 'json',
+                success:
+                    function (json) {
+                        var tbody = $("#tbody1");
+                        var json = eval(json);
+                        $.each(json, function (index, item) {
+                            tbody.append("<tr >" +
+                                "<td width='120px'>" +
+                                item.Seq +
+                                "</td>" +
+                                "<td width='120px'>" +
+                                item.Charge +
+                                "</td>" +
+                                "<td width='120px'>" +
+                                item.ChargeName +
+                                "</td>" +
+                                "<td width='120px'>" +
+                                item.Currency +
+                                "</td>" +
+                                "<td width='120px'>" +
+                                item.Remark +
+                                "</td>" +
+                                "<td width='120px'>" +
+                                item.Booking_Number +
+                                "</td>" +
+                                "<td width='90px'><a href='javascript:void();' id='btnDel' onclick='DelList(" + item.Seq + ")'>Delete</a></td>" +
+                                "<td width='90px'><a href='javascript:void();' id='btnDow' onclick='Download(\"" + item.Booking_Number +"\")'>Download</a></td>" +
+                                "</tr>");
+                        });
+                    }
+            })
+            }
+        function GetTimeList() {
+
+                $.ajax({
+                    url: '/TMS_Areas/TruckingCompany/GetTruckingTimeList',
+                    type: 'POST',
+                    dataType: 'json',
+                    success:
+                        function (json) {
+                            var item = eval(json);
+                            $("#ddArrivalFactory").datebox('setValue', item.Arrive_factory_time);
+                            $("#ddArrivalWarehouse").datebox('setValue', item.Arrive_Whs_time);
+                            $("#ddLeaveFactory").datebox('setValue', item.Leave_factory_time);
+                            $("#ddLeaveWarehouse").datebox('setValue', item.Leave_customs_time);
+                            $("#ddArrivalTerminal").datebox('setValue', item.Terminal_Time);
+                            $("#ddStartUnloading").datebox('setValue', item.Start_Unloading_time);
+                            $("#ddLeaveTerminal").datebox('setValue', item.Leave_Terminal_time);
+
+                        }
+                })
+            }
+        function GetSessionList() {
+
+                $.ajax({
+                    url: '/TMS_Areas/TruckingCompany/GetTruckingChargeSessionList2',
+                    type: 'POST',
+                    dataType: 'json',
+                    success:
+                        function (json) {
+                            var tbody = $("#tbody1");
+                            var json = eval(json);
+                            $.each(json, function (index, item) {
+                                tbody.append("<tr >" +
+                                    "<td width='120px'>" +
+                                    item.Seq +
+                                    "</td>" +
+                                    "<td width='120px'>" +
+                                    item.Charge +
+                                    "</td>" +
+                                    "<td width='120px'>" +
+                                    item.ChargeName +
+                                    "</td>" +
+                                    "<td width='120px'>" +
+                                    item.Currency +
+                                    "</td>" +
+                                    "<td width='120px'>" +
+                                    item.Remark +
+                                    "</td>" +
+                                    "<td width='120px'>" +
+                                    item.Booking_Number +
+                                    "</td>" +
+                                    "<td width='90px'><a href='javascript:void();' id='btnDel' onclick='DelList(" + item.Seq + ")'>Delete</a></td>" +
+                                    "<td width='90px'><a href='javascript:void();' id='btnDow' onclick='Download(\"" + item.Booking_Number + "\")'>Download</a></td>" +
+                                    "</tr>");
+                            });
+                        }
+                })
+            }
+        function uploadFile(obj, type) {
+
+                var fileSize = document.getElementById('image').files[0];
+                if (fileSize.size > 4194304) {
+                    window.parent.$.messager.alert('reminder', 'Cannot upload files larger than 4MB', 'info');
+                }
+                else {
+                    $.ajaxFileUpload({
+                        url: '/TMS_Areas/TruckingCompany/UploadFile',
+                        secureuri: false,// 一般设置为false
+                        fileElementId: 'image',
+                        dataType: 'json',// 返回值类型 一般设置为json
+                        success: function (json) // 服务器成功响应处理函数
+                        {
+
+                            var json = eval(json);
+
+                            if (json.msg == "1") {
+                                window.parent.$.messager.alert('reminder', 'Upload successful!', 'info');
+                            }
+                            if (json.msg == "2") {
+                                window.parent.$.messager.alert('reminder', 'Only PDF files can be uploaded!', 'info');
+                            }
+
+                        }
+                    });
+                }
+            }
+        </script>
+
+    </head>
+    <body>
+        <div>
+            <span style="font-size:20px;font-weight:bold;color:black"> @Html.Display("Booking_Number")</span> 
+            <div id="tt" class="easyui-tabs" style="height:auto;">
+                <div title="Cost Maintenance" style="padding:20px;background-color:#F2F2F2">
+                    <a href="javascript:void(0)" class="easyui-linkbutton Save" iconcls="icon-save">Save</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton Add" iconcls="icon-add">Add</a>
+                    <table>
+
+                        <tr>
+                            <td>Fees</td>
+                            <td>
+                                <input id="ccFees" class="easyui-combobox" style="width:175px;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Cost</td>
+                            <td><input id="ttCost" class="easyui-textbox"></td>
+                        </tr>
+                        <tr>
+                            <td>Currency</td>
+                            <td>
+                                <select id="ccCurrency" class="easyui-combobox" style="width:175px;">
+                                    <option value="VND" selected="selected">VND</option>
+                                    <option value="USD">USD</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Charges Voucher</td>
+                            <td><a href="javascript:void(0)" class="easyui-linkbutton Upload" iconcls="icon_CloseAll">Upload</a></td>
+                            <td><input type="file" id="image" name="image" style="display:none" accept=".xlsx" onchange="uploadFile(this,1)" /></td>
+                        </tr>
+                    </table>
+                    <table id="table1" style="text-align:center">
+                        <thead>
+                            <tr>
+                                <th width="120px">Seq</th>
+                                <th width="120px">ChargeName</th>
+                                <th width="120px">Charge </th>
+                                <th width="120px">Currency </th>
+                                <th width="120px">Charges Voucher</th>
+                                <th width="120px">Confirmed</th>
+                                <th width="120px">Action</th>
+                                <th width="120px"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody1"></tbody>
+                    </table>
+                </div>
+                <div title="Time Maintenance" style="padding:20px;background-color:#F2F2F2">
+                    <a href="javascript:void(0)" class="easyui-linkbutton SaveTime" iconcls="icon-save">Save</a>
+                    <table>
+
+                        <tr>
+                            <td>Arrive Factory time</td>
+                            <td><input id="ddArrivalFactory" class="easyui-datetimebox" name="birthday" data-options="showSeconds:false"></td>
+                            <td>Arrive Warehouse time</td>
+                            <td><input id="ddArrivalWarehouse" class="easyui-datetimebox" name="birthday" data-options="showSeconds:false"></td>
+                        </tr>
+                        <tr>
+                            <td>Leave Factory time</td>
+                            <td><input id="ddLeaveFactory" class="easyui-datetimebox" name="birthday" data-options="showSeconds:false"></td>
+                            <td>Leave Warehouse time</td>
+                            <td><input id="ddLeaveWarehouse" class="easyui-datetimebox" name="birthday" data-options="showSeconds:false"></td>
+                        </tr>
+                        <tr>
+                            <td>Arrival Terminal time</td>
+                            <td><input id="ddArrivalTerminal" class="easyui-datetimebox" name="birthday" data-options="showSeconds:false"></td>
+                            <td>Start Unloading time</td>
+                            <td><input id="ddStartUnloading" class="easyui-datetimebox" name="birthday" data-options="showSeconds:false"></td>
+                        </tr>
+                        <tr>
+                            <td>Leave Terminal time</td>
+                            <td><input id="ddLeaveTerminal" class="easyui-datetimebox" name="birthday" data-options="showSeconds:false"></td>
+                        </tr>
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+    </body>
+    </html>

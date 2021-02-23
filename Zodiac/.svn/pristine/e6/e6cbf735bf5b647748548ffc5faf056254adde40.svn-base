@@ -1,0 +1,54 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />  
+    <title>Constrain Draggable - jQuery EasyUI Demo</title>
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+      <script type="text/javascript">
+          $(document).ready(function () {
+              $("#divInner").draggable({
+                  onDrag: onDrag
+              });
+
+          });
+
+          function onDrag(e) {
+              var d = e.data;
+              //不能拖出父容器的左边框
+              if (d.left < 0) { d.left = 0 }
+              //不能拖出父容器的上边框
+              if (d.top < 0) { d.top = 0 }
+              //不能拖出父容器的右边框
+              if (d.left + $(d.target).outerWidth() > $(d.parent).width()) {
+                  d.left = $(d.parent).width() - $(d.target).outerWidth();
+              }
+              //不能拖出父容器的下边框
+              if (d.top + $(d.target).outerHeight() > $(d.parent).height()) {
+                  d.top = $(d.parent).height() - $(d.target).outerHeight();
+              }
+          }
+      </script>
+</head>
+<body>
+    <h2>拖拽限制</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>拖拽对象只能在它的父容器中拖动.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div style="position:relative;overflow:hidden;border:1px solid #ccc;width:500px;height:300px">
+        <div id="divInner" style="width:100px;height:100px;background:#fafafa;border:1px solid #ccc;">
+        </div>
+    </div>
+</body>
+</html>

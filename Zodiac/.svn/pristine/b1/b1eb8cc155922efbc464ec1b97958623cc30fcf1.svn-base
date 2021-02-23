@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="5f554288e28843b78b903db84281ecad" Name="Diagram1">
+        <EntityTypeShape EntityType="ypmfdata_ynModel.Bn_Zodiac" Width="1.5" PointX="9.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.BookingDetailEdi" Width="1.5" PointX="11.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.bookingDtl" Width="1.5" PointX="0.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.bookingForward" Width="1.5" PointX="14.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.bookingHead" Width="1.5" PointX="2.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.BookingHeadEdi" Width="1.5" PointX="17.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.bookingUser" Width="1.5" PointX="7.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.bookingVendor" Width="1.5" PointX="13.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.carrier_booking" Width="1.5" PointX="17.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.category" Width="1.5" PointX="15.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.ChargeDEBITNOTE" Width="1.5" PointX="17.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.ChargeName" Width="1.5" PointX="12.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.clp_chargeList" Width="1.5" PointX="19.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.collectlist" Width="1.5" PointX="19.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.consignee" Width="1.5" PointX="19.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.cont_address" Width="1.5" PointX="19.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.ContTransFee" Width="1.5" PointX="19.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.Curr_Rate" Width="1.5" PointX="19.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.custin" Width="1.5" PointX="7.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.custinno" Width="1.5" PointX="21.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.customer" Width="1.5" PointX="21.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.customer1" Width="1.5" PointX="21.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.CustomsType" Width="1.5" PointX="21.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.custoutno" Width="1.5" PointX="15.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.DailyCustomsDocu" Width="1.5" PointX="21.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.DailyDataforCustoms" Width="1.5" PointX="17.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.DailyTurnover" Width="1.5" PointX="19.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.DebitNoteNo" Width="1.5" PointX="21.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.dest" Width="1.5" PointX="9.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.destination" Width="1.5" PointX="11.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.DestInfo2" Width="1.5" PointX="23.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.DestOfBRSI" Width="1.5" PointX="23.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.dobitNoteLog" Width="1.5" PointX="23.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.dtproperties" Width="1.5" PointX="23.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.EDIExcptnReg" Width="1.5" PointX="23.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.Employees" Width="1.5" PointX="23.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.ExclusionCustoms" Width="1.5" PointX="23.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.FCR_Detail" Width="1.5" PointX="23.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.FCR_Discharging_Port" Width="1.5" PointX="13.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.FCR_Factory" Width="1.5" PointX="25.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.FCR_Head" Width="1.5" PointX="25.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.FCR_Supplier" Width="1.5" PointX="25.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.FcrSMBaseCharge" Width="1.5" PointX="10.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.FinalLoadingPlan" Width="1.5" PointX="5.75" PointY="16.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.FinalLoadingPlan_Payment" Width="1.5" PointX="25.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.FinalLoadPlanAmazonVendor" Width="1.5" PointX="25.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.FinalLoadPlanHoliday" Width="1.5" PointX="25.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.FinalLoadPlanJobRecord" Width="1.5" PointX="25.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.FinalLoadPlanRPALog" Width="1.5" PointX="25.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.FinalPo_Cancel_Record" Width="1.5" PointX="0.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.FinalPoList" Width="1.5" PointX="7.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.FinalVendorInput" Width="1.5" PointX="10" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.FinalVendorInputTrucking" Width="1.5" PointX="12.25" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.financeCharge" Width="1.5" PointX="15" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.forwarder_code" Width="1.5" PointX="2.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.in_head" Width="1.5" PointX="19.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.in_item" Width="1.5" PointX="27.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.In2So" Width="1.5" PointX="12.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.InDocContainer" Width="1.5" PointX="27.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.InDocVehicle" Width="1.5" PointX="14.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.Inhead" Width="1.5" PointX="27.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.InList" Width="1.5" PointX="21.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.invoice" Width="1.5" PointX="23.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.invoiceExchange" Width="1.5" PointX="29.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.latecome" Width="1.5" PointX="2.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.Load_Fee" Width="1.5" PointX="29.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.Loading" Width="1.5" PointX="29.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.LoadPlanUpdateRecord" Width="1.5" PointX="8" PointY="26" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.LPCont_Info" Width="1.5" PointX="7.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.LPStatus" Width="1.5" PointX="9.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.MaxId" Width="1.5" PointX="29.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.newpacking" Width="1.5" PointX="29.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.newpacklist" Width="1.5" PointX="29.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.out_head" Width="1.5" PointX="29.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.out_head_cy" Width="1.5" PointX="14.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.out_item" Width="1.5" PointX="14.75" PointY="30.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.out_item_cy" Width="1.5" PointX="17" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.OutDocContainer" Width="1.5" PointX="31.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.OutDocVehicle" Width="1.5" PointX="31.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.Outhead" Width="1.5" PointX="31.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.OutList" Width="1.5" PointX="23.75" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.OutListItems" Width="1.5" PointX="31.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.pick_return_charge" Width="1.5" PointX="15" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.Port" Width="1.5" PointX="31.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.rec_amount" Width="1.5" PointX="31.75" PointY="30.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.recdtl" Width="1.5" PointX="0.75" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.rechead" Width="1.5" PointX="2.75" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.RecRegistrationHead" Width="1.5" PointX="7.75" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.RecRegistrationItems" Width="1.5" PointX="9.75" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.RecRegVehicle" Width="1.5" PointX="11.75" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.ShipperNameList" Width="1.5" PointX="33.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.spe_opertype" Width="1.5" PointX="33.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.special" Width="1.5" PointX="33.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.special_item" Width="1.5" PointX="33.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.SpsOperate" Width="1.5" PointX="33.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.Sys_Department" Width="1.5" PointX="0.75" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.Sys_EasyUI" Width="1.5" PointX="33.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.Sys_Log" Width="1.5" PointX="33.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.Sys_Permission" Width="1.5" PointX="3" PointY="10.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.Sys_Role" Width="1.5" PointX="3" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.Sys_RolePermission" Width="1.5" PointX="5.25" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.Sys_UserInfo" Width="1.5" PointX="3" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.Sys_UserRole" Width="1.5" PointX="5.25" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.Sys_UserSetting" Width="1.5" PointX="33.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.Sys_UserVipPermission" Width="1.5" PointX="5.25" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.sysdiagrams" Width="1.5" PointX="31.75" PointY="33.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.Truck_Booking_Detail" Width="1.5" PointX="33.75" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.Truck_Booking_Head" Width="1.5" PointX="35.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.Truck_Vendor" Width="1.5" PointX="11.75" PointY="35.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.TruckUnLoadTime" Width="1.5" PointX="35.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.turnover" Width="1.5" PointX="35.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.Unloading" Width="1.5" PointX="35.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.userlog" Width="1.5" PointX="25.75" PointY="35.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.Vehicle" Width="1.5" PointX="35.75" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.VendorInfo" Width="1.5" PointX="35.75" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.vessel" Width="1.5" PointX="35.75" PointY="34.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.whs" Width="1.5" PointX="7.75" PointY="36.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.ypmfuser" Width="1.5" PointX="19.75" PointY="36.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.account" Width="1.5" PointX="37.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.AdditionalOut" Width="1.5" PointX="2.75" PointY="37.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.BookingDetail" Width="1.5" PointX="37.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.CarrierInfo" Width="1.5" PointX="37.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.con_size" Width="1.5" PointX="37.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.cus_cont" Width="1.5" PointX="37.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.cus_hchg" Width="1.5" PointX="37.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.customs" Width="1.5" PointX="37.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.customs_head" Width="1.5" PointX="37.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.customs_item" Width="1.5" PointX="37.75" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.customs_out" Width="1.5" PointX="37.75" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.decl_no" Width="1.5" PointX="37.75" PointY="34.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.ProdesOfVIFA" Width="1.5" PointX="37.75" PointY="37.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.repertory" Width="1.5" PointX="4.75" PointY="38.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.service" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.shipcorp" Width="1.5" PointX="25.75" PointY="38.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.unit" Width="1.5" PointX="11.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ypmfdata_ynModel.vendor" Width="1.5" PointX="31.75" PointY="38.75" IsExpanded="true" />
+        <AssociationConnector Association="ypmfdata_ynModel.FK_financeCharge_ChargeName" ManuallyRouted="false" />
+        <AssociationConnector Association="ypmfdata_ynModel.PK_PickChangeName" ManuallyRouted="false" />
+        <AssociationConnector Association="ypmfdata_ynModel.FK_LoadPlanUpdateRecord_FinalLoadingPlan" ManuallyRouted="false" />
+        <AssociationConnector Association="ypmfdata_ynModel.FK_FinalVendorInput_FinalPoList" ManuallyRouted="false" />
+        <AssociationConnector Association="ypmfdata_ynModel.FK_FinalVendorInputTrucking_FinalVendorInput" ManuallyRouted="false" />
+        <AssociationConnector Association="ypmfdata_ynModel.FK_out_item_cy_out_item_cy" ManuallyRouted="false" />
+        <AssociationConnector Association="ypmfdata_ynModel.FK_Sys_Role_Sys_Department" ManuallyRouted="false" />
+        <AssociationConnector Association="ypmfdata_ynModel.FK_Sys_UserInfo_Sys_Department" ManuallyRouted="false" />
+        <AssociationConnector Association="ypmfdata_ynModel.FK_Sys_RolePermission_Sys_Permission" ManuallyRouted="false" />
+        <AssociationConnector Association="ypmfdata_ynModel.FK_Sys_UserVipPermission_Sys_Permission1" ManuallyRouted="false" />
+        <AssociationConnector Association="ypmfdata_ynModel.FK_Sys_RolePermission_Sys_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="ypmfdata_ynModel.FK_Sys_UserRole_Sys_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="ypmfdata_ynModel.FK_Sys_UserRole_Sys_UserInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="ypmfdata_ynModel.FK_Sys_UserVipPermission_Sys_Permission" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

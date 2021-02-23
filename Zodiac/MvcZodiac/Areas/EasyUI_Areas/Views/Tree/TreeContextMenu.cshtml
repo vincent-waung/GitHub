@@ -1,0 +1,72 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>TreeContextMenu</title>
+      <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+    <h2>树右键菜单</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>右击树节点显示菜单.</div>
+    </div>
+    <div style="margin:10px 0;">
+    </div>
+    <ul id="tt" class="easyui-tree" data-options="
+            url: '/EasyUI_Areas/AdminIndex/GetAllDepts',
+            animate: true,
+            onContextMenu: function(e,node){
+                e.preventDefault();
+                $(this).tree('select',node.target);
+                $('#mm').menu('show',{
+                    left: e.pageX,
+                    top: e.pageY
+                });
+            }
+        "></ul>
+    <div id="mm" class="easyui-menu" style="width:120px;">
+        <div onclick="append()" data-options="iconCls:'icon-add'">添加</div>
+        <div onclick="remove()" data-options="iconCls:'icon-remove'">删除</div>
+        <div class="menu-sep"></div>
+        <div onclick="expand()">展开</div>
+        <div onclick="collapse()">收缩</div>
+    </div>
+    <script type="text/javascript">
+        function append(){
+            var t = $('#tt');
+            var node = t.tree('getSelected');
+            t.tree('append', {
+                parent: (node?node.target:null),
+                data: [{
+                    text: 'new item1'
+                },{
+                    text: 'new item2'
+                }]
+            });
+        }
+        function remove(){
+            var node = $('#tt').tree('getSelected');
+            $('#tt').tree('remove', node.target);
+        }
+        function collapse(){
+            var node = $('#tt').tree('getSelected');
+            $('#tt').tree('collapse',node.target);
+        }
+        function expand(){
+            var node = $('#tt').tree('getSelected');
+            $('#tt').tree('expand',node.target);
+        }
+        </script>
+</body>
+</html>

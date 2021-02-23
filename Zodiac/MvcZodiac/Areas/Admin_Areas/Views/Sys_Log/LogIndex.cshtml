@@ -1,0 +1,153 @@
+﻿@{
+    Layout = null;
+}
+@using Models;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>日志管理首页</title>
+    <!--jQuery库-->
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <!--jQuery Easy库-->
+    <link id="easyuiTheme" href="~/jquery-easyui-1.3.1/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/jquery-easyui-1.3.1/themes/icon.css" rel="stylesheet" />
+    <script src="~/jquery-easyui-1.3.1/jquery.easyui.min.js"></script>
+    <script src="~/jquery-easyui-1.3.1/locale/easyui-lang-zh_CN.js"></script>
+    <!--自定义库-->
+    <script src="~/Scripts/processingajaxmsg.js"></script>
+    <script src="~/Scripts/xzUtil.js"></script>
+    <!--自定义的图标样式-->
+    <link href="~/Content/exticon.css" rel="stylesheet" />
+    <script type="text/javascript">
+        /*显示日志的表格*/
+        var dgLog;      
+        var searchForm;    
+        $(function () {
+            searchForm = $('#searchForm');          
+            dgLog = $("#dgLog").datagrid({
+                iconCls: 'icon-save',
+                fit: true,
+                fitColumns: true,
+                rownumbers: true,
+                nowrap: false,
+                animate: false,
+                border: false,
+                singleSelect: true,
+                idField: 'rId',
+                pagination: true,
+                pageSize: 5,
+                pageList: [5, 10, 15, 20, 25],
+                url: '/Admin_Areas/Sys_Log/GetLogInfoByCondition',
+                toolbar: [{
+                    text: '刷新',
+                    iconCls: 'icon-reload',
+                    handler: function () {
+                        dgLog.datagrid('load');
+                    }
+                }
+                ,               
+                '-', {
+                    text: '取消选中',
+                    iconCls: 'icon-undo',
+                    handler: function () {
+                        dgLog.datagrid('unselectAll');
+                    }
+                }
+                ],
+                columns: [[
+                     {
+                         title: '日志对象',
+                         field: 'Logger',
+                         align: 'center',
+                         width: 80
+                     }
+                     ,
+                       {
+                           title: '日志线程',
+                           field: 'Thread',
+                           align: 'center',
+                           width: 80
+                       }
+                     ,
+                       {
+                           title: '日志级别',
+                           field: 'Level',
+                           align: 'center',
+                           width: 80
+                       }
+                     ,
+                     {
+                         title: '日志消息',
+                         field: 'Message',
+                         align: 'center',                       
+                         width: 180
+                     }
+                     ,
+                     {
+                           title: '异常消息',
+                           field: 'Exception',
+                           align: 'center',
+                           width: 180
+                       }
+                     ,
+                     {
+                         title: '操作日期',
+                         field: 'Date',
+                         align: 'center',
+                         width: 180,
+                         formatter: function (value) {
+                             if (value) {
+
+                                 return eval("new " + value.substr(1, value.length - 2)).toLocaleDateString();
+                             }
+                         }
+
+                     }
+                ]]             
+            });
+        });
+
+        /*过滤日志信息*/
+        function searchRole() {
+            dgLog.datagrid('load', xz.serializeObject(searchForm));
+        }
+
+        /*清空过滤表单*/
+        function clearSearch() {
+            dgLog.datagrid('load', {});
+            searchForm.find('input').val('');
+        }
+
+    </script>
+</head>
+<body class="easyui-layout" data-options="fit:true">
+    <!--条件检索-->
+    <div data-options="region:'north',title:'过滤条件',split:true,border:false,collapsed:true" style="height:90px;overflow:hidden;">
+        <form id="searchForm">
+            <table class="tableForm datagrid-toolbar" style="width:100%;height:100%;">
+                <tr>
+                    <th>日志对象</th>
+                    <td><input name="Logger" style="width:317px;" /></td>
+                </tr>
+                <tr>
+                    <th>最后的修改日期</th>
+                    <td>
+                        <input class="easyui-datetimebox" name="operDateStart"
+                               data-options="editable:false" style="width:155px">
+                        至
+                        <input class="easyui-datetimebox" name="operDateEnd"
+                               data-options="editable:false" style="width:155px">
+                        <a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="searchRole();">过滤</a>
+                        <a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-undo'" onclick="clearSearch();">清空</a>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <!--日志信息-->
+    <div data-options="region:'center',border:false" style="overflow:hidden;">
+        <table id="dgLog"></table>
+    </div>
+</body>
+</html>

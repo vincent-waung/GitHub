@@ -1,0 +1,47 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>TimeSpinnerActions</title>
+     <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+    <h2>时间微调器相关操作</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>点击下面按钮执行相关操作.</div>
+    </div>
+    <div style="margin:10px 0;">
+        <a href="#" class="easyui-linkbutton" onclick="getValue()">获取值</a>
+        <a href="#" class="easyui-linkbutton" onclick="setValue()">设置值</a>
+        <a href="#" class="easyui-linkbutton" onclick="disable()">禁用</a>
+        <a href="#" class="easyui-linkbutton" onclick="enable()">启用</a>
+    </div>
+    <input id="dt" class="easyui-timespinner" style="width:80px;">
+    <script>
+        function getValue() {
+            var val = $('#dt').timespinner('getValue');
+            alert(val);
+        }
+        function setValue() {
+            $('#dt').timespinner('setValue', '09:45');
+        }
+        function disable() {
+            $('#dt').timespinner('disable');
+        }
+        function enable() {
+            $('#dt').timespinner('enable');
+        }
+    </script>
+</body>
+</html>

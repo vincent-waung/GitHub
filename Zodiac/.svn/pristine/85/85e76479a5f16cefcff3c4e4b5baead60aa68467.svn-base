@@ -1,0 +1,65 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<form id="LoadPlanData">
+    <div style="height:300px;">
+        <table id="dgLP" height="200" width="800"></table>
+    </div>
+</form>
+
+<script type="text/javascript">
+    var dgLP;
+
+    $(function () {
+        dgLP = $("#dgLP").datagrid({
+            iconCls: 'icon-save',
+            fit: true,
+            fitColumns: false,
+            rownumbers: true,
+            nowrap: true, //如果为true，则在同一行中显示数据。设置为true可以提高加载性能。
+            animate: false,
+            border: false,
+            method: 'post',
+            singleSelect: true,
+            loadMsg: 'Loading……',
+            cache: false,
+            //idField: 'id',
+            //把表单元素序列化成对象
+             queryParams: { BookingNumber: 'XXX' ,Consol:'XXXX' },
+            pagination: false,
+            pageSize: 50,
+            pageList: [50, 100, 150, 200, 250],
+            //url: '/OnlineBooking_Areas/LoadPlanQuery/getTKBooking',
+
+            columns: [[
+                  { field: 'Vendor_Name', title: 'Vendor Name', width: 150 },
+                  { field: 'CustomerPO', title: 'Customer PO', width: 120 },
+                  { field: 'SalesOrd_STO', title: 'SalesOrd/STO', width: 100 },
+                  { field: 'ItemNO', title: 'Item No.', width: 100 },
+                  { field: 'PurchDoc', title: 'Purch.Doc.', width: 100 },
+                  { field: 'Item', title: 'Item', width: 100 },
+                  { field: 'CustomerMaterialNumber', title: 'Cust Material No.', width: 100 },
+                  { field: 'SalesMaterial', title: 'Sales Material No.', width: 120 },
+                  { field: 'Material', title: 'Material No.', width: 100 },
+                  { field: 'TotalCarton', title: 'Total Carton', width: 100 },
+                  { field: 'TotalGrossWeight', title: 'Total Gross Weight', width: 120 },
+                  { field: 'TotalVolume', title: 'Total CBM', width: 100 }
+                           
+            ]],
+
+            onRowContextMenu: function (e, rowIndex, rowData) {
+
+            },
+
+            onLoadSuccess: function (data) {
+
+            }
+
+        });
+    });
+
+
+    </script>

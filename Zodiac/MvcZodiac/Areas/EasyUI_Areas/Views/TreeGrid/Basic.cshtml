@@ -1,0 +1,44 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Basic</title>
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+     <h2>基本树形表格</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>树形表格允许你展开和收缩多行组合.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <table title="文件浏览" class="easyui-treegrid" style="width:700px;height:250px"
+           data-options="
+                url:'/EasyUI_Areas/AdminIndex/GetAllDepts',
+                rownumbers: true,
+                idField: 'id',
+                fitColumns:true,
+                treeField: 'text'
+            ">
+        <thead>
+            <tr>
+                <th data-options="field:'text'">名称</th>
+                <th data-options="field:'state'" align="right">状态</th>
+                <th data-options="field:'iconCls'">图标样式</th>
+                <th data-options="field:'depRemark'" align="right">备注</th>
+                <th data-options="field:'depAddTime'">操作日期</th>
+            </tr>
+        </thead>
+    </table>
+</body>
+</html>

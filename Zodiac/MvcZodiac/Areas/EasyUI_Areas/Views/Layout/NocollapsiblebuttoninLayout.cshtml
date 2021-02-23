@@ -1,0 +1,49 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>NocollapsiblebuttoninLayout</title>
+      <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript">
+        var mycolumns = [[
+        {field:'name',title:'角色名',width:100,sortable:true},       
+        {field:'value',title:'角色编号',width:100,resizable:false}       
+        ]];
+    </script>
+</head>
+<body>
+  <h2>布局中无折叠按钮</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>布局区域面板中无折叠按钮.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-layout" style="width:700px;height:350px;">
+        <div data-options="region:'north'" style="height:50px"></div>
+        <div data-options="region:'south',split:true" style="height:50px;"></div>
+        <div data-options="region:'east',split:true,title:'东',collapsible:false" style="width:250px;">
+            <table id="tt" class="easyui-propertygrid"
+                   data-options="
+                        url: '/EasyUI_Areas/AdminSys/GetRoleData',
+                        showGroup: true,
+                        fit: true,
+                        border: true,
+                        columns: mycolumns
+
+                    "></table>
+        </div>
+        <div data-options="region:'center',title:'主面板标题',iconCls:'icon-ok',href:'/EasyUI_Areas/Tooltip/_Content'" style="padding:10px">
+        </div>
+    </div>
+</body>
+</html>

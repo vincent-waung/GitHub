@@ -1,0 +1,830 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections;
+using System.Linq;
+using System.Text;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+
+namespace Common
+{
+    public class DbHelperSQL
+    {
+        //数据库连接字符串(web.config来配置)	
+       // protected static string connectionString = ConfigurationManager.ConnectionStrings["ConnectionStr"].ConnectionString;
+        protected static string connectionString = "Data Source=192.168.16.7;Initial Catalog=ypmfdata_yn; User ID=sa;Password=azd101261.";
+        public DbHelperSQL(){}
+
+        #region 公用方法
+
+        public static int GetMaxID(string FieldName, string TableName)
+        {
+            string strsql = "select max(" + FieldName + ")+1 from " + TableName;
+            object obj = GetSingle(strsql);
+            if (obj == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return int.Parse(obj.ToString());
+            }
+        }
+        public static bool Exists(string strSql, params SqlParameter[] cmdParms)
+        {
+            object obj = GetSingle(strSql, cmdParms);
+            int cmdresult;
+            if ((Object.Equals(obj, null)) || (Object.Equals(obj, System.DBNull.Value)))
+            {
+                cmdresult = 0;
+            }
+            else
+            {
+                cmdresult = int.Parse(obj.ToString());
+            }
+            if (cmdresult == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        #endregion
+
+        #region  执行简单SQL语句
+
+        /// <summary>
+        /// 执行SQL语句，返回影响的记录数
+        /// </summary>
+        /// <param name="SQLString">SQL语句</param>
+        /// <returns>影响的记录数</returns>
+        public static int ExecuteSql(string SQLString)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(SQLString, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+                        int rows = cmd.ExecuteNonQuery();
+                        connection.Close();
+                        return rows;
+                    }
+                    catch (System.Data.SqlClient.SqlException E)
+                    {
+                        connection.Close();
+                        throw new System.Exception(E.Message);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 执行多条SQL语句，实现数据库事务。
+        /// </summary>
+        /// <param name="SQLStringList">多条SQL语句</param>		
+        public static bool ExecuteSqlTran(ArrayList SQLStringList)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = conn;
+                SqlTransaction tx = conn.BeginTransaction();
+                cmd.Transaction = tx;
+                try
+                {
+                    for (int n = 0; n < SQLStringList.Count; n++)
+                    {
+                        string strsql = SQLStringList[n].ToString();
+                        if (strsql.Trim().Length > 1)
+                        {
+                            cmd.CommandText = strsql;
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                    tx.Commit();
+                    return true;
+                }
+                catch (System.Data.SqlClient.SqlException E)
+                {
+                    tx.Rollback();
+                    throw new System.Exception(E.Message);
+                }
+            }
+        }
+        /// <summary>
+        /// 执行带一个存储过程参数的的SQL语句。
+        /// </summary>
+        /// <param name="SQLString">SQL语句</param>
+        /// <param name="content">参数内容,比如一个字段是格式复杂的文章，有特殊符号，可以通过这个方式添加</param>
+        /// <returns>影响的记录数</returns>
+        public static int ExecuteSql(string SQLString, string content)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand(SQLString, connection);
+                System.Data.SqlClient.SqlParameter myParameter = new System.Data.SqlClient.SqlParameter("@content", SqlDbType.NText);
+                myParameter.Value = content;
+                cmd.Parameters.Add(myParameter);
+                try
+                {
+                    connection.Open();
+                    int rows = cmd.ExecuteNonQuery();
+                    return rows;
+                }
+                catch (System.Data.SqlClient.SqlException E)
+                {
+                    throw new System.Exception(E.Message);
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    connection.Close();
+                }
+            }
+        }
+        /// <summary>
+        /// 向数据库里插入图像格式的字段(和上面情况类似的另一种实例)
+        /// </summary>
+        /// <param name="strSQL">SQL语句</param>
+        /// <param name="fs">图像字节,数据库的字段类型为image的情况</param>
+        /// <returns>影响的记录数</returns>
+        public static int ExecuteSqlInsertImg(string strSQL, byte[] fs)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand(strSQL, connection);
+                System.Data.SqlClient.SqlParameter myParameter = new System.Data.SqlClient.SqlParameter("@fs", SqlDbType.Image);
+                myParameter.Value = fs;
+                cmd.Parameters.Add(myParameter);
+                try
+                {
+                    connection.Open();
+                    int rows = cmd.ExecuteNonQuery();
+                    return rows;
+                }
+                catch (System.Data.SqlClient.SqlException E)
+                {
+                    throw new System.Exception(E.Message);
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    connection.Close();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 执行一条计算查询结果语句，返回查询结果（object）。
+        /// </summary>
+        /// <param name="SQLString">计算查询结果语句</param>
+        /// <returns>查询结果（object）</returns>
+        public static object GetSingle(string SQLString)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(SQLString, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+                        object obj = cmd.ExecuteScalar();
+                        if ((Object.Equals(obj, null)) || (Object.Equals(obj, System.DBNull.Value)))
+                        {
+                            return null;
+                        }
+                        else
+                        {
+                            return obj;
+                        }
+                    }
+                    catch (System.Data.SqlClient.SqlException e)
+                    {
+                        connection.Close();
+                        throw new System.Exception(e.Message);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+        }
+
+        public static SqlCommand CreateSqlCommand(string strSQL)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            try
+            {
+                SqlCommand cmd = new SqlCommand(strSQL, connection);
+                return cmd;
+            }
+            catch (System.Data.SqlClient.SqlException e)
+            {
+                throw new System.Exception(e.Message);
+            }
+        }
+        /// <summary>
+        /// 执行查询语句，返回SqlDataReader
+        /// </summary>
+        /// <param name="strSQL">查询语句</param>
+        /// <returns>SqlDataReader</returns>
+        public static SqlDataReader ExecuteReader(string strSQL)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand(strSQL, connection);
+            try
+            {
+                connection.Open();
+                SqlDataReader myReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                return myReader;
+            }
+            catch (System.Data.SqlClient.SqlException e)
+            {
+                throw new System.Exception(e.Message);
+            }
+
+        }
+        /// <summary>
+        /// 执行查询语句，返回DataSet
+        /// </summary>
+        /// <param name="SQLString">查询语句</param>
+        /// <returns>DataSet</returns>
+        public static DataSet Query(string SQLString)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                DataSet ds = new DataSet();
+                try
+                {
+                    connection.Open();
+                    SqlDataAdapter command = new SqlDataAdapter(SQLString, connection);
+                    command.Fill(ds, "ds");
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    throw new System.Exception(ex.Message);
+                }
+                return ds;
+            }
+        }
+
+        /// <summary>
+        /// 返回查询结果数据表
+        /// </summary>
+        /// <param name="fields">字段，例如："name,sex"</param>
+        /// <param name="tablename">表名</param>
+        /// <param name="where">条件语句</param>
+        /// <param name="keyfield">关键字字段名</param>
+        /// <param name="pageindex">页号</param>
+        /// <param name="pagesize">页长</param>
+        /// <returns></returns>
+        public static DataSet Query(string fields, string tablename, string where, string keyfield, int pageindex, int pagesize)
+        {
+            string SQLString = "select top " + pagesize + " " + fields + " from " + tablename + " where (" + where + ") and " + keyfield + " not in (" + "select top " + pagesize * (pageindex - 1) + " " + keyfield + " from " + tablename + " where (" + where + ")) order by " + keyfield;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                DataSet ds = new DataSet();
+                try
+                {
+                    connection.Open();
+                    SqlDataAdapter command = new SqlDataAdapter(SQLString, connection);
+                    command.Fill(ds, "ds");
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    throw new System.Exception(ex.Message);
+                }
+                return ds;
+            }
+        }
+        /// <summary>
+        /// 返回查询结果数据表
+        /// </summary>
+        /// <param name="fields">字段，例如："name,sex"</param>
+        /// <param name="tablename">表名</param>
+        /// <param name="where">条件语句</param>
+        /// <param name="keyfield">关键字字段名</param>
+        /// <param name="orderby">正序/倒序</param>
+        /// <param name="pageindex">页号</param>
+        /// <param name="pagesize">页长</param>
+        /// <returns></returns>
+        public static DataSet Query(string fields, string tablename, string where, string keyfield, string orderfield, string orderType, int pageindex, int pagesize)
+        {
+            string SQLString = "select top " + pagesize + " " + fields + " from " + tablename + " where (" + where + ") and " + keyfield + " " +
+                " not in (" + "select top " + pagesize * (pageindex - 1) + " " + keyfield + " from " + tablename + " where (" + where + ") order by " + orderfield + " " + orderType + ") order by " + orderfield + " " + orderType + " ";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                DataSet ds = new DataSet();
+                try
+                {
+                    connection.Open();
+                    SqlDataAdapter command = new SqlDataAdapter(SQLString, connection);
+                    command.Fill(ds, "ds");
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    throw new System.Exception(ex.Message);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+                return ds;
+            }
+        }
+
+        #endregion
+
+        #region 执行带参数的SQL语句
+
+        /// <summary>
+        /// 执行SQL语句，返回影响的记录数
+        /// </summary>
+        /// <param name="SQLString">SQL语句</param>
+        /// <returns>影响的记录数</returns>
+        public static int ExecuteSql(string SQLString, params SqlParameter[] cmdParms)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    try
+                    {
+                        PrepareCommand(cmd, connection, null, SQLString, cmdParms);
+                        int rows = cmd.ExecuteNonQuery();
+                        cmd.Parameters.Clear();
+                        connection.Close();
+                        return rows;
+                    }
+                    catch (System.Data.SqlClient.SqlException E)
+                    {
+                        throw new System.Exception(E.Message);
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// 执行多条SQL语句，实现数据库事务。
+        /// </summary>
+        /// <param name="SQLStringList">SQL语句的哈希表（key为sql语句，value是该语句的SqlParameter[]）</param>
+        public static void ExecuteSqlTran(Hashtable SQLStringList)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                using (SqlTransaction trans = conn.BeginTransaction())
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    try
+                    {
+                        //循环
+                        foreach (DictionaryEntry myDE in SQLStringList)
+                        {
+                            string cmdText = myDE.Key.ToString();
+                            SqlParameter[] cmdParms = (SqlParameter[])myDE.Value;
+                            PrepareCommand(cmd, conn, trans, cmdText, cmdParms);
+                            int val = cmd.ExecuteNonQuery();
+                            cmd.Parameters.Clear();
+
+                            trans.Commit();
+                        }
+                    }
+                    catch
+                    {
+                        trans.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// 执行一条计算查询结果语句，返回查询结果（object）。
+        /// </summary>
+        /// <param name="SQLString">计算查询结果语句</param>
+        /// <returns>查询结果（object）</returns>
+        public static object GetSingle(string SQLString, params SqlParameter[] cmdParms)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    try
+                    {
+                        PrepareCommand(cmd, connection, null, SQLString, cmdParms);
+                        object obj = cmd.ExecuteScalar();
+                        cmd.Parameters.Clear();
+                        if ((Object.Equals(obj, null)) || (Object.Equals(obj, System.DBNull.Value)))
+                        {
+                            return null;
+                        }
+                        else
+                        {
+                            return obj;
+                        }
+                    }
+                    catch (System.Data.SqlClient.SqlException e)
+                    {
+                        throw new System.Exception(e.Message);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 执行查询语句，返回SqlDataReader
+        /// </summary>
+        /// <param name="strSQL">查询语句</param>
+        /// <returns>SqlDataReader</returns>
+        public static SqlDataReader ExecuteReader(string SQLString, params SqlParameter[] cmdParms)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            try
+            {
+                PrepareCommand(cmd, connection, null, SQLString, cmdParms);
+                SqlDataReader myReader = cmd.ExecuteReader();
+                cmd.Parameters.Clear();
+                return myReader;
+            }
+            catch (System.Data.SqlClient.SqlException e)
+            {
+                throw new System.Exception(e.Message);
+            }
+            finally
+            {
+                //connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行查询语句，返回DataSet
+        /// </summary>
+        /// <param name="SQLString">查询语句</param>
+        /// <returns>DataSet</returns>
+        public static DataSet Query(string SQLString, params SqlParameter[] cmdParms)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand();
+                PrepareCommand(cmd, connection, null, SQLString, cmdParms);
+                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                {
+                    DataSet ds = new DataSet();
+                    try
+                    {
+                        da.Fill(ds, "ds");
+                        cmd.Parameters.Clear();
+                    }
+                    catch (System.Data.SqlClient.SqlException ex)
+                    {
+                        throw new System.Exception(ex.Message);
+                    }
+                    return ds;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 执行查询语句，返回DataSet
+        /// </summary>
+        /// <param name="SQLString">查询语句</param>
+        /// <returns>DataSet</returns>
+        public static DataTable QueryTable(string SQLString, params SqlParameter[] cmdParms)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand();
+                PrepareCommand(cmd, connection, null, SQLString, cmdParms);
+                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                {
+                    DataTable dt = new DataTable();
+                    try
+                    {
+                        da.Fill(dt);
+                        cmd.Parameters.Clear();
+                    }
+                    catch (System.Data.SqlClient.SqlException ex)
+                    {
+                        throw new System.Exception(ex.Message);
+                    }
+                    return dt;
+                }
+            }
+        }
+
+        private static void PrepareCommand(SqlCommand cmd, SqlConnection conn, SqlTransaction trans, string cmdText, SqlParameter[] cmdParms)
+        {
+            if (conn.State != ConnectionState.Open)
+                conn.Open();
+            cmd.Connection = conn;
+            cmd.CommandText = cmdText;
+            if (trans != null)
+                cmd.Transaction = trans;
+            cmd.CommandType = CommandType.Text;//cmdType;
+            if (cmdParms != null)
+            {
+                foreach (SqlParameter parm in cmdParms)
+                    cmd.Parameters.Add(parm);
+            }
+        }
+
+        #endregion
+
+        #region 存储过程操作
+
+        /// <summary>
+        /// 执行存储过程
+        /// </summary>
+        /// <param name="storedProcName">存储过程名</param>
+        /// <param name="parameters">存储过程参数</param>
+        /// <returns>SqlDataReader</returns>
+        public static SqlDataReader RunProcedure(string storedProcName, IDataParameter[] parameters)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlDataReader returnReader;
+            connection.Open();
+            SqlCommand command = BuildQueryCommand(connection, storedProcName, parameters);
+            command.CommandType = CommandType.StoredProcedure;
+            returnReader = command.ExecuteReader();
+            return returnReader;
+        }
+
+
+        /// <summary>
+        /// 执行存储过程
+        /// </summary>
+        /// <param name="storedProcName">存储过程名</param>
+        /// <param name="parameters">存储过程参数</param>
+        /// <param name="tableName">DataSet结果中的表名</param>
+        /// <returns>DataSet</returns>
+        public static DataSet RunProcedureDataSet(string storedProcName, IDataParameter[] parameters, string tableName)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                DataSet dataSet = new DataSet();
+                connection.Open();
+                SqlDataAdapter sqlDA = new SqlDataAdapter();
+                sqlDA.SelectCommand = BuildQueryCommand(connection, storedProcName, parameters);
+                sqlDA.Fill(dataSet, tableName);
+                connection.Close();
+                return dataSet;
+            }
+        }
+        public static DataTable RunProcedureDataTable(string storedProcName, IDataParameter[] parameters)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                DataTable dt = new DataTable();
+                connection.Open();
+                SqlDataAdapter sqlDA = new SqlDataAdapter();
+                sqlDA.SelectCommand = BuildQueryCommand(connection, storedProcName, parameters);
+                sqlDA.Fill(dt);
+                connection.Close();
+                return dt;
+            }
+        }
+
+
+        /// <summary>
+        /// 构建 SqlCommand 对象(用来返回一个结果集，而不是一个整数值)
+        /// </summary>
+        /// <param name="connection">数据库连接</param>
+        /// <param name="storedProcName">存储过程名</param>
+        /// <param name="parameters">存储过程参数</param>
+        /// <returns>SqlCommand</returns>
+        private static SqlCommand BuildQueryCommand(SqlConnection connection, string storedProcName, IDataParameter[] parameters)
+        {
+            SqlCommand command = new SqlCommand(storedProcName, connection);
+            command.CommandType = CommandType.StoredProcedure;
+            foreach (SqlParameter parameter in parameters)
+            {
+                command.Parameters.Add(parameter);
+            }
+            return command;
+        }
+
+        /// <summary>
+        /// 执行存储过程，返回影响的行数		
+        /// </summary>
+        /// <param name="storedProcName">存储过程名</param>
+        /// <param name="parameters">存储过程参数</param>
+        /// <param name="rowsAffected">影响的行数</param>
+        /// <returns></returns>
+        public static int RunProcedure(string storedProcName, IDataParameter[] parameters, out int rowsAffected)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                int result;
+                connection.Open();
+                SqlCommand command = BuildIntCommand(connection, storedProcName, parameters);
+                rowsAffected = command.ExecuteNonQuery();
+                result = (int)command.Parameters["ReturnValue"].Value;
+                connection.Close();
+                return result;
+            }
+        }
+
+        public static void ExecCommandFillCollections(string strSQL, ItemList c)
+        {
+            SqlCommand cmd = CreateSqlCommand(strSQL);
+            if (cmd.Connection.State != ConnectionState.Open)
+                cmd.Connection.Open();
+            cmd.CommandTimeout = 30;
+            IDataReader dr = null;
+            try
+            {
+                dr = cmd.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    if (c.GetType() != typeof(SearchFields) && dr.FieldCount == 1 && Convert.ToInt32(dr[0]) == 6)
+                        throw new System.Exception("参数错误");
+
+                    c.Add(dr);
+
+                }
+                dr.Close();
+            }
+            catch (System.Exception e)
+            {
+                string s = e.Message;
+                throw new System.Exception(s);
+                //jdbao.Exception.JDBException ee = new jdbao.Exception.JDBException(s);
+            }
+            finally
+            {
+
+                if (c.Items.Count < 1)
+                    c = null;
+                if (cmd.Connection.State == ConnectionState.Open)
+                    cmd.Connection.Close();
+            }
+        }
+
+        public static void ExecCommandFillCollections(string storedProcName, IDataParameter[] parameters, ItemList c)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand cmd = BuildQueryCommand(connection, storedProcName, parameters);
+            cmd.Parameters.Add(new SqlParameter("ReturnValue",
+                SqlDbType.Int, 4, ParameterDirection.ReturnValue,
+                false, 0, 0, string.Empty, DataRowVersion.Default, null)); ;
+            if (cmd.Connection.State != ConnectionState.Open)
+                cmd.Connection.Open();
+            cmd.CommandTimeout = 30;
+            IDataReader dr = null;
+            try
+            {
+                dr = cmd.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    if (c.GetType() != typeof(SearchFields) && dr.FieldCount == 1 && Convert.ToInt32(dr[0]) == 6)
+                        throw new System.Exception("参数错误");
+
+                    c.Add(dr);
+
+                }
+                dr.Close();
+            }
+            catch (System.Exception e)
+            {
+                string s = e.Message;
+                throw new System.Exception(s);
+                //jdbao.Exception.JDBException ee = new jdbao.Exception.JDBException(s);
+            }
+            finally
+            {
+
+                if (c.Items.Count < 1)
+                    c = null;
+                if (cmd.Connection.State == ConnectionState.Open)
+                    cmd.Connection.Close();
+            }
+        }
+        /// <summary>
+        /// 创建 SqlCommand 对象实例(用来返回一个整数值)	
+        /// </summary>
+        /// <param name="storedProcName">存储过程名</param>
+        /// <param name="parameters">存储过程参数</param>
+        /// <returns>SqlCommand 对象实例</returns>
+        private static SqlCommand BuildIntCommand(SqlConnection connection, string storedProcName, IDataParameter[] parameters)
+        {
+            SqlCommand command = BuildQueryCommand(connection, storedProcName, parameters);
+            command.Parameters.Add(new SqlParameter("ReturnValue",
+                SqlDbType.Int, 4, ParameterDirection.ReturnValue,
+                false, 0, 0, string.Empty, DataRowVersion.Default, null));
+            return command;
+        }
+        #endregion
+
+        #region 自定义方法
+
+        /// <summary>
+        /// 利用SQL Server2005 的Row_number() 函数方法分页的参数
+        /// </summary>
+        /// <param name="pageSize"></param>
+        /// <param name="pageIndex"></param>
+        /// <returns></returns>
+        public static string Get_strRowPara_bySql(int pageSize, int pageIndex)
+        {
+            return string.Format(" where rowindex between {0}*({1}-1)+1 and {0}*{1}", pageSize, pageIndex);
+        }
+
+
+        /// <summary>
+        /// 求分页数
+        /// </summary>
+        /// <param name="pageCount">记录数</param>
+        /// <param name="pageSize">每页显示数</param>
+        /// <returns></returns>
+        public int Get_pageNum(int pageCount, int pageSize)
+        {
+            int _pnum = 0;
+            if (pageCount % pageSize > 0)
+            {
+                if (Convert.ToInt32((pageCount % pageSize) / pageSize) == 1)
+                {
+                    _pnum = Convert.ToInt32(pageCount / pageSize);
+                }
+                else
+                {
+                    _pnum = Convert.ToInt32(pageCount / pageSize) + 1;
+                }
+
+            }
+            else
+            {
+                _pnum = Convert.ToInt32(pageCount / pageSize);
+            }
+            return _pnum;
+        }
+        #endregion
+    }
+
+
+    /// 
+    /// <summary>
+    /// Collections 的摘要说明。
+    /// </summary>
+    public abstract class ItemList
+    {
+        ArrayList items;
+
+        public ItemList() { }
+
+        public ArrayList Items
+        {
+            set { items = value; }
+            get
+            {
+                if (items == null)
+                    items = new ArrayList();
+                return items;
+            }
+        }
+        public abstract void Add(IDataReader dr);
+    }
+
+    public class SearchField
+    {
+        string key;
+        public string Key
+        {
+            get { return key; }
+            set { key = value; }
+        }
+        public SearchField()
+        {
+        }
+        public SearchField(IDataReader dr)
+        {
+            key = dr["key"].ToString();
+        }
+
+    }
+    public class SearchFields : ItemList
+    {
+        public SearchFields() { }
+        public override void Add(IDataReader dr)
+        {
+            SearchField s = new SearchField(dr);
+            this.Items.Add(s);
+        }
+    }
+}

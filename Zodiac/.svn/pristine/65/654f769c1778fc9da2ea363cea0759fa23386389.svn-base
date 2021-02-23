@@ -1,0 +1,38 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>CustomTooltipContent</title>
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+    <h2>定制提示信息内容</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>访问每个元素描述获取提示信息内容.</div>
+    </div>
+    <div style="margin: 10px 0;"></div>
+    <div id="pg" data-options="total:114" style="border: 1px solid #ddd;"></div>
+    <script>
+        $(function () {
+            $('#pg').pagination().find('a.l-btn').tooltip({
+                content: function () {
+                    var cc = $(this).find('span.l-btn-empty').attr('class').split(' ');
+                    var icon = cc[1].split('-')[1];
+                    return icon + ' page';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

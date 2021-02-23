@@ -1,0 +1,81 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>RowBorderinDataGrid</title>
+      <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+      <style type="text/css">
+        .lines-no .datagrid-body td{
+        }
+        .lines-both .datagrid-body td{
+            border-right:1px solid blue;
+            border-bottom:1px solid blue;
+        }
+        .lines-right .datagrid-body td{
+            border-bottom:1px solid blue;
+        }
+        .lines-bottom .datagrid-body td{
+            border-right:1px solid blue;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#cbStriped").click(function () {
+                $('#dg').datagrid({
+                    striped: $(this).is(':checked')
+                })
+            });
+
+        });
+
+    </script>
+</head>
+<body>
+   <h2>数据表格中的行边框</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>这个示例教我们如何改变表格的行边框样式.</div>
+    </div>
+    <div style="margin:10px 0;">
+        <span>边框:</span>
+        <select onchange="changeBorder(this.value)">
+            <option value="lines-both">都有</option>
+            <option value="lines-no">无边框</option>
+            <option value="lines-right">右边框</option>
+            <option value="lines-bottom">下边框</option>
+        </select>
+        <span>斑马线:</span>
+        <input id="cbStriped" type="checkbox" >
+    </div>
+    <table id="dg" class="easyui-datagrid" title="数据表格中的行边框" style="width:705px;height:250px"
+           data-options="singleSelect:true,fitColumns:true,url:'/EasyUI_Areas/AdminSys/GetUserInfo'">
+        <thead>
+            <tr>
+                <th data-options="field: 'uId', title: '用户编号', width: 100"></th>
+                <th data-options="field: 'uLoginName', title: '登录名', width: 100 "></th>
+                <th data-options="field: 'uRemark', title: '备注', width: 100"></th>
+                <th data-options="field: 'uPost', title: '邮编', width: 100"></th>
+                <th data-options="field: 'uGender', title: '性别', width: 100, align: 'right'"></th>
+
+            </tr>
+        </thead>
+    </table>
+    <script type="text/javascript">
+        function changeBorder(cls) {
+            $('#dg').datagrid('getPanel').removeClass('lines-both lines-no lines-right lines-bottom').addClass(cls);
+        }
+    </script>
+  
+
+</body>
+</html>

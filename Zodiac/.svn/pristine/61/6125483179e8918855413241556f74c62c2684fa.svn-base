@@ -1,0 +1,2725 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ypmfdata_ynModelStoreContainer" CdmEntityContainer="OnlineBookingEntities">
+    <EntitySetMapping Name="Bn_Zodiac">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.Bn_Zodiac">
+        <MappingFragment StoreEntitySet="Bn_Zodiac">
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="YunShi" ColumnName="YunShi" />
+          <ScalarProperty Name="XingGe" ColumnName="XingGe" />
+          <ScalarProperty Name="AiQing" ColumnName="AiQing" />
+          <ScalarProperty Name="HunPei" ColumnName="HunPei" />
+          <ScalarProperty Name="NianLing" ColumnName="NianLing" />
+          <ScalarProperty Name="WenZhang" ColumnName="WenZhang" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="OperDate" ColumnName="OperDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BookingDetailEdi">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.BookingDetailEdi">
+        <MappingFragment StoreEntitySet="BookingDetailEdi">
+          <ScalarProperty Name="so_no" ColumnName="so_no" />
+          <ScalarProperty Name="line_no" ColumnName="line_no" />
+          <ScalarProperty Name="weight" ColumnName="weight" />
+          <ScalarProperty Name="cbm" ColumnName="cbm" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="PKG" ColumnName="PKG" />
+          <ScalarProperty Name="PCS" ColumnName="PCS" />
+          <ScalarProperty Name="carrier" ColumnName="carrier" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="PO" ColumnName="PO" />
+          <ScalarProperty Name="commodity" ColumnName="commodity" />
+          <ScalarProperty Name="SKU" ColumnName="SKU" />
+          <ScalarProperty Name="description1" ColumnName="description1" />
+          <ScalarProperty Name="description2" ColumnName="description2" />
+          <ScalarProperty Name="description3" ColumnName="description3" />
+          <ScalarProperty Name="description4" ColumnName="description4" />
+          <ScalarProperty Name="rec_weight" ColumnName="rec_weight" />
+          <ScalarProperty Name="rec_cbm" ColumnName="rec_cbm" />
+          <ScalarProperty Name="rec_qty" ColumnName="rec_qty" />
+          <ScalarProperty Name="rec_pcs" ColumnName="rec_pcs" />
+          <ScalarProperty Name="length" ColumnName="length" />
+          <ScalarProperty Name="width" ColumnName="width" />
+          <ScalarProperty Name="height" ColumnName="height" />
+          <ScalarProperty Name="Product_Description" ColumnName="Product_Description" />
+          <ScalarProperty Name="recdate" ColumnName="recdate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="bookingDtl">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.bookingDtl">
+        <MappingFragment StoreEntitySet="bookingDtl">
+          <ScalarProperty Name="dID" ColumnName="dID" />
+          <ScalarProperty Name="hID" ColumnName="hID" />
+          <ScalarProperty Name="so_no" ColumnName="so_no" />
+          <ScalarProperty Name="orderNum" ColumnName="orderNum" />
+          <ScalarProperty Name="po" ColumnName="po" />
+          <ScalarProperty Name="sku" ColumnName="sku" />
+          <ScalarProperty Name="Marks" ColumnName="Marks" />
+          <ScalarProperty Name="CTN" ColumnName="CTN" />
+          <ScalarProperty Name="PCS" ColumnName="PCS" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="GrossWeight" ColumnName="GrossWeight" />
+          <ScalarProperty Name="CBM" ColumnName="CBM" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="ItemNo" ColumnName="ItemNo" />
+          <ScalarProperty Name="CustomerMaterialNo" ColumnName="CustomerMaterialNo" />
+          <ScalarProperty Name="SalesMaterial" ColumnName="SalesMaterial" />
+          <ScalarProperty Name="Material" ColumnName="Material" />
+          <ScalarProperty Name="SalesOrd" ColumnName="SalesOrd" />
+          <ScalarProperty Name="Client" ColumnName="Client" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="bookingForward">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.bookingForward">
+        <MappingFragment StoreEntitySet="bookingForward">
+          <ScalarProperty Name="forward_code" ColumnName="forward_code" />
+          <ScalarProperty Name="forward_name" ColumnName="forward_name" />
+          <ScalarProperty Name="whs_type" ColumnName="whs_type" />
+          <ScalarProperty Name="owner" ColumnName="owner" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="bookingHead">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.bookingHead">
+        <MappingFragment StoreEntitySet="bookingHead">
+          <ScalarProperty Name="hId" ColumnName="hId" />
+          <ScalarProperty Name="so_no" ColumnName="so_no" />
+          <ScalarProperty Name="Shipper" ColumnName="Shipper" />
+          <ScalarProperty Name="Consignee" ColumnName="Consignee" />
+          <ScalarProperty Name="Notifyparty" ColumnName="Notifyparty" />
+          <ScalarProperty Name="AlsoNotify" ColumnName="AlsoNotify" />
+          <ScalarProperty Name="ContSize" ColumnName="ContSize" />
+          <ScalarProperty Name="UnloadingPort" ColumnName="UnloadingPort" />
+          <ScalarProperty Name="LoadingPort" ColumnName="LoadingPort" />
+          <ScalarProperty Name="DestinationPort" ColumnName="DestinationPort" />
+          <ScalarProperty Name="OpenDate" ColumnName="OpenDate" />
+          <ScalarProperty Name="CloseDate" ColumnName="CloseDate" />
+          <ScalarProperty Name="InputDate" ColumnName="InputDate" />
+          <ScalarProperty Name="operator" ColumnName="operator" />
+          <ScalarProperty Name="TelNo" ColumnName="TelNo" />
+          <ScalarProperty Name="TotGrossWeight" ColumnName="TotGrossWeight" />
+          <ScalarProperty Name="TotPcs" ColumnName="TotPcs" />
+          <ScalarProperty Name="TotCtn" ColumnName="TotCtn" />
+          <ScalarProperty Name="TotCBM" ColumnName="TotCBM" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="CancelDate" ColumnName="CancelDate" />
+          <ScalarProperty Name="precastInHouseDate" ColumnName="precastInHouseDate" />
+          <ScalarProperty Name="account" ColumnName="account" />
+          <ScalarProperty Name="inputOperator" ColumnName="inputOperator" />
+          <ScalarProperty Name="cancelOperator" ColumnName="cancelOperator" />
+          <ScalarProperty Name="vessel" ColumnName="vessel" />
+          <ScalarProperty Name="voyage" ColumnName="voyage" />
+          <ScalarProperty Name="BLNO" ColumnName="BLNO" />
+          <ScalarProperty Name="ETD" ColumnName="ETD" />
+          <ScalarProperty Name="SI_cut_off" ColumnName="SI_cut_off" />
+          <ScalarProperty Name="CY_closing_date" ColumnName="CY_closing_date" />
+          <ScalarProperty Name="Client_Operator" ColumnName="Client_Operator" />
+          <ScalarProperty Name="cutomer_name" ColumnName="cutomer_name" />
+          <ScalarProperty Name="first_date" ColumnName="first_date" />
+          <ScalarProperty Name="cancel_date" ColumnName="cancel_date" />
+          <ScalarProperty Name="confirm_date" ColumnName="confirm_date" />
+          <ScalarProperty Name="clpno" ColumnName="clpno" />
+          <ScalarProperty Name="client" ColumnName="client" />
+          <ScalarProperty Name="service_type" ColumnName="service_type" />
+          <ScalarProperty Name="printed" ColumnName="printed" />
+          <ScalarProperty Name="shipping_mark" ColumnName="shipping_mark" />
+          <ScalarProperty Name="Shipper2" ColumnName="Shipper2" />
+          <ScalarProperty Name="Consignee2" ColumnName="Consignee2" />
+          <ScalarProperty Name="Notifyparty2" ColumnName="Notifyparty2" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BookingHeadEdi">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.BookingHeadEdi">
+        <MappingFragment StoreEntitySet="BookingHeadEdi">
+          <ScalarProperty Name="so_no" ColumnName="so_no" />
+          <ScalarProperty Name="input_time" ColumnName="input_time" />
+          <ScalarProperty Name="shipper_ref" ColumnName="shipper_ref" />
+          <ScalarProperty Name="vessel" ColumnName="vessel" />
+          <ScalarProperty Name="voyage" ColumnName="voyage" />
+          <ScalarProperty Name="POD" ColumnName="POD" />
+          <ScalarProperty Name="dest_code" ColumnName="dest_code" />
+          <ScalarProperty Name="dest" ColumnName="dest" />
+          <ScalarProperty Name="consg_code" ColumnName="consg_code" />
+          <ScalarProperty Name="totqty" ColumnName="totqty" />
+          <ScalarProperty Name="totweight" ColumnName="totweight" />
+          <ScalarProperty Name="totcbm" ColumnName="totcbm" />
+          <ScalarProperty Name="totpcs" ColumnName="totpcs" />
+          <ScalarProperty Name="rec_totqty" ColumnName="rec_totqty" />
+          <ScalarProperty Name="rec_totweight" ColumnName="rec_totweight" />
+          <ScalarProperty Name="rec_totcbm" ColumnName="rec_totcbm" />
+          <ScalarProperty Name="rec_totpcs" ColumnName="rec_totpcs" />
+          <ScalarProperty Name="rec_date" ColumnName="rec_date" />
+          <ScalarProperty Name="EDI_Status" ColumnName="EDI_Status" />
+          <ScalarProperty Name="EDIFile_In" ColumnName="EDIFile_In" />
+          <ScalarProperty Name="EDIFile_Out" ColumnName="EDIFile_Out" />
+          <ScalarProperty Name="EDI_Account" ColumnName="EDI_Account" />
+          <ScalarProperty Name="XFactory_Date" ColumnName="XFactory_Date" />
+          <ScalarProperty Name="NLT" ColumnName="NLT" />
+          <ScalarProperty Name="Ship_To_Name" ColumnName="Ship_To_Name" />
+          <ScalarProperty Name="vendor" ColumnName="vendor" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="bookingUser">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.bookingUser">
+        <MappingFragment StoreEntitySet="bookingUser">
+          <ScalarProperty Name="UseID" ColumnName="UseID" />
+          <ScalarProperty Name="login_id" ColumnName="login_id" />
+          <ScalarProperty Name="user_type" ColumnName="user_type" />
+          <ScalarProperty Name="client_id" ColumnName="client_id" />
+          <ScalarProperty Name="password" ColumnName="password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="bookingVendor">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.bookingVendor">
+        <MappingFragment StoreEntitySet="bookingVendor">
+          <ScalarProperty Name="vendor_code" ColumnName="vendor_code" />
+          <ScalarProperty Name="vendor_name" ColumnName="vendor_name" />
+          <ScalarProperty Name="vendor_contact" ColumnName="vendor_contact" />
+          <ScalarProperty Name="vendor_address" ColumnName="vendor_address" />
+          <ScalarProperty Name="vendor_email" ColumnName="vendor_email" />
+          <ScalarProperty Name="vendor_fax" ColumnName="vendor_fax" />
+          <ScalarProperty Name="wh_id" ColumnName="wh_id" />
+          <ScalarProperty Name="forward_code" ColumnName="forward_code" />
+          <ScalarProperty Name="telNo" ColumnName="telNo" />
+          <ScalarProperty Name="consignee" ColumnName="consignee" />
+          <ScalarProperty Name="notifyconsignee" ColumnName="notifyconsignee" />
+          <ScalarProperty Name="secondnotifyconsignee" ColumnName="secondnotifyconsignee" />
+          <ScalarProperty Name="consigneetel" ColumnName="consigneetel" />
+          <ScalarProperty Name="notifyconsigneetel" ColumnName="notifyconsigneetel" />
+          <ScalarProperty Name="secondnotifyconsigneetel" ColumnName="secondnotifyconsigneetel" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="carrier_booking">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.carrier_booking">
+        <MappingFragment StoreEntitySet="carrier_booking">
+          <ScalarProperty Name="cbID" ColumnName="cbID" />
+          <ScalarProperty Name="carrier" ColumnName="carrier" />
+          <ScalarProperty Name="vessel" ColumnName="vessel" />
+          <ScalarProperty Name="voyage" ColumnName="voyage" />
+          <ScalarProperty Name="ETD" ColumnName="ETD" />
+          <ScalarProperty Name="cont_size" ColumnName="cont_size" />
+          <ScalarProperty Name="bookingNum" ColumnName="bookingNum" />
+          <ScalarProperty Name="releaseNum" ColumnName="releaseNum" />
+          <ScalarProperty Name="port" ColumnName="port" />
+          <ScalarProperty Name="dest" ColumnName="dest" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="category">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.category">
+        <MappingFragment StoreEntitySet="category">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="client" ColumnName="client" />
+          <ScalarProperty Name="consg_code" ColumnName="consg_code" />
+          <ScalarProperty Name="desc_code" ColumnName="desc_code" />
+          <ScalarProperty Name="desc_dec" ColumnName="desc_dec" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ChargeDEBITNOTE">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.ChargeDEBITNOTE">
+        <MappingFragment StoreEntitySet="ChargeDEBITNOTE">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ChargeName" ColumnName="ChargeName" />
+          <ScalarProperty Name="Money" ColumnName="Money" />
+          <ScalarProperty Name="IsFixed" ColumnName="IsFixed" />
+          <ScalarProperty Name="IsStopUser" ColumnName="IsStopUser" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ChargeName">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.ChargeName">
+        <MappingFragment StoreEntitySet="ChargeName">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="code" ColumnName="code" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="IsShow" ColumnName="IsShow" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="clp_chargeList">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.clp_chargeList">
+        <MappingFragment StoreEntitySet="clp_chargeList">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="clpno" ColumnName="clpno" />
+          <ScalarProperty Name="chargeCode" ColumnName="chargeCode" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="ChargeTime" ColumnName="ChargeTime" />
+          <ScalarProperty Name="Calculationmethod" ColumnName="Calculationmethod" />
+          <ScalarProperty Name="Calculationformula" ColumnName="Calculationformula" />
+          <ScalarProperty Name="ActualFee" ColumnName="ActualFee" />
+          <ScalarProperty Name="CalculationDate" ColumnName="CalculationDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="collectlist">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.collectlist">
+        <MappingFragment StoreEntitySet="collectlist">
+          <ScalarProperty Name="customer" ColumnName="customer" />
+          <ScalarProperty Name="consg_code" ColumnName="consg_code" />
+          <ScalarProperty Name="collectdate" ColumnName="collectdate" />
+          <ScalarProperty Name="rec_qty" ColumnName="rec_qty" />
+          <ScalarProperty Name="rec_cbm" ColumnName="rec_cbm" />
+          <ScalarProperty Name="load_qty" ColumnName="load_qty" />
+          <ScalarProperty Name="load_cbm" ColumnName="load_cbm" />
+          <ScalarProperty Name="qtybal" ColumnName="qtybal" />
+          <ScalarProperty Name="cbmbal" ColumnName="cbmbal" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="consignee">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.consignee">
+        <MappingFragment StoreEntitySet="consignee">
+          <ScalarProperty Name="client" ColumnName="client" />
+          <ScalarProperty Name="consg_code" ColumnName="consg_code" />
+          <ScalarProperty Name="consg_name" ColumnName="consg_name" />
+          <ScalarProperty Name="supervisor" ColumnName="supervisor" />
+          <ScalarProperty Name="tel" ColumnName="tel" />
+          <ScalarProperty Name="fax" ColumnName="fax" />
+          <ScalarProperty Name="email" ColumnName="email" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="cont_address">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.cont_address">
+        <MappingFragment StoreEntitySet="cont_address">
+          <ScalarProperty Name="caId" ColumnName="caId" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="address_type" ColumnName="address_type" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ContTransFee">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.ContTransFee">
+        <MappingFragment StoreEntitySet="ContTransFee">
+          <ScalarProperty Name="Clpno" ColumnName="Clpno" />
+          <ScalarProperty Name="FeeClass" ColumnName="FeeClass" />
+          <ScalarProperty Name="Money" ColumnName="Money" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Curr_Rate">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.Curr_Rate">
+        <MappingFragment StoreEntitySet="Curr_Rate">
+          <ScalarProperty Name="CID" ColumnName="CID" />
+          <ScalarProperty Name="curr_code" ColumnName="curr_code" />
+          <ScalarProperty Name="curr_symb" ColumnName="curr_symb" />
+          <ScalarProperty Name="Rate" ColumnName="Rate" />
+          <ScalarProperty Name="curr_name" ColumnName="curr_name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="custin">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.custin">
+        <MappingFragment StoreEntitySet="custin">
+          <ScalarProperty Name="in_no" ColumnName="in_no" />
+          <ScalarProperty Name="decl_mode" ColumnName="decl_mode" />
+          <ScalarProperty Name="factory" ColumnName="factory" />
+          <ScalarProperty Name="decldate" ColumnName="decldate" />
+          <ScalarProperty Name="arr_time" ColumnName="arr_time" />
+          <ScalarProperty Name="ingate_time" ColumnName="ingate_time" />
+          <ScalarProperty Name="dev_time" ColumnName="dev_time" />
+          <ScalarProperty Name="compl_time" ColumnName="compl_time" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="duty" ColumnName="duty" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="custinno">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.custinno">
+        <MappingFragment StoreEntitySet="custinno">
+          <ScalarProperty Name="in_no" ColumnName="in_no" />
+          <ScalarProperty Name="incustno" ColumnName="incustno" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="customer">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.customer">
+        <MappingFragment StoreEntitySet="customer">
+          <ScalarProperty Name="client" ColumnName="client" />
+          <ScalarProperty Name="cust_name" ColumnName="cust_name" />
+          <ScalarProperty Name="address1" ColumnName="address1" />
+          <ScalarProperty Name="address2" ColumnName="address2" />
+          <ScalarProperty Name="address3" ColumnName="address3" />
+          <ScalarProperty Name="tel" ColumnName="tel" />
+          <ScalarProperty Name="fax" ColumnName="fax" />
+          <ScalarProperty Name="motion" ColumnName="motion" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="contact" ColumnName="contact" />
+          <ScalarProperty Name="sales_name" ColumnName="sales_name" />
+          <ScalarProperty Name="cbm_price" ColumnName="cbm_price" />
+          <ScalarProperty Name="free_prd" ColumnName="free_prd" />
+          <ScalarProperty Name="wght_unit" ColumnName="wght_unit" />
+          <ScalarProperty Name="stor_fee" ColumnName="stor_fee" />
+          <ScalarProperty Name="free_day" ColumnName="free_day" />
+          <ScalarProperty Name="hand_chrge" ColumnName="hand_chrge" />
+          <ScalarProperty Name="input_date" ColumnName="input_date" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="customer1">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.customer1">
+        <MappingFragment StoreEntitySet="customer1">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="cust_name" ColumnName="cust_name" />
+          <ScalarProperty Name="address1" ColumnName="address1" />
+          <ScalarProperty Name="tel" ColumnName="tel" />
+          <ScalarProperty Name="fax" ColumnName="fax" />
+          <ScalarProperty Name="cust_email" ColumnName="cust_email" />
+          <ScalarProperty Name="contact" ColumnName="contact" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="SM_Operator" ColumnName="SM_Operator" />
+          <ScalarProperty Name="SM_email" ColumnName="SM_email" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CustomsType">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.CustomsType">
+        <MappingFragment StoreEntitySet="CustomsType">
+          <ScalarProperty Name="CID" ColumnName="CID" />
+          <ScalarProperty Name="CustomsType1" ColumnName="CustomsType" />
+          <ScalarProperty Name="EDICode" ColumnName="EDICode" />
+          <ScalarProperty Name="EIType" ColumnName="EIType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="custoutno">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.custoutno">
+        <MappingFragment StoreEntitySet="custoutno">
+          <ScalarProperty Name="clpno" ColumnName="clpno" />
+          <ScalarProperty Name="outcustno" ColumnName="outcustno" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DailyCustomsDocu">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.DailyCustomsDocu">
+        <MappingFragment StoreEntitySet="DailyCustomsDocu">
+          <ScalarProperty Name="ReportDate" ColumnName="ReportDate" />
+          <ScalarProperty Name="CustomsDocNo" ColumnName="CustomsDocNo" />
+          <ScalarProperty Name="CustomsType" ColumnName="CustomsType" />
+          <ScalarProperty Name="ContCount" ColumnName="ContCount" />
+          <ScalarProperty Name="VehicleCount" ColumnName="VehicleCount" />
+          <ScalarProperty Name="STContCount" ColumnName="STContCount" />
+          <ScalarProperty Name="Port" ColumnName="Port" />
+          <ScalarProperty Name="TotalValues" ColumnName="TotalValues" />
+          <ScalarProperty Name="Currency" ColumnName="Currency" />
+          <ScalarProperty Name="gross_wt" ColumnName="gross_wt" />
+          <ScalarProperty Name="in_no" ColumnName="in_no" />
+          <ScalarProperty Name="Container" ColumnName="Container" />
+          <ScalarProperty Name="ClpNo" ColumnName="ClpNo" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="Operator" ColumnName="Operator" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DailyDataforCustoms">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.DailyDataforCustoms">
+        <MappingFragment StoreEntitySet="DailyDataforCustoms">
+          <ScalarProperty Name="reportdate" ColumnName="reportdate" />
+          <ScalarProperty Name="jjytgjzxbs" ColumnName="jjytgjzxbs" />
+          <ScalarProperty Name="jjytgjzxzs" ColumnName="jjytgjzxzs" />
+          <ScalarProperty Name="jjytgjzxmz" ColumnName="jjytgjzxmz" />
+          <ScalarProperty Name="jjytgjzxjz" ColumnName="jjytgjzxjz" />
+          <ScalarProperty Name="jjytgdcsl" ColumnName="jjytgdcsl" />
+          <ScalarProperty Name="jjytgdcmz" ColumnName="jjytgdcmz" />
+          <ScalarProperty Name="jjytgdcjz" ColumnName="jjytgdcjz" />
+          <ScalarProperty Name="jjytgmz" ColumnName="jjytgmz" />
+          <ScalarProperty Name="jjytgjz" ColumnName="jjytgjz" />
+          <ScalarProperty Name="jjytgps" ColumnName="jjytgps" />
+          <ScalarProperty Name="jjytgbgd" ColumnName="jjytgbgd" />
+          <ScalarProperty Name="jjhyzgjzxbs" ColumnName="jjhyzgjzxbs" />
+          <ScalarProperty Name="jjhyzgjzxzs" ColumnName="jjhyzgjzxzs" />
+          <ScalarProperty Name="jjhyzgjzxmz" ColumnName="jjhyzgjzxmz" />
+          <ScalarProperty Name="jjhyzgjzxjz" ColumnName="jjhyzgjzxjz" />
+          <ScalarProperty Name="jjhyzgdcsl" ColumnName="jjhyzgdcsl" />
+          <ScalarProperty Name="jjhyzgdcmz" ColumnName="jjhyzgdcmz" />
+          <ScalarProperty Name="jjhyzgdcjz" ColumnName="jjhyzgdcjz" />
+          <ScalarProperty Name="jjhyzgmz" ColumnName="jjhyzgmz" />
+          <ScalarProperty Name="jjhyzgjz" ColumnName="jjhyzgjz" />
+          <ScalarProperty Name="jjhyzgps" ColumnName="jjhyzgps" />
+          <ScalarProperty Name="jjhyzgbgd" ColumnName="jjhyzgbgd" />
+          <ScalarProperty Name="jjllzgjzxbs" ColumnName="jjllzgjzxbs" />
+          <ScalarProperty Name="jjllzgjzxzs" ColumnName="jjllzgjzxzs" />
+          <ScalarProperty Name="jjllzgjzxmz" ColumnName="jjllzgjzxmz" />
+          <ScalarProperty Name="jjllzgjzxjz" ColumnName="jjllzgjzxjz" />
+          <ScalarProperty Name="jjllzgdcsl" ColumnName="jjllzgdcsl" />
+          <ScalarProperty Name="jjllzgdcmz" ColumnName="jjllzgdcmz" />
+          <ScalarProperty Name="jjllzgdcjz" ColumnName="jjllzgdcjz" />
+          <ScalarProperty Name="jjllzgmz" ColumnName="jjllzgmz" />
+          <ScalarProperty Name="jjllzgjz" ColumnName="jjllzgjz" />
+          <ScalarProperty Name="jjllzgps" ColumnName="jjllzgps" />
+          <ScalarProperty Name="jjllzgbgd" ColumnName="jjllzgbgd" />
+          <ScalarProperty Name="cjhyjzxbs" ColumnName="cjhyjzxbs" />
+          <ScalarProperty Name="cjhyjzxzs" ColumnName="cjhyjzxzs" />
+          <ScalarProperty Name="cjhyjzxmz" ColumnName="cjhyjzxmz" />
+          <ScalarProperty Name="cjhyjzxjz" ColumnName="cjhyjzxjz" />
+          <ScalarProperty Name="cjhydcsl" ColumnName="cjhydcsl" />
+          <ScalarProperty Name="cjhydcmz" ColumnName="cjhydcmz" />
+          <ScalarProperty Name="cjhydcjz" ColumnName="cjhydcjz" />
+          <ScalarProperty Name="cjhymz" ColumnName="cjhymz" />
+          <ScalarProperty Name="cjhyjz" ColumnName="cjhyjz" />
+          <ScalarProperty Name="cjhyps" ColumnName="cjhyps" />
+          <ScalarProperty Name="cjhybgd" ColumnName="cjhybgd" />
+          <ScalarProperty Name="cjlljzxbs" ColumnName="cjlljzxbs" />
+          <ScalarProperty Name="cjlljzxzs" ColumnName="cjlljzxzs" />
+          <ScalarProperty Name="cjlljzxmz" ColumnName="cjlljzxmz" />
+          <ScalarProperty Name="cjlljzxjz" ColumnName="cjlljzxjz" />
+          <ScalarProperty Name="cjlldcsl" ColumnName="cjlldcsl" />
+          <ScalarProperty Name="cjlldcmz" ColumnName="cjlldcmz" />
+          <ScalarProperty Name="cjlldcjz" ColumnName="cjlldcjz" />
+          <ScalarProperty Name="cjllmz" ColumnName="cjllmz" />
+          <ScalarProperty Name="cjlljz" ColumnName="cjlljz" />
+          <ScalarProperty Name="cjllps" ColumnName="cjllps" />
+          <ScalarProperty Name="cjllbgd" ColumnName="cjllbgd" />
+          <ScalarProperty Name="cjllzgjzxbs" ColumnName="cjllzgjzxbs" />
+          <ScalarProperty Name="cjllzgjzxzs" ColumnName="cjllzgjzxzs" />
+          <ScalarProperty Name="cjllzgjzxmz" ColumnName="cjllzgjzxmz" />
+          <ScalarProperty Name="cjllzgjzxjz" ColumnName="cjllzgjzxjz" />
+          <ScalarProperty Name="cjllzgdcsl" ColumnName="cjllzgdcsl" />
+          <ScalarProperty Name="cjllzgdcmz" ColumnName="cjllzgdcmz" />
+          <ScalarProperty Name="cjllzgdcjz" ColumnName="cjllzgdcjz" />
+          <ScalarProperty Name="cjllzgmz" ColumnName="cjllzgmz" />
+          <ScalarProperty Name="cjllzgjz" ColumnName="cjllzgjz" />
+          <ScalarProperty Name="cjllzgps" ColumnName="cjllzgps" />
+          <ScalarProperty Name="cjllzgbgd" ColumnName="cjllzgbgd" />
+          <ScalarProperty Name="rqqgckybmyjzxbs" ColumnName="rqqgckybmyjzxbs" />
+          <ScalarProperty Name="rqqgckybmyjzxzs" ColumnName="rqqgckybmyjzxzs" />
+          <ScalarProperty Name="rqqgckybmyjzxmz" ColumnName="rqqgckybmyjzxmz" />
+          <ScalarProperty Name="rqqgckybmyjzxjz" ColumnName="rqqgckybmyjzxjz" />
+          <ScalarProperty Name="rqqgckybmydcsl" ColumnName="rqqgckybmydcsl" />
+          <ScalarProperty Name="rqqgckybmydcmz" ColumnName="rqqgckybmydcmz" />
+          <ScalarProperty Name="rqqgckybmydcjz" ColumnName="rqqgckybmydcjz" />
+          <ScalarProperty Name="rqqgckybmymz" ColumnName="rqqgckybmymz" />
+          <ScalarProperty Name="rqqgckybmyjz" ColumnName="rqqgckybmyjz" />
+          <ScalarProperty Name="rqqgckybmyps" ColumnName="rqqgckybmyps" />
+          <ScalarProperty Name="rqqgckybmybgd" ColumnName="rqqgckybmybgd" />
+          <ScalarProperty Name="rqqgckjgmyjzxbs" ColumnName="rqqgckjgmyjzxbs" />
+          <ScalarProperty Name="rqqgckjgmyjzxzs" ColumnName="rqqgckjgmyjzxzs" />
+          <ScalarProperty Name="rqqgckjgmyjzxmz" ColumnName="rqqgckjgmyjzxmz" />
+          <ScalarProperty Name="rqqgckjgmyjzxjz" ColumnName="rqqgckjgmyjzxjz" />
+          <ScalarProperty Name="rqqgckjgmydcsl" ColumnName="rqqgckjgmydcsl" />
+          <ScalarProperty Name="rqqgckjgmydcmz" ColumnName="rqqgckjgmydcmz" />
+          <ScalarProperty Name="rqqgckjgmydcjz" ColumnName="rqqgckjgmydcjz" />
+          <ScalarProperty Name="rqqgckjgmymz" ColumnName="rqqgckjgmymz" />
+          <ScalarProperty Name="rqqgckjgmyjz" ColumnName="rqqgckjgmyjz" />
+          <ScalarProperty Name="rqqgckjgmyps" ColumnName="rqqgckjgmyps" />
+          <ScalarProperty Name="rqqgckjgmybgd" ColumnName="rqqgckjgmybgd" />
+          <ScalarProperty Name="rqzgckjzxbs" ColumnName="rqzgckjzxbs" />
+          <ScalarProperty Name="rqzgckjzxzs" ColumnName="rqzgckjzxzs" />
+          <ScalarProperty Name="rqzgckjzxmz" ColumnName="rqzgckjzxmz" />
+          <ScalarProperty Name="rqzgckjzxjz" ColumnName="rqzgckjzxjz" />
+          <ScalarProperty Name="rqzgckdcsl" ColumnName="rqzgckdcsl" />
+          <ScalarProperty Name="rqzgckdcmz" ColumnName="rqzgckdcmz" />
+          <ScalarProperty Name="rqzgckdcjz" ColumnName="rqzgckdcjz" />
+          <ScalarProperty Name="rqzgckmz" ColumnName="rqzgckmz" />
+          <ScalarProperty Name="rqzgckjz" ColumnName="rqzgckjz" />
+          <ScalarProperty Name="rqzgckps" ColumnName="rqzgckps" />
+          <ScalarProperty Name="rqzgckbgd" ColumnName="rqzgckbgd" />
+          <ScalarProperty Name="cqqgjkybmyjzxbs" ColumnName="cqqgjkybmyjzxbs" />
+          <ScalarProperty Name="cqqgjkybmyjzxzs" ColumnName="cqqgjkybmyjzxzs" />
+          <ScalarProperty Name="cqqgjkybmyjzxmz" ColumnName="cqqgjkybmyjzxmz" />
+          <ScalarProperty Name="cqqgjkybmyjzxjz" ColumnName="cqqgjkybmyjzxjz" />
+          <ScalarProperty Name="cqqgjkybmydcsl" ColumnName="cqqgjkybmydcsl" />
+          <ScalarProperty Name="cqqgjkybmydcmz" ColumnName="cqqgjkybmydcmz" />
+          <ScalarProperty Name="cqqgjkybmydcjz" ColumnName="cqqgjkybmydcjz" />
+          <ScalarProperty Name="cqqgjkybmymz" ColumnName="cqqgjkybmymz" />
+          <ScalarProperty Name="cqqgjkybmyjz" ColumnName="cqqgjkybmyjz" />
+          <ScalarProperty Name="cqqgjkybmyps" ColumnName="cqqgjkybmyps" />
+          <ScalarProperty Name="cqqgjkybmybgd" ColumnName="cqqgjkybmybgd" />
+          <ScalarProperty Name="cqqgjkjgmyjzxbs" ColumnName="cqqgjkjgmyjzxbs" />
+          <ScalarProperty Name="cqqgjkjgmyjzxzs" ColumnName="cqqgjkjgmyjzxzs" />
+          <ScalarProperty Name="cqqgjkjgmyjzxmz" ColumnName="cqqgjkjgmyjzxmz" />
+          <ScalarProperty Name="cqqgjkjgmyjzxjz" ColumnName="cqqgjkjgmyjzxjz" />
+          <ScalarProperty Name="cqqgjkjgmydcsl" ColumnName="cqqgjkjgmydcsl" />
+          <ScalarProperty Name="cqqgjkjgmydcmz" ColumnName="cqqgjkjgmydcmz" />
+          <ScalarProperty Name="cqqgjkjgmydcjz" ColumnName="cqqgjkjgmydcjz" />
+          <ScalarProperty Name="cqqgjkjgmymz" ColumnName="cqqgjkjgmymz" />
+          <ScalarProperty Name="cqqgjkjgmyjz" ColumnName="cqqgjkjgmyjz" />
+          <ScalarProperty Name="cqqgjkjgmyps" ColumnName="cqqgjkjgmyps" />
+          <ScalarProperty Name="cqqgjkjgmybgd" ColumnName="cqqgjkjgmybgd" />
+          <ScalarProperty Name="cqzgjkjzxbs" ColumnName="cqzgjkjzxbs" />
+          <ScalarProperty Name="cqzgjkjzxzs" ColumnName="cqzgjkjzxzs" />
+          <ScalarProperty Name="cqzgjkjzxmz" ColumnName="cqzgjkjzxmz" />
+          <ScalarProperty Name="cqzgjkjzxjz" ColumnName="cqzgjkjzxjz" />
+          <ScalarProperty Name="cqzgjkdcsl" ColumnName="cqzgjkdcsl" />
+          <ScalarProperty Name="cqzgjkdcmz" ColumnName="cqzgjkdcmz" />
+          <ScalarProperty Name="cqzgjkdcjz" ColumnName="cqzgjkdcjz" />
+          <ScalarProperty Name="cqzgjkmz" ColumnName="cqzgjkmz" />
+          <ScalarProperty Name="cqzgjkjz" ColumnName="cqzgjkjz" />
+          <ScalarProperty Name="cqzgjkps" ColumnName="cqzgjkps" />
+          <ScalarProperty Name="cqzgjkbgd" ColumnName="cqzgjkbgd" />
+          <ScalarProperty Name="jzxbs" ColumnName="jzxbs" />
+          <ScalarProperty Name="jzxzs" ColumnName="jzxzs" />
+          <ScalarProperty Name="jzxmz" ColumnName="jzxmz" />
+          <ScalarProperty Name="jzxjz" ColumnName="jzxjz" />
+          <ScalarProperty Name="dcsl" ColumnName="dcsl" />
+          <ScalarProperty Name="dcmz" ColumnName="dcmz" />
+          <ScalarProperty Name="dcjz" ColumnName="dcjz" />
+          <ScalarProperty Name="mz" ColumnName="mz" />
+          <ScalarProperty Name="jz" ColumnName="jz" />
+          <ScalarProperty Name="ps" ColumnName="ps" />
+          <ScalarProperty Name="bgd" ColumnName="bgd" />
+          <ScalarProperty Name="kcmz" ColumnName="kcmz" />
+          <ScalarProperty Name="kcjz" ColumnName="kcjz" />
+          <ScalarProperty Name="jmsps" ColumnName="jmsps" />
+          <ScalarProperty Name="jmsbgd" ColumnName="jmsbgd" />
+          <ScalarProperty Name="jmsjz" ColumnName="jmsjz" />
+          <ScalarProperty Name="ysbcktsps" ColumnName="ysbcktsps" />
+          <ScalarProperty Name="ysbcktsmz" ColumnName="ysbcktsmz" />
+          <ScalarProperty Name="ysbcktsjz" ColumnName="ysbcktsjz" />
+          <ScalarProperty Name="gs" ColumnName="gs" />
+          <ScalarProperty Name="sk" ColumnName="sk" />
+          <ScalarProperty Name="zsbgd" ColumnName="zsbgd" />
+          <ScalarProperty Name="fckmz" ColumnName="fckmz" />
+          <ScalarProperty Name="fckjz" ColumnName="fckjz" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DailyTurnover">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.DailyTurnover">
+        <MappingFragment StoreEntitySet="DailyTurnover">
+          <ScalarProperty Name="cbmid" ColumnName="cbmid" />
+          <ScalarProperty Name="Account" ColumnName="Account" />
+          <ScalarProperty Name="CFS_Year" ColumnName="CFS_Year" />
+          <ScalarProperty Name="CFS_Month" ColumnName="CFS_Month" />
+          <ScalarProperty Name="CFS_Date" ColumnName="CFS_Date" />
+          <ScalarProperty Name="Receiving" ColumnName="Receiving" />
+          <ScalarProperty Name="Loading" ColumnName="Loading" />
+          <ScalarProperty Name="Repacked" ColumnName="Repacked" />
+          <ScalarProperty Name="Repacking" ColumnName="Repacking" />
+          <ScalarProperty Name="IEFlag" ColumnName="IEFlag" />
+          <ScalarProperty Name="ieChange" ColumnName="ieChange" />
+          <ScalarProperty Name="confirmed" ColumnName="confirmed" />
+          <ScalarProperty Name="OperateDate" ColumnName="OperateDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DebitNoteNo">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.DebitNoteNo">
+        <MappingFragment StoreEntitySet="DebitNoteNo">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Year" ColumnName="Year" />
+          <ScalarProperty Name="MaxId" ColumnName="MaxId" />
+          <ScalarProperty Name="vvt" ColumnName="vvt" />
+          <ScalarProperty Name="InsertTime" ColumnName="InsertTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="dest">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.dest">
+        <MappingFragment StoreEntitySet="dest">
+          <ScalarProperty Name="DID" ColumnName="DID" />
+          <ScalarProperty Name="destination" ColumnName="destination" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="destination">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.destination">
+        <MappingFragment StoreEntitySet="destination">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="dest" ColumnName="dest" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DestInfo2">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.DestInfo2">
+        <MappingFragment StoreEntitySet="DestInfo2">
+          <ScalarProperty Name="DestID" ColumnName="DestID" />
+          <ScalarProperty Name="DestName" ColumnName="DestName" />
+          <ScalarProperty Name="ChineseName" ColumnName="ChineseName" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="DestCode" ColumnName="DestCode" />
+          <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DestOfBRSI">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.DestOfBRSI">
+        <MappingFragment StoreEntitySet="DestOfBRSI">
+          <ScalarProperty Name="DID" ColumnName="DID" />
+          <ScalarProperty Name="Dest" ColumnName="Dest" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="dobitNoteLog">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.dobitNoteLog">
+        <MappingFragment StoreEntitySet="dobitNoteLog">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Vessel" ColumnName="Vessel" />
+          <ScalarProperty Name="Voyage" ColumnName="Voyage" />
+          <ScalarProperty Name="ExchangeRate" ColumnName="ExchangeRate" />
+          <ScalarProperty Name="CFSCargoHandlingFee" ColumnName="CFSCargoHandlingFee" />
+          <ScalarProperty Name="DocumentFee" ColumnName="DocumentFee" />
+          <ScalarProperty Name="THC" ColumnName="THC" />
+          <ScalarProperty Name="ExportTime" ColumnName="ExportTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="dtproperties">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.dtproperties">
+        <MappingFragment StoreEntitySet="dtproperties">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="objectid" ColumnName="objectid" />
+          <ScalarProperty Name="property" ColumnName="property" />
+          <ScalarProperty Name="value" ColumnName="value" />
+          <ScalarProperty Name="uvalue" ColumnName="uvalue" />
+          <ScalarProperty Name="lvalue" ColumnName="lvalue" />
+          <ScalarProperty Name="version" ColumnName="version" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EDIExcptnReg">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.EDIExcptnReg">
+        <MappingFragment StoreEntitySet="EDIExcptnReg">
+          <ScalarProperty Name="operatedate" ColumnName="operatedate" />
+          <ScalarProperty Name="so_no" ColumnName="so_no" />
+          <ScalarProperty Name="exceptiontype" ColumnName="exceptiontype" />
+          <ScalarProperty Name="account" ColumnName="account" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Employees">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.Employees">
+        <MappingFragment StoreEntitySet="Employees">
+          <ScalarProperty Name="EID" ColumnName="EID" />
+          <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Department" ColumnName="Department" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ExclusionCustoms">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.ExclusionCustoms">
+        <MappingFragment StoreEntitySet="ExclusionCustoms">
+          <ScalarProperty Name="CID" ColumnName="CID" />
+          <ScalarProperty Name="Customs_co" ColumnName="Customs_co" />
+          <ScalarProperty Name="customs_na" ColumnName="customs_na" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FCR_Detail">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.FCR_Detail">
+        <MappingFragment StoreEntitySet="FCR_Detail">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="fcr_no" ColumnName="fcr_no" />
+          <ScalarProperty Name="seq" ColumnName="seq" />
+          <ScalarProperty Name="clpno" ColumnName="clpno" />
+          <ScalarProperty Name="cfsso" ColumnName="cfsso" />
+          <ScalarProperty Name="cont_no" ColumnName="cont_no" />
+          <ScalarProperty Name="seal_no" ColumnName="seal_no" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FCR_Discharging_Port">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.FCR_Discharging_Port">
+        <MappingFragment StoreEntitySet="FCR_Discharging_Port">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="discharging_port" ColumnName="discharging_port" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FCR_Factory">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.FCR_Factory">
+        <MappingFragment StoreEntitySet="FCR_Factory">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="supplierID" ColumnName="supplierID" />
+          <ScalarProperty Name="factoryID" ColumnName="factoryID" />
+          <ScalarProperty Name="factoryName" ColumnName="factoryName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FCR_Head">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.FCR_Head">
+        <MappingFragment StoreEntitySet="FCR_Head">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="fcr_no" ColumnName="fcr_no" />
+          <ScalarProperty Name="factory" ColumnName="factory" />
+          <ScalarProperty Name="bl_no" ColumnName="bl_no" />
+          <ScalarProperty Name="vessel" ColumnName="vessel" />
+          <ScalarProperty Name="voyage" ColumnName="voyage" />
+          <ScalarProperty Name="discharging_port" ColumnName="discharging_port" />
+          <ScalarProperty Name="destination" ColumnName="destination" />
+          <ScalarProperty Name="docReceived_date" ColumnName="docReceived_date" />
+          <ScalarProperty Name="cargoReceived_date" ColumnName="cargoReceived_date" />
+          <ScalarProperty Name="reg_date" ColumnName="reg_date" />
+          <ScalarProperty Name="last_modify_date" ColumnName="last_modify_date" />
+          <ScalarProperty Name="creater_user" ColumnName="creater_user" />
+          <ScalarProperty Name="last_modify_user" ColumnName="last_modify_user" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FCR_Supplier">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.FCR_Supplier">
+        <MappingFragment StoreEntitySet="FCR_Supplier">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="supplierID" ColumnName="supplierID" />
+          <ScalarProperty Name="supplierName" ColumnName="supplierName" />
+          <ScalarProperty Name="group" ColumnName="group" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FcrSMBaseCharge">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.FcrSMBaseCharge">
+        <MappingFragment StoreEntitySet="FcrSMBaseCharge">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ChargeName" ColumnName="ChargeName" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="CalculationMethod" ColumnName="CalculationMethod" />
+          <ScalarProperty Name="Unit" ColumnName="Unit" />
+          <ScalarProperty Name="Fixed" ColumnName="Fixed" />
+          <ScalarProperty Name="UpdateData" ColumnName="UpdateData" />
+          <ScalarProperty Name="StopUse" ColumnName="StopUse" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FinalLoadingPlan">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.FinalLoadingPlan">
+        <MappingFragment StoreEntitySet="FinalLoadingPlan">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="JOB_NO" ColumnName="JOB_NO" />
+          <ScalarProperty Name="Origin_port" ColumnName="Origin_port" />
+          <ScalarProperty Name="Ship_mode" ColumnName="Ship_mode" />
+          <ScalarProperty Name="Consol_no" ColumnName="Consol_no" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="Vendor_Name" ColumnName="Vendor_Name" />
+          <ScalarProperty Name="Mfr_Name1" ColumnName="Mfr_Name1" />
+          <ScalarProperty Name="Mfr_Country" ColumnName="Mfr_Country" />
+          <ScalarProperty Name="Customer_Name" ColumnName="Customer_Name" />
+          <ScalarProperty Name="Receiving_point" ColumnName="Receiving_point" />
+          <ScalarProperty Name="CustomerPO" ColumnName="CustomerPO" />
+          <ScalarProperty Name="First_Date" ColumnName="First_Date" />
+          <ScalarProperty Name="Cancel_Date" ColumnName="Cancel_Date" />
+          <ScalarProperty Name="SalesOrd_STO" ColumnName="SalesOrd_STO" />
+          <ScalarProperty Name="ItemNO" ColumnName="ItemNO" />
+          <ScalarProperty Name="CustomerMaterialNumber" ColumnName="CustomerMaterialNumber" />
+          <ScalarProperty Name="SalesMaterial" ColumnName="SalesMaterial" />
+          <ScalarProperty Name="Material" ColumnName="Material" />
+          <ScalarProperty Name="CustomerDescription" ColumnName="CustomerDescription" />
+          <ScalarProperty Name="Short_text" ColumnName="Short_text" />
+          <ScalarProperty Name="Deliv_date" ColumnName="Deliv_date" />
+          <ScalarProperty Name="PurchDoc" ColumnName="PurchDoc" />
+          <ScalarProperty Name="Item" ColumnName="Item" />
+          <ScalarProperty Name="Matl_Group" ColumnName="Matl_Group" />
+          <ScalarProperty Name="PO_quantity" ColumnName="PO_quantity" />
+          <ScalarProperty Name="CartonPCS" ColumnName="CartonPCS" />
+          <ScalarProperty Name="TotalCarton" ColumnName="TotalCarton" />
+          <ScalarProperty Name="CartonGrossWeight" ColumnName="CartonGrossWeight" />
+          <ScalarProperty Name="TotalGrossWeight" ColumnName="TotalGrossWeight" />
+          <ScalarProperty Name="CartonVolume" ColumnName="CartonVolume" />
+          <ScalarProperty Name="TotalVolume" ColumnName="TotalVolume" />
+          <ScalarProperty Name="CartonNetWeight" ColumnName="CartonNetWeight" />
+          <ScalarProperty Name="TotalNetWeight" ColumnName="TotalNetWeight" />
+          <ScalarProperty Name="CartonWidth_L" ColumnName="CartonWidth_L" />
+          <ScalarProperty Name="CartonDepth_W" ColumnName="CartonDepth_W" />
+          <ScalarProperty Name="CartonHeight" ColumnName="CartonHeight" />
+          <ScalarProperty Name="MainBatt" ColumnName="MainBatt" />
+          <ScalarProperty Name="MainBattQty" ColumnName="MainBattQty" />
+          <ScalarProperty Name="ShipToName" ColumnName="ShipToName" />
+          <ScalarProperty Name="ShipToCountry" ColumnName="ShipToCountry" />
+          <ScalarProperty Name="OverallCredStat" ColumnName="OverallCredStat" />
+          <ScalarProperty Name="SMprofomalINV" ColumnName="SMprofomalINV" />
+          <ScalarProperty Name="DeliveryNo" ColumnName="DeliveryNo" />
+          <ScalarProperty Name="BookingNo" ColumnName="BookingNo" />
+          <ScalarProperty Name="Booking_date" ColumnName="Booking_date" />
+          <ScalarProperty Name="Booking_doc_uploaded_date" ColumnName="Booking_doc_uploaded_date" />
+          <ScalarProperty Name="SO" ColumnName="SO" />
+          <ScalarProperty Name="SO_release_date" ColumnName="SO_release_date" />
+          <ScalarProperty Name="CY_open" ColumnName="CY_open" />
+          <ScalarProperty Name="CY_closing" ColumnName="CY_closing" />
+          <ScalarProperty Name="Cus_Sys_INV" ColumnName="Cus_Sys_INV" />
+          <ScalarProperty Name="Close_shipping_doc_submssion_date" ColumnName="Close_shipping_doc_submssion_date" />
+          <ScalarProperty Name="Vessel" ColumnName="Vessel" />
+          <ScalarProperty Name="Voyage" ColumnName="Voyage" />
+          <ScalarProperty Name="Cust_SI" ColumnName="Cust_SI" />
+          <ScalarProperty Name="Send_SI" ColumnName="Send_SI" />
+          <ScalarProperty Name="Confirm_SI" ColumnName="Confirm_SI" />
+          <ScalarProperty Name="Payment_Date" ColumnName="Payment_Date" />
+          <ScalarProperty Name="FCR_Date" ColumnName="FCR_Date" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="ImportDate" ColumnName="ImportDate" />
+          <ScalarProperty Name="Cont_No" ColumnName="Cont_No" />
+          <ScalarProperty Name="Seal_No" ColumnName="Seal_No" />
+          <ScalarProperty Name="Cont_Date" ColumnName="Cont_Date" />
+          <ScalarProperty Name="ETD" ColumnName="ETD" />
+          <ScalarProperty Name="BL" ColumnName="BL" />
+          <ScalarProperty Name="Invoice_Date" ColumnName="Invoice_Date" />
+          <ScalarProperty Name="Shipment_Type" ColumnName="Shipment_Type" />
+          <ScalarProperty Name="Loading_Port" ColumnName="Loading_Port" />
+          <ScalarProperty Name="Unloading_Port" ColumnName="Unloading_Port" />
+          <ScalarProperty Name="Destination" ColumnName="Destination" />
+          <ScalarProperty Name="Shipper" ColumnName="Shipper" />
+          <ScalarProperty Name="Consignee" ColumnName="Consignee" />
+          <ScalarProperty Name="Notify_Party" ColumnName="Notify_Party" />
+          <ScalarProperty Name="Shipping_Mark" ColumnName="Shipping_Mark" />
+          <ScalarProperty Name="Whs" ColumnName="Whs" />
+          <ScalarProperty Name="SM_Operator" ColumnName="SM_Operator" />
+          <ScalarProperty Name="Job_Rec_Date" ColumnName="Job_Rec_Date" />
+          <ScalarProperty Name="Ship_Date" ColumnName="Ship_Date" />
+          <ScalarProperty Name="Exception" ColumnName="Exception" />
+          <ScalarProperty Name="NST" ColumnName="NST" />
+          <ScalarProperty Name="NLT" ColumnName="NLT" />
+          <ScalarProperty Name="Vendor_Confirm_Date" ColumnName="Vendor_Confirm_Date" />
+          <ScalarProperty Name="rec_so_date" ColumnName="rec_so_date" />
+          <ScalarProperty Name="Operator" ColumnName="Operator" />
+          <ScalarProperty Name="First_Job_Rec_Date" ColumnName="First_Job_Rec_Date" />
+          <ScalarProperty Name="Courier_tracking_no" ColumnName="Courier_tracking_no" />
+          <ScalarProperty Name="IsSendEmail" ColumnName="IsSendEmail" />
+          <ScalarProperty Name="Update_time" ColumnName="Update_time" />
+          <ScalarProperty Name="Update_user" ColumnName="Update_user" />
+          <ScalarProperty Name="Update_GR_time" ColumnName="Update_GR_time" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Shipment_Status" ColumnName="Shipment_Status" />
+          <ScalarProperty Name="Loading_Date" ColumnName="Loading_Date" />
+          <ScalarProperty Name="Carrier_deliver_date" ColumnName="Carrier_deliver_date" />
+          <ScalarProperty Name="Vessel_2" ColumnName="Vessel_2" />
+          <ScalarProperty Name="Voyage_2" ColumnName="Voyage_2" />
+          <ScalarProperty Name="ETD_2" ColumnName="ETD_2" />
+          <ScalarProperty Name="Loading_Port_2" ColumnName="Loading_Port_2" />
+          <ScalarProperty Name="Carrier" ColumnName="Carrier" />
+          <ScalarProperty Name="Size" ColumnName="Size" />
+          <ScalarProperty Name="Cargo_Receiving_Criterion" ColumnName="Cargo_Receiving_Criterion" />
+          <ScalarProperty Name="Terminal_POD_UploadDate" ColumnName="Terminal_POD_UploadDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FinalLoadingPlan_Payment">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.FinalLoadingPlan_Payment">
+        <MappingFragment StoreEntitySet="FinalLoadingPlan_Payment">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="JOB_NO" ColumnName="JOB_NO" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Payment_Date" ColumnName="Payment_Date" />
+          <ScalarProperty Name="Label_Fee" ColumnName="Label_Fee" />
+          <ScalarProperty Name="Fwd_INV" ColumnName="Fwd_INV" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="Oth_Charge" ColumnName="Oth_Charge" />
+          <ScalarProperty Name="InvoiceNo" ColumnName="InvoiceNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FinalLoadPlanAmazonVendor">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.FinalLoadPlanAmazonVendor">
+        <MappingFragment StoreEntitySet="FinalLoadPlanAmazonVendor">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="Mfr_Name" ColumnName="Mfr_Name" />
+          <ScalarProperty Name="AmazonVendor" ColumnName="AmazonVendor" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FinalLoadPlanHoliday">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.FinalLoadPlanHoliday">
+        <MappingFragment StoreEntitySet="FinalLoadPlanHoliday">
+          <ScalarProperty Name="hID" ColumnName="hID" />
+          <ScalarProperty Name="holiday" ColumnName="holiday" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="NameofDay" ColumnName="NameofDay" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FinalLoadPlanJobRecord">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.FinalLoadPlanJobRecord">
+        <MappingFragment StoreEntitySet="FinalLoadPlanJobRecord">
+          <ScalarProperty Name="jlID" ColumnName="jlID" />
+          <ScalarProperty Name="JOB_NO" ColumnName="JOB_NO" />
+          <ScalarProperty Name="Action_Type" ColumnName="Action_Type" />
+          <ScalarProperty Name="Action_Field" ColumnName="Action_Field" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="input_date" ColumnName="input_date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FinalLoadPlanRPALog">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.FinalLoadPlanRPALog">
+        <MappingFragment StoreEntitySet="FinalLoadPlanRPALog">
+          <ScalarProperty Name="fID" ColumnName="fID" />
+          <ScalarProperty Name="job_no" ColumnName="job_no" />
+          <ScalarProperty Name="action_status" ColumnName="action_status" />
+          <ScalarProperty Name="info" ColumnName="info" />
+          <ScalarProperty Name="inputtime" ColumnName="inputtime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FinalPo_Cancel_Record">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.FinalPo_Cancel_Record">
+        <MappingFragment StoreEntitySet="FinalPo_Cancel_Record">
+          <ScalarProperty Name="cID" ColumnName="cID" />
+          <ScalarProperty Name="pID" ColumnName="pID" />
+          <ScalarProperty Name="cancel_time" ColumnName="cancel_time" />
+          <ScalarProperty Name="cancel_user" ColumnName="cancel_user" />
+          <ScalarProperty Name="release" ColumnName="release" />
+          <ScalarProperty Name="release_user" ColumnName="release_user" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FinalPoList">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.FinalPoList">
+        <MappingFragment StoreEntitySet="FinalPoList">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Brand" ColumnName="Brand" />
+          <ScalarProperty Name="Carton_Depth_W" ColumnName="Carton_Depth_W" />
+          <ScalarProperty Name="Carton_GrossWeight" ColumnName="Carton_GrossWeight" />
+          <ScalarProperty Name="Carton_Height" ColumnName="Carton_Height" />
+          <ScalarProperty Name="Carton_NetWeight" ColumnName="Carton_NetWeight" />
+          <ScalarProperty Name="Carton_PCS" ColumnName="Carton_PCS" />
+          <ScalarProperty Name="Carton_Width_L" ColumnName="Carton_Width_L" />
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+          <ScalarProperty Name="Deliv_Date" ColumnName="Deliv_Date" />
+          <ScalarProperty Name="Delivery_Number" ColumnName="Delivery_Number" />
+          <ScalarProperty Name="Item" ColumnName="Item" />
+          <ScalarProperty Name="ItemNO" ColumnName="ItemNO" />
+          <ScalarProperty Name="Material" ColumnName="Material" />
+          <ScalarProperty Name="Matl_Group" ColumnName="Matl_Group" />
+          <ScalarProperty Name="Mfr_Country" ColumnName="Mfr_Country" />
+          <ScalarProperty Name="Mfr_Name1" ColumnName="Mfr_Name1" />
+          <ScalarProperty Name="PO_quantity" ColumnName="PO_quantity" />
+          <ScalarProperty Name="Purch_Doc" ColumnName="Purch_Doc" />
+          <ScalarProperty Name="Sales_Material" ColumnName="Sales_Material" />
+          <ScalarProperty Name="SalesOrd_STO" ColumnName="SalesOrd_STO" />
+          <ScalarProperty Name="Ship_To_Country" ColumnName="Ship_To_Country" />
+          <ScalarProperty Name="ShipTo_Name" ColumnName="ShipTo_Name" />
+          <ScalarProperty Name="Short_text" ColumnName="Short_text" />
+          <ScalarProperty Name="Total_Carton" ColumnName="Total_Carton" />
+          <ScalarProperty Name="Total_GrossWeight" ColumnName="Total_GrossWeight" />
+          <ScalarProperty Name="Total_Volume" ColumnName="Total_Volume" />
+          <ScalarProperty Name="Vendor_Name" ColumnName="Vendor_Name" />
+          <ScalarProperty Name="FOB_Cancel_Date" ColumnName="FOB_Cancel_Date" />
+          <ScalarProperty Name="FOB_Carton_Volume" ColumnName="FOB_Carton_Volume" />
+          <ScalarProperty Name="FOB_Customer_Description" ColumnName="FOB_Customer_Description" />
+          <ScalarProperty Name="FOB_Customer_Material_Number" ColumnName="FOB_Customer_Material_Number" />
+          <ScalarProperty Name="FOB_Customer_Name" ColumnName="FOB_Customer_Name" />
+          <ScalarProperty Name="FOB_Customer_PO" ColumnName="FOB_Customer_PO" />
+          <ScalarProperty Name="FOB_First_Date" ColumnName="FOB_First_Date" />
+          <ScalarProperty Name="FOB_LOG" ColumnName="FOB_LOG" />
+          <ScalarProperty Name="FOB_MainBatt" ColumnName="FOB_MainBatt" />
+          <ScalarProperty Name="FOB_MainBattQty" ColumnName="FOB_MainBattQty" />
+          <ScalarProperty Name="FOB_OverallCredStat" ColumnName="FOB_OverallCredStat" />
+          <ScalarProperty Name="FOB_Proforma_Invoice" ColumnName="FOB_Proforma_Invoice" />
+          <ScalarProperty Name="FOB_Receiving_Point" ColumnName="FOB_Receiving_Point" />
+          <ScalarProperty Name="FOB_Total_NetWeight" ColumnName="FOB_Total_NetWeight" />
+          <ScalarProperty Name="FOB_Booking_Date" ColumnName="FOB_Booking_Date" />
+          <ScalarProperty Name="FOB_Ship_MODE" ColumnName="FOB_Ship_MODE" />
+          <ScalarProperty Name="DOM_Delivery_Quantity" ColumnName="DOM_Delivery_Quantity" />
+          <ScalarProperty Name="DOM_Domestic_Dest" ColumnName="DOM_Domestic_Dest" />
+          <ScalarProperty Name="DOM_Finaloadingport" ColumnName="DOM_Finaloadingport" />
+          <ScalarProperty Name="DOM_Inbound" ColumnName="DOM_Inbound" />
+          <ScalarProperty Name="DOM_Invoice" ColumnName="DOM_Invoice" />
+          <ScalarProperty Name="DOM_Mfr_City" ColumnName="DOM_Mfr_City" />
+          <ScalarProperty Name="DOM_Qty_Delivered" ColumnName="DOM_Qty_Delivered" />
+          <ScalarProperty Name="DOM_Route" ColumnName="DOM_Route" />
+          <ScalarProperty Name="DOM_Shipment_Number" ColumnName="DOM_Shipment_Number" />
+          <ScalarProperty Name="DOM_Sloc" ColumnName="DOM_Sloc" />
+          <ScalarProperty Name="DOM_StatDelD" ColumnName="DOM_StatDelD" />
+          <ScalarProperty Name="DOM_STO_Delivery_Date" ColumnName="DOM_STO_Delivery_Date" />
+          <ScalarProperty Name="DOM_STO_MA_Date" ColumnName="DOM_STO_MA_Date" />
+          <ScalarProperty Name="DOM_To_Be_Del" ColumnName="DOM_To_Be_Del" />
+          <ScalarProperty Name="DOM_Vendor" ColumnName="DOM_Vendor" />
+          <ScalarProperty Name="PO_List_Type" ColumnName="PO_List_Type" />
+          <ScalarProperty Name="Import_Date" ColumnName="Import_Date" />
+          <ScalarProperty Name="Vendor_User" ColumnName="Vendor_User" />
+          <ScalarProperty Name="Vendor_Latest_Update" ColumnName="Vendor_Latest_Update" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FinalVendorInput">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.FinalVendorInput">
+        <MappingFragment StoreEntitySet="FinalVendorInput">
+          <ScalarProperty Name="VID" ColumnName="VID" />
+          <ScalarProperty Name="PID" ColumnName="PID" />
+          <ScalarProperty Name="PO_Line" ColumnName="PO_Line" />
+          <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+          <ScalarProperty Name="Matl_Group_Sales" ColumnName="Matl_Group_Sales" />
+          <ScalarProperty Name="Matrix" ColumnName="Matrix" />
+          <ScalarProperty Name="Slip_Sheet" ColumnName="Slip_Sheet" />
+          <ScalarProperty Name="Packing_Status" ColumnName="Packing_Status" />
+          <ScalarProperty Name="Inspection_End_Date" ColumnName="Inspection_End_Date" />
+          <ScalarProperty Name="Inspection_Result" ColumnName="Inspection_Result" />
+          <ScalarProperty Name="FOB_Local_Charges_Settlement" ColumnName="FOB_Local_Charges_Settlement" />
+          <ScalarProperty Name="FCR_Bill_Return_Date" ColumnName="FCR_Bill_Return_Date" />
+          <ScalarProperty Name="Certificate_Application_Date" ColumnName="Certificate_Application_Date" />
+          <ScalarProperty Name="Certificate_Return_TO_SMDate" ColumnName="Certificate_Return_TO_SMDate" />
+          <ScalarProperty Name="Qty_Delivered" ColumnName="Qty_Delivered" />
+          <ScalarProperty Name="To_be_del" ColumnName="To_be_del" />
+          <ScalarProperty Name="OTD_Reason_Code" ColumnName="OTD_Reason_Code" />
+          <ScalarProperty Name="Delay_Details" ColumnName="Delay_Details" />
+          <ScalarProperty Name="Carton_delivered" ColumnName="Carton_delivered" />
+          <ScalarProperty Name="Booking_No" ColumnName="Booking_No" />
+          <ScalarProperty Name="Loading_Date" ColumnName="Loading_Date" />
+          <ScalarProperty Name="CFS_Closing_Date" ColumnName="CFS_Closing_Date" />
+          <ScalarProperty Name="ETD" ColumnName="ETD" />
+          <ScalarProperty Name="Shipment_Status" ColumnName="Shipment_Status" />
+          <ScalarProperty Name="InputTime" ColumnName="InputTime" />
+          <ScalarProperty Name="loginName" ColumnName="loginName" />
+          <ScalarProperty Name="Dischaging_Port" ColumnName="Dischaging_Port" />
+          <ScalarProperty Name="Vessel" ColumnName="Vessel" />
+          <ScalarProperty Name="Voyage" ColumnName="Voyage" />
+          <ScalarProperty Name="Loading_Port" ColumnName="Loading_Port" />
+          <ScalarProperty Name="Booking_Date" ColumnName="Booking_Date" />
+          <ScalarProperty Name="ETA" ColumnName="ETA" />
+          <ScalarProperty Name="CY_Closing_Date" ColumnName="CY_Closing_Date" />
+          <ScalarProperty Name="SI_Cut_Time" ColumnName="SI_Cut_Time" />
+          <ScalarProperty Name="Arrive_WHS_Date" ColumnName="Arrive_WHS_Date" />
+          <ScalarProperty Name="Arrive_terminal_Date" ColumnName="Arrive_terminal_Date" />
+          <ScalarProperty Name="Delivery_CBM" ColumnName="Delivery_CBM" />
+          <ScalarProperty Name="Container_NO" ColumnName="Container_NO" />
+          <ScalarProperty Name="Seal_NO" ColumnName="Seal_NO" />
+          <ScalarProperty Name="Vehicle_Type" ColumnName="Vehicle_Type" />
+          <ScalarProperty Name="SO_Release_Date" ColumnName="SO_Release_Date" />
+          <ScalarProperty Name="CY_Open_date" ColumnName="CY_Open_date" />
+          <ScalarProperty Name="CFS_Open_Date" ColumnName="CFS_Open_Date" />
+          <ScalarProperty Name="Ship_Mode" ColumnName="Ship_Mode" />
+          <ScalarProperty Name="Forward_Name" ColumnName="Forward_Name" />
+          <ScalarProperty Name="Courier_tracking_no" ColumnName="Courier_tracking_no" />
+          <ScalarProperty Name="Update_GR_time" ColumnName="Update_GR_time" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FinalVendorInputTrucking">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.FinalVendorInputTrucking">
+        <MappingFragment StoreEntitySet="FinalVendorInputTrucking">
+          <ScalarProperty Name="tID" ColumnName="tID" />
+          <ScalarProperty Name="vID" ColumnName="vID" />
+          <ScalarProperty Name="Container_NO" ColumnName="Container_NO" />
+          <ScalarProperty Name="Seal_NO" ColumnName="Seal_NO" />
+          <ScalarProperty Name="Vehicle_Type" ColumnName="Vehicle_Type" />
+          <ScalarProperty Name="CTN" ColumnName="CTN" />
+          <ScalarProperty Name="Trucking_NO" ColumnName="Trucking_NO" />
+          <ScalarProperty Name="CBM" ColumnName="CBM" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="Trucking_Arrive_WHS_Date" ColumnName="Trucking_Arrive_WHS_Date" />
+          <ScalarProperty Name="Trucking_Arrive_terminal_Date" ColumnName="Trucking_Arrive_terminal_Date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="financeCharge">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.financeCharge">
+        <MappingFragment StoreEntitySet="financeCharge">
+          <ScalarProperty Name="cID" ColumnName="cID" />
+          <ScalarProperty Name="chargeID" ColumnName="chargeID" />
+          <ScalarProperty Name="carrier" ColumnName="carrier" />
+          <ScalarProperty Name="cont_size" ColumnName="cont_size" />
+          <ScalarProperty Name="charge" ColumnName="charge" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="forwarder_code">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.forwarder_code">
+        <MappingFragment StoreEntitySet="forwarder_code">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="forwarder_code1" ColumnName="forwarder_code" />
+          <ScalarProperty Name="forwarder_name" ColumnName="forwarder_name" />
+          <ScalarProperty Name="StopUse" ColumnName="StopUse" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="in_head">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.in_head">
+        <MappingFragment StoreEntitySet="in_head">
+          <ScalarProperty Name="so_no" ColumnName="so_no" />
+          <ScalarProperty Name="client" ColumnName="client" />
+          <ScalarProperty Name="consg_code" ColumnName="consg_code" />
+          <ScalarProperty Name="load_port" ColumnName="load_port" />
+          <ScalarProperty Name="dest" ColumnName="dest" />
+          <ScalarProperty Name="dest_port" ColumnName="dest_port" />
+          <ScalarProperty Name="division" ColumnName="division" />
+          <ScalarProperty Name="bill_no" ColumnName="bill_no" />
+          <ScalarProperty Name="cont_no" ColumnName="cont_no" />
+          <ScalarProperty Name="frmctry" ColumnName="frmctry" />
+          <ScalarProperty Name="etd" ColumnName="etd" />
+          <ScalarProperty Name="eta" ColumnName="eta" />
+          <ScalarProperty Name="nst" ColumnName="nst" />
+          <ScalarProperty Name="nlt" ColumnName="nlt" />
+          <ScalarProperty Name="factory" ColumnName="factory" />
+          <ScalarProperty Name="vendor" ColumnName="vendor" />
+          <ScalarProperty Name="vessel" ColumnName="vessel" />
+          <ScalarProperty Name="voyage" ColumnName="voyage" />
+          <ScalarProperty Name="seal_no" ColumnName="seal_no" />
+          <ScalarProperty Name="btotal" ColumnName="btotal" />
+          <ScalarProperty Name="completed" ColumnName="completed" />
+          <ScalarProperty Name="cust" ColumnName="cust" />
+          <ScalarProperty Name="commodity" ColumnName="commodity" />
+          <ScalarProperty Name="ieflag" ColumnName="ieflag" />
+          <ScalarProperty Name="repacked" ColumnName="repacked" />
+          <ScalarProperty Name="remark1" ColumnName="remark1" />
+          <ScalarProperty Name="remark2" ColumnName="remark2" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="LinkToIn" ColumnName="LinkToIn" />
+          <ScalarProperty Name="socbm" ColumnName="socbm" />
+          <ScalarProperty Name="poType" ColumnName="poType" />
+          <ScalarProperty Name="cfsso" ColumnName="cfsso" />
+          <ScalarProperty Name="whs" ColumnName="whs" />
+          <ScalarProperty Name="operator" ColumnName="operator" />
+          <ScalarProperty Name="inputstarttime" ColumnName="inputstarttime" />
+          <ScalarProperty Name="inputendtime" ColumnName="inputendtime" />
+          <ScalarProperty Name="Ecv_Status" ColumnName="Ecv_Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="in_item">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.in_item">
+        <MappingFragment StoreEntitySet="in_item">
+          <ScalarProperty Name="so_no" ColumnName="so_no" />
+          <ScalarProperty Name="seq" ColumnName="seq" />
+          <ScalarProperty Name="item_no" ColumnName="item_no" />
+          <ScalarProperty Name="rec_date" ColumnName="rec_date" />
+          <ScalarProperty Name="decldate" ColumnName="decldate" />
+          <ScalarProperty Name="input_date" ColumnName="input_date" />
+          <ScalarProperty Name="dest_port" ColumnName="dest_port" />
+          <ScalarProperty Name="destination" ColumnName="destination" />
+          <ScalarProperty Name="stk" ColumnName="stk" />
+          <ScalarProperty Name="po" ColumnName="po" />
+          <ScalarProperty Name="sku" ColumnName="sku" />
+          <ScalarProperty Name="case_no" ColumnName="case_no" />
+          <ScalarProperty Name="style_no" ColumnName="style_no" />
+          <ScalarProperty Name="location" ColumnName="location" />
+          <ScalarProperty Name="in_no" ColumnName="in_no" />
+          <ScalarProperty Name="desc_code" ColumnName="desc_code" />
+          <ScalarProperty Name="pallet" ColumnName="pallet" />
+          <ScalarProperty Name="pltbal" ColumnName="pltbal" />
+          <ScalarProperty Name="ctn" ColumnName="ctn" />
+          <ScalarProperty Name="ctnbal" ColumnName="ctnbal" />
+          <ScalarProperty Name="pcs" ColumnName="pcs" />
+          <ScalarProperty Name="pcsbal" ColumnName="pcsbal" />
+          <ScalarProperty Name="qty" ColumnName="qty" />
+          <ScalarProperty Name="qtybal" ColumnName="qtybal" />
+          <ScalarProperty Name="unit" ColumnName="unit" />
+          <ScalarProperty Name="poqty" ColumnName="poqty" />
+          <ScalarProperty Name="spec" ColumnName="spec" />
+          <ScalarProperty Name="size" ColumnName="size" />
+          <ScalarProperty Name="cbm" ColumnName="cbm" />
+          <ScalarProperty Name="length" ColumnName="length" />
+          <ScalarProperty Name="width" ColumnName="width" />
+          <ScalarProperty Name="height" ColumnName="height" />
+          <ScalarProperty Name="cubeunit" ColumnName="cubeunit" />
+          <ScalarProperty Name="weight" ColumnName="weight" />
+          <ScalarProperty Name="unitwei" ColumnName="unitwei" />
+          <ScalarProperty Name="kgs_unit" ColumnName="kgs_unit" />
+          <ScalarProperty Name="netwei" ColumnName="netwei" />
+          <ScalarProperty Name="unitnetwei" ColumnName="unitnetwei" />
+          <ScalarProperty Name="netwei_unit" ColumnName="netwei_unit" />
+          <ScalarProperty Name="shuttle" ColumnName="shuttle" />
+          <ScalarProperty Name="shuttle_fee" ColumnName="shuttle_fee" />
+          <ScalarProperty Name="patterno" ColumnName="patterno" />
+          <ScalarProperty Name="pattern_name" ColumnName="pattern_name" />
+          <ScalarProperty Name="currency" ColumnName="currency" />
+          <ScalarProperty Name="refund" ColumnName="refund" />
+          <ScalarProperty Name="part" ColumnName="part" />
+          <ScalarProperty Name="vessel" ColumnName="vessel" />
+          <ScalarProperty Name="voyage" ColumnName="voyage" />
+          <ScalarProperty Name="seal_no" ColumnName="seal_no" />
+          <ScalarProperty Name="etd" ColumnName="etd" />
+          <ScalarProperty Name="eta" ColumnName="eta" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="remark1" ColumnName="remark1" />
+          <ScalarProperty Name="remark2" ColumnName="remark2" />
+          <ScalarProperty Name="commodity" ColumnName="commodity" />
+          <ScalarProperty Name="repacked" ColumnName="repacked" />
+          <ScalarProperty Name="Prod_des" ColumnName="Prod_des" />
+          <ScalarProperty Name="pcsperqty" ColumnName="pcsperqty" />
+          <ScalarProperty Name="line" ColumnName="line" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="SI_Weight" ColumnName="SI_Weight" />
+          <ScalarProperty Name="SI_WeightRemark" ColumnName="SI_WeightRemark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="In2So">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.In2So">
+        <MappingFragment StoreEntitySet="In2So">
+          <ScalarProperty Name="LinkID" ColumnName="LinkID" />
+          <ScalarProperty Name="So_No" ColumnName="So_No" />
+          <ScalarProperty Name="LinkSeq" ColumnName="LinkSeq" />
+          <ScalarProperty Name="pre_entry" ColumnName="pre_entry" />
+          <ScalarProperty Name="In_No" ColumnName="In_No" />
+          <ScalarProperty Name="g_no" ColumnName="g_no" />
+          <ScalarProperty Name="Seq" ColumnName="Seq" />
+          <ScalarProperty Name="NewSeq" ColumnName="NewSeq" />
+          <ScalarProperty Name="Item_No" ColumnName="Item_No" />
+          <ScalarProperty Name="Pack_No" ColumnName="Pack_No" />
+          <ScalarProperty Name="PackBal" ColumnName="PackBal" />
+          <ScalarProperty Name="Spec" ColumnName="Spec" />
+          <ScalarProperty Name="PCS" ColumnName="PCS" />
+          <ScalarProperty Name="PCSBal" ColumnName="PCSBal" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="InDocContainer">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.InDocContainer">
+        <MappingFragment StoreEntitySet="InDocContainer">
+          <ScalarProperty Name="CID" ColumnName="CID" />
+          <ScalarProperty Name="pre_entry" ColumnName="pre_entry" />
+          <ScalarProperty Name="ContainerNo" ColumnName="ContainerNo" />
+          <ScalarProperty Name="Cont_Size" ColumnName="Cont_Size" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="InDocVehicle">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.InDocVehicle">
+        <MappingFragment StoreEntitySet="InDocVehicle">
+          <ScalarProperty Name="IID" ColumnName="IID" />
+          <ScalarProperty Name="pre_entry" ColumnName="pre_entry" />
+          <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+          <ScalarProperty Name="VehicleType" ColumnName="VehicleType" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Inhead">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.Inhead">
+        <MappingFragment StoreEntitySet="Inhead">
+          <ScalarProperty Name="ihid" ColumnName="ihid" />
+          <ScalarProperty Name="pre_entry" ColumnName="pre_entry" />
+          <ScalarProperty Name="act_date" ColumnName="act_date" />
+          <ScalarProperty Name="agent_code" ColumnName="agent_code" />
+          <ScalarProperty Name="agent_name" ColumnName="agent_name" />
+          <ScalarProperty Name="appl_no" ColumnName="appl_no" />
+          <ScalarProperty Name="appr_no" ColumnName="appr_no" />
+          <ScalarProperty Name="bill_no" ColumnName="bill_no" />
+          <ScalarProperty Name="carbox_no" ColumnName="carbox_no" />
+          <ScalarProperty Name="cert_mark" ColumnName="cert_mark" />
+          <ScalarProperty Name="co_owner" ColumnName="co_owner" />
+          <ScalarProperty Name="contr_no" ColumnName="contr_no" />
+          <ScalarProperty Name="customs_co" ColumnName="customs_co" />
+          <ScalarProperty Name="cut_mode" ColumnName="cut_mode" />
+          <ScalarProperty Name="d_date" ColumnName="d_date" />
+          <ScalarProperty Name="port_line" ColumnName="port_line" />
+          <ScalarProperty Name="district_c" ColumnName="district_c" />
+          <ScalarProperty Name="entry_id" ColumnName="entry_id" />
+          <ScalarProperty Name="ex_source" ColumnName="ex_source" />
+          <ScalarProperty Name="factory" ColumnName="factory" />
+          <ScalarProperty Name="fee_curr" ColumnName="fee_curr" />
+          <ScalarProperty Name="fee_mark" ColumnName="fee_mark" />
+          <ScalarProperty Name="fee_rate" ColumnName="fee_rate" />
+          <ScalarProperty Name="givetax" ColumnName="givetax" />
+          <ScalarProperty Name="gross_wt" ColumnName="gross_wt" />
+          <ScalarProperty Name="i_e_date" ColumnName="i_e_date" />
+          <ScalarProperty Name="i_e_port" ColumnName="i_e_port" />
+          <ScalarProperty Name="duty_ratio" ColumnName="duty_ratio" />
+          <ScalarProperty Name="insur_curr" ColumnName="insur_curr" />
+          <ScalarProperty Name="insur_mark" ColumnName="insur_mark" />
+          <ScalarProperty Name="insur_rate" ColumnName="insur_rate" />
+          <ScalarProperty Name="items_no" ColumnName="items_no" />
+          <ScalarProperty Name="license_no" ColumnName="license_no" />
+          <ScalarProperty Name="manual_no" ColumnName="manual_no" />
+          <ScalarProperty Name="net_wt" ColumnName="net_wt" />
+          <ScalarProperty Name="note_s" ColumnName="note_s" />
+          <ScalarProperty Name="other_curr" ColumnName="other_curr" />
+          <ScalarProperty Name="other_mark" ColumnName="other_mark" />
+          <ScalarProperty Name="other_rate" ColumnName="other_rate" />
+          <ScalarProperty Name="owner_code" ColumnName="owner_code" />
+          <ScalarProperty Name="owner_name" ColumnName="owner_name" />
+          <ScalarProperty Name="pack_no" ColumnName="pack_no" />
+          <ScalarProperty Name="pay_mode" ColumnName="pay_mode" />
+          <ScalarProperty Name="pay_way" ColumnName="pay_way" />
+          <ScalarProperty Name="sfdj0" ColumnName="sfdj0" />
+          <ScalarProperty Name="sfdj1" ColumnName="sfdj1" />
+          <ScalarProperty Name="sfdj2" ColumnName="sfdj2" />
+          <ScalarProperty Name="sfdj3" ColumnName="sfdj3" />
+          <ScalarProperty Name="sfdj4" ColumnName="sfdj4" />
+          <ScalarProperty Name="sfdj5" ColumnName="sfdj5" />
+          <ScalarProperty Name="sfdj6" ColumnName="sfdj6" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="tax_rate" ColumnName="tax_rate" />
+          <ScalarProperty Name="traf_mode" ColumnName="traf_mode" />
+          <ScalarProperty Name="traf_name" ColumnName="traf_name" />
+          <ScalarProperty Name="trade_code" ColumnName="trade_code" />
+          <ScalarProperty Name="trade_coun" ColumnName="trade_coun" />
+          <ScalarProperty Name="trade_mode" ColumnName="trade_mode" />
+          <ScalarProperty Name="trade_name" ColumnName="trade_name" />
+          <ScalarProperty Name="trans_mode" ColumnName="trans_mode" />
+          <ScalarProperty Name="typer" ColumnName="typer" />
+          <ScalarProperty Name="use_to_cod" ColumnName="use_to_cod" />
+          <ScalarProperty Name="wrap_type" ColumnName="wrap_type" />
+          <ScalarProperty Name="printed" ColumnName="printed" />
+          <ScalarProperty Name="oper_type" ColumnName="oper_type" />
+          <ScalarProperty Name="note_1" ColumnName="note_1" />
+          <ScalarProperty Name="input_corp" ColumnName="input_corp" />
+          <ScalarProperty Name="In_No" ColumnName="In_No" />
+          <ScalarProperty Name="Declar_No" ColumnName="Declar_No" />
+          <ScalarProperty Name="BP_No" ColumnName="BP_No" />
+          <ScalarProperty Name="CustomsDocuType" ColumnName="CustomsDocuType" />
+          <ScalarProperty Name="LinkToSo" ColumnName="LinkToSo" />
+          <ScalarProperty Name="Sended" ColumnName="Sended" />
+          <ScalarProperty Name="Confirmdate" ColumnName="Confirmdate" />
+          <ScalarProperty Name="TransType" ColumnName="TransType" />
+          <ScalarProperty Name="Trans_Number" ColumnName="Trans_Number" />
+          <ScalarProperty Name="Cont_Number" ColumnName="Cont_Number" />
+          <ScalarProperty Name="StdardContNumber" ColumnName="StdardContNumber" />
+          <ScalarProperty Name="Cont_Size" ColumnName="Cont_Size" />
+          <ScalarProperty Name="ReturnTax" ColumnName="ReturnTax" />
+          <ScalarProperty Name="Seal_No" ColumnName="Seal_No" />
+          <ScalarProperty Name="Cert_No" ColumnName="Cert_No" />
+          <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+          <ScalarProperty Name="Vehicle_Number" ColumnName="Vehicle_Number" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="InList">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.InList">
+        <MappingFragment StoreEntitySet="InList">
+          <ScalarProperty Name="idgid" ColumnName="idgid" />
+          <ScalarProperty Name="pre_entry" ColumnName="pre_entry" />
+          <ScalarProperty Name="g_no" ColumnName="g_no" />
+          <ScalarProperty Name="code_s" ColumnName="code_s" />
+          <ScalarProperty Name="code_t" ColumnName="code_t" />
+          <ScalarProperty Name="class_mark" ColumnName="class_mark" />
+          <ScalarProperty Name="contr_item" ColumnName="contr_item" />
+          <ScalarProperty Name="curr_code" ColumnName="curr_code" />
+          <ScalarProperty Name="duty_mode" ColumnName="duty_mode" />
+          <ScalarProperty Name="factor" ColumnName="factor" />
+          <ScalarProperty Name="g_name" ColumnName="g_name" />
+          <ScalarProperty Name="g_qty" ColumnName="g_qty" />
+          <ScalarProperty Name="g_qty_remain" ColumnName="g_qty_remain" />
+          <ScalarProperty Name="g_spec" ColumnName="g_spec" />
+          <ScalarProperty Name="g_unit" ColumnName="g_unit" />
+          <ScalarProperty Name="goods_id" ColumnName="goods_id" />
+          <ScalarProperty Name="qty_1" ColumnName="qty_1" />
+          <ScalarProperty Name="qty_2" ColumnName="qty_2" />
+          <ScalarProperty Name="orign_coun" ColumnName="orign_coun" />
+          <ScalarProperty Name="trade_ttl" ColumnName="trade_ttl" />
+          <ScalarProperty Name="unit_code1" ColumnName="unit_code1" />
+          <ScalarProperty Name="unit_code2" ColumnName="unit_code2" />
+          <ScalarProperty Name="unit_price" ColumnName="unit_price" />
+          <ScalarProperty Name="g_weight" ColumnName="g_weight" />
+          <ScalarProperty Name="g_netwei" ColumnName="g_netwei" />
+          <ScalarProperty Name="exg_ver" ColumnName="exg_ver" />
+          <ScalarProperty Name="w_code_t" ColumnName="w_code_t" />
+          <ScalarProperty Name="w_code_s" ColumnName="w_code_s" />
+          <ScalarProperty Name="w_curr" ColumnName="w_curr" />
+          <ScalarProperty Name="w_total" ColumnName="w_total" />
+          <ScalarProperty Name="In_No" ColumnName="In_No" />
+          <ScalarProperty Name="pack_no" ColumnName="pack_no" />
+          <ScalarProperty Name="pcs" ColumnName="pcs" />
+          <ScalarProperty Name="DocuType" ColumnName="DocuType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="invoice">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.invoice">
+        <MappingFragment StoreEntitySet="invoice">
+          <ScalarProperty Name="iID" ColumnName="iID" />
+          <ScalarProperty Name="invoiceNo" ColumnName="invoiceNo" />
+          <ScalarProperty Name="so_no" ColumnName="so_no" />
+          <ScalarProperty Name="exchange_rate" ColumnName="exchange_rate" />
+          <ScalarProperty Name="Total_USD" ColumnName="Total_USD" />
+          <ScalarProperty Name="invoice_date" ColumnName="invoice_date" />
+          <ScalarProperty Name="rec_date" ColumnName="rec_date" />
+          <ScalarProperty Name="vendor" ColumnName="vendor" />
+          <ScalarProperty Name="cbm_price" ColumnName="cbm_price" />
+          <ScalarProperty Name="cbm" ColumnName="cbm" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="invoiceExchange">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.invoiceExchange">
+        <MappingFragment StoreEntitySet="invoiceExchange">
+          <ScalarProperty Name="eID" ColumnName="eID" />
+          <ScalarProperty Name="exchange_Rate" ColumnName="exchange_Rate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="latecome">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.latecome">
+        <MappingFragment StoreEntitySet="latecome">
+          <ScalarProperty Name="so_no" ColumnName="so_no" />
+          <ScalarProperty Name="seq" ColumnName="seq" />
+          <ScalarProperty Name="cbm" ColumnName="cbm" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Load_Fee">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.Load_Fee">
+        <MappingFragment StoreEntitySet="Load_Fee">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="clpno" ColumnName="clpno" />
+          <ScalarProperty Name="Account" ColumnName="Account" />
+          <ScalarProperty Name="la_no" ColumnName="la_no" />
+          <ScalarProperty Name="invoiceno" ColumnName="invoiceno" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="plandate" ColumnName="plandate" />
+          <ScalarProperty Name="cfschg" ColumnName="cfschg" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Loading">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.Loading">
+        <MappingFragment StoreEntitySet="Loading">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+          <ScalarProperty Name="OperateDate" ColumnName="OperateDate" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+          <ScalarProperty Name="Employer" ColumnName="Employer" />
+          <ScalarProperty Name="Account" ColumnName="Account" />
+          <ScalarProperty Name="Ctn" ColumnName="Ctn" />
+          <ScalarProperty Name="Paires" ColumnName="Paires" />
+          <ScalarProperty Name="CBM" ColumnName="CBM" />
+          <ScalarProperty Name="VehicleType" ColumnName="VehicleType" />
+          <ScalarProperty Name="VehicleNumber" ColumnName="VehicleNumber" />
+          <ScalarProperty Name="Warehouse" ColumnName="Warehouse" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LoadPlanUpdateRecord">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.LoadPlanUpdateRecord">
+        <MappingFragment StoreEntitySet="LoadPlanUpdateRecord">
+          <ScalarProperty Name="uID" ColumnName="uID" />
+          <ScalarProperty Name="lID" ColumnName="lID" />
+          <ScalarProperty Name="update_content" ColumnName="update_content" />
+          <ScalarProperty Name="update_date" ColumnName="update_date" />
+          <ScalarProperty Name="input_date" ColumnName="input_date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LPCont_Info">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.LPCont_Info">
+        <MappingFragment StoreEntitySet="LPCont_Info">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="job_No" ColumnName="job_No" />
+          <ScalarProperty Name="num" ColumnName="num" />
+          <ScalarProperty Name="size" ColumnName="size" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LPStatus">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.LPStatus">
+        <MappingFragment StoreEntitySet="LPStatus">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="code" ColumnName="code" />
+          <ScalarProperty Name="status_Name" ColumnName="status_Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MaxId">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.MaxId">
+        <MappingFragment StoreEntitySet="MaxId">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="GroupValue" ColumnName="GroupValue" />
+          <ScalarProperty Name="Maxid1" ColumnName="Maxid" />
+          <ScalarProperty Name="Year" ColumnName="Year" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="remark2" ColumnName="remark2" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="newpacking">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.newpacking">
+        <MappingFragment StoreEntitySet="newpacking">
+          <ScalarProperty Name="so_no" ColumnName="so_no" />
+          <ScalarProperty Name="newseq" ColumnName="newseq" />
+          <ScalarProperty Name="qty" ColumnName="qty" />
+          <ScalarProperty Name="qtybal" ColumnName="qtybal" />
+          <ScalarProperty Name="pcs" ColumnName="pcs" />
+          <ScalarProperty Name="pcsbal" ColumnName="pcsbal" />
+          <ScalarProperty Name="qtyinplt" ColumnName="qtyinplt" />
+          <ScalarProperty Name="unit" ColumnName="unit" />
+          <ScalarProperty Name="length" ColumnName="length" />
+          <ScalarProperty Name="width" ColumnName="width" />
+          <ScalarProperty Name="height" ColumnName="height" />
+          <ScalarProperty Name="cbm" ColumnName="cbm" />
+          <ScalarProperty Name="unitwei" ColumnName="unitwei" />
+          <ScalarProperty Name="weight" ColumnName="weight" />
+          <ScalarProperty Name="spec" ColumnName="spec" />
+          <ScalarProperty Name="repackdate" ColumnName="repackdate" />
+          <ScalarProperty Name="po" ColumnName="po" />
+          <ScalarProperty Name="item_no" ColumnName="item_no" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="LinkToIn" ColumnName="LinkToIn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="newpacklist">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.newpacklist">
+        <MappingFragment StoreEntitySet="newpacklist">
+          <ScalarProperty Name="PID" ColumnName="PID" />
+          <ScalarProperty Name="so_no" ColumnName="so_no" />
+          <ScalarProperty Name="newseq" ColumnName="newseq" />
+          <ScalarProperty Name="booking" ColumnName="booking" />
+          <ScalarProperty Name="item_no" ColumnName="item_no" />
+          <ScalarProperty Name="seq" ColumnName="seq" />
+          <ScalarProperty Name="pcs" ColumnName="pcs" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="out_head">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.out_head">
+        <MappingFragment StoreEntitySet="out_head">
+          <ScalarProperty Name="clpno" ColumnName="clpno" />
+          <ScalarProperty Name="la_no" ColumnName="la_no" />
+          <ScalarProperty Name="client" ColumnName="client" />
+          <ScalarProperty Name="cont_no" ColumnName="cont_no" />
+          <ScalarProperty Name="seal_no" ColumnName="seal_no" />
+          <ScalarProperty Name="pod" ColumnName="pod" />
+          <ScalarProperty Name="division" ColumnName="division" />
+          <ScalarProperty Name="destination" ColumnName="destination" />
+          <ScalarProperty Name="cust_ordno" ColumnName="cust_ordno" />
+          <ScalarProperty Name="booking" ColumnName="booking" />
+          <ScalarProperty Name="vessel" ColumnName="vessel" />
+          <ScalarProperty Name="voyage" ColumnName="voyage" />
+          <ScalarProperty Name="cont_size" ColumnName="cont_size" />
+          <ScalarProperty Name="Plan_date" ColumnName="Plan_date" />
+          <ScalarProperty Name="loa_date" ColumnName="loa_date" />
+          <ScalarProperty Name="deliv_date" ColumnName="deliv_date" />
+          <ScalarProperty Name="sail_date" ColumnName="sail_date" />
+          <ScalarProperty Name="carrier" ColumnName="carrier" />
+          <ScalarProperty Name="close_date" ColumnName="close_date" />
+          <ScalarProperty Name="SI_Date" ColumnName="SI_Date" />
+          <ScalarProperty Name="shuttle" ColumnName="shuttle" />
+          <ScalarProperty Name="shuttle_fee" ColumnName="shuttle_fee" />
+          <ScalarProperty Name="input_date" ColumnName="input_date" />
+          <ScalarProperty Name="decl_mode" ColumnName="decl_mode" />
+          <ScalarProperty Name="loadport" ColumnName="loadport" />
+          <ScalarProperty Name="export_form" ColumnName="export_form" />
+          <ScalarProperty Name="totalqty" ColumnName="totalqty" />
+          <ScalarProperty Name="totalcbm" ColumnName="totalcbm" />
+          <ScalarProperty Name="decl_date" ColumnName="decl_date" />
+          <ScalarProperty Name="ieflag" ColumnName="ieflag" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="remark1" ColumnName="remark1" />
+          <ScalarProperty Name="remark2" ColumnName="remark2" />
+          <ScalarProperty Name="beloaded" ColumnName="beloaded" />
+          <ScalarProperty Name="trans_type" ColumnName="trans_type" />
+          <ScalarProperty Name="recla_date" ColumnName="recla_date" />
+          <ScalarProperty Name="terclos_date" ColumnName="terclos_date" />
+          <ScalarProperty Name="permit_date" ColumnName="permit_date" />
+          <ScalarProperty Name="email_date" ColumnName="email_date" />
+          <ScalarProperty Name="G_Veh" ColumnName="G_Veh" />
+          <ScalarProperty Name="G_Order" ColumnName="G_Order" />
+          <ScalarProperty Name="G_Back" ColumnName="G_Back" />
+          <ScalarProperty Name="B_Veh" ColumnName="B_Veh" />
+          <ScalarProperty Name="B_Order" ColumnName="B_Order" />
+          <ScalarProperty Name="B_Back" ColumnName="B_Back" />
+          <ScalarProperty Name="ContYard" ColumnName="ContYard" />
+          <ScalarProperty Name="TerYard" ColumnName="TerYard" />
+          <ScalarProperty Name="ExchFee" ColumnName="ExchFee" />
+          <ScalarProperty Name="ContFee" ColumnName="ContFee" />
+          <ScalarProperty Name="CharDocFee" ColumnName="CharDocFee" />
+          <ScalarProperty Name="SuffocatingFee" ColumnName="SuffocatingFee" />
+          <ScalarProperty Name="Employee" ColumnName="Employee" />
+          <ScalarProperty Name="StuffStart" ColumnName="StuffStart" />
+          <ScalarProperty Name="Stufffinish" ColumnName="Stufffinish" />
+          <ScalarProperty Name="BLNO" ColumnName="BLNO" />
+          <ScalarProperty Name="HBL" ColumnName="HBL" />
+          <ScalarProperty Name="PickAddress" ColumnName="PickAddress" />
+          <ScalarProperty Name="ReturnAddress" ColumnName="ReturnAddress" />
+          <ScalarProperty Name="VGM_Weight" ColumnName="VGM_Weight" />
+          <ScalarProperty Name="Customs_Declaration" ColumnName="Customs_Declaration" />
+          <ScalarProperty Name="forwarder_code" ColumnName="forwarder_code" />
+          <ScalarProperty Name="Terminal_POD_UploadDate" ColumnName="Terminal_POD_UploadDate" />
+          <ScalarProperty Name="shipment_ID" ColumnName="shipment_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="out_head_cy">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.out_head_cy">
+        <MappingFragment StoreEntitySet="out_head_cy">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="la_no" ColumnName="la_no" />
+          <ScalarProperty Name="cont_no" ColumnName="cont_no" />
+          <ScalarProperty Name="vessel" ColumnName="vessel" />
+          <ScalarProperty Name="voyage" ColumnName="voyage" />
+          <ScalarProperty Name="ETD" ColumnName="ETD" />
+          <ScalarProperty Name="ETA" ColumnName="ETA" />
+          <ScalarProperty Name="seal_no" ColumnName="seal_no" />
+          <ScalarProperty Name="cont_type" ColumnName="cont_type" />
+          <ScalarProperty Name="POE" ColumnName="POE" />
+          <ScalarProperty Name="booking_number" ColumnName="booking_number" />
+          <ScalarProperty Name="destination" ColumnName="destination" />
+          <ScalarProperty Name="division" ColumnName="division" />
+          <ScalarProperty Name="total_pcs" ColumnName="total_pcs" />
+          <ScalarProperty Name="total_ctn" ColumnName="total_ctn" />
+          <ScalarProperty Name="total_cbm" ColumnName="total_cbm" />
+          <ScalarProperty Name="total_weight" ColumnName="total_weight" />
+          <ScalarProperty Name="acceptance" ColumnName="acceptance" />
+          <ScalarProperty Name="Carrier" ColumnName="Carrier" />
+          <ScalarProperty Name="MBL" ColumnName="MBL" />
+          <ScalarProperty Name="HBL" ColumnName="HBL" />
+          <ScalarProperty Name="FcrData" ColumnName="FcrData" />
+          <ScalarProperty Name="ECV_Status" ColumnName="ECV_Status" />
+          <ScalarProperty Name="shipment_id" ColumnName="shipment_id" />
+          <ScalarProperty Name="Closingdate" ColumnName="Closingdate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="out_item">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.out_item">
+        <MappingFragment StoreEntitySet="out_item">
+          <ScalarProperty Name="clpno" ColumnName="clpno" />
+          <ScalarProperty Name="oseq" ColumnName="oseq" />
+          <ScalarProperty Name="consg_code" ColumnName="consg_code" />
+          <ScalarProperty Name="so_no" ColumnName="so_no" />
+          <ScalarProperty Name="seq" ColumnName="seq" />
+          <ScalarProperty Name="LinkSeq" ColumnName="LinkSeq" />
+          <ScalarProperty Name="g_no" ColumnName="g_no" />
+          <ScalarProperty Name="stk" ColumnName="stk" />
+          <ScalarProperty Name="po" ColumnName="po" />
+          <ScalarProperty Name="sku" ColumnName="sku" />
+          <ScalarProperty Name="pre_entry" ColumnName="pre_entry" />
+          <ScalarProperty Name="in_no" ColumnName="in_no" />
+          <ScalarProperty Name="case_no" ColumnName="case_no" />
+          <ScalarProperty Name="style_no" ColumnName="style_no" />
+          <ScalarProperty Name="item_no" ColumnName="item_no" />
+          <ScalarProperty Name="patterno" ColumnName="patterno" />
+          <ScalarProperty Name="pattern_name" ColumnName="pattern_name" />
+          <ScalarProperty Name="sample_no" ColumnName="sample_no" />
+          <ScalarProperty Name="cat_code" ColumnName="cat_code" />
+          <ScalarProperty Name="descr" ColumnName="descr" />
+          <ScalarProperty Name="pallet" ColumnName="pallet" />
+          <ScalarProperty Name="qty" ColumnName="qty" />
+          <ScalarProperty Name="ctns" ColumnName="ctns" />
+          <ScalarProperty Name="pcs" ColumnName="pcs" />
+          <ScalarProperty Name="unit" ColumnName="unit" />
+          <ScalarProperty Name="unitwei" ColumnName="unitwei" />
+          <ScalarProperty Name="weight" ColumnName="weight" />
+          <ScalarProperty Name="length" ColumnName="length" />
+          <ScalarProperty Name="width" ColumnName="width" />
+          <ScalarProperty Name="height" ColumnName="height" />
+          <ScalarProperty Name="cbm" ColumnName="cbm" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="la_no" ColumnName="la_no" />
+          <ScalarProperty Name="plan_date" ColumnName="plan_date" />
+          <ScalarProperty Name="beloaded" ColumnName="beloaded" />
+          <ScalarProperty Name="remark1" ColumnName="remark1" />
+          <ScalarProperty Name="size" ColumnName="size" />
+          <ScalarProperty Name="NewSeq" ColumnName="NewSeq" />
+          <ScalarProperty Name="ScanQty" ColumnName="ScanQty" />
+          <ScalarProperty Name="ScanFlag" ColumnName="ScanFlag" />
+          <ScalarProperty Name="Act_Weight" ColumnName="Act_Weight" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="out_item_cy">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.out_item_cy">
+        <MappingFragment StoreEntitySet="out_item_cy">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="aID" ColumnName="aID" />
+          <ScalarProperty Name="so_no" ColumnName="so_no" />
+          <ScalarProperty Name="order_no" ColumnName="order_no" />
+          <ScalarProperty Name="po" ColumnName="po" />
+          <ScalarProperty Name="stock_no" ColumnName="stock_no" />
+          <ScalarProperty Name="pattern_no" ColumnName="pattern_no" />
+          <ScalarProperty Name="pattern_name" ColumnName="pattern_name" />
+          <ScalarProperty Name="rec_date" ColumnName="rec_date" />
+          <ScalarProperty Name="destination" ColumnName="destination" />
+          <ScalarProperty Name="pairage" ColumnName="pairage" />
+          <ScalarProperty Name="ctn" ColumnName="ctn" />
+          <ScalarProperty Name="cbm" ColumnName="cbm" />
+          <ScalarProperty Name="weight" ColumnName="weight" />
+          <ScalarProperty Name="supplier" ColumnName="supplier" />
+          <ScalarProperty Name="commodity" ColumnName="commodity" />
+          <ScalarProperty Name="packing" ColumnName="packing" />
+          <ScalarProperty Name="htsus_no" ColumnName="htsus_no" />
+          <ScalarProperty Name="line_no" ColumnName="line_no" />
+          <ScalarProperty Name="Material_Group_Desc" ColumnName="Material_Group_Desc" />
+          <ScalarProperty Name="ECV_Status" ColumnName="ECV_Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OutDocContainer">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.OutDocContainer">
+        <MappingFragment StoreEntitySet="OutDocContainer">
+          <ScalarProperty Name="CID" ColumnName="CID" />
+          <ScalarProperty Name="pre_entry" ColumnName="pre_entry" />
+          <ScalarProperty Name="ContainerNo" ColumnName="ContainerNo" />
+          <ScalarProperty Name="Cont_Size" ColumnName="Cont_Size" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OutDocVehicle">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.OutDocVehicle">
+        <MappingFragment StoreEntitySet="OutDocVehicle">
+          <ScalarProperty Name="IID" ColumnName="IID" />
+          <ScalarProperty Name="pre_entry" ColumnName="pre_entry" />
+          <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+          <ScalarProperty Name="VehicleType" ColumnName="VehicleType" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Outhead">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.Outhead">
+        <MappingFragment StoreEntitySet="Outhead">
+          <ScalarProperty Name="ebID" ColumnName="ebID" />
+          <ScalarProperty Name="pre_entry" ColumnName="pre_entry" />
+          <ScalarProperty Name="act_date" ColumnName="act_date" />
+          <ScalarProperty Name="agent_code" ColumnName="agent_code" />
+          <ScalarProperty Name="agent_name" ColumnName="agent_name" />
+          <ScalarProperty Name="appl_no" ColumnName="appl_no" />
+          <ScalarProperty Name="appr_no" ColumnName="appr_no" />
+          <ScalarProperty Name="bill_no" ColumnName="bill_no" />
+          <ScalarProperty Name="carbox_no" ColumnName="carbox_no" />
+          <ScalarProperty Name="cert_mark" ColumnName="cert_mark" />
+          <ScalarProperty Name="co_owner" ColumnName="co_owner" />
+          <ScalarProperty Name="contr_no" ColumnName="contr_no" />
+          <ScalarProperty Name="customs_co" ColumnName="customs_co" />
+          <ScalarProperty Name="cut_mode" ColumnName="cut_mode" />
+          <ScalarProperty Name="d_date" ColumnName="d_date" />
+          <ScalarProperty Name="port_line" ColumnName="port_line" />
+          <ScalarProperty Name="district_c" ColumnName="district_c" />
+          <ScalarProperty Name="entry_id" ColumnName="entry_id" />
+          <ScalarProperty Name="ex_source" ColumnName="ex_source" />
+          <ScalarProperty Name="factory" ColumnName="factory" />
+          <ScalarProperty Name="fee_curr" ColumnName="fee_curr" />
+          <ScalarProperty Name="fee_mark" ColumnName="fee_mark" />
+          <ScalarProperty Name="fee_rate" ColumnName="fee_rate" />
+          <ScalarProperty Name="givetax" ColumnName="givetax" />
+          <ScalarProperty Name="gross_wt" ColumnName="gross_wt" />
+          <ScalarProperty Name="i_e_date" ColumnName="i_e_date" />
+          <ScalarProperty Name="i_e_port" ColumnName="i_e_port" />
+          <ScalarProperty Name="duty_ratio" ColumnName="duty_ratio" />
+          <ScalarProperty Name="insur_curr" ColumnName="insur_curr" />
+          <ScalarProperty Name="insur_mark" ColumnName="insur_mark" />
+          <ScalarProperty Name="insur_rate" ColumnName="insur_rate" />
+          <ScalarProperty Name="items_no" ColumnName="items_no" />
+          <ScalarProperty Name="license_no" ColumnName="license_no" />
+          <ScalarProperty Name="manual_no" ColumnName="manual_no" />
+          <ScalarProperty Name="net_wt" ColumnName="net_wt" />
+          <ScalarProperty Name="note_s" ColumnName="note_s" />
+          <ScalarProperty Name="other_curr" ColumnName="other_curr" />
+          <ScalarProperty Name="other_mark" ColumnName="other_mark" />
+          <ScalarProperty Name="other_rate" ColumnName="other_rate" />
+          <ScalarProperty Name="owner_code" ColumnName="owner_code" />
+          <ScalarProperty Name="owner_name" ColumnName="owner_name" />
+          <ScalarProperty Name="pack_no" ColumnName="pack_no" />
+          <ScalarProperty Name="pay_mode" ColumnName="pay_mode" />
+          <ScalarProperty Name="pay_way" ColumnName="pay_way" />
+          <ScalarProperty Name="sfdj0" ColumnName="sfdj0" />
+          <ScalarProperty Name="sfdj1" ColumnName="sfdj1" />
+          <ScalarProperty Name="sfdj2" ColumnName="sfdj2" />
+          <ScalarProperty Name="sfdj3" ColumnName="sfdj3" />
+          <ScalarProperty Name="sfdj4" ColumnName="sfdj4" />
+          <ScalarProperty Name="sfdj5" ColumnName="sfdj5" />
+          <ScalarProperty Name="sfdj6" ColumnName="sfdj6" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="tax_rate" ColumnName="tax_rate" />
+          <ScalarProperty Name="traf_mode" ColumnName="traf_mode" />
+          <ScalarProperty Name="traf_name" ColumnName="traf_name" />
+          <ScalarProperty Name="trade_code" ColumnName="trade_code" />
+          <ScalarProperty Name="trade_coun" ColumnName="trade_coun" />
+          <ScalarProperty Name="trade_mode" ColumnName="trade_mode" />
+          <ScalarProperty Name="trade_name" ColumnName="trade_name" />
+          <ScalarProperty Name="trans_mode" ColumnName="trans_mode" />
+          <ScalarProperty Name="typer" ColumnName="typer" />
+          <ScalarProperty Name="use_to_cod" ColumnName="use_to_cod" />
+          <ScalarProperty Name="wrap_type" ColumnName="wrap_type" />
+          <ScalarProperty Name="printed" ColumnName="printed" />
+          <ScalarProperty Name="oper_type" ColumnName="oper_type" />
+          <ScalarProperty Name="note_1" ColumnName="note_1" />
+          <ScalarProperty Name="input_corp" ColumnName="input_corp" />
+          <ScalarProperty Name="Declar_No" ColumnName="Declar_No" />
+          <ScalarProperty Name="BP_No" ColumnName="BP_No" />
+          <ScalarProperty Name="CustomsDocuType" ColumnName="CustomsDocuType" />
+          <ScalarProperty Name="clpno" ColumnName="clpno" />
+          <ScalarProperty Name="Sended" ColumnName="Sended" />
+          <ScalarProperty Name="Confirmdate" ColumnName="Confirmdate" />
+          <ScalarProperty Name="TransType" ColumnName="TransType" />
+          <ScalarProperty Name="Trans_Number" ColumnName="Trans_Number" />
+          <ScalarProperty Name="Cont_Number" ColumnName="Cont_Number" />
+          <ScalarProperty Name="StdardContNumber" ColumnName="StdardContNumber" />
+          <ScalarProperty Name="Cont_Size" ColumnName="Cont_Size" />
+          <ScalarProperty Name="ReturnTax" ColumnName="ReturnTax" />
+          <ScalarProperty Name="Seal_No" ColumnName="Seal_No" />
+          <ScalarProperty Name="Cert_No" ColumnName="Cert_No" />
+          <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+          <ScalarProperty Name="Vehicle_Number" ColumnName="Vehicle_Number" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="Customs_Weight" ColumnName="Customs_Weight" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OutList">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.OutList">
+        <MappingFragment StoreEntitySet="OutList">
+          <ScalarProperty Name="ebgID" ColumnName="ebgID" />
+          <ScalarProperty Name="pre_entry" ColumnName="pre_entry" />
+          <ScalarProperty Name="g_no" ColumnName="g_no" />
+          <ScalarProperty Name="code_s" ColumnName="code_s" />
+          <ScalarProperty Name="code_t" ColumnName="code_t" />
+          <ScalarProperty Name="class_mark" ColumnName="class_mark" />
+          <ScalarProperty Name="contr_item" ColumnName="contr_item" />
+          <ScalarProperty Name="curr_code" ColumnName="curr_code" />
+          <ScalarProperty Name="duty_mode" ColumnName="duty_mode" />
+          <ScalarProperty Name="factor" ColumnName="factor" />
+          <ScalarProperty Name="g_name" ColumnName="g_name" />
+          <ScalarProperty Name="g_qty" ColumnName="g_qty" />
+          <ScalarProperty Name="g_spec" ColumnName="g_spec" />
+          <ScalarProperty Name="g_unit" ColumnName="g_unit" />
+          <ScalarProperty Name="goods_id" ColumnName="goods_id" />
+          <ScalarProperty Name="qty_1" ColumnName="qty_1" />
+          <ScalarProperty Name="qty_2" ColumnName="qty_2" />
+          <ScalarProperty Name="orign_coun" ColumnName="orign_coun" />
+          <ScalarProperty Name="trade_ttl" ColumnName="trade_ttl" />
+          <ScalarProperty Name="unit_code1" ColumnName="unit_code1" />
+          <ScalarProperty Name="unit_code2" ColumnName="unit_code2" />
+          <ScalarProperty Name="unit_price" ColumnName="unit_price" />
+          <ScalarProperty Name="g_weight" ColumnName="g_weight" />
+          <ScalarProperty Name="g_netwei" ColumnName="g_netwei" />
+          <ScalarProperty Name="exg_ver" ColumnName="exg_ver" />
+          <ScalarProperty Name="w_code_t" ColumnName="w_code_t" />
+          <ScalarProperty Name="w_code_s" ColumnName="w_code_s" />
+          <ScalarProperty Name="w_curr" ColumnName="w_curr" />
+          <ScalarProperty Name="w_total" ColumnName="w_total" />
+          <ScalarProperty Name="pack_no" ColumnName="pack_no" />
+          <ScalarProperty Name="CustomsDocuType" ColumnName="CustomsDocuType" />
+          <ScalarProperty Name="ClpNo" ColumnName="ClpNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OutListItems">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.OutListItems">
+        <MappingFragment StoreEntitySet="OutListItems">
+          <ScalarProperty Name="OID" ColumnName="OID" />
+          <ScalarProperty Name="pre_entry" ColumnName="pre_entry" />
+          <ScalarProperty Name="g_no" ColumnName="g_no" />
+          <ScalarProperty Name="clpno" ColumnName="clpno" />
+          <ScalarProperty Name="oseq" ColumnName="oseq" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="pick_return_charge">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.pick_return_charge">
+        <MappingFragment StoreEntitySet="pick_return_charge">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="pick_address" ColumnName="pick_address" />
+          <ScalarProperty Name="return_address" ColumnName="return_address" />
+          <ScalarProperty Name="cont_size" ColumnName="cont_size" />
+          <ScalarProperty Name="chargeID" ColumnName="chargeID" />
+          <ScalarProperty Name="charge" ColumnName="charge" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Port">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.Port">
+        <MappingFragment StoreEntitySet="Port">
+          <ScalarProperty Name="PID" ColumnName="PID" />
+          <ScalarProperty Name="POD" ColumnName="POD" />
+          <ScalarProperty Name="DESTINATION" ColumnName="DESTINATION" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="rec_amount">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.rec_amount">
+        <MappingFragment StoreEntitySet="rec_amount">
+          <ScalarProperty Name="account" ColumnName="account" />
+          <ScalarProperty Name="rec_date" ColumnName="rec_date" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="recdtl">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.recdtl">
+        <MappingFragment StoreEntitySet="recdtl">
+          <ScalarProperty Name="so_no" ColumnName="so_no" />
+          <ScalarProperty Name="recline" ColumnName="recline" />
+          <ScalarProperty Name="seq_no" ColumnName="seq_no" />
+          <ScalarProperty Name="rec_date" ColumnName="rec_date" />
+          <ScalarProperty Name="prod_des" ColumnName="prod_des" />
+          <ScalarProperty Name="sku" ColumnName="sku" />
+          <ScalarProperty Name="po" ColumnName="po" />
+          <ScalarProperty Name="poctns" ColumnName="poctns" />
+          <ScalarProperty Name="skn" ColumnName="skn" />
+          <ScalarProperty Name="c_ono" ColumnName="c_ono" />
+          <ScalarProperty Name="artno" ColumnName="artno" />
+          <ScalarProperty Name="size" ColumnName="size" />
+          <ScalarProperty Name="ctns" ColumnName="ctns" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="spec" ColumnName="spec" />
+          <ScalarProperty Name="pallet" ColumnName="pallet" />
+          <ScalarProperty Name="pkg" ColumnName="pkg" />
+          <ScalarProperty Name="unitwei" ColumnName="unitwei" />
+          <ScalarProperty Name="rweight" ColumnName="rweight" />
+          <ScalarProperty Name="length" ColumnName="length" />
+          <ScalarProperty Name="width" ColumnName="width" />
+          <ScalarProperty Name="height" ColumnName="height" />
+          <ScalarProperty Name="cbm" ColumnName="cbm" />
+          <ScalarProperty Name="cl_cbm" ColumnName="cl_cbm" />
+          <ScalarProperty Name="location" ColumnName="location" />
+          <ScalarProperty Name="pod" ColumnName="pod" />
+          <ScalarProperty Name="dest" ColumnName="dest" />
+          <ScalarProperty Name="Recbal" ColumnName="Recbal" />
+          <ScalarProperty Name="QtyBal" ColumnName="QtyBal" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="line_no" ColumnName="line_no" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="rechead">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.rechead">
+        <MappingFragment StoreEntitySet="rechead">
+          <ScalarProperty Name="so_no" ColumnName="so_no" />
+          <ScalarProperty Name="seq_no" ColumnName="seq_no" />
+          <ScalarProperty Name="client" ColumnName="client" />
+          <ScalarProperty Name="vendor" ColumnName="vendor" />
+          <ScalarProperty Name="totctns" ColumnName="totctns" />
+          <ScalarProperty Name="account" ColumnName="account" />
+          <ScalarProperty Name="vess_voy" ColumnName="vess_voy" />
+          <ScalarProperty Name="totcbm" ColumnName="totcbm" />
+          <ScalarProperty Name="Rec_Status" ColumnName="Rec_Status" />
+          <ScalarProperty Name="linked" ColumnName="linked" />
+          <ScalarProperty Name="fsd" ColumnName="fsd" />
+          <ScalarProperty Name="lsd" ColumnName="lsd" />
+          <ScalarProperty Name="EDI_Status" ColumnName="EDI_Status" />
+          <ScalarProperty Name="totwei" ColumnName="totwei" />
+          <ScalarProperty Name="Ispartial" ColumnName="Ispartial" />
+          <ScalarProperty Name="SkMark" ColumnName="SkMark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RecRegistrationHead">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.RecRegistrationHead">
+        <MappingFragment StoreEntitySet="RecRegistrationHead">
+          <ScalarProperty Name="RegHID" ColumnName="RegHID" />
+          <ScalarProperty Name="RegDate" ColumnName="RegDate" />
+          <ScalarProperty Name="In_No" ColumnName="In_No" />
+          <ScalarProperty Name="Vendor" ColumnName="Vendor" />
+          <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RecRegistrationItems">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.RecRegistrationItems">
+        <MappingFragment StoreEntitySet="RecRegistrationItems">
+          <ScalarProperty Name="RegDID" ColumnName="RegDID" />
+          <ScalarProperty Name="In_No" ColumnName="In_No" />
+          <ScalarProperty Name="ItemSeq" ColumnName="ItemSeq" />
+          <ScalarProperty Name="So_No" ColumnName="So_No" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Client" ColumnName="Client" />
+          <ScalarProperty Name="Prod_Des" ColumnName="Prod_Des" />
+          <ScalarProperty Name="Inspection" ColumnName="Inspection" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RecRegVehicle">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.RecRegVehicle">
+        <MappingFragment StoreEntitySet="RecRegVehicle">
+          <ScalarProperty Name="RegVID" ColumnName="RegVID" />
+          <ScalarProperty Name="In_No" ColumnName="In_No" />
+          <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+          <ScalarProperty Name="VehicleType" ColumnName="VehicleType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ShipperNameList">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.ShipperNameList">
+        <MappingFragment StoreEntitySet="ShipperNameList">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="MfrName1" ColumnName="MfrName1" />
+          <ScalarProperty Name="ShipperName" ColumnName="ShipperName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="spe_opertype">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.spe_opertype">
+        <MappingFragment StoreEntitySet="spe_opertype">
+          <ScalarProperty Name="OID" ColumnName="OID" />
+          <ScalarProperty Name="operatetype" ColumnName="operatetype" />
+          <ScalarProperty Name="unit" ColumnName="unit" />
+          <ScalarProperty Name="flag" ColumnName="flag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="special">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.special">
+        <MappingFragment StoreEntitySet="special">
+          <ScalarProperty Name="spid" ColumnName="spid" />
+          <ScalarProperty Name="client" ColumnName="client" />
+          <ScalarProperty Name="cust_name" ColumnName="cust_name" />
+          <ScalarProperty Name="consg_code" ColumnName="consg_code" />
+          <ScalarProperty Name="consg_name" ColumnName="consg_name" />
+          <ScalarProperty Name="opdate" ColumnName="opdate" />
+          <ScalarProperty Name="factory" ColumnName="factory" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="remark2" ColumnName="remark2" />
+          <ScalarProperty Name="contact" ColumnName="contact" />
+          <ScalarProperty Name="confirmdate" ColumnName="confirmdate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="special_item">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.special_item">
+        <MappingFragment StoreEntitySet="special_item">
+          <ScalarProperty Name="spid" ColumnName="spid" />
+          <ScalarProperty Name="seq" ColumnName="seq" />
+          <ScalarProperty Name="opid" ColumnName="opid" />
+          <ScalarProperty Name="con_no" ColumnName="con_no" />
+          <ScalarProperty Name="cont_size" ColumnName="cont_size" />
+          <ScalarProperty Name="qty" ColumnName="qty" />
+          <ScalarProperty Name="weight" ColumnName="weight" />
+          <ScalarProperty Name="cbm" ColumnName="cbm" />
+          <ScalarProperty Name="unit_price" ColumnName="unit_price" />
+          <ScalarProperty Name="price" ColumnName="price" />
+          <ScalarProperty Name="remark1" ColumnName="remark1" />
+          <ScalarProperty Name="op" ColumnName="op" />
+          <ScalarProperty Name="unit" ColumnName="unit" />
+          <ScalarProperty Name="sfmin" ColumnName="sfmin" />
+          <ScalarProperty Name="bz" ColumnName="bz" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SpsOperate">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.SpsOperate">
+        <MappingFragment StoreEntitySet="SpsOperate">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+          <ScalarProperty Name="OperateDate" ColumnName="OperateDate" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+          <ScalarProperty Name="Employer" ColumnName="Employer" />
+          <ScalarProperty Name="Account" ColumnName="Account" />
+          <ScalarProperty Name="Ctn" ColumnName="Ctn" />
+          <ScalarProperty Name="Paires" ColumnName="Paires" />
+          <ScalarProperty Name="CBM" ColumnName="CBM" />
+          <ScalarProperty Name="Brand" ColumnName="Brand" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Warehouse" ColumnName="Warehouse" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sys_Department">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.Sys_Department">
+        <MappingFragment StoreEntitySet="Sys_Department">
+          <ScalarProperty Name="depId" ColumnName="depId" />
+          <ScalarProperty Name="depPid" ColumnName="depPid" />
+          <ScalarProperty Name="depName" ColumnName="depName" />
+          <ScalarProperty Name="depRemark" ColumnName="depRemark" />
+          <ScalarProperty Name="depIconCls" ColumnName="depIconCls" />
+          <ScalarProperty Name="depIsDel" ColumnName="depIsDel" />
+          <ScalarProperty Name="depOrder" ColumnName="depOrder" />
+          <ScalarProperty Name="depAddTime" ColumnName="depAddTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sys_EasyUI">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.Sys_EasyUI">
+        <MappingFragment StoreEntitySet="Sys_EasyUI">
+          <ScalarProperty Name="pid" ColumnName="pid" />
+          <ScalarProperty Name="pParent" ColumnName="pParent" />
+          <ScalarProperty Name="pName" ColumnName="pName" />
+          <ScalarProperty Name="pAreaName" ColumnName="pAreaName" />
+          <ScalarProperty Name="pControllerName" ColumnName="pControllerName" />
+          <ScalarProperty Name="pActionName" ColumnName="pActionName" />
+          <ScalarProperty Name="pFormMethod" ColumnName="pFormMethod" />
+          <ScalarProperty Name="pOperationType" ColumnName="pOperationType" />
+          <ScalarProperty Name="pIco" ColumnName="pIco" />
+          <ScalarProperty Name="pOrder" ColumnName="pOrder" />
+          <ScalarProperty Name="pIsLink" ColumnName="pIsLink" />
+          <ScalarProperty Name="pLinkUrl" ColumnName="pLinkUrl" />
+          <ScalarProperty Name="pIsShow" ColumnName="pIsShow" />
+          <ScalarProperty Name="pRemark" ColumnName="pRemark" />
+          <ScalarProperty Name="pIsDel" ColumnName="pIsDel" />
+          <ScalarProperty Name="pAddTime" ColumnName="pAddTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sys_Log">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.Sys_Log">
+        <MappingFragment StoreEntitySet="Sys_Log">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Thread" ColumnName="Thread" />
+          <ScalarProperty Name="Level" ColumnName="Level" />
+          <ScalarProperty Name="Logger" ColumnName="Logger" />
+          <ScalarProperty Name="Message" ColumnName="Message" />
+          <ScalarProperty Name="Exception" ColumnName="Exception" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sys_Permission">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.Sys_Permission">
+        <MappingFragment StoreEntitySet="Sys_Permission">
+          <ScalarProperty Name="pid" ColumnName="pid" />
+          <ScalarProperty Name="pParent" ColumnName="pParent" />
+          <ScalarProperty Name="pName" ColumnName="pName" />
+          <ScalarProperty Name="pAreaName" ColumnName="pAreaName" />
+          <ScalarProperty Name="pControllerName" ColumnName="pControllerName" />
+          <ScalarProperty Name="pActionName" ColumnName="pActionName" />
+          <ScalarProperty Name="pFormMethod" ColumnName="pFormMethod" />
+          <ScalarProperty Name="pOperationType" ColumnName="pOperationType" />
+          <ScalarProperty Name="pIco" ColumnName="pIco" />
+          <ScalarProperty Name="pOrder" ColumnName="pOrder" />
+          <ScalarProperty Name="pIsLink" ColumnName="pIsLink" />
+          <ScalarProperty Name="pLinkUrl" ColumnName="pLinkUrl" />
+          <ScalarProperty Name="pIsShow" ColumnName="pIsShow" />
+          <ScalarProperty Name="pRemark" ColumnName="pRemark" />
+          <ScalarProperty Name="pIsDel" ColumnName="pIsDel" />
+          <ScalarProperty Name="pOperTime" ColumnName="pOperTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sys_Role">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.Sys_Role">
+        <MappingFragment StoreEntitySet="Sys_Role">
+          <ScalarProperty Name="rId" ColumnName="rId" />
+          <ScalarProperty Name="rDepId" ColumnName="rDepId" />
+          <ScalarProperty Name="rName" ColumnName="rName" />
+          <ScalarProperty Name="rRemark" ColumnName="rRemark" />
+          <ScalarProperty Name="rIsShow" ColumnName="rIsShow" />
+          <ScalarProperty Name="rIsDel" ColumnName="rIsDel" />
+          <ScalarProperty Name="rAddTime" ColumnName="rAddTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sys_RolePermission">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.Sys_RolePermission">
+        <MappingFragment StoreEntitySet="Sys_RolePermission">
+          <ScalarProperty Name="rpId" ColumnName="rpId" />
+          <ScalarProperty Name="rpRId" ColumnName="rpRId" />
+          <ScalarProperty Name="rpPId" ColumnName="rpPId" />
+          <ScalarProperty Name="rpIsDel" ColumnName="rpIsDel" />
+          <ScalarProperty Name="rpAddTime" ColumnName="rpAddTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sys_UserInfo">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.Sys_UserInfo">
+        <MappingFragment StoreEntitySet="Sys_UserInfo">
+          <ScalarProperty Name="uId" ColumnName="uId" />
+          <ScalarProperty Name="uDepId" ColumnName="uDepId" />
+          <ScalarProperty Name="uLoginName" ColumnName="uLoginName" />
+          <ScalarProperty Name="uPwd" ColumnName="uPwd" />
+          <ScalarProperty Name="uGender" ColumnName="uGender" />
+          <ScalarProperty Name="uPost" ColumnName="uPost" />
+          <ScalarProperty Name="uRemark" ColumnName="uRemark" />
+          <ScalarProperty Name="uIsDel" ColumnName="uIsDel" />
+          <ScalarProperty Name="uImgUrl" ColumnName="uImgUrl" />
+          <ScalarProperty Name="uAddTime" ColumnName="uAddTime" />
+          <ScalarProperty Name="uVendor_Code" ColumnName="uVendor_Code" />
+          <ScalarProperty Name="uTruck_Company_Code" ColumnName="uTruck_Company_Code" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sys_UserRole">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.Sys_UserRole">
+        <MappingFragment StoreEntitySet="Sys_UserRole">
+          <ScalarProperty Name="urId" ColumnName="urId" />
+          <ScalarProperty Name="urUId" ColumnName="urUId" />
+          <ScalarProperty Name="urRId" ColumnName="urRId" />
+          <ScalarProperty Name="urIsDel" ColumnName="urIsDel" />
+          <ScalarProperty Name="urAddtime" ColumnName="urAddtime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sys_UserSetting">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.Sys_UserSetting">
+        <MappingFragment StoreEntitySet="Sys_UserSetting">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="UserCode" ColumnName="UserCode" />
+          <ScalarProperty Name="SettingCode" ColumnName="SettingCode" />
+          <ScalarProperty Name="SettingName" ColumnName="SettingName" />
+          <ScalarProperty Name="SettingValue" ColumnName="SettingValue" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sys_UserVipPermission">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.Sys_UserVipPermission">
+        <MappingFragment StoreEntitySet="Sys_UserVipPermission">
+          <ScalarProperty Name="vipId" ColumnName="vipId" />
+          <ScalarProperty Name="vipUserId" ColumnName="vipUserId" />
+          <ScalarProperty Name="vipPermission" ColumnName="vipPermission" />
+          <ScalarProperty Name="vipRemark" ColumnName="vipRemark" />
+          <ScalarProperty Name="vipIsDel" ColumnName="vipIsDel" />
+          <ScalarProperty Name="vipAddTime" ColumnName="vipAddTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.sysdiagrams">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Truck_Booking_Detail">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.Truck_Booking_Detail">
+        <MappingFragment StoreEntitySet="Truck_Booking_Detail">
+          <ScalarProperty Name="Booking_Number" ColumnName="Booking_Number" />
+          <ScalarProperty Name="Seq" ColumnName="Seq" />
+          <ScalarProperty Name="Customer_Name" ColumnName="Customer_Name" />
+          <ScalarProperty Name="SO_No" ColumnName="SO_No" />
+          <ScalarProperty Name="Customer_PO" ColumnName="Customer_PO" />
+          <ScalarProperty Name="Line" ColumnName="Line" />
+          <ScalarProperty Name="Item" ColumnName="Item" />
+          <ScalarProperty Name="Material" ColumnName="Material" />
+          <ScalarProperty Name="STO" ColumnName="STO" />
+          <ScalarProperty Name="Length" ColumnName="Length" />
+          <ScalarProperty Name="Width" ColumnName="Width" />
+          <ScalarProperty Name="Height" ColumnName="Height" />
+          <ScalarProperty Name="Deliv_Date" ColumnName="Deliv_Date" />
+          <ScalarProperty Name="Pcs" ColumnName="Pcs" />
+          <ScalarProperty Name="Spec" ColumnName="Spec" />
+          <ScalarProperty Name="Ctn" ColumnName="Ctn" />
+          <ScalarProperty Name="GrossWeight" ColumnName="GrossWeight" />
+          <ScalarProperty Name="CBM" ColumnName="CBM" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="hfe" ColumnName="hfe" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Truck_Booking_Head">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.Truck_Booking_Head">
+        <MappingFragment StoreEntitySet="Truck_Booking_Head">
+          <ScalarProperty Name="Booking_Number" ColumnName="Booking_Number" />
+          <ScalarProperty Name="Clpno" ColumnName="Clpno" />
+          <ScalarProperty Name="Account" ColumnName="Account" />
+          <ScalarProperty Name="Intype" ColumnName="Intype" />
+          <ScalarProperty Name="Delivery_Type" ColumnName="Delivery_Type" />
+          <ScalarProperty Name="Transport_Type" ColumnName="Transport_Type" />
+          <ScalarProperty Name="Declare_Port" ColumnName="Declare_Port" />
+          <ScalarProperty Name="Storage_Yard" ColumnName="Storage_Yard" />
+          <ScalarProperty Name="Factory" ColumnName="Factory" />
+          <ScalarProperty Name="Factory_Contact_Person" ColumnName="Factory_Contact_Person" />
+          <ScalarProperty Name="Factory_Contact_TelNo" ColumnName="Factory_Contact_TelNo" />
+          <ScalarProperty Name="Truck_Company" ColumnName="Truck_Company" />
+          <ScalarProperty Name="Driver_Name" ColumnName="Driver_Name" />
+          <ScalarProperty Name="Driver_TelNo" ColumnName="Driver_TelNo" />
+          <ScalarProperty Name="Cont_NO" ColumnName="Cont_NO" />
+          <ScalarProperty Name="Seal_NO" ColumnName="Seal_NO" />
+          <ScalarProperty Name="Frame_Type" ColumnName="Frame_Type" />
+          <ScalarProperty Name="HeadStockWeight" ColumnName="HeadStockWeight" />
+          <ScalarProperty Name="FrameWeight" ColumnName="FrameWeight" />
+          <ScalarProperty Name="ContainerWeight" ColumnName="ContainerWeight" />
+          <ScalarProperty Name="Pick_address" ColumnName="Pick_address" />
+          <ScalarProperty Name="Return_address" ColumnName="Return_address" />
+          <ScalarProperty Name="Loading_address" ColumnName="Loading_address" />
+          <ScalarProperty Name="CBM" ColumnName="CBM" />
+          <ScalarProperty Name="GrossWeight" ColumnName="GrossWeight" />
+          <ScalarProperty Name="CTN" ColumnName="CTN" />
+          <ScalarProperty Name="Vdr_Pickup_date" ColumnName="Vdr_Pickup_date" />
+          <ScalarProperty Name="Rq_Arrive_Whs_time" ColumnName="Rq_Arrive_Whs_time" />
+          <ScalarProperty Name="Rq_Arrive_Dest_time" ColumnName="Rq_Arrive_Dest_time" />
+          <ScalarProperty Name="Arrive_factory_time" ColumnName="Arrive_factory_time" />
+          <ScalarProperty Name="Leave_factory_time" ColumnName="Leave_factory_time" />
+          <ScalarProperty Name="Leave_customs_time" ColumnName="Leave_customs_time" />
+          <ScalarProperty Name="Arrive_Whs_time" ColumnName="Arrive_Whs_time" />
+          <ScalarProperty Name="si_date" ColumnName="si_date" />
+          <ScalarProperty Name="terclos_date" ColumnName="terclos_date" />
+          <ScalarProperty Name="closdate" ColumnName="closdate" />
+          <ScalarProperty Name="Vehicletype" ColumnName="Vehicletype" />
+          <ScalarProperty Name="Fongguan_Address" ColumnName="Fongguan_Address" />
+          <ScalarProperty Name="Vehicle_number" ColumnName="Vehicle_number" />
+          <ScalarProperty Name="VendorCode" ColumnName="VendorCode" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="Carrier" ColumnName="Carrier" />
+          <ScalarProperty Name="CustomsNo" ColumnName="CustomsNo" />
+          <ScalarProperty Name="Customs_Password" ColumnName="Customs_Password" />
+          <ScalarProperty Name="DingCangNO" ColumnName="DingCangNO" />
+          <ScalarProperty Name="Rocars" ColumnName="Rocars" />
+          <ScalarProperty Name="HK_Customs_Clearance" ColumnName="HK_Customs_Clearance" />
+          <ScalarProperty Name="HK_Local_Transport" ColumnName="HK_Local_Transport" />
+          <ScalarProperty Name="Confirm_date" ColumnName="Confirm_date" />
+          <ScalarProperty Name="CancelDate" ColumnName="CancelDate" />
+          <ScalarProperty Name="Cancelperson" ColumnName="Cancelperson" />
+          <ScalarProperty Name="Own_Company" ColumnName="Own_Company" />
+          <ScalarProperty Name="Create_Date" ColumnName="Create_Date" />
+          <ScalarProperty Name="Create_Person" ColumnName="Create_Person" />
+          <ScalarProperty Name="InvoiceNo" ColumnName="InvoiceNo" />
+          <ScalarProperty Name="Release_Pass" ColumnName="Release_Pass" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="Remark2" ColumnName="Remark2" />
+          <ScalarProperty Name="Electronic_Lock" ColumnName="Electronic_Lock" />
+          <ScalarProperty Name="Fin_Invo" ColumnName="Fin_Invo" />
+          <ScalarProperty Name="LatestUpdateTime" ColumnName="LatestUpdateTime" />
+          <ScalarProperty Name="TongGuanCard" ColumnName="TongGuanCard" />
+          <ScalarProperty Name="Invoice_Date" ColumnName="Invoice_Date" />
+          <ScalarProperty Name="Backway_Time" ColumnName="Backway_Time" />
+          <ScalarProperty Name="Terminal_Time" ColumnName="Terminal_Time" />
+          <ScalarProperty Name="FactorySeal_Time" ColumnName="FactorySeal_Time" />
+          <ScalarProperty Name="Reject_Time" ColumnName="Reject_Time" />
+          <ScalarProperty Name="Truck_CancelReason" ColumnName="Truck_CancelReason" />
+          <ScalarProperty Name="Container_Upload_Time" ColumnName="Container_Upload_Time" />
+          <ScalarProperty Name="Seal_Upload_Time" ColumnName="Seal_Upload_Time" />
+          <ScalarProperty Name="Out_Factory_Time" ColumnName="Out_Factory_Time" />
+          <ScalarProperty Name="Receipt_Upload_time" ColumnName="Receipt_Upload_time" />
+          <ScalarProperty Name="Start_Unloading_time" ColumnName="Start_Unloading_time" />
+          <ScalarProperty Name="Leave_Terminal_time" ColumnName="Leave_Terminal_time" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Truck_Vendor">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.Truck_Vendor">
+        <MappingFragment StoreEntitySet="Truck_Vendor">
+          <ScalarProperty Name="Vendor_Code" ColumnName="Vendor_Code" />
+          <ScalarProperty Name="Client" ColumnName="Client" />
+          <ScalarProperty Name="Vendor_Name" ColumnName="Vendor_Name" />
+          <ScalarProperty Name="Vendor_Name2" ColumnName="Vendor_Name2" />
+          <ScalarProperty Name="Simple_Vendor_Name" ColumnName="Simple_Vendor_Name" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Simple_Address" ColumnName="Simple_Address" />
+          <ScalarProperty Name="Contact_Person" ColumnName="Contact_Person" />
+          <ScalarProperty Name="Contact_TelNo" ColumnName="Contact_TelNo" />
+          <ScalarProperty Name="Fax" ColumnName="Fax" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Contact_Person2" ColumnName="Contact_Person2" />
+          <ScalarProperty Name="Contact_TelNo2" ColumnName="Contact_TelNo2" />
+          <ScalarProperty Name="Email2" ColumnName="Email2" />
+          <ScalarProperty Name="Contact_Person3" ColumnName="Contact_Person3" />
+          <ScalarProperty Name="Contact_TelNo3" ColumnName="Contact_TelNo3" />
+          <ScalarProperty Name="Email3" ColumnName="Email3" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TruckUnLoadTime">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.TruckUnLoadTime">
+        <MappingFragment StoreEntitySet="TruckUnLoadTime">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Supplierno" ColumnName="Supplierno" />
+          <ScalarProperty Name="TruckNo" ColumnName="TruckNo" />
+          <ScalarProperty Name="Employee" ColumnName="Employee" />
+          <ScalarProperty Name="GateIn" ColumnName="GateIn" />
+          <ScalarProperty Name="DocRegister" ColumnName="DocRegister" />
+          <ScalarProperty Name="CustomsInspection" ColumnName="CustomsInspection" />
+          <ScalarProperty Name="UnLoadStart" ColumnName="UnLoadStart" />
+          <ScalarProperty Name="UnloadFinish" ColumnName="UnloadFinish" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="CBM" ColumnName="CBM" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="turnover">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.turnover">
+        <MappingFragment StoreEntitySet="turnover">
+          <ScalarProperty Name="op_date" ColumnName="op_date" />
+          <ScalarProperty Name="account" ColumnName="account" />
+          <ScalarProperty Name="receiving" ColumnName="receiving" />
+          <ScalarProperty Name="loading" ColumnName="loading" />
+          <ScalarProperty Name="balance" ColumnName="balance" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Unloading">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.Unloading">
+        <MappingFragment StoreEntitySet="Unloading">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+          <ScalarProperty Name="OperateDate" ColumnName="OperateDate" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+          <ScalarProperty Name="Employer" ColumnName="Employer" />
+          <ScalarProperty Name="Account" ColumnName="Account" />
+          <ScalarProperty Name="Ctn" ColumnName="Ctn" />
+          <ScalarProperty Name="Paires" ColumnName="Paires" />
+          <ScalarProperty Name="CBM" ColumnName="CBM" />
+          <ScalarProperty Name="Vehicletype" ColumnName="Vehicletype" />
+          <ScalarProperty Name="VehicleNumber" ColumnName="VehicleNumber" />
+          <ScalarProperty Name="Warehouse" ColumnName="Warehouse" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="userlog">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.userlog">
+        <MappingFragment StoreEntitySet="userlog">
+          <ScalarProperty Name="uselogid" ColumnName="uselogid" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="op" ColumnName="op" />
+          <ScalarProperty Name="opdate" ColumnName="opdate" />
+          <ScalarProperty Name="opno" ColumnName="opno" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Vehicle">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.Vehicle">
+        <MappingFragment StoreEntitySet="Vehicle">
+          <ScalarProperty Name="VID" ColumnName="VID" />
+          <ScalarProperty Name="Corporation" ColumnName="Corporation" />
+          <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VendorInfo">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.VendorInfo">
+        <MappingFragment StoreEntitySet="VendorInfo">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Client" ColumnName="Client" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vessel">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.vessel">
+        <MappingFragment StoreEntitySet="vessel">
+          <ScalarProperty Name="vessel1" ColumnName="vessel" />
+          <ScalarProperty Name="voyage" ColumnName="voyage" />
+          <ScalarProperty Name="carry_no" ColumnName="carry_no" />
+          <ScalarProperty Name="agent" ColumnName="agent" />
+          <ScalarProperty Name="vessel_no" ColumnName="vessel_no" />
+          <ScalarProperty Name="close_date" ColumnName="close_date" />
+          <ScalarProperty Name="close_time" ColumnName="close_time" />
+          <ScalarProperty Name="sail_date" ColumnName="sail_date" />
+          <ScalarProperty Name="dest_port" ColumnName="dest_port" />
+          <ScalarProperty Name="ETD" ColumnName="ETD" />
+          <ScalarProperty Name="ETA" ColumnName="ETA" />
+          <ScalarProperty Name="load_no" ColumnName="load_no" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="whs">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.whs">
+        <MappingFragment StoreEntitySet="whs">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="WHS1" ColumnName="WHS" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ypmfuser">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.ypmfuser">
+        <MappingFragment StoreEntitySet="ypmfuser">
+          <ScalarProperty Name="user_name" ColumnName="user_name" />
+          <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+          <ScalarProperty Name="passcode" ColumnName="passcode" />
+          <ScalarProperty Name="layer" ColumnName="layer" />
+          <ScalarProperty Name="recloa" ColumnName="recloa" />
+          <ScalarProperty Name="del" ColumnName="del" />
+          <ScalarProperty Name="dec" ColumnName="dec" />
+          <ScalarProperty Name="acc" ColumnName="acc" />
+          <ScalarProperty Name="adminname" ColumnName="adminname" />
+          <ScalarProperty Name="guest" ColumnName="guest" />
+          <ScalarProperty Name="email" ColumnName="email" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="account">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.account">
+        <MappingFragment StoreEntitySet="account">
+          <ScalarProperty Name="client" ColumnName="client" />
+          <ScalarProperty Name="account1" ColumnName="account" />
+          <ScalarProperty Name="cbm_price" ColumnName="cbm_price" />
+          <ScalarProperty Name="Free_period" ColumnName="Free_period" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AdditionalOut">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.AdditionalOut">
+        <MappingFragment StoreEntitySet="AdditionalOut">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="operatedate" ColumnName="operatedate" />
+          <ScalarProperty Name="so_no" ColumnName="so_no" />
+          <ScalarProperty Name="recline" ColumnName="recline" />
+          <ScalarProperty Name="po" ColumnName="po" />
+          <ScalarProperty Name="skn" ColumnName="skn" />
+          <ScalarProperty Name="sku" ColumnName="sku" />
+          <ScalarProperty Name="ctns" ColumnName="ctns" />
+          <ScalarProperty Name="pcs" ColumnName="pcs" />
+          <ScalarProperty Name="cbm" ColumnName="cbm" />
+          <ScalarProperty Name="account" ColumnName="account" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BookingDetail">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.BookingDetail">
+        <MappingFragment StoreEntitySet="BookingDetail">
+          <ScalarProperty Name="so_no" ColumnName="so_no" />
+          <ScalarProperty Name="line_no" ColumnName="line_no" />
+          <ScalarProperty Name="weight" ColumnName="weight" />
+          <ScalarProperty Name="cbm" ColumnName="cbm" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="PKG" ColumnName="PKG" />
+          <ScalarProperty Name="PCS" ColumnName="PCS" />
+          <ScalarProperty Name="carrier" ColumnName="carrier" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="PO" ColumnName="PO" />
+          <ScalarProperty Name="commodity" ColumnName="commodity" />
+          <ScalarProperty Name="SKU" ColumnName="SKU" />
+          <ScalarProperty Name="description1" ColumnName="description1" />
+          <ScalarProperty Name="description2" ColumnName="description2" />
+          <ScalarProperty Name="description3" ColumnName="description3" />
+          <ScalarProperty Name="description4" ColumnName="description4" />
+          <ScalarProperty Name="rec_weight" ColumnName="rec_weight" />
+          <ScalarProperty Name="rec_cbm" ColumnName="rec_cbm" />
+          <ScalarProperty Name="rec_qty" ColumnName="rec_qty" />
+          <ScalarProperty Name="rec_pcs" ColumnName="rec_pcs" />
+          <ScalarProperty Name="length" ColumnName="length" />
+          <ScalarProperty Name="width" ColumnName="width" />
+          <ScalarProperty Name="height" ColumnName="height" />
+          <ScalarProperty Name="recdate" ColumnName="recdate" />
+          <ScalarProperty Name="Product_Description" ColumnName="Product_Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CarrierInfo">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.CarrierInfo">
+        <MappingFragment StoreEntitySet="CarrierInfo">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Carrier" ColumnName="Carrier" />
+          <ScalarProperty Name="Agency" ColumnName="Agency" />
+          <ScalarProperty Name="CarrierName" ColumnName="CarrierName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="con_size">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.con_size">
+        <MappingFragment StoreEntitySet="con_size">
+          <ScalarProperty Name="size" ColumnName="size" />
+          <ScalarProperty Name="feu_unit" ColumnName="feu_unit" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="cus_cont">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.cus_cont">
+        <MappingFragment StoreEntitySet="cus_cont">
+          <ScalarProperty Name="client" ColumnName="client" />
+          <ScalarProperty Name="size" ColumnName="size" />
+          <ScalarProperty Name="cont_chrg" ColumnName="cont_chrg" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="cus_hchg">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.cus_hchg">
+        <MappingFragment StoreEntitySet="cus_hchg">
+          <ScalarProperty Name="client" ColumnName="client" />
+          <ScalarProperty Name="start_wgt" ColumnName="start_wgt" />
+          <ScalarProperty Name="end_wgt" ColumnName="end_wgt" />
+          <ScalarProperty Name="chrg_amt" ColumnName="chrg_amt" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="customs">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.customs">
+        <MappingFragment StoreEntitySet="customs">
+          <ScalarProperty Name="customs_co" ColumnName="customs_co" />
+          <ScalarProperty Name="customs_na" ColumnName="customs_na" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="customs_head">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.customs_head">
+        <MappingFragment StoreEntitySet="customs_head">
+          <ScalarProperty Name="in_no" ColumnName="in_no" />
+          <ScalarProperty Name="handtime" ColumnName="handtime" />
+          <ScalarProperty Name="factory" ColumnName="factory" />
+          <ScalarProperty Name="trademode" ColumnName="trademode" />
+          <ScalarProperty Name="declmode" ColumnName="declmode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="customs_item">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.customs_item">
+        <MappingFragment StoreEntitySet="customs_item">
+          <ScalarProperty Name="in_no" ColumnName="in_no" />
+          <ScalarProperty Name="per_price" ColumnName="per_price" />
+          <ScalarProperty Name="goodsname" ColumnName="goodsname" />
+          <ScalarProperty Name="goodsunit" ColumnName="goodsunit" />
+          <ScalarProperty Name="goodscode" ColumnName="goodscode" />
+          <ScalarProperty Name="qty" ColumnName="qty" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="customs_out">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.customs_out">
+        <MappingFragment StoreEntitySet="customs_out">
+          <ScalarProperty Name="clpno" ColumnName="clpno" />
+          <ScalarProperty Name="decl_form_no" ColumnName="decl_form_no" />
+          <ScalarProperty Name="carrier_no" ColumnName="carrier_no" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="decl_no">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.decl_no">
+        <MappingFragment StoreEntitySet="decl_no">
+          <ScalarProperty Name="contro_no" ColumnName="contro_no" />
+          <ScalarProperty Name="decl_no1" ColumnName="decl_no" />
+          <ScalarProperty Name="bill_no" ColumnName="bill_no" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProdesOfVIFA">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.ProdesOfVIFA">
+        <MappingFragment StoreEntitySet="ProdesOfVIFA">
+          <ScalarProperty Name="PID" ColumnName="PID" />
+          <ScalarProperty Name="Prod_des" ColumnName="Prod_des" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="repertory">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.repertory">
+        <MappingFragment StoreEntitySet="repertory">
+          <ScalarProperty Name="rep_id" ColumnName="rep_id" />
+          <ScalarProperty Name="rep_name" ColumnName="rep_name" />
+          <ScalarProperty Name="rep_address" ColumnName="rep_address" />
+          <ScalarProperty Name="rep_phone" ColumnName="rep_phone" />
+          <ScalarProperty Name="rep_connecter" ColumnName="rep_connecter" />
+          <ScalarProperty Name="rep_type" ColumnName="rep_type" />
+          <ScalarProperty Name="rep_state" ColumnName="rep_state" />
+          <ScalarProperty Name="rep_area" ColumnName="rep_area" />
+          <ScalarProperty Name="whs_name" ColumnName="whs_name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="service">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.service">
+        <MappingFragment StoreEntitySet="service">
+          <ScalarProperty Name="ser_type" ColumnName="ser_type" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="shipcorp">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.shipcorp">
+        <MappingFragment StoreEntitySet="shipcorp">
+          <ScalarProperty Name="carrier" ColumnName="carrier" />
+          <ScalarProperty Name="corpname" ColumnName="corpname" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="unit">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.unit">
+        <MappingFragment StoreEntitySet="unit">
+          <ScalarProperty Name="unit1" ColumnName="unit" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vendor">
+      <EntityTypeMapping TypeName="ypmfdata_ynModel.vendor">
+        <MappingFragment StoreEntitySet="vendor">
+          <ScalarProperty Name="corpcode" ColumnName="corpcode" />
+          <ScalarProperty Name="chinesename" ColumnName="chinesename" />
+          <ScalarProperty Name="englishname" ColumnName="englishname" />
+          <ScalarProperty Name="Representative" ColumnName="Representative" />
+          <ScalarProperty Name="Tel" ColumnName="Tel" />
+          <ScalarProperty Name="Fax" ColumnName="Fax" />
+          <ScalarProperty Name="Trans" ColumnName="Trans" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="region" ColumnName="region" />
+          <ScalarProperty Name="shipper" ColumnName="shipper" />
+          <ScalarProperty Name="shipperTel" ColumnName="shipperTel" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

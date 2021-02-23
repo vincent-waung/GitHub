@@ -1,0 +1,51 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Plain</title>
+     <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+     <script type="text/javascript">
+         $(document).ready(function () {
+             $("#gb").linkbutton({
+                 plain: false
+             });
+
+             //$("#add").linkbutton("disable");
+
+             $('#gb').bind('click', function () {
+                 console.info($(this).linkbutton("options").plain);
+
+             });
+
+         });
+    </script>
+</head>
+<body>
+     <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>链接按钮只有普通效果.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div style="padding:5px;border:1px solid #ddd;">
+       <a id="gb"  href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">关闭</a>
+        <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">刷新</a>
+        <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-search'">搜索</a>
+        <a href="#" class="easyui-linkbutton" data-options="plain:true">文本按钮</a>
+        <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-print'">打印</a>
+        <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-help'"> </a>
+        <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'"></a>
+        <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-back'"></a>
+    </div>
+
+</body>
+</html>

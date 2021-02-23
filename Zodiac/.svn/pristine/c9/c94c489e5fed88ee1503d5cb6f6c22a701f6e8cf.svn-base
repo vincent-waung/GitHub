@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ypmfdataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="in_MF">
+    <Key>
+      <PropertyRef Name="Receive_Date" />
+      <PropertyRef Name="In_House_No" />
+      <PropertyRef Name="Item_No" />
+    </Key>
+    <Property Name="Receive_Date" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="In_House_No" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Item_No" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PKGS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="INNER_PKGS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="KGS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CBM" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="L" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="W" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="H" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityContainer Name="ypmfdataEntities2" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="in_MF" EntityType="Self.in_MF" />
+  </EntityContainer>
+</Schema>

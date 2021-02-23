@@ -1,0 +1,40 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Basic</title>
+      <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+      <h2>基本下拉表格组件</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>点击右边箭头按钮来显示数据表格.</div>
+    </div>
+    <div style="margin:10px 0"></div>
+    <select class="easyui-combogrid" style="width:250px" data-options="
+            panelWidth: 500,
+            idField: 'id',
+            textField: 'text',
+            url: '/EasyUI_Areas/AdminIndex/GetAllDeptsTwo',
+            columns: [[
+                {field:'id',title:'部门编号',width:80},
+                {field:'text',title:'部门名称',width:120},
+                {field:'depRemark',title:'部门说明',width:80,align:'right'},
+                {field:'depAddTime',title:'操作时间',width:80,align:'right'},
+
+            ]],
+            fitColumns: true
+        "></select>
+</body>
+</html>

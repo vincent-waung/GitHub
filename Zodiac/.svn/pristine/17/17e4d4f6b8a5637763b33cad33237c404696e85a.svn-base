@@ -1,0 +1,50 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Basic</title>
+      <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+    <h2>基本验证框组件</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>我们可以很方便地添加验证逻辑到文本框里.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="注册" style="width:400px;padding:10px">
+        <table>
+            <tr>
+                <td>用户名:</td>
+                <td><input class="easyui-validatebox" data-options="required:true,validType:'length[3,10]'"></td>
+            </tr>
+            <tr>
+                <td>Email:</td>
+                <td><input class="easyui-validatebox" data-options="required:true,validType:'email'"></td>
+            </tr>
+            <tr>
+                <td>出生日期:</td>
+                <td><input class="easyui-datebox" required="required"></td>
+            </tr>
+            <tr>
+                <td>URL:</td>
+                <td><input class="easyui-validatebox" data-options="required:true,validType:'url'"></td>
+            </tr>
+            <tr>
+                <td>电话:</td>
+                <td><input class="easyui-validatebox" data-options="required:true"></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

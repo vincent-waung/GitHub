@@ -1,0 +1,131 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts{
+    <script src="~/Scripts/processingajaxmsg.js"></script>
+    <script src="~/Scripts/xzUtil.js"></script>
+    <script src="~/Scripts/jquery.uploadifive.min.js" type="text/javascript"></script>
+    <link href="~/Scripts/uploadifive.css" rel="stylesheet" type="text/css" />
+
+}
+
+
+<script type="text/javascript">
+    $(function () {
+        bindinguploadifive();
+
+
+    });
+
+
+    function bindinguploadifive() {
+        var up = $('#upload').uploadifive({
+            'auto': true,
+            'fileTypeExts': '*.xls;*.xlsx',
+            'multi': false,
+            'fileSizeLimit': 102400,
+            //'breakPoints': true,
+            'buttonText': 'Select File',
+            'width': 120,
+            //'saveInfoLocal':true,
+            //'showUploadedPercent':true,//是否实时显示上传的百分比，如20%
+            //'showUploadedSize':true,
+            //'removeTimeout': 1.5,
+            'removeCompleted': true,
+            'uploadLimit': 10,
+            'queueSizeLimit': 10,
+            'uploadScript': '/OnlineBooking_Areas/LoadPlanQuery/upload',
+            'onUploadFile': function (file) {
+
+                //var element = {};
+                //element.one = $("#ptNumber").val();
+                //alert('onUploadFile');
+                //$("#upload").uploadifive("settings", "formData", element);
+                //var myid = $("#ptNumber").val();
+                //$('#upload').data('uploadifive').settings.formData = { 'ID': myid };
+                //在onUploadStart事件中，也就是上传之前，把参数写好传递到后台。
+            },
+            'onUploadSuccess': function (file, data) {
+                //  alert('3232');
+
+                //$("#uploaded").html(data);
+            },
+            'onUploadError': function (file, errorCode, errorMsg, errorString) {
+                alert('The file ' + file.name + ' could not be uploaded: ' + errorString);
+            },
+            'onUpload': function (filesToUpload) {
+
+                //var element = {};
+                //var node = dgBooking.datagrid('getSelected');
+
+                //element.one = $("#RecException").combobox('getValue');
+
+                //element.two = node.Client;
+
+                //element.three = document.getElementById("divSONo").innerText;
+
+
+                //$('#upload').data('uploadifive').settings.formData = { 'eID': element.one, 'Account': element.two, 'SO': element.three };
+            },
+            'onQueueComplete': function () {
+
+
+            },
+            'onSelect': function (queue) {
+                //var ExceptionType = $('#RecException').combobox('getValue');
+                //if (ExceptionType == '') {
+                //    //$('#upload').uploadifive('cancel',queue);
+                //    xz.messagerAlert('提示', '请选择异常类型', 'error');
+                //    return false;
+                //}
+
+            },
+            'onUploadComplete': function (file, data) {
+
+                var jsonData = $.parseJSON(data);
+                $("#uploaded").html(jsonData.Msg);
+            }
+
+            /*getUploadedSize:function(file){
+                var data = {
+                    data : {
+                        fileName : file.name,
+                        lastModifiedDate : file.lastModifiedDate.getTime()
+                    }
+                };
+                var url = 'http://localhost/uploadfile/';
+                var uploadedSize = 0;
+                $.ajax({
+                    url : url,
+                    data : data,
+                    async : false,
+                    type : 'POST',
+                    success : function(returnData){
+                        returnData = JSON.parse(returnData);
+                        uploadedSize = returnData.uploadedSize;
+                    }
+                });
+                return uploadedSize;
+            }	*/
+        });
+
+    }
+</script>
+
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>PO SUMMARY IMPORT</title>
+</head>
+<body>
+    <div>
+        <div class="grid_2">Import Po List:</div>
+        @*<div class="clear"></div>*@
+        <div id="upload" class="grid_2"> </div><div id="uploaded"></div>
+        <div id="queue"></div>
+    </div>
+</body>
+</html>

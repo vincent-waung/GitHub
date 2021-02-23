@@ -1,0 +1,41 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ButtonGroup</title>
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+    <h2>按钮组</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>在一个按钮组中只能有一个按钮被选中.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div style="padding:5px;border:1px solid #ddd;">
+        <a href="#" class="easyui-linkbutton" data-options="toggle:true,group:'g1'">按钮1</a>
+        <a href="#" class="easyui-linkbutton" data-options="toggle:true,group:'g1'">按钮2</a>
+        <a href="#" class="easyui-linkbutton" data-options="toggle:true,group:'g1'">按钮3</a>
+        <a href="#" class="easyui-linkbutton" data-options="toggle:true,group:'g1'">按钮4</a>
+        <a href="#" class="easyui-linkbutton" data-options="toggle:true,group:'g1'">按钮5</a>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div style="padding:5px;border:1px solid #ddd;">
+        <a href="#" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">按钮1</a>
+        <a href="#" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">按钮2</a>
+        <a href="#" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">按钮3</a>
+        <a href="#" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">按钮4</a>
+        <a href="#" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">按钮5</a>
+    </div>
+</body>
+</html>

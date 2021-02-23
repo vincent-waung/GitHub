@@ -1,0 +1,649 @@
+﻿@{
+    ViewBag.Title = "CancelPoList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts{
+    <script src="~/Scripts/processingajaxmsg.js"></script>
+    <script src="~/Scripts/xzUtil.js"></script>
+    <script src="~/Scripts/jquery.uploadifive.min.js" type="text/javascript"></script>
+    <link href="~/Scripts/uploadifive.css" rel="stylesheet" type="text/css" />
+}
+
+<script type="text/javascript">
+
+    $(function () {
+
+        bindinguploadifive();
+
+        var start_time = new Date();
+        var end_time = new Date();
+        start_time.setDate(start_time.getDate() - 7);
+        $("#jrstartdate").datebox("setValue", myformatter(start_time));
+
+        $("#jrenddate").datebox("setValue", myformatter(end_time));
+
+
+    });
+    var searchForm;
+    var dgBooking;
+    var allcolumns = [];
+    var issend = true;
+    var isColor = true;
+    var isColors = true;
+    function subSpace(str) {
+        if (str != "") {
+            if (isNaN(str) && !isNaN(Date.parse(str))) {
+                return false
+            } else {
+                return true
+            }
+        }
+        return false
+    }
+    function isNumber(val) {
+        if (val != "") {
+            if (parseFloat(val).toString() == "NaN") {
+                issend = false;
+                return 'Unable to upload Number format';
+            } else {
+                return "<div style='width: 100%;height:30px;margin:0;line-height:30px;overflow: hidden;text-overflow:ellipsis;white-space:nowrap;' title='" + val + "'>" + val + "</div>"
+            }
+        }
+    }
+
+    function myformatter(date) {
+        var y = date.getFullYear();
+        var m = date.getMonth() + 1;
+        var d = date.getDate();
+        return y + '-' + (m < 10 ? ('0' + m) : m) + '-' + (d < 10 ? ('0' + d) : d);
+    }
+    function formatterDate(val) {
+        if (subSpace(val)) {
+            issend = false;
+            return 'Unable to upload Date format';
+        }else{
+            return "<div style='width: 100%;height:30px;margin:0;line-height:30px;overflow: hidden;text-overflow:ellipsis;white-space:nowrap;' title='" + val + "'>" + val + "</div>"
+        }
+    }
+    function bindinguploadifive() {
+        var up = $('#upload').uploadifive({
+            'auto': true,
+            'fileTypeExts': '*.xls;*.xlsx',
+            'multi': false,
+            'fileSizeLimit': 102400,
+            //'breakPoints': true,
+            'buttonText': 'Select File',
+            'width': 120,
+            //'saveInfoLocal':true,
+            //'showUploadedPercent':true,//是否实时显示上传的百分比，如20%
+            //'showUploadedSize':true,
+            //'removeTimeout': 1.5,
+            'removeCompleted': true,
+            'uploadLimit': 10,
+            'queueSizeLimit': 10,
+            'uploadScript': '/OnlineBooking_Areas/LoadPlanQuery/uploadFOBDOM',
+            'onUploadFile': function (file) {
+
+                //var element = {};
+                //element.one = $("#ptNumber").val();
+                //alert('onUploadFile');
+                //$("#upload").uploadifive("settings", "formData", element);
+                //var myid = $("#ptNumber").val();
+                //$('#upload').data('uploadifive').settings.formData = { 'ID': myid };
+                //在onUploadStart事件中，也就是上传之前，把参数写好传递到后台。
+            },
+            'onUploadSuccess': function (file, data) {
+                //  alert('3232');
+
+                //$("#uploaded").html(data);
+            },
+            'onUploadError': function (file, errorCode, errorMsg, errorString) {
+                alert('The file ' + file.name + ' could not be uploaded: ' + errorString);
+            },
+            'onUpload': function (filesToUpload) {
+
+                //var element = {};
+                //var node = dgBooking.datagrid('getSelected');
+
+                //element.one = $("#RecException").combobox('getValue');
+
+                //element.two = node.Client;
+
+                //element.three = document.getElementById("divSONo").innerText;
+
+
+                //$('#upload').data('uploadifive').settings.formData = { 'eID': element.one, 'Account': element.two, 'SO': element.three };
+            },
+            'onQueueComplete': function () {
+
+
+            },
+            'onSelect': function (queue) {
+                //var ExceptionType = $('#RecException').combobox('getValue');
+                //if (ExceptionType == '') {
+                //    //$('#upload').uploadifive('cancel',queue);
+                //    xz.messagerAlert('提示', '请选择异常类型', 'error');
+                //    return false;
+                //}
+
+            },
+            'onUploadComplete': function (file, data) {
+                issend = true;
+                if (data.toLowerCase().indexOf("sheet1") == -1) {
+                    $.alertMsg(data);
+                    return;
+                }
+                var datas = $.parseJSON(data);
+                allcolumns = [];
+
+                allcolumns.push({ field: 'ck', checkbox: true});
+                for (var item in datas.Sheet1[0]) {
+                    if (item.toLowerCase().indexOf("date") != -1 || item.indexOf("ETD") != -1 || item.indexOf("time") != -1 || item.indexOf("ETA") != -1) {
+                        allcolumns.push({ field: item, title: item, width: 180, formatter: formatterDate });
+                    } else if (item.toLowerCase().indexOf("delivery quantity") != -1 || item.toLowerCase().indexOf("delivery  carton") != -1 || item.toLowerCase().indexOf("delivery cbm") != -1) {
+
+                        allcolumns.push({ field: item, title: item, width: 180, formatter: isNumber });
+
+                    }else {
+                        allcolumns.push({ field: item, title: item, width: 150 });
+                    }
+                }
+
+
+                //$("#dgBooking").datagrid('loadData', { total: 0, rows: [] });
+                dgBooking = $("#dgBooking").datagrid({
+                    checkOnSelect: false,
+                    selectOnCheck:false,
+                    iconCls: 'icon-save',
+                    fit: true,
+                    fitColumns: false,//提高新能
+                    autoRowHeight: true,
+                    checkbox: true,
+                    rownumbers: true,
+                    nowrap: true, //如果为true，则在同一行中显示数据。设置为true可以提高加载性能。
+                    animate: false,
+                    border: false,
+                    singleSelect: true,
+                    loadMsg: 'Loading……',
+                    data: datas.Sheet1,
+                    pagination: true,
+                    pageSize: 50,
+                    pageList: [50, 100, 150, 200, 250],
+                    toolbar: [{
+                        text: 'Refresh',
+                        iconCls: 'icon-reload',
+                        handler: function () {
+                            dgBooking.datagrid('load');
+
+                        }
+                    },
+
+             '-', {
+                 text: 'Save',
+                 iconCls: 'icon-add',
+                 handler: function () {
+                     var data = JSON.stringify($("#dgBooking").datagrid('getRows'))
+                     if (isColor == false || isColors==false) {
+                         $.messager.confirm('Warning', 'The contents you have uploaded does not match the original PO information. Please confirm whether to continue to upload!', function (r) {
+                             if (r) {
+                                 $.post("/OnlineBooking_Areas/LoadPlanQuery/SAVE_DOMFOB", { data: data }, function (jsonObj, textStatus) {
+                                     if (textStatus = "success") {
+
+                                         if (jsonObj.Statu) {
+
+                                             $.messager.confirm('Confirm', jsonObj.Msg, function (r) {
+                                                 if (r) {
+                                                 }
+                                             });
+
+                                         } else {
+
+                                             $.alertMsg(jsonObj.Msg);
+                                         }
+
+                                     }
+                                 }, "json")
+                             }
+                         });
+                         return;
+                     } else {
+                         $.post("/OnlineBooking_Areas/LoadPlanQuery/SAVE_DOMFOB", { data: data }, function (jsonObj, textStatus) {
+                             if (textStatus = "success") {
+
+                                 if (jsonObj.Statu) {
+
+                                     $.messager.confirm('Confirm', jsonObj.Msg, function (r) {
+                                         if (r) {
+                                         }
+                                     });
+
+                                 } else {
+
+                                     $.alertMsg(jsonObj.Msg);
+                                 }
+
+                             }
+                         }, "json")
+                     }
+
+
+
+                 }
+             }, {
+                 text: 'cancel',
+                 iconCls: 'icon-cancel',
+                 handler: function () {
+                     var data = JSON.stringify($("#dgBooking").datagrid('getChecked'))
+
+
+                     $.post("/OnlineBooking_Areas/LoadPlanQuery/CheckDate", { data: data }, function (jsonObj, textStatus) {
+                         if (textStatus = "success") {
+
+                             if (jsonObj.Statu) {
+
+                                 $.messager.confirm('Confirm', jsonObj.Msg, function (r) {
+                                     if (r) {
+                                         $.post("/OnlineBooking_Areas/LoadPlanQuery/Cancel", { data: data }, function (jsonObj, textStatus) {
+                                             if (textStatus = "success") {
+                                                 if (jsonObj.Statu) {
+                                                     $.alertMsg(jsonObj.Msg);
+                                                 } else {
+
+                                                     $.alertMsg(jsonObj.Msg);
+                                                 }
+
+                                             }
+                                         }, "json")
+                                     }
+                                 });
+
+                             } else {
+
+                                 $.alertMsg(jsonObj.Msg);
+                             }
+
+                         }
+                     }, "json")
+
+                 }
+
+             }
+                    ],
+                    // idField: 'rId',
+                    columns: [allcolumns],
+                    onRowContextMenu: function (e, rowIndex, rowData) {
+                        //e.preventDefault();
+                        //$(this).datagrid('unselectAll');
+                        //$(this).datagrid('selectRow', rowIndex);
+                        //$('#menu').menu('show', {
+                        //    left: e.pageX,
+                        //    top: e.pageY
+                        //});
+                    },
+
+                    onLoadSuccess: function (data) {
+                        //var rows = $("#dgBooking").datagrid('getRows').length;
+
+                        //if (rows >= 1) {
+                        //    $('#dgBooking').datagrid('selectRow', 0);
+
+                        //}
+                    },
+                    rowStyler: function (index, row) {
+                        if (row.Color!=undefined) {
+                            isColor = false;
+                        }
+                        if (row.Colors != undefined) {
+                            isColors = false;
+                        }
+                        if (row.Color == "red") {
+                            return 'background-color:red;';
+                        } else if (row.Colors == "ye") {
+                            return 'background-color:yellow;';
+                        }
+                    }
+
+                });
+
+                if (isColors == false) {
+                    $("#dgBooking").datagrid('hideColumn', "Colors");
+
+                }
+                if (isColor == false) {
+                    $("#dgBooking").datagrid('hideColumn', "Color");
+
+                }
+                var jsonData = $.parseJSON(data);
+                $("#uploaded").html(jsonData.Msg);
+            }
+
+            /*getUploadedSize:function(file){
+                var data = {
+                    data : {
+                        fileName : file.name,
+                        lastModifiedDate : file.lastModifiedDate.getTime()
+                    }
+                };
+                var url = 'http://localhost/uploadfile/';
+                var uploadedSize = 0;
+                $.ajax({
+                    url : url,
+                    data : data,
+                    async : false,
+                    type : 'POST',
+                    success : function(returnData){
+                        returnData = JSON.parse(returnData);
+                        uploadedSize = returnData.uploadedSize;
+                    }
+                });
+                return uploadedSize;
+            }	*/
+        });
+
+    }
+
+
+    function ExportPolistCancel() {
+        var type = $("#DateType").combobox('getValue');
+        if (type == "STO MA Date") {
+            $('#searchForm').attr('action', '/OnlineBooking_Areas/LoadPlanQuery/DownLoadCancel');
+        } else {
+            $('#searchForm').attr('action', '/OnlineBooking_Areas/LoadPlanQuery/DownLoadCancel');
+
+        }
+        document.getElementById("searchForm").submit();
+    }
+        function Export() {
+            var type = $("#DateType").combobox('getValue');
+            if (type == "STO MA Date") {
+                $('#searchForm').attr('action', '/OnlineBooking_Areas/LoadPlanQuery/DownLoadDOM');
+            } else {
+                $('#searchForm').attr('action', '/OnlineBooking_Areas/LoadPlanQuery/DownLoadFoB');
+
+            }
+
+
+        //var formParam = {
+        //    url: '/Login/LoginIn',
+        //    success: dealWithLogin
+        //}
+        ///*把表单参数对象和表单元素结合起来*/
+        //loginInputForm = $('#loginInputForm').form(formParam);
+        document.getElementById("searchForm").submit();
+
+
+    }
+        function searchPolist() {
+            searchForm = $('#searchForm');
+            //$("#dgBooking").datagrid('loadData', { total: 0, rows: [] });
+            dgBooking = $("#dgBooking").datagrid({
+                checkOnSelect: false,
+                selectOnCheck: false,
+                iconCls: 'icon-save',
+                fit: true,
+                fitColumns: false,
+                rownumbers: true,
+                nowrap: true, //如果为true，则在同一行中显示数据。设置为true可以提高加载性能。
+                animate: false,
+                border: false,
+                singleSelect: true,
+                loadMsg: 'Loading……',
+                // idField: 'rId',
+                //把表单元素序列化成对象
+                queryParams: xz.serializeObject(searchForm),
+                pagination: true,
+                pageSize: 50,
+                pageList: [50, 100, 150, 200, 250],
+                url: '/OnlineBooking_Areas/LoadPlanQuery/CancelVendorGetPoList',
+                toolbar: [{
+                    text: 'Refresh',
+                    iconCls: 'icon-reload',
+                    handler: function () {
+                        dgBooking.datagrid('load');
+
+                    }
+                },
+
+                  '-', {
+                      text: 'cancel',
+                      iconCls: 'icon-cancel',
+                      handler: function () {
+                          var data = JSON.stringify($("#dgBooking").datagrid('getChecked'))
+
+
+                          $.post("/OnlineBooking_Areas/LoadPlanQuery/CheckDate", { data: data }, function (jsonObj, textStatus) {
+                              if (textStatus = "success") {
+
+                                  if (jsonObj.Statu) {
+
+                                      $.messager.confirm('Confirm', jsonObj.Msg, function (r) {
+                                          if (r) {
+                                              $.post("/OnlineBooking_Areas/LoadPlanQuery/Cancel", { data: data }, function (jsonObj, textStatus) {
+                                                  if (textStatus = "success") {
+                                                      if (jsonObj.Statu) {
+                                                          $.alertMsg(jsonObj.Msg);
+                                                      } else {
+
+                                                          $.alertMsg(jsonObj.Msg);
+                                                      }
+
+                                                  }
+                                              }, "json")
+                                          }
+                                      });
+
+                                  } else {
+
+                                      $.alertMsg(jsonObj.Msg);
+                                  }
+
+                              }
+                          }, "json")
+
+                      }
+
+                  }
+                  //,
+                  //  '-', {
+                  //      text: '完成卸货',
+                  //      iconCls: 'icon-ok',
+                  //      handler: function () {
+                  //          completUnloading();
+                  //      }
+                  //  },
+                  //    '-', {
+                  //        text: '已卸清单',
+                  //        iconCls: 'icon-remove',
+                  //        handler: function () {
+                  //            showUnloadingDetailView();
+                  //        }
+                  //    }
+
+                ],
+                columns: [[
+                     { field: 'ck', checkbox: true},
+                    { field: 'ID', title: 'ID', width: 100, hidden: true },
+                    { field: 'FOB_LOG', title: 'LOG', width: 200 },
+
+                    { field: 'Vendor_Name', title: 'Vendor Name', width:200 },
+
+                    { field: 'Mfr_Name1', title: 'Mfr Name1', width: 200 },
+
+                    { field: 'FOB_Customer_Name', title: 'Customer Name', width: 150 },
+                     {
+                         field: 'FOB_First_Date', title: 'First Date', width: 120, formatter: function (value) {
+                             if (value) {
+                                 if (eval("new " + value.substr(1, value.length - 2)).toLocaleDateString() == '1/1/1') {
+                                     return '';
+                                 } else {
+
+                                     return eval("new " + value.substr(1, value.length - 2)).toLocaleDateString();
+
+
+                                 }
+                             }
+                         }
+                     },
+                      {
+                          field: 'FOB_Cancel_Date', title: 'Cancel Date', width: 120, formatter: function (value) {
+                              if (value) {
+                                  if (eval("new " + value.substr(1, value.length - 2)).toLocaleDateString() == '1/1/1') {
+                                      return '';
+                                  } else {
+
+                                      return eval("new " + value.substr(1, value.length - 2)).toLocaleDateString();
+
+
+                                  }
+                              }
+                          }
+                      },
+
+
+                    { field: 'SalesOrd_STO', title: 'SalesOrd/STO(1)', width: 100 },
+                    { field: 'ItemNO', title: 'Item No.', width: 100 },
+
+
+                    { field: 'Purch_Doc', title: 'Purch.Doc', width: 100 },
+
+                    { field: 'Item', title: 'Item', width: 100 },
+
+                    { field: 'PO_quantity', title: 'PO quantity', width: 100 },
+                    { field: 'Total_Carton', title: 'Total Carton(5)', width: 100 },
+
+                    {
+                        field: 'Total_GrossWeight', title: 'Total Gross Weight', width: 120, formatter: function (value) {
+                            var f_x = parseFloat(value);
+                            //if (isNaN(f_x)) {
+                            //    alert('function:changeTwoDecimal->parameter error');
+                            //    return false;
+                            //}
+                            var f_x = Math.round(value * 100) / 100;
+                            var s_x = f_x.toString();
+                            var pos_decimal = s_x.indexOf('.');
+                            if (pos_decimal < 0) {
+                                pos_decimal = s_x.length;
+                                s_x += '.';
+                            }
+                            while (s_x.length <= pos_decimal + 3) {
+                                s_x += '0';
+                            }
+                            return s_x;
+
+                        }
+
+                    },
+
+                    { field: 'Order_status', title: 'Order status', width: 100 },
+                    ////{ field: 'CustomerMaterialNumber', title: 'Cust Material No.', width: 100 },
+                    //{ field: 'Sales_Material', title: 'Sales Material No.', width: 120 },
+                    //{ field: 'Material', title: 'Material No.', width: 100 },
+
+                    //{ field: 'Short_text', title: 'Short text(8)', width: 100 },
+
+
+
+                    ////{ field: 'CartonVolume', title: 'Carton Volume', width: 100 },
+                    //{
+                    //    field: 'Total_Volume', title: 'Total CBM', width: 100, formatter: function (value) {
+                    //        var f_x = parseFloat(value);
+                    //        //if (isNaN(f_x)) {
+                    //        //    alert('function:changeTwoDecimal->parameter error');
+                    //        //    return false;
+                    //        //}
+                    //        var f_x = Math.round(value * 100) / 100;
+                    //        var s_x = f_x.toString();
+                    //        var pos_decimal = s_x.indexOf('.');
+                    //        if (pos_decimal < 0) {
+                    //            pos_decimal = s_x.length;
+                    //            s_x += '.';
+                    //        }
+                    //        while (s_x.length <= pos_decimal + 3) {
+                    //            s_x += '0';
+                    //        }
+                    //        return s_x;
+
+
+                    //    }
+                    //},
+
+                    //{ field: 'Delivery_Number', title: 'Delivery No.', width: 100 }
+
+
+                ]],
+
+                onRowContextMenu: function (e, rowIndex, rowData) {
+                    //e.preventDefault();
+                    //$(this).datagrid('unselectAll');
+                    //$(this).datagrid('selectRow', rowIndex);
+                    //$('#menu').menu('show', {
+                    //    left: e.pageX,
+                    //    top: e.pageY
+                    //});
+                },
+
+                //onLoadSuccess: function (data) {
+                //    var rows = $("#dgBooking").datagrid('getRows').length;
+
+                //    if (rows >= 1) {
+                //        $('#dgBooking').datagrid('selectRow', 0);
+
+                //    }
+                //}
+
+            });
+
+        }
+
+</script>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width" />
+    <title>KPIIndex</title>
+</head>
+<body class="easyui-layout" data-options="fit:true">
+    <!--条件检索-->
+    <div data-options="region:'north',title:'Filter Conditions',split:true,border:false,collapsed:false" style="height:150px;overflow:hidden;">
+        <form id="searchForm" method="post" action="/OnlineBooking_Areas/LoadPlanQuery/DownLoadFoB">
+            <div id="condition" class="container_12" style="position:relative; border:0px solid #880000">
+
+
+                <div class="clear"></div>
+                <div class="grid_1 lbl">Purch Doc</div>
+                <div class="grid_2 val"> <input class="easyui-textbox" id="Sales_order" name="Sales_order"></div>
+
+                <div class="grid_1 lbl">  Date Type:</div>
+                <div class="grid_2 val"><input class="easyui-combobox" id="DateType" name="DateType" data-options="valueField: 'value',textField: 'label',data: [{label: 'First Date',value: 'First Date'},{label: 'STO MA Date',value: 'STO MA Date'}]"></div>
+
+
+                <div class="clear"></div>
+                <div class="grid_1 lbl"> Customer name</div>
+                <div class="grid_2 val"> <input class="easyui-textbox" id="Customer_name" name="Customer_name"></div>
+
+                <div class="grid_1 lbl">Item</div>
+                <div class="grid_2 val"> <input class="easyui-textbox" id="Item" name="Item"></div>
+
+                <div class="clear"></div>
+                <div class="grid_2 val">From<input id="jrstartdate" name="jrstartdate" value="" class="easyui-datebox" style="width:120px"> </div>
+                @*<div class="grid_1 lbl">To</div>*@
+                <div class="grid_2 val">To<input id="jrenddate" name="jrenddate" value="" class="easyui-datebox" style="width:120px"> </div>
+                <div class="grid_1 ">
+                    <a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-export'" onclick="searchPolist();">Search</a>
+                </div>
+
+                <div class="clear"></div>
+            </div>
+        </form>
+    </div>
+    <!--订单信息-->
+    <div></div>
+    <div data-options="region:'center',border:false" style="overflow:hidden;">
+        <table id="dgBooking"></table>
+    </div>
+</body>
+</html>

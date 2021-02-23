@@ -1,0 +1,16 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>抱歉, 访问页面出现未知错误</title>
+    <link rel="Stylesheet" href="@Url.Content("~/Content/css/error.css")" type="style/css" />
+</head>
+<body>
+    <div class="center" style="margin-top: 100px;">
+        <img src="@Url.Content("~/Content/images/icon_500.jpg")" />
+    </div>
+</body>
+</html>

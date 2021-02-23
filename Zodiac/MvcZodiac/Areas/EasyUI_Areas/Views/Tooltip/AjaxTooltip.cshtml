@@ -1,0 +1,41 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AjaxTooltip</title>
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>    
+</head>
+<body>
+    <h2>Ajax提示信息</h2>
+	    <div class="demo-info">
+	        <div class="demo-tip icon-tip"></div>
+	        <div>提示信息可以通过AJAX加载.</div>
+	    </div>
+	    <div style="margin:10px 0;"></div>
+	    <a href="#" class="easyui-tooltip" data-options="
+	            content: $('<div></div>'),
+	            onShow: function(){
+	                $(this).tooltip('arrow').css('left', 20);
+	                $(this).tooltip('tip').css('left', $(this).offset().left);
+	            },
+	            onUpdate: function(cc){
+	                cc.panel({
+	                    width: 500,
+	                    height: 'auto',
+	                    border: false,
+	                    href: '/EasyUI_Areas/Tooltip/_Content'
+	                });
+	            }
+	        ">到我这来</a> 显示AJAX加载的提示信息.
+</body>
+</html>

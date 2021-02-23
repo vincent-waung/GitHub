@@ -1,0 +1,30 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>MultipleComboTree</title>
+      <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+   <h2>多选下拉树</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>点击右边箭头按钮显示树数据进行选择.</div>
+    </div>
+    <div style="margin:10px 0">
+        <span>级联选择: </span>
+        <input type="checkbox" checked onclick="$('#cc').combotree({cascadeCheck:$(this).is(':checked')})">
+    </div>
+    <select id="cc" class="easyui-combotree" data-options="url:'/EasyUI_Areas/AdminIndex/GetAllDepts'" multiple style="width:200px;"></select>
+</body>
+</html>

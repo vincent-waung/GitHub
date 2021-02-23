@@ -1,0 +1,65 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>MergeCellsforDataGrid</title>
+     <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+  <h2>数据表格合并单元格</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>数据表格中的单元格可以合并.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <table class="easyui-datagrid" title="数据表格合并单元格" style="width:700px;height:250px"
+           data-options="
+                rownumbers: true,
+                singleSelect: true,
+                iconCls: 'icon-save',
+                url:'/EasyUI_Areas/AdminSys/GetUserInfo',
+                onLoadSuccess: onLoadSuccess
+            ">
+        <thead>
+            <tr>
+                <th data-options="field: 'uId', title: '用户编号', width: 100"></th>
+                <th data-options="field: 'uLoginName', title: '登录名', width: 100 "></th>
+                <th data-options="field: 'uRemark', title: '备注', width: 100"></th>
+                <th data-options="field: 'uPost', title: '邮编', width: 100"></th>
+                <th data-options="field: 'uGender', title: '性别', width: 100, align: 'right'"></th>
+            </tr>
+        </thead>
+    </table>
+    <script type="text/javascript">
+        function onLoadSuccess(data) {
+            var merges = [{
+                index: 2,
+                colspan: 2
+            }, {
+                index: 5,
+                colspan: 2
+            }, {
+                index: 7,
+                colspan: 2
+            }];
+            for (var i = 0; i < merges.length; i++) {
+                $(this).datagrid('mergeCells', {
+                    index: merges[i].index,
+                    field: 'uLoginName',
+                    colspan: merges[i].colspan
+                });
+            }
+        }
+    </script>
+</body>
+</html>

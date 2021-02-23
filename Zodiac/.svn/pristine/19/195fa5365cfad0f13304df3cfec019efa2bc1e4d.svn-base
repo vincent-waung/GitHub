@@ -1,0 +1,340 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section scripts{
+    <script src="~/Scripts/processingajaxmsg.js"></script>
+    <script src="~/Scripts/xzUtil.js"></script>
+    <script src="~/Scripts/DateUtil.js"></script>
+    
+}
+
+
+<script type="text/javascript">
+    var dgBooking;
+    var searchForm;
+    $(function () {
+
+        //var start_time = new Date();
+        //var end_time = new Date();
+        //start_time.setDate(start_time.getDate() - 7);
+        //$("#jrstartdate").datebox("setValue", myformatter(start_time));
+
+        //$("#jrenddate").datebox("setValue", myformatter(end_time));
+        //loadCustomer();
+        //获取时间
+     
+
+        // $('#enddate').datebox('setValue', nowdate.getMonth() + 1 + '-' + nowdate.getDate() + '-' + nowdate.getFullYear());
+        searchForm = $('#searchForm');
+        dgBooking = $("#dgBooking").datagrid({
+            iconCls: 'icon-save',
+            fit: true,
+            fitColumns: false,
+            rownumbers: true,
+            nowrap: true, //如果为true，则在同一行中显示数据。设置为true可以提高加载性能。
+            animate: false,
+            border: false,
+            singleSelect: true,
+            loadMsg: 'Loading……',
+            // idField: 'rId',
+            //把表单元素序列化成对象
+            queryParams: xz.serializeObject(searchForm),
+            pagination: true,
+            pageSize: 50,
+            pageList: [50, 100, 150, 200, 250],
+            url: '/OnlineBooking_Areas/LoadPlanQuery/VendorGetPoList',
+            toolbar: [{
+                text: 'Refresh',
+                iconCls: 'icon-reload',
+                handler: function () {
+                    dgBooking.datagrid('load');
+
+                }
+            },
+
+              '-', {
+                  text: 'Input',
+                  iconCls: 'icon-add',
+                  handler: function () {
+                      showVendorInputView();
+                  }
+              }
+              //,
+              //  '-', {
+              //      text: '完成卸货',
+              //      iconCls: 'icon-ok',
+              //      handler: function () {
+              //          completUnloading();
+              //      }
+              //  },
+              //    '-', {
+              //        text: '已卸清单',
+              //        iconCls: 'icon-remove',
+              //        handler: function () {
+              //            showUnloadingDetailView();
+              //        }
+              //    }
+
+            ],
+            columns: [[
+        
+                { field: 'ID', title: 'ID', width: 100, hidden: true },
+                
+                { field: 'Vendor_Name', title: 'Vendor Name', width:200 },
+
+                { field: 'Mfr_Name1', title: 'Mfr Name1', width: 200 },
+              
+                { field: 'FOB_Customer_Name', title: 'Customer Name', width: 150 },
+               
+                { field: 'FOB_Customer_PO', title: 'Customer PO(2)', width: 120 },
+                { field: 'SalesOrd_STO', title: 'SalesOrd/STO(1)', width: 100 },
+                { field: 'ItemNO', title: 'Item No.', width: 100 },
+               
+
+                { field: 'Purch_Doc', title: 'Purch.Doc.', width: 100 },
+
+                { field: 'Item', title: 'Item', width: 100 },
+                    
+                //{ field: 'CustomerMaterialNumber', title: 'Cust Material No.', width: 100 },
+                { field: 'Sales_Material', title: 'Sales Material No.', width: 120 },
+                { field: 'Material', title: 'Material No.', width: 100 },
+
+                { field: 'Short_text', title: 'Short text(8)', width: 100 },
+                { field: 'PO_quantity', title: 'PO quantity', width: 100 },
+
+                { field: 'Total_Carton', title: 'Total Carton(5)', width: 100 },
+
+
+ 
+                {
+                    field: 'Total_GrossWeight', title: 'Total Gross Weight', width: 120, formatter: function (value) {
+                        var f_x = parseFloat(value);
+                        //if (isNaN(f_x)) {
+                        //    alert('function:changeTwoDecimal->parameter error');
+                        //    return false;
+                        //}
+                        var f_x = Math.round(value * 100) / 100;
+                        var s_x = f_x.toString();
+                        var pos_decimal = s_x.indexOf('.');
+                        if (pos_decimal < 0) {
+                            pos_decimal = s_x.length;
+                            s_x += '.';
+                        }
+                        while (s_x.length <= pos_decimal + 3) {
+                            s_x += '0';
+                        }
+                        return s_x;
+
+                    }
+
+                },
+                //{ field: 'CartonVolume', title: 'Carton Volume', width: 100 },
+                {
+                    field: 'Total_Volume', title: 'Total CBM', width: 100, formatter: function (value) {
+                        var f_x = parseFloat(value);
+                        //if (isNaN(f_x)) {
+                        //    alert('function:changeTwoDecimal->parameter error');
+                        //    return false;
+                        //}
+                        var f_x = Math.round(value * 100) / 100;
+                        var s_x = f_x.toString();
+                        var pos_decimal = s_x.indexOf('.');
+                        if (pos_decimal < 0) {
+                            pos_decimal = s_x.length;
+                            s_x += '.';
+                        }
+                        while (s_x.length <= pos_decimal + 3) {
+                            s_x += '0';
+                        }
+                        return s_x;
+
+
+                    }
+                },
+               
+                { field: 'Delivery_Number', title: 'Delivery No.', width: 100 } 
+ 
+
+            ]],
+
+            onRowContextMenu: function (e, rowIndex, rowData) {
+                //e.preventDefault();
+                //$(this).datagrid('unselectAll');
+                //$(this).datagrid('selectRow', rowIndex);
+                //$('#menu').menu('show', {
+                //    left: e.pageX,
+                //    top: e.pageY
+                //});
+            },
+
+            onLoadSuccess: function (data) {
+                var rows = $("#dgBooking").datagrid('getRows').length;
+
+                if (rows >= 1) {
+                    $('#dgBooking').datagrid('selectRow', 0);
+
+                }
+            }
+
+        });
+    });
+
+
+    function showVendorInputView() {
+
+        //var UID = $('#Vehicle').combobox('getValue');
+
+        
+        
+        
+        var pVendorInput = xz.dialog({
+            title: "Vendor Input(Purch.Doc.:" + dgBooking.datagrid("getSelected")["Purch_Doc"] + ",Item:" + dgBooking.datagrid("getSelected")["Item"] + ")",
+            width: 1000,
+            height: 450,
+            cache: false,
+            queryParams: {
+                //uID: node.b_key, RegID: node.RegDID
+            },
+            iconCls: 'icon-edit',
+
+            href: '/OnlineBooking_Areas/LoadPlanQuery/ShowVendorInputView',
+            buttons: [
+                //{
+                //    text: '提交',
+                //    iconCls: 'icon-add',
+                //    handler: function () {
+ 
+                //        var f = pAdd.find('form');
+ 
+                //    }
+                //},
+ 
+             {
+                 text: 'Close',
+                 iconCls: 'icon-cancel',
+                 handler: function () {
+
+
+                     pVendorInput.dialog('destroy');//销毁
+                 }
+                    
+             }
+
+            ],
+            onLoad: function () {
+
+                $("#Total_Carton").val(dgBooking.datagrid("getSelected")["Total_Carton"]);
+                $("#PO_quantity").val(dgBooking.datagrid("getSelected")["PO_quantity"]);
+                $("#Total_Volume").val(dgBooking.datagrid("getSelected")["Total_Volume"]);
+                
+                //var f = pVendorInput.find('form');
+                //var pVendorInputDg = f.find("#dg");
+ 
+                //var param = { pID: pID };
+
+                //var options = pVendorInputDg.datagrid('options');
+
+                //options.url = '/WMS_Areas/LoadPlanQuery/GetVendorInputListByPID';
+                //options.queryParams = param;
+                //punloadingdetailDg.datagrid(options);
+
+            },
+
+            onClose: function () {
+
+                pVendorInput.dialog('destroy');//销毁
+
+
+            }
+
+        });
+
+    }
+
+
+    function searchBooking() {
+        
+        dgBooking.datagrid('load', xz.serializeObject(searchForm));
+
+    }
+    //function loadCustomer() {
+    //    $.post("/OnlineBooking_Areas/LoadPlanQuery/GetCustomerList", null, function (data, textStatus) {
+
+    //        if (textStatus = "success") {
+    //            $("#Customer").combobox({});
+    //            $("#Customer").combobox({
+    //                data: data.Data,
+    //                valueField: 'cust_name',
+    //                textField: 'cust_name'
+    //            });
+
+
+    //        } else {
+
+    //            alert('get customerlist false');
+    //        }
+
+    //    })
+    //}
+
+
+
+    </script>
+
+    <!DOCTYPE html>
+
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>VendorInput</title>
+    </head>
+    <body class="easyui-layout" data-options="fit:true">
+        <!--条件检索-->
+        <div data-options="region:'north',title:'Filter Conditions',split:true,border:false,collapsed:false" style="height:120px;overflow:hidden;">
+            <form id="searchForm" method="post" action="/OnlineBooking_Areas/LoadPlanQuery/ExcelOut">
+                <div id="condition" class="container_12" style="position:relative; border:0px solid #880000">
+
+                    <div class="clear"></div>
+                    <div class="grid_1 lbl">Purch_Doc</div>
+                    <div class="grid_2 val"> <input class="easyui-textbox" id="Sales_order" name="Sales_order"></div>
+
+                    @*<div class="grid_1 lbl">Customer</div>
+                    <div class="grid_2 val"> <input class="easyui-combobox" id="Customer" name="Customer" value=""></div>*@
+
+                    @*<div class="grid_1 lbl">Vendor name</div>
+                    <div class="grid_2 val"> <input class="easyui-textbox" id="Vendor_Name" name="Vendor_Name" value=""></div>
+                    <div class="clear"></div>*@
+                    <div class="clear"></div>
+                    <div class="grid_1 lbl"> Customer name</div>
+                    <div class="grid_2 val"> <input class="easyui-textbox" id="Customer_name" name="Customer_name"></div>
+
+                    <div class="clear"></div>
+                    <div class="grid_1 lbl">Item</div>
+                    <div class="grid_2 val"> <input class="easyui-textbox" id="ItemNO" name="ItemNO"></div>
+
+
+                    @*<div class="grid_3 val"> Date Type:<input class="easyui-combobox" id="DateType" name="DateType" data-options="valueField: 'value',textField: 'label',data: [{label: 'First Date',value: 'First Date',selected:true},{label: 'Closing Date',value: 'Closing Date'},{label: 'Booking Date',value: 'Booking Date'} ]"></div>*@
+                    @*<div class="grid_2 val" style="display:none"> <input type="checkbox" name="POD" id="POD">POD</div>*@
+                    @*<div class="clear"></div>*@
+                    @*<div class="grid_2 val">From<input id="jrstartdate" name="jrstartdate" value="" class="easyui-datebox" style="width:120px"> </div>
+
+                    <div class="grid_2 val">To<input id="jrenddate" name="jrenddate" value="" class="easyui-datebox" style="width:120px"> </div>*@
+
+                    <div class="grid_1 ">
+                        <a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="searchBooking();">Search</a>
+                    </div>
+                    <div class="grid_1 ">
+                        @*<a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-export'" onclick="Export();">Export</a>*@
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </form>
+        </div>
+        <!--订单信息-->
+        <div></div>
+        <div data-options="region:'center',border:false" style="overflow:hidden;">
+            <table id="dgBooking"></table>
+        </div>
+    </body>
+    </html>

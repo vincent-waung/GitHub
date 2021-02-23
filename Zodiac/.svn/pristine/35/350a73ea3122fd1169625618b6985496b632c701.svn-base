@@ -1,0 +1,28 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>InitializeValueforComboTree</title>
+      <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+    <h2>基本下拉树组件</h2>
+ <h2>为下拉树赋初值</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>当下拉树创建完后赋初值.</div>
+    </div>
+    <div style="margin:10px 0"></div>
+    <input class="easyui-combotree" value="2" data-options="url:'/EasyUI_Areas/AdminIndex/GetAllDepts',required:true" style="width:200px;">
+</body>
+</html>

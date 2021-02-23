@@ -1,0 +1,38 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>GroupFormat</title>
+        <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+   <h2>分组格式化</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>用户能够改变分组信息.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <table class="easyui-propertygrid" style="width:300px" data-options="
+                 url: '/EasyUI_Areas/AdminSys/GetRoleData',
+                        showGroup: true,
+                        fit: true,
+                        border: true,
+                groupFormatter: groupFormatter
+            "></table>
+    <script>
+        function groupFormatter(fvalue, rows) {
+            return fvalue + ' - <span style="color:red">' + rows.length + ' 行</span>';
+        }
+    </script>
+</body>
+</html>

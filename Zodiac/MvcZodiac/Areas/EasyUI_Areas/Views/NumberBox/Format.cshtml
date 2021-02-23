@@ -1,0 +1,48 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Format</title>
+      <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+    <h2>格式化数字</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>数字格式化能够控制一个数字如何显示.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <table>
+        <tr>
+            <td>美国数字格式：</td>
+            <td><input class="easyui-numberbox" value="1234567.89" data-options="precision:2,groupSeparator:','"></input></td>
+        </tr>
+        <tr>
+            <td>法国数字格式：</td>
+            <td><input class="easyui-numberbox" value="1234567.89" data-options="precision:2,groupSeparator:' ',decimalSeparator:','"></input></td>
+        </tr>
+        <tr>
+            <td>货币:美元</td>
+            <td><input class="easyui-numberbox" value="1234567.89" data-options="precision:2,groupSeparator:',',decimalSeparator:'.',prefix:'$'"></input></td>
+        </tr>
+        <tr>
+            <td>货币:欧元</td>
+            <td><input class="easyui-numberbox" value="1234567.89" data-options="precision:2,groupSeparator:',',decimalSeparator:' ',prefix:'€'"></input></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input class="easyui-numberbox" value="1234567.89" data-options="precision:2,groupSeparator:' ',decimalSeparator:',',suffix:'€'"></input></td>
+        </tr>
+    </table>
+</body>
+</html>

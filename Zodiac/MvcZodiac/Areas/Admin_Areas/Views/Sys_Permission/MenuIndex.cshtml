@@ -1,0 +1,517 @@
+﻿@{
+    Layout = null;
+}
+@using Models;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>菜单管理首页</title>
+    <!--jQuery库-->
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <!--jQuery Easy库-->
+    <link id="easyuiTheme" href="~/jquery-easyui-1.3.1/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/jquery-easyui-1.3.1/themes/icon.css" rel="stylesheet" />
+    <script src="~/jquery-easyui-1.3.1/jquery.easyui.min.js"></script>
+    <script src="~/jquery-easyui-1.3.1/locale/easyui-lang-zh_CN.js"></script>
+    <!--自定义库-->
+    <script src="~/Scripts/processingajaxmsg.js"></script>
+    <script src="~/Scripts/xzUtil.js"></script>
+    <!--自定义的图标样式-->
+    <link href="~/Content/exticon.css" rel="stylesheet" />
+    <script type="text/javascript">
+        /*显示菜单的表格*/
+        var tgMenu;
+        /*当前的编辑行*/
+        var editRow = undefined;       
+        var isDelData;
+        var isShowData;
+        var httpMethods;
+        var editType;//add or edit or  undefined;
+        $(function () {
+            httpMethods = [
+            {
+                value: 1,
+                text: 'GET'
+            },
+             {
+                 value: 2,
+                 text: 'POST'
+             },
+              {
+                  value: 3,
+                  text: 'HEAD'
+              }
+            ];
+            isShowData = [
+             {
+                 value: true,
+                 text: '可见'
+             },
+             {
+                 value: false,
+                 text: '不可见'
+             }];
+            isDelData = [
+              {
+                  value: true,
+                  text: '禁用'
+              },
+              {
+                  value: false,
+                  text: '启用'
+              }];
+            iconData = [{
+                value: 'icon-d1',
+                text: 'icon-d1'
+            }, {
+                value: 'icon-d2',
+                text: 'icon-d2'
+            }, {
+                value: 'icon-d3',
+                text: 'icon-d3'
+            }, {
+                value: 'icon-d4',
+                text: 'icon-d4'
+            }, {
+                value: 'icon-d5',
+                text: 'icon-d5'
+            }, {
+                value: 'icon-d6',
+                text: 'icon-d6'
+            }, {
+                value: 'icon-d7',
+                text: 'icon-d7'
+            }, {
+                value: 'icon-d8',
+                text: 'icon-d8'
+            }, {
+                value: 'icon-d9',
+                text: 'icon-d9'
+            }, {
+                value: 'icon-d10',
+                text: 'icon-d10'
+            }, {
+                value: 'icon-d11',
+                text: 'icon-d11'
+            }];
+            tgMenu = $("#tgMenu").treegrid({
+                iconCls: 'icon-save',
+                fit: true,
+                fitColumns: true,
+                rownumbers: true,
+                nowrap: false,
+                animate: false,
+                border: false,               
+                idField: 'pid',
+                treeField: 'pName',
+                url: '/Admin_Areas/Sys_Permission/GetAllPersForTreeGridMenu?id='+xz.UUID(),
+                toolbar: [{
+                    text: '展开',
+                    iconCls: 'icon-redo',
+                    handler: function () {
+                        var node = tgMenu.treegrid('getSelected');
+                        if (node) {
+                            tgMenu.treegrid('expand', node.pid);
+                        } else {
+                            tgMenu.treegrid('expandAll');
+                        }
+                    }
+                }, '-', {
+                    text: '折叠',
+                    iconCls: 'icon-undo',
+                    handler: function () {
+                        var node = tgMenu.treegrid('getSelected');
+                        if (node) {
+                            tgMenu.treegrid('collapse', node.pid);
+                        } else {
+                            tgMenu.treegrid('collapseAll');
+                        }
+                    }
+                },
+                '-', {
+                    text: '刷新',
+                    iconCls: 'icon-reload',
+                    handler: function () {
+                        tgMenu.treegrid('reload');
+                    }
+                }
+                ,
+                '-', {
+                    text: '增加',
+                    iconCls: 'icon-add',
+                    handler: function () {
+                        appendMenu();
+                    }
+                }
+                ,
+                '-', {
+                    text: '编辑',
+                    iconCls: 'icon-edit',
+                    handler: function () {
+                        editMenu();
+                    }
+                }
+                ,
+                '-', {
+                    text: '删除',
+                    iconCls: 'icon-remove',
+                    handler: function () {
+                        removeMenu();
+                    }
+                }, '-', {
+                    text: '保存',
+                    iconCls: 'icon-save',
+                    handler: function () {
+                        if (editRow != undefined) {
+                            tgMenu.treegrid('endEdit', editRow.pid);
+                        }
+
+                    }
+                }, '-', {
+                    text: '取消编辑',
+                    iconCls: 'icon-undo',
+                    handler: function () {
+                        if (editRow) {
+                            tgMenu.treegrid('cancelEdit', editRow.pid);
+                            var p = tgMenu.treegrid('getParent', editRow.pid);
+                            if (p) {
+                                tgMenu.treegrid('reload', p.pid);
+                            } else {
+                                tgMenu.treegrid('reload');
+                            }
+                            editRow = undefined;
+                            editType = undefined;
+                        }
+                    }
+                },
+                '-', {
+                    text: '取消选中',
+                    iconCls: 'icon-undo',
+                    handler: function () {
+                        tgMenu.treegrid('unselectAll');
+                    }
+                }
+                ],
+                frozenColumns: [[
+                   {
+                       title: '编号',
+                       field: 'pid',                     
+                       align: 'center',
+                       hidden: true,
+                       width: 60
+                   },
+                     {
+                         title: '菜单名称',
+                         field: 'pName',
+                         width: 180,    
+                         editor: {
+                             type: 'validatebox',
+                             options: {
+                                 required: true
+                             }
+                         },
+                         formatter: function (value, row, index) {
+                             if (value) {
+                                 return xz.fs('<span title="{0}">{1}</span>', value, value);
+                             }
+                         }
+                     }
+                ]],
+                columns: [[
+                    {
+                        title: '菜单地址',
+                        colspan:4
+                    },
+                {
+                    title: '图标',
+                    field: 'pIco',
+                    width: 60,
+                    rowspan: 2,
+                    align: 'center',
+                    editor: {
+                        type: 'combobox',
+                        options: {
+                            data: iconData,
+                            required: true,
+                            formatter: function (v) {                            
+                              return xz.fs('<span class="{0}" style="display:inline-block;vertical-align:middle;width:16px;height:16px;"></span>{1}', v.value,v.text);
+                               
+                            }
+                        }
+                    },
+                    formatter: function (value) {
+                        if (!value) {
+                            return '';
+                        } else {
+                            return xz.fs('<span class="{0}" style="display:inline-block;vertical-align:middle;width:16px;height:16px;"></span>', value);
+                        }
+                    }
+
+                }  ,
+                     {
+
+                         title: '上级菜单',
+                         field: '_parentId',
+                         align: 'center',
+                         width: 100,
+                         rowspan: 2,
+                         editor: {
+                             type: 'combotree',
+                             options: {
+                                 url: '/Admin_Areas/Sys_Permission/GetAllMenusForTree',
+                                 lines: true,
+                                 required: true
+                             }
+                         },
+                         formatter: function (value, row, index) {
+                             if (row.pPerName) {
+                                 return row.pPerName;
+                             } 
+                         }
+                     }
+                     ,
+                     {
+                         title: '是否禁用',
+                         field: 'pIsDel',
+                         align: 'center',
+                         rowspan: 2,
+                         width: 80,
+                         editor: {
+                             type: 'combobox',
+                             options: {
+                                 data: isDelData
+                             }
+                         },
+                         formatter: xz.formatterEnable
+                     }
+                     ,
+                     {
+                         title: '排序',
+                         field: 'pOrder',
+                         align: 'center',
+                         rowspan: 2,
+                         editor: {
+                             type: 'text',
+                             required: true
+                         },
+                         width:50
+                     }
+                     ,
+                     {
+                         title: '菜单说明',
+                         field: 'pRemark',
+                         align: 'center',
+                         rowspan: 2,
+                         hidden:true,
+                         align: 'center',
+                         editor: {
+                             type: 'text'
+                         },
+                         width: 80
+                     }
+                     ,
+                     {
+                         title: '操作日期',
+                         field: 'pOperTime',
+                         rowspan: 2,
+                         hidden: true,
+                         align: 'center',
+                         width: 100,
+                         formatter: function (value) {
+                             if (value) {
+                                 return eval("new " + value.substr(1, value.length - 2)).toLocaleDateString();
+                             }
+                         }
+
+                     }
+                ], [                    
+                    {
+                        title: '区域',
+                        field: 'pAreaName',
+                        align: 'center',
+                        editor: {
+                            type: 'text'
+                        },
+                        width: 60
+                    }
+                     ,
+                     {
+                         title: '控制器',
+                         field: 'pControllerName',
+                         align: 'center',
+                         editor: {
+                             type: 'text'
+                         },
+                         width: 80
+                     }
+                     ,
+                      {
+                          title: '操作方法',
+                          field: 'pActionName',
+                          align: 'center',
+                          editor: {
+                              type: 'text'
+                          },
+                          width: 80
+                      }
+                     , {
+                         title: '请求方式',
+                         field: 'pFormMethod',
+                         align: 'center',
+                         width: 70,
+                         editor: {
+                             type: 'combobox',
+                             options: {
+                                 data: httpMethods
+                             }
+                         },
+                         formatter: function (value) {
+                             return value == 1 ? 'GET' : value == 2 ? 'POST' : 'HEAD';
+                         }
+                     }
+                ]],
+                onAfterEdit: function (row, changes) {
+                   
+                    if (editType == undefined) {
+                        editRow = undefined;
+                        tgMenu.treegrid('unselectAll');
+                        return;
+                    }
+
+                    var url = '';
+                    if (editType=='add') {
+                        url = '/Admin_Areas/Sys_Permission/AddMenu';
+                    } else {
+                        url = '/Admin_Areas/Sys_Permission/EditMenu';
+                    }
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        cache:false,
+                        data: row,
+                        dataType: 'json',
+                        success: function (jsonData) {
+                            $.procAjaxMsg(jsonData, function () {      
+                                tgMenu.treegrid('reload',row.pid);
+                                tgMenu.treegrid('unselectAll');
+                                editType = undefined;
+                                editRow = undefined;
+                                $.alertMsg(jsonData.Msg, '操作提示', null);
+                            }, function () {                                
+                                tgMenu.treegrid('beginEdit', editRow.pid);
+                                $.alertMsg(jsonData.Msg, '操作提示', null);
+                            });
+                        }
+                    });
+                },
+                onContextMenu: function (e, row) {
+                    e.preventDefault();
+                    $(this).treegrid('unselectAll');
+                    $(this).treegrid('select', row.pid);
+                    $('#menu').menu('show', {
+                        left: e.pageX,
+                        top: e.pageY
+                    });
+                },
+                onExpand: function (row) {
+                    tgMenu.treegrid('unselectAll');
+                }
+                ,
+                onCollapse: function (row) {
+                    tgMenu.treegrid('unselectAll');
+                }
+            });
+        });
+
+     
+        /**
+        *增加菜单信息
+        */
+        function appendMenu() {
+            if (editRow != undefined) {
+                tgMenu.treegrid('endEdit', editRow.pid);
+            } else {
+                var node = tgMenu.treegrid('getSelected');
+
+                var newRow = [{
+                    pid: xz.UUID(),
+                    pOrder: '10001',
+                    pIsDel:false
+                }];
+                tgMenu.treegrid('append', {
+                    parent: node == null ? 0 : node.pid,
+                    data:newRow
+                });
+                editRow = newRow[0];
+                editType = 'add';
+                tgMenu.treegrid('select', editRow.pid);
+                tgMenu.treegrid('beginEdit', editRow.pid);
+
+            }
+        }
+
+        /**
+        *编辑菜单信息
+        */
+        function editMenu() {
+            var row = tgMenu.treegrid('getSelected');
+            if (row && row.pid) {
+                if (editRow != undefined) {
+                    tgMenu.treegrid('endEdit', editRow.pid);
+                } else {                  
+                    tgMenu.treegrid('beginEdit', row.pid);
+                    editRow = row;
+                    editType = 'edit';
+                }
+            }
+            else {
+                xz.messagerAlert('提示', '请选择要编辑的菜单！', 'error');
+            }
+
+        }
+
+        /*删除菜单*/
+        function removeMenu() {
+            /*选中要删除的结点*/
+            var node = tgMenu.treegrid('getSelected');
+            if (node) {
+                xz.messagerConfirm('询问', '您确定要删除【' + node.pName + '】？', function (b) {
+                    if (b) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/Admin_Areas/Sys_Permission/DelMenu',
+                            data: {
+                                pid: node.pid
+                            },
+                            cache: false,
+                            dataType: 'JSON',
+                            success: function (jsonData) {
+                                $.procAjaxMsg(jsonData, function () {
+                                    tgMenu.treegrid('reload');
+                                    $.alertMsg(jsonData.Msg, '操作提示', null);
+                                }, function () {
+                                    $.alertMsg(jsonData.Msg, '操作提示', null);
+                                });
+                            }
+                        });
+                    }
+                });
+            } else {
+                xz.messagerAlert('提示', '请选择要删除的组织机构！', 'error');
+            }
+        }
+    </script>
+</head>
+<body class="easyui-layout" data-options="fit:true">  
+    <!--菜单信息-->
+    <div data-options="region:'center',border:false" style="overflow:hidden;">
+        <table id="tgMenu"></table>
+    </div>
+    <div id="menu" class="easyui-menu" style="width:120px;display:none;">
+        <div onclick="appendMenu();" data-options="iconCls:'icon-add'">增加</div>
+        <div onclick="removeMenu();" data-options="iconCls:'icon-remove'">删除</div>
+        <div onclick="editMenu();" data-options="iconCls:'icon-edit'">编辑</div>
+    </div>  
+</body>
+</html>

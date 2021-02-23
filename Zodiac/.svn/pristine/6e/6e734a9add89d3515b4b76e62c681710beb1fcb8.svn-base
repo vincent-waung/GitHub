@@ -1,0 +1,39 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>CustomizeColumnsofPropertyGrid</title>
+       <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+    <h2>属性表格定制列</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>属性表格的列可以改变.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <table class="easyui-propertygrid" style="width:300px" data-options="
+                url: '/EasyUI_Areas/AdminSys/GetRoleData',
+                        showGroup: true,
+                        fit: true,
+                        border: true,
+                        columns: mycolumns
+            "></table>
+    <script type="text/javascript">
+        var mycolumns = [[
+        { field: 'name', title: '角色名', width: 100, sortable: true },
+        { field: 'value', title: '角色编号', width: 100, resizable: false }
+        ]];
+    </script>
+</body>
+</html>

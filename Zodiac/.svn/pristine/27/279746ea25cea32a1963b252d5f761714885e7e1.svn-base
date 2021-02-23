@@ -1,0 +1,39 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>NestedLayout</title>
+      <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+<h2>嵌套布局</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>布局区域面板能够包含其他布局或者其他组件.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-layout" style="width:700px;height:350px;">
+        <div data-options="region:'north'" style="height:50px"></div>
+        <div data-options="region:'south',split:true" style="height:50px;"></div>
+        <div data-options="region:'east',split:true" title="东" style="width:180px;"></div>
+        <div data-options="region:'west',split:true" title="西" style="width:100px;"></div>
+        <div data-options="region:'center',iconCls:'icon-ok'" title="中">
+            <div class="easyui-layout" data-options="fit:true">
+                <div data-options="region:'north',split:true,border:false" style="height:50px"></div>
+                <div data-options="region:'west',split:true,border:false" style="width:100px"></div>
+                <div data-options="region:'center',border:false"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

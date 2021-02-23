@@ -1,0 +1,64 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>TreeGridwithFooter</title>
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+     <h2>树形表格底部行</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>在树形表格底部显示总结信息.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <table id="tg"></table>
+    <script type="text/javascript">
+        $(function () {
+            $('#tg').treegrid({
+                title: '树形表格底部行',
+                iconCls: 'icon-ok',
+                width: 700,
+                height: 250,
+                rownumbers: true,
+                animate: true,
+                collapsible: true,
+                fitColumns: true,
+                url: '/EasyUI_Areas/AdminIndex/GetAllDeptsTwo',
+                idField: 'id',
+                treeField: 'text',
+                showFooter: true,
+                columns: [[
+                    { title: '部门编号', field: 'id', width: 180 },
+                    { title: '部门名称', field: 'text', width: 60, align: 'right' },
+                    { title: '说明', field: 'depRemark', width: 80 },
+                    { title: '操作日期', field: 'depAddTime', width: 80 },
+                    {
+                        title: '人气比', field: 'progress', width: 120,
+                        formatter: function (value) {
+                            if (value) {
+                                var s = '<div style="width:100%;border:1px solid #ccc">' +
+                                        '<div style="width:' + value + '%;background:#cc0000;color:#fff">' + value + '%' + '</div>'
+                                '</div>';
+                                return s;
+                            } else {
+                                return '';
+                            }
+                        }
+                    }
+                ]]
+            });
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>NestedPanel</title>
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+    <h2>嵌套面板</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>面板能够放在容器里，并且能包含其他组件.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="嵌套面板" style="width:500px;height:200px;padding:10px;">
+        <div class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'west',split:true" style="width:100px;padding:10px">
+                左边内容
+            </div>
+            <div data-options="region:'center'" style="padding:10px">
+                右边内容
+            </div>
+        </div>
+    </div>
+</body>
+</html>

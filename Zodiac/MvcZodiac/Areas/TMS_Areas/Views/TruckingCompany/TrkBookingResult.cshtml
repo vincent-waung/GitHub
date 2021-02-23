@@ -1,0 +1,125 @@
+﻿@{
+    Layout = null;
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>TruckingOrderSearchIndex</title>
+    <script src="~/Areas/Scripts/easyui/jquery.min.js"></script>
+    <script src="~/Areas/Scripts/easyui/jquery.easyui.min.js"></script>
+    <script src="~/Areas/Scripts/ToolKit.js"></script>
+    <script src="~/Areas/Scripts/ajaxfileupload.js"></script>
+    <link href="~/Areas/Content/Site.css" rel="stylesheet" />
+    <link href="~/Areas/Content/easyui/icon.css" rel="stylesheet" />
+    <link href="~/Areas/Content/easyui/bootstrap/easyui.css" rel="stylesheet" />
+
+
+    <script type="text/javascript">
+        $(function () {
+            $('#BookingInfo').datagrid({
+
+                fitColumns: false,
+                pagination: false,
+                singleSelect: true,
+                url: '/TMS_Areas/TruckingCompany/GetTrkBookingResultList',
+                columns: [[
+                    {
+                        field: 'Booking_Number', title: 'BookingNO.', width: 200,
+                        formatter: function (value, row) {
+                            return row.book.Booking_Number;
+                        }
+                    },
+                    {
+                        field: 'VendorCode', title: 'Vendor Code', width: 100,
+                        formatter: function (value, row) {
+                            return row.book.VendorCode;
+                        }
+                    },
+                    {
+                        field: 'VendorName', title: 'Vendor Name', width: 150,
+                        formatter: function (value, row) {
+                            return row.book.VendorName;
+                        }
+                    },
+                    {
+                        field: 'Delivery_Type', title: 'Delivery Type', width: 100,
+                        formatter: function (value, row) {
+                            return row.book.Delivery_Type;
+                        }
+                    },
+                    {
+                        field: 'Intype', title: 'In Type"', width: 100,
+                        formatter: function (value, row) {
+                            return row.book.Intype;
+                        }
+                    },
+                    {
+                        field: 'Vdr_Pickup_date', title: 'PickUp Date', width: 100,
+                        formatter: function (value, row) {
+                            return FormatJsonDate(row.book.Vdr_Pickup_date);
+                        }
+                    },
+                    {
+                        field: 'CTN', title: 'CTN', width: 150,
+                        formatter: function (value, row) {
+                            return row.book.CTN;
+                        }
+                    },
+                    {
+                        field: 'GrossWeight', title: 'Tot GrossWeigh', width: 250,
+                        formatter: function (value, row) {
+                            return row.book.GrossWeight;
+                        }
+                    }
+                    ,
+                    {
+                        field: 'CBM', title: 'Tot CBM', width: 250,
+                        formatter: function (value, row) {
+                            return row.book.CBM;
+                        }
+                    },
+                    
+                    {
+                        field: 'Vehicletype', title: 'Vehicle Type', width: 100,
+                        formatter: function (value, row) {
+                            return row.book.Vehicletype;
+                        }
+                    },
+                    {
+                        field: 'Fongguan_Address', title: 'Local customs Address', width: 100,
+                        formatter: function (value, row) {
+                            return row.book.Fongguan_Address;
+                        }
+                    },
+                    {
+                        field: 'Pick_address', title: 'PickUp Address', width: 100,
+                        formatter: function (value, row) {
+                            return row.book.Pick_address;
+                        }
+                    },
+                    {
+                        field: 'Return_address', title: 'Delivery Address', width: 150,
+                        formatter: function (value, row) {
+                            return row.book.Return_address;
+                        }
+                    }
+
+                ]],
+
+            });
+ 
+        });
+
+
+    </script>
+
+</head>
+<body>
+    <div>
+
+        <table id="BookingInfo" style="height:500px"></table>
+
+    </div>
+</body>
+</html>

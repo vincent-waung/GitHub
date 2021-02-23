@@ -1,0 +1,60 @@
+﻿<style type="text/css">
+    #m_pwd {
+        margin: 10px 20px;
+    }
+    #m_pwd td, #modifyTb th {   
+        text-align: center;
+    }
+    
+    .inputStyle {
+        border: 1px solid #0094ff;
+    }
+</style>
+<div id="m_pwd">
+     <form method="post">
+         <table cellpadding="0" cellspacing="0">
+             <tr>
+                 <td></td>
+                 <td></td>
+                 <td></td>
+                 <td><input name="uId" type="hidden" /></td>
+             </tr>
+             <tr>
+                 <td></td>
+                 <td>UserName:</td>
+                 <td>
+                     <input name="cloginName" class="easyui-validatebox inputStyle" />
+                 </td>
+                 <td></td>
+             </tr>
+             <tr>
+                 <td></td>
+                 <td>Old Password:</td>
+                 <td>
+                     <input name="cypwd" type="password" class="easyui-validatebox inputStyle" data-options="required:true,missingMessage:'Requred！'" />
+                 </td>
+                 <td></td>
+             </tr>
+             <tr>
+                 <td></td>
+                 <td>New Password:</td>
+                 <td>
+                     <input name="cxpwd" type="password" class="easyui-validatebox inputStyle" data-options="required:true,missingMessage:'Requred！'" />
+                 </td>
+                 <td></td>
+             </tr>
+             <tr>
+                 <td></td>
+                 <td>Confirm New Password:</td>
+                 <td><input name="cqpwd" type="password" class="easyui-validatebox inputStyle" data-options="required:true,missingMessage:'Requred！'" /></td>
+                 <td></td>
+             </tr>
+             <tr>
+                 <td></td>
+                 <td></td>
+                 <td></td>
+                 <td></td>
+             </tr>
+         </table>
+     </form>
+</div>

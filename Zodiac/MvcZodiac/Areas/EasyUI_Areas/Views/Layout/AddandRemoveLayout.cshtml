@@ -1,0 +1,63 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AddandRemoveLayout</title>
+      <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+  <h2>添加和删除布局组件</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>点击下面按钮添加或者删除布局组件面板.</div>
+    </div>
+    <div style="margin:10px 0;">
+        <span>选择一个区域面板:</span>
+        <select id="region">
+            <option value="north">北</option>
+            <option value="south">南</option>
+            <option value="east">东</option>
+            <option value="west">西</option>
+        </select>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="addPanel()">添加</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="removePanel()">删除</a>
+    </div>
+    <div id="cc" class="easyui-layout" style="width:700px;height:350px;">
+        <div data-options="region:'north'" style="height:50px"></div>
+        <div data-options="region:'south',split:true" style="height:50px;"></div>
+        <div data-options="region:'east',split:true" title="东" style="width:100px;"></div>
+        <div data-options="region:'west',split:true" title="西" style="width:100px;"></div>
+        <div data-options="region:'center',title:'中'"></div>
+    </div>
+    <script type="text/javascript">
+        function addPanel() {
+            var region = $('#region').val();
+
+            var options = {
+                region: region
+            };
+            if (region == 'north' || region == 'south') {
+                options.height = 50;
+            } else {
+                options.width = 100;
+                options.split = true;
+                options.title = $('#region option:selected').text();
+            }
+            $('#cc').layout('add', options);
+        }
+        function removePanel() {
+            $('#cc').layout('remove', $('#region').val());
+        }
+    </script>
+</body>
+</html>

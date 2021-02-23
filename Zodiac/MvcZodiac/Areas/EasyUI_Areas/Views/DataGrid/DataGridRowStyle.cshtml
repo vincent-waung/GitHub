@@ -1,0 +1,47 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>DataGridRowStyle</title>
+      <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+    <h2>数据表格行样式</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>市场价小于30的行我们高亮显示它.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <table class="easyui-datagrid" title="数据表格行样式" style="width:700px;height:250px"
+           data-options="
+                singleSelect: true,
+                iconCls: 'icon-save',
+                url:'/EasyUI_Areas/AdminSys/GetUserInfo',
+                rowStyler: function(index,row){
+                    if (row.uGender == false){
+                        return 'background-color:#6293BB;color:#fff;font-weight:bold;';
+                    }
+                }
+            ">
+        <thead>
+            <tr>
+                <th data-options="field: 'uId', title: '用户编号', width: 100"></th>
+                <th data-options="field: 'uLoginName', title: '登录名', width: 100 "></th>
+                <th data-options="field: 'uRemark', title: '备注', width: 100"></th>
+                <th data-options="field: 'uPost', title: '邮编', width: 100"></th>
+                <th data-options="field: 'uGender', title: '性别', width: 100, align: 'right'"></th>
+            </tr>
+        </thead>
+    </table>
+</body>
+</html>

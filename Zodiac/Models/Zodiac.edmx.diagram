@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f2e005b33bf345f783cfa2efa70efe95" Name="Diagram1">
+        <EntityTypeShape EntityType="OnlineBooking.AccountContInfo" Width="1.5" PointX="10" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Basic_Return_Address" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Bn_Zodiac" Width="1.5" PointX="7.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.BookingDetailEdi" Width="1.5" PointX="9.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.bookingDtl" Width="1.5" PointX="5.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.bookingForward" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.bookingHead" Width="1.5" PointX="5.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.BookingHeadEdi" Width="1.5" PointX="15.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.bookingUser" Width="1.5" PointX="11.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.bookingVendor" Width="1.5" PointX="20.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.carrier_booking" Width="1.5" PointX="7.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.category" Width="1.5" PointX="20.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.ChargeDEBITNOTE" Width="1.5" PointX="9.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.ChargeName" Width="1.5" PointX="15.75" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Client" Width="1.5" PointX="7.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.clp_chargeList" Width="1.5" PointX="21.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.collectlist" Width="1.5" PointX="21.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.consignee" Width="1.5" PointX="21.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.cont_address" Width="1.5" PointX="22.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Cont_Size" Width="1.5" PointX="7.75" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.ContTransFee" Width="1.5" PointX="22.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Curr_Rate" Width="1.5" PointX="0.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.custin" Width="1.5" PointX="2.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.custinno" Width="1.5" PointX="23.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.customer" Width="1.5" PointX="23.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Customer_Order" Width="1.5" PointX="13" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Customer_Order_Plan" Width="1.5" PointX="9.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.customer1" Width="1.5" PointX="23.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.CustomsType" Width="1.5" PointX="24.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.custoutno" Width="1.5" PointX="23.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.DailyCustomsDocu" Width="1.5" PointX="25.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.DailyDataforCustoms" Width="1.5" PointX="25.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.DailyTurnover" Width="1.5" PointX="14.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.DebitNoteNo" Width="1.5" PointX="16.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.dest" Width="1.5" PointX="21.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.destination" Width="1.5" PointX="26.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.DestInfo2" Width="1.5" PointX="7.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.DestOfBRSI" Width="1.5" PointX="9.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.dobitNoteLog" Width="1.5" PointX="0.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.dtproperties" Width="1.5" PointX="2.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.EDIExcptnReg" Width="1.5" PointX="27.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Employees" Width="1.5" PointX="27.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Exchange_Rate" Width="1.5" PointX="27.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.ExclusionCustoms" Width="1.5" PointX="11.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.FCR_Detail" Width="1.5" PointX="27.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.FCR_Discharging_Port" Width="1.5" PointX="27.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.FCR_Factory" Width="1.5" PointX="27.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.FCR_Head" Width="1.5" PointX="27.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.FCR_Supplier" Width="1.5" PointX="27.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.FcrSMBaseCharge" Width="1.5" PointX="16.75" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.FinalLoadingPlan" Width="1.5" PointX="19.75" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.FinalLoadingPlan_Payment" Width="1.5" PointX="21.75" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.FinalLoadPlanAmazonVendor" Width="1.5" PointX="28.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.FinalLoadPlanHoliday" Width="1.5" PointX="29.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.FinalLoadPlanJobRecord" Width="1.5" PointX="4.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.FinalLoadPlanRPALog" Width="1.5" PointX="29.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.FinalPo_Cancel_Record" Width="1.5" PointX="6.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.FinalPoList" Width="1.5" PointX="12.75" PointY="13.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.FinalVendorInput" Width="1.5" PointX="15" PointY="14.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.FinalVendorInputLog" Width="1.5" PointX="8.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.FinalVendorInputTrucking" Width="1.5" PointX="17.25" PointY="18.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.financeCharge" Width="1.5" PointX="18" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.forwarder_code" Width="1.5" PointX="29.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.in_head" Width="1.5" PointX="29.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.in_item" Width="1.5" PointX="29.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.In2So" Width="1.5" PointX="10.75" PointY="30.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.InDocContainer" Width="1.5" PointX="30.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.InDocVehicle" Width="1.5" PointX="12.75" PointY="30.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Inhead" Width="1.5" PointX="18.75" PointY="30.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.InList" Width="1.5" PointX="0.75" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.invoice" Width="1.5" PointX="31.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.invoiceExchange" Width="1.5" PointX="31.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.latecome" Width="1.5" PointX="31.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Load_Fee" Width="1.5" PointX="31.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Loading" Width="1.5" PointX="31.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.LoadPlanUpdateRecord" Width="1.5" PointX="22" PointY="18.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.LPCont_Info" Width="1.5" PointX="31.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.LPStatus" Width="1.5" PointX="31.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.MaxId" Width="1.5" PointX="31.75" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.newpacking" Width="1.5" PointX="31.75" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.newpacklist" Width="1.5" PointX="2.75" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.out_head" Width="1.5" PointX="14.75" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.out_head_cy" Width="1.5" PointX="0.75" PointY="17.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.out_item" Width="1.5" PointX="20.75" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.out_item_cy" Width="1.5" PointX="3" PointY="17.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.OutDocContainer" Width="1.5" PointX="32.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.OutDocVehicle" Width="1.5" PointX="22.75" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Outhead" Width="1.5" PointX="33.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.OutList" Width="1.5" PointX="4.75" PointY="33.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.OutListItems" Width="1.5" PointX="6.75" PointY="33.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.pick_return_charge" Width="1.5" PointX="18" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Port" Width="1.5" PointX="33.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.rec_amount" Width="1.5" PointX="33.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.recdtl" Width="1.5" PointX="33.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.rechead" Width="1.5" PointX="35.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.RecRegistrationHead" Width="1.5" PointX="35.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.RecRegistrationItems" Width="1.5" PointX="35.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.RecRegVehicle" Width="1.5" PointX="8.75" PointY="35.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.ShipperNameList" Width="1.5" PointX="10.75" PointY="35.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.ShipTo" Width="1.5" PointX="35.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.SMFOBDebitNoteRateAutomaticgrowth" Width="1.5" PointX="35.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.spe_opertype" Width="1.5" PointX="35.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.special" Width="1.5" PointX="35.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.special_item" Width="1.5" PointX="22.75" PointY="35.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.SpsOperate" Width="1.5" PointX="35.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Sys_Department" Width="1.5" PointX="0.75" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Sys_EasyUI" Width="1.5" PointX="27.75" PointY="35.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Sys_Log" Width="1.5" PointX="35.75" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Sys_Permission" Width="1.5" PointX="3" PointY="10.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Sys_Role" Width="1.5" PointX="3" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Sys_RolePermission" Width="1.5" PointX="5.25" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Sys_UserInfo" Width="1.5" PointX="3" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Sys_UserRole" Width="1.5" PointX="5.25" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Sys_UserSetting" Width="1.5" PointX="33.75" PointY="35.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Sys_UserVipPermission" Width="1.5" PointX="5.25" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.sysdiagrams" Width="1.5" PointX="35.75" PointY="35.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Truck_Account" Width="1.5" PointX="37.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Truck_Account2" Width="1.5" PointX="10" PointY="17.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Truck_Booking_Charge" Width="1.5" PointX="37.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Truck_Booking_ClientCharge" Width="1.5" PointX="37.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Truck_Booking_Detail" Width="1.5" PointX="37.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Truck_Booking_File" Width="1.5" PointX="37.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Truck_Booking_Head" Width="1.5" PointX="37.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Truck_Booking_Reg" Width="1.5" PointX="29.75" PointY="37.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Truck_CBM_Weight" Width="1.5" PointX="37.75" PointY="36.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Truck_ChargeName" Width="1.5" PointX="6.75" PointY="38.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Truck_Client" Width="1.5" PointX="8.75" PointY="38.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Truck_Company" Width="1.5" PointX="10.75" PointY="38.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Truck_Delivery_Address" Width="1.5" PointX="31.75" PointY="38.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Truck_Dest" Width="1.5" PointX="10.75" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Truck_Exchange_Rate" Width="1.5" PointX="33.75" PointY="38.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Truck_Invoice" Width="1.5" PointX="39.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Truck_Invoice_Code" Width="1.5" PointX="39.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Truck_Invoice_Info" Width="1.5" PointX="39.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Truck_Invoice_Info_Add" Width="1.5" PointX="39.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Truck_Loading_Address" Width="1.5" PointX="39.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Truck_PackingList" Width="1.5" PointX="39.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Truck_PO" Width="1.5" PointX="24.75" PointY="39.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Truck_Storage_Yard" Width="1.5" PointX="39.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Truck_Vendor" Width="1.5" PointX="39.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Truck_Vendor_Client" Width="1.5" PointX="39.75" PointY="35.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Truck_Warehouse" Width="1.5" PointX="13.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.TruckUnLoadTime" Width="1.5" PointX="35.75" PointY="39.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.turnover" Width="1.5" PointX="37.75" PointY="39.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Unloading" Width="1.5" PointX="39.75" PointY="38.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.User_Password" Width="1.5" PointX="0.75" PointY="40.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.userlog" Width="1.5" PointX="26.75" PointY="40.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.Vehicle" Width="1.5" PointX="28.75" PointY="40.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.VendorInfo" Width="1.5" PointX="41.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.vessel" Width="1.5" PointX="2.75" PointY="41.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.whs" Width="1.5" PointX="41.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.ypmfuser" Width="1.5" PointX="4.75" PointY="41.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.account" Width="1.5" PointX="41.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.AdditionalOut" Width="1.5" PointX="41.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.CarrierInfo" Width="1.5" PointX="41.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.con_size" Width="1.5" PointX="41.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.cus_cont" Width="1.5" PointX="41.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.cus_hchg" Width="1.5" PointX="41.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.customs" Width="1.5" PointX="41.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.customs_head" Width="1.5" PointX="41.75" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.customs_item" Width="1.5" PointX="30.75" PointY="41.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.customs_out" Width="1.5" PointX="41.75" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.decl_no" Width="1.5" PointX="32.75" PointY="41.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.ProdesOfVIFA" Width="1.5" PointX="41.75" PointY="34.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.repertory" Width="1.5" PointX="41.75" PointY="37.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.service" Width="1.5" PointX="41.75" PointY="41.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.shipcorp" Width="1.5" PointX="6.75" PointY="42.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.unit" Width="1.5" PointX="8.75" PointY="42.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineBooking.vendor" Width="1.5" PointX="10.75" PointY="42.75" IsExpanded="true" />
+        <AssociationConnector Association="OnlineBooking.FK_AccountContInfo_AccountContInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineBooking.FK_AccountContInfo_Cont_Size" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineBooking.FK_financeCharge_ChargeName" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineBooking.PK_PickChangeName" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineBooking.FK_Account_Client" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineBooking.FK_Customer_Order_Client" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineBooking.FK_Customer_Order_Dest" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineBooking.FK_LoadPlanUpdateRecord_FinalLoadingPlan" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineBooking.FK_FinalVendorInput_FinalPoList" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineBooking.FK_FinalVendorInputTrucking_FinalVendorInput" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineBooking.FK_out_item_cy_out_item_cy" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineBooking.FK_Sys_Role_Sys_Department" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineBooking.FK_Sys_UserInfo_Sys_Department" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineBooking.FK_Sys_RolePermission_Sys_Permission" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineBooking.FK_Sys_UserVipPermission_Sys_Permission1" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineBooking.FK_Sys_RolePermission_Sys_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineBooking.FK_Sys_UserRole_Sys_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineBooking.FK_Sys_UserRole_Sys_UserInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineBooking.FK_Sys_UserVipPermission_Sys_Permission" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

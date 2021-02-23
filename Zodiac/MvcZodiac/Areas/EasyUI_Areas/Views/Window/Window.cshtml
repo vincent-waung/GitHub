@@ -1,0 +1,41 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Window</title>
+      <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+    <h2>窗体布局</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>在窗体中使用布局.</div>
+    </div>
+    <div style="margin:10px 0;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="$('#w').window('open')">打开</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="$('#w').window('close')">关闭</a>
+    </div>
+    <div id="w" class="easyui-window" title="窗体布局" data-options="iconCls:'icon-save'" style="width:500px;height:200px;padding:5px;">
+        <div class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'east',split:true" style="width:100px"></div>
+            <div data-options="region:'center'" style="padding:10px;">
+                jQuery EasyUI框架能够让你轻松构建Web页面.
+            </div>
+            <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;">
+                <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="javascript:alert('ok')">确定</a>
+                <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="javascript:alert('cancel')">关闭</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

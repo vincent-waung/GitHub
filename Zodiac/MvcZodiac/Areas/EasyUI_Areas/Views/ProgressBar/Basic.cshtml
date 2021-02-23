@@ -1,0 +1,39 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Basic</title>
+      <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>点击下面按钮来显示进度条.</div>
+    </div>
+    <div style="margin: 10px 0;">
+        <a href="#" class="easyui-linkbutton" onclick="start()">开始</a>
+    </div>
+    <div id="p" class="easyui-progressbar" style="width: 400px;"></div>
+    <script>
+        function start() {
+            var value = $('#p').progressbar('getValue');
+            if (value < 100) {
+                value += Math.floor(Math.random() * 10);
+                $('#p').progressbar('setValue', value);
+                setTimeout(arguments.callee, 200);
+            }
+        };
+    </script>
+
+</body>
+</html>

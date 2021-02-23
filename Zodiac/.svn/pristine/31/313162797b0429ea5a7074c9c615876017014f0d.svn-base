@@ -1,0 +1,3215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ypmfdata_ynModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“ypmfdata_yn.dbo.account”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="account">
+    <Key>
+      <PropertyRef Name="client" />
+      <PropertyRef Name="account" />
+    </Key>
+    <Property Name="client" Type="char" MaxLength="20" Nullable="false" />
+    <Property Name="account" Type="char" MaxLength="20" Nullable="false" />
+    <Property Name="cbm_price" Type="money" />
+    <Property Name="Free_period" Type="int" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“ypmfdata_yn.dbo.AdditionalOut”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="AdditionalOut">
+    <Key>
+      <PropertyRef Name="id" />
+      <PropertyRef Name="operatedate" />
+      <PropertyRef Name="so_no" />
+      <PropertyRef Name="recline" />
+      <PropertyRef Name="ctns" />
+      <PropertyRef Name="cbm" />
+      <PropertyRef Name="account" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="operatedate" Type="datetime" Nullable="false" />
+    <Property Name="so_no" Type="char" MaxLength="18" Nullable="false" />
+    <Property Name="recline" Type="char" MaxLength="3" Nullable="false" />
+    <Property Name="po" Type="char" MaxLength="18" />
+    <Property Name="skn" Type="char" MaxLength="18" />
+    <Property Name="sku" Type="char" MaxLength="18" />
+    <Property Name="ctns" Type="int" Nullable="false" />
+    <Property Name="pcs" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="cbm" Type="decimal" Precision="12" Scale="3" Nullable="false" />
+    <Property Name="account" Type="char" MaxLength="30" Nullable="false" />
+    <Property Name="Remark" Type="char" MaxLength="30" />
+  </EntityType>
+  <EntityType Name="Bn_Zodiac">
+    <Key>
+      <PropertyRef Name="Code" />
+    </Key>
+    <Property Name="Code" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" />
+    <Property Name="YunShi" Type="varchar" MaxLength="5000" />
+    <Property Name="XingGe" Type="varchar" MaxLength="5000" />
+    <Property Name="AiQing" Type="varchar" MaxLength="5000" />
+    <Property Name="HunPei" Type="varchar" MaxLength="5000" />
+    <Property Name="NianLing" Type="varchar" MaxLength="5000" />
+    <Property Name="WenZhang" Type="varchar" MaxLength="5000" />
+    <Property Name="Remark" Type="varchar" MaxLength="5000" />
+    <Property Name="OperDate" Type="datetime" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“ypmfdata_yn.dbo.BookingDetail”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="BookingDetail">
+    <Key>
+      <PropertyRef Name="so_no" />
+      <PropertyRef Name="line_no" />
+    </Key>
+    <Property Name="so_no" Type="char" MaxLength="18" Nullable="false" />
+    <Property Name="line_no" Type="int" Nullable="false" />
+    <Property Name="weight" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="cbm" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="Qty" Type="int" />
+    <Property Name="PKG" Type="char" MaxLength="10" />
+    <Property Name="PCS" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="carrier" Type="char" MaxLength="20" />
+    <Property Name="description" Type="char" MaxLength="30" />
+    <Property Name="Remark" Type="char" MaxLength="30" />
+    <Property Name="PO" Type="char" MaxLength="50" />
+    <Property Name="commodity" Type="char" MaxLength="20" />
+    <Property Name="SKU" Type="char" MaxLength="40" />
+    <Property Name="description1" Type="char" MaxLength="30" />
+    <Property Name="description2" Type="char" MaxLength="30" />
+    <Property Name="description3" Type="char" MaxLength="30" />
+    <Property Name="description4" Type="char" MaxLength="30" />
+    <Property Name="rec_weight" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="rec_cbm" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="rec_qty" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="rec_pcs" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="length" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="width" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="height" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="recdate" Type="smalldatetime" />
+    <Property Name="Product_Description" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="BookingDetailEdi">
+    <Key>
+      <PropertyRef Name="so_no" />
+      <PropertyRef Name="line_no" />
+    </Key>
+    <Property Name="so_no" Type="char" MaxLength="18" Nullable="false" />
+    <Property Name="line_no" Type="int" Nullable="false" />
+    <Property Name="weight" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="cbm" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="Qty" Type="int" />
+    <Property Name="PKG" Type="char" MaxLength="10" />
+    <Property Name="PCS" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="carrier" Type="char" MaxLength="20" />
+    <Property Name="description" Type="char" MaxLength="30" />
+    <Property Name="Remark" Type="char" MaxLength="30" />
+    <Property Name="PO" Type="char" MaxLength="30" />
+    <Property Name="commodity" Type="char" MaxLength="20" />
+    <Property Name="SKU" Type="char" MaxLength="30" />
+    <Property Name="description1" Type="char" MaxLength="30" />
+    <Property Name="description2" Type="char" MaxLength="30" />
+    <Property Name="description3" Type="char" MaxLength="30" />
+    <Property Name="description4" Type="char" MaxLength="30" />
+    <Property Name="rec_weight" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="rec_cbm" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="rec_qty" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="rec_pcs" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="length" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="width" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="height" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="Product_Description" Type="varchar" MaxLength="100" />
+    <Property Name="recdate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="bookingDtl">
+    <Key>
+      <PropertyRef Name="dID" />
+    </Key>
+    <Property Name="dID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="hID" Type="int" />
+    <Property Name="so_no" Type="varchar" MaxLength="30" />
+    <Property Name="orderNum" Type="char" MaxLength="3" />
+    <Property Name="po" Type="varchar" MaxLength="30" />
+    <Property Name="sku" Type="varchar" MaxLength="20" />
+    <Property Name="Marks" Type="varchar" MaxLength="500" />
+    <Property Name="CTN" Type="int" />
+    <Property Name="PCS" Type="int" />
+    <Property Name="ProductName" Type="varchar" MaxLength="100" />
+    <Property Name="GrossWeight" Type="decimal" Precision="15" Scale="3" />
+    <Property Name="CBM" Type="decimal" Precision="15" Scale="3" />
+    <Property Name="Remark" Type="varchar" MaxLength="50" />
+    <Property Name="ItemNo" Type="varchar" MaxLength="50" />
+    <Property Name="CustomerMaterialNo" Type="varchar" MaxLength="50" />
+    <Property Name="SalesMaterial" Type="varchar" MaxLength="150" />
+    <Property Name="Material" Type="varchar" MaxLength="150" />
+    <Property Name="SalesOrd" Type="varchar" MaxLength="50" />
+    <Property Name="Client" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="bookingForward">
+    <Key>
+      <PropertyRef Name="forward_code" />
+    </Key>
+    <Property Name="forward_code" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="forward_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="whs_type" Type="varchar" MaxLength="50" />
+    <Property Name="owner" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="bookingHead">
+    <Key>
+      <PropertyRef Name="hId" />
+    </Key>
+    <Property Name="hId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="so_no" Type="varchar" MaxLength="30" />
+    <Property Name="Shipper" Type="varchar" MaxLength="500" />
+    <Property Name="Consignee" Type="varchar" MaxLength="500" />
+    <Property Name="Notifyparty" Type="varchar" MaxLength="500" />
+    <Property Name="AlsoNotify" Type="varchar" MaxLength="500" />
+    <Property Name="ContSize" Type="varchar" MaxLength="50" />
+    <Property Name="UnloadingPort" Type="varchar" MaxLength="50" />
+    <Property Name="LoadingPort" Type="varchar" MaxLength="50" />
+    <Property Name="DestinationPort" Type="varchar" MaxLength="50" />
+    <Property Name="OpenDate" Type="datetime" />
+    <Property Name="CloseDate" Type="datetime" />
+    <Property Name="InputDate" Type="datetime" />
+    <Property Name="operator" Type="varchar" MaxLength="10" />
+    <Property Name="TelNo" Type="varchar" MaxLength="30" />
+    <Property Name="TotGrossWeight" Type="decimal" Precision="10" Scale="3" />
+    <Property Name="TotPcs" Type="int" />
+    <Property Name="TotCtn" Type="int" />
+    <Property Name="TotCBM" Type="decimal" Precision="15" Scale="3" />
+    <Property Name="Remark" Type="varchar" MaxLength="50" />
+    <Property Name="CancelDate" Type="datetime" />
+    <Property Name="precastInHouseDate" Type="datetime" />
+    <Property Name="account" Type="varchar" MaxLength="40" />
+    <Property Name="inputOperator" Type="varchar" MaxLength="20" />
+    <Property Name="cancelOperator" Type="varchar" MaxLength="20" />
+    <Property Name="vessel" Type="varchar" MaxLength="50" />
+    <Property Name="voyage" Type="nvarchar" MaxLength="15" />
+    <Property Name="BLNO" Type="varchar" MaxLength="50" />
+    <Property Name="ETD" Type="datetime" />
+    <Property Name="SI_cut_off" Type="datetime" />
+    <Property Name="CY_closing_date" Type="datetime" />
+    <Property Name="Client_Operator" Type="varchar" MaxLength="20" />
+    <Property Name="cutomer_name" Type="varchar" MaxLength="100" />
+    <Property Name="first_date" Type="datetime" />
+    <Property Name="cancel_date" Type="datetime" />
+    <Property Name="confirm_date" Type="datetime" />
+    <Property Name="clpno" Type="varchar" MaxLength="25" />
+    <Property Name="client" Type="varchar" MaxLength="20" />
+    <Property Name="service_type" Type="varchar" MaxLength="50" />
+    <Property Name="printed" Type="bit" />
+    <Property Name="shipping_mark" Type="varchar" MaxLength="300" />
+    <Property Name="Shipper2" Type="varchar" MaxLength="200" />
+    <Property Name="Consignee2" Type="varchar" MaxLength="200" />
+    <Property Name="Notifyparty2" Type="varchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="BookingHeadEdi">
+    <Key>
+      <PropertyRef Name="so_no" />
+    </Key>
+    <Property Name="so_no" Type="char" MaxLength="18" Nullable="false" />
+    <Property Name="input_time" Type="datetime" />
+    <Property Name="shipper_ref" Type="char" MaxLength="60" />
+    <Property Name="vessel" Type="char" MaxLength="40" />
+    <Property Name="voyage" Type="char" MaxLength="20" />
+    <Property Name="POD" Type="char" MaxLength="20" />
+    <Property Name="dest_code" Type="char" MaxLength="10" />
+    <Property Name="dest" Type="char" MaxLength="30" />
+    <Property Name="consg_code" Type="char" MaxLength="20" />
+    <Property Name="totqty" Type="int" />
+    <Property Name="totweight" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="totcbm" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="totpcs" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="rec_totqty" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="rec_totweight" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="rec_totcbm" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="rec_totpcs" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="rec_date" Type="datetime" />
+    <Property Name="EDI_Status" Type="bit" />
+    <Property Name="EDIFile_In" Type="varchar" MaxLength="50" />
+    <Property Name="EDIFile_Out" Type="varchar" MaxLength="50" />
+    <Property Name="EDI_Account" Type="varchar" MaxLength="30" />
+    <Property Name="XFactory_Date" Type="datetime" />
+    <Property Name="NLT" Type="datetime" />
+    <Property Name="Ship_To_Name" Type="varchar" MaxLength="100" />
+    <Property Name="vendor" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="bookingUser">
+    <Key>
+      <PropertyRef Name="UseID" />
+    </Key>
+    <Property Name="UseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="login_id" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="user_type" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="client_id" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="password" Type="nvarchar" MaxLength="30" />
+  </EntityType>
+  <EntityType Name="bookingVendor">
+    <Key>
+      <PropertyRef Name="vendor_code" />
+    </Key>
+    <Property Name="vendor_code" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="vendor_name" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="vendor_contact" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="vendor_address" Type="nvarchar" MaxLength="150" />
+    <Property Name="vendor_email" Type="nvarchar" MaxLength="200" />
+    <Property Name="vendor_fax" Type="nvarchar" MaxLength="50" />
+    <Property Name="wh_id" Type="nvarchar" MaxLength="10" />
+    <Property Name="forward_code" Type="nvarchar" MaxLength="50" />
+    <Property Name="telNo" Type="nvarchar" MaxLength="100" />
+    <Property Name="consignee" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="notifyconsignee" Type="varchar" MaxLength="50" />
+    <Property Name="secondnotifyconsignee" Type="varchar" MaxLength="50" />
+    <Property Name="consigneetel" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="notifyconsigneetel" Type="varchar" MaxLength="100" />
+    <Property Name="secondnotifyconsigneetel" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="carrier_booking">
+    <Key>
+      <PropertyRef Name="cbID" />
+    </Key>
+    <Property Name="cbID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="carrier" Type="varchar" MaxLength="16" />
+    <Property Name="vessel" Type="varchar" MaxLength="64" />
+    <Property Name="voyage" Type="varchar" MaxLength="32" />
+    <Property Name="ETD" Type="datetime" />
+    <Property Name="cont_size" Type="varchar" MaxLength="16" />
+    <Property Name="bookingNum" Type="int" />
+    <Property Name="releaseNum" Type="int" />
+    <Property Name="port" Type="varchar" MaxLength="32" />
+    <Property Name="dest" Type="varchar" MaxLength="32" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“ypmfdata_yn.dbo.CarrierInfo”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="CarrierInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="Carrier" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Carrier" Type="char" MaxLength="5" Nullable="false" />
+    <Property Name="Agency" Type="char" MaxLength="20" />
+    <Property Name="CarrierName" Type="char" MaxLength="60" />
+  </EntityType>
+  <EntityType Name="category">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="client" Type="char" MaxLength="20" />
+    <Property Name="consg_code" Type="char" MaxLength="20" />
+    <Property Name="desc_code" Type="char" MaxLength="15" Nullable="false" />
+    <Property Name="desc_dec" Type="char" MaxLength="60" />
+  </EntityType>
+  <EntityType Name="ChargeDEBITNOTE">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ChargeName" Type="nvarchar" MaxLength="250" />
+    <Property Name="Money" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="IsFixed" Type="bit" />
+    <Property Name="IsStopUser" Type="bit" />
+    <Property Name="Remark" Type="nvarchar" MaxLength="250" />
+  </EntityType>
+  <EntityType Name="ChargeName">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="code" Type="varchar" MaxLength="50" />
+    <Property Name="name" Type="varchar" MaxLength="50" />
+    <Property Name="IsShow" Type="bit" />
+  </EntityType>
+  <EntityType Name="clp_chargeList">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="clpno" Type="varchar" MaxLength="15" />
+    <Property Name="chargeCode" Type="varchar" MaxLength="10" />
+    <Property Name="remark" Type="varchar" MaxLength="50" />
+    <Property Name="ChargeTime" Type="int" />
+    <Property Name="Calculationmethod" Type="varchar" MaxLength="50" />
+    <Property Name="Calculationformula" Type="varchar" MaxLength="200" />
+    <Property Name="ActualFee" Type="varchar" MaxLength="50" />
+    <Property Name="CalculationDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="collectlist">
+    <Key>
+      <PropertyRef Name="customer" />
+      <PropertyRef Name="consg_code" />
+      <PropertyRef Name="collectdate" />
+    </Key>
+    <Property Name="customer" Type="char" MaxLength="20" Nullable="false" />
+    <Property Name="consg_code" Type="char" MaxLength="20" Nullable="false" />
+    <Property Name="collectdate" Type="datetime" Nullable="false" />
+    <Property Name="rec_qty" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="rec_cbm" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="load_qty" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="load_cbm" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="qtybal" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="cbmbal" Type="numeric" Precision="18" Scale="3" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“ypmfdata_yn.dbo.con_size”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="con_size">
+    <Key>
+      <PropertyRef Name="size" />
+      <PropertyRef Name="feu_unit" />
+    </Key>
+    <Property Name="size" Type="char" MaxLength="20" Nullable="false" />
+    <Property Name="feu_unit" Type="float" Nullable="false" />
+  </EntityType>
+  <EntityType Name="consignee">
+    <Key>
+      <PropertyRef Name="consg_code" />
+    </Key>
+    <Property Name="client" Type="char" MaxLength="20" Nullable="false" />
+    <Property Name="consg_code" Type="char" MaxLength="50" Nullable="false" />
+    <Property Name="consg_name" Type="char" MaxLength="50" />
+    <Property Name="supervisor" Type="char" MaxLength="20" />
+    <Property Name="tel" Type="char" MaxLength="30" />
+    <Property Name="fax" Type="char" MaxLength="30" />
+    <Property Name="email" Type="char" MaxLength="30" />
+  </EntityType>
+  <EntityType Name="cont_address">
+    <Key>
+      <PropertyRef Name="caId" />
+    </Key>
+    <Property Name="caId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="address" Type="nvarchar" MaxLength="50" />
+    <Property Name="address_type" Type="int" />
+  </EntityType>
+  <EntityType Name="ContTransFee">
+    <Key>
+      <PropertyRef Name="Clpno" />
+    </Key>
+    <Property Name="Clpno" Type="char" MaxLength="11" Nullable="false" />
+    <Property Name="FeeClass" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="Money" Type="decimal" Precision="8" Scale="3" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Curr_Rate">
+    <Key>
+      <PropertyRef Name="CID" />
+    </Key>
+    <Property Name="CID" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="curr_code" Type="varchar" MaxLength="5" Nullable="false" />
+    <Property Name="curr_symb" Type="varchar" MaxLength="6" Nullable="false" />
+    <Property Name="Rate" Type="numeric" Precision="12" Scale="4" />
+    <Property Name="curr_name" Type="varchar" MaxLength="24" Nullable="false" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“ypmfdata_yn.dbo.cus_cont”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="cus_cont">
+    <Key>
+      <PropertyRef Name="client" />
+      <PropertyRef Name="size" />
+      <PropertyRef Name="cont_chrg" />
+    </Key>
+    <Property Name="client" Type="char" MaxLength="20" Nullable="false" />
+    <Property Name="size" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="cont_chrg" Type="money" Nullable="false" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“ypmfdata_yn.dbo.cus_hchg”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="cus_hchg">
+    <Key>
+      <PropertyRef Name="client" />
+      <PropertyRef Name="start_wgt" />
+      <PropertyRef Name="end_wgt" />
+      <PropertyRef Name="chrg_amt" />
+    </Key>
+    <Property Name="client" Type="char" MaxLength="20" Nullable="false" />
+    <Property Name="start_wgt" Type="numeric" Precision="18" Scale="4" Nullable="false" />
+    <Property Name="end_wgt" Type="numeric" Precision="18" Scale="4" Nullable="false" />
+    <Property Name="chrg_amt" Type="money" Nullable="false" />
+  </EntityType>
+  <EntityType Name="custin">
+    <Key>
+      <PropertyRef Name="in_no" />
+    </Key>
+    <Property Name="in_no" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="decl_mode" Type="char" MaxLength="20" />
+    <Property Name="factory" Type="char" MaxLength="20" />
+    <Property Name="decldate" Type="datetime" />
+    <Property Name="arr_time" Type="datetime" />
+    <Property Name="ingate_time" Type="datetime" />
+    <Property Name="dev_time" Type="datetime" />
+    <Property Name="compl_time" Type="datetime" />
+    <Property Name="remark" Type="char" MaxLength="30" />
+    <Property Name="duty" Type="bit" />
+  </EntityType>
+  <EntityType Name="custinno">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="in_no" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="incustno" Type="char" MaxLength="9" Nullable="false" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="customer">
+    <Key>
+      <PropertyRef Name="client" />
+    </Key>
+    <Property Name="client" Type="char" MaxLength="20" Nullable="false" />
+    <Property Name="cust_name" Type="char" MaxLength="60" Nullable="false" />
+    <Property Name="address1" Type="char" MaxLength="60" />
+    <Property Name="address2" Type="char" MaxLength="45" />
+    <Property Name="address3" Type="char" MaxLength="45" />
+    <Property Name="tel" Type="char" MaxLength="45" />
+    <Property Name="fax" Type="char" MaxLength="45" />
+    <Property Name="motion" Type="char" MaxLength="30" />
+    <Property Name="email" Type="char" MaxLength="45" />
+    <Property Name="contact" Type="char" MaxLength="30" />
+    <Property Name="sales_name" Type="char" MaxLength="30" />
+    <Property Name="cbm_price" Type="money" />
+    <Property Name="free_prd" Type="int" />
+    <Property Name="wght_unit" Type="char" MaxLength="10" />
+    <Property Name="stor_fee" Type="money" />
+    <Property Name="free_day" Type="int" />
+    <Property Name="hand_chrge" Type="money" />
+    <Property Name="input_date" Type="datetime" />
+    <Property Name="remark" Type="text" />
+  </EntityType>
+  <EntityType Name="customer1">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cust_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="address1" Type="nvarchar" MaxLength="200" />
+    <Property Name="tel" Type="varchar" MaxLength="200" />
+    <Property Name="fax" Type="nvarchar" MaxLength="200" />
+    <Property Name="cust_email" Type="nvarchar" MaxLength="2000" />
+    <Property Name="contact" Type="nvarchar" MaxLength="100" />
+    <Property Name="remark" Type="text" />
+    <Property Name="SM_Operator" Type="nchar" MaxLength="20" />
+    <Property Name="SM_email" Type="nvarchar" MaxLength="2000" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“ypmfdata_yn.dbo.customs”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="customs">
+    <Key>
+      <PropertyRef Name="customs_co" />
+      <PropertyRef Name="customs_na" />
+    </Key>
+    <Property Name="customs_co" Type="varchar" MaxLength="5" Nullable="false" />
+    <Property Name="customs_na" Type="varchar" MaxLength="16" Nullable="false" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“ypmfdata_yn.dbo.customs_head”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="customs_head">
+    <Key>
+      <PropertyRef Name="in_no" />
+    </Key>
+    <Property Name="in_no" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="handtime" Type="datetime" />
+    <Property Name="factory" Type="char" MaxLength="10" />
+    <Property Name="trademode" Type="char" MaxLength="20" />
+    <Property Name="declmode" Type="char" MaxLength="20" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“ypmfdata_yn.dbo.customs_item”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="customs_item">
+    <Key>
+      <PropertyRef Name="in_no" />
+    </Key>
+    <Property Name="in_no" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="per_price" Type="money" />
+    <Property Name="goodsname" Type="char" MaxLength="30" />
+    <Property Name="goodsunit" Type="char" MaxLength="8" />
+    <Property Name="goodscode" Type="char" MaxLength="11" />
+    <Property Name="qty" Type="numeric" Precision="18" Scale="3" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“ypmfdata_yn.dbo.customs_out”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="customs_out">
+    <Key>
+      <PropertyRef Name="clpno" />
+      <PropertyRef Name="decl_form_no" />
+      <PropertyRef Name="carrier_no" />
+    </Key>
+    <Property Name="clpno" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="decl_form_no" Type="char" MaxLength="9" Nullable="false" />
+    <Property Name="carrier_no" Type="char" MaxLength="11" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CustomsType">
+    <Key>
+      <PropertyRef Name="CustomsType" />
+    </Key>
+    <Property Name="CID" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustomsType" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="EDICode" Type="char" MaxLength="2" Nullable="false" />
+    <Property Name="EIType" Type="char" MaxLength="4" />
+  </EntityType>
+  <EntityType Name="custoutno">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="clpno" Type="char" MaxLength="20" Nullable="false" />
+    <Property Name="outcustno" Type="char" MaxLength="9" Nullable="false" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DailyCustomsDocu">
+    <Key>
+      <PropertyRef Name="CustomsDocNo" />
+    </Key>
+    <Property Name="ReportDate" Type="varchar" MaxLength="8" Nullable="false" />
+    <Property Name="CustomsDocNo" Type="varchar" MaxLength="11" Nullable="false" />
+    <Property Name="CustomsType" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="ContCount" Type="smallint" />
+    <Property Name="VehicleCount" Type="smallint" />
+    <Property Name="STContCount" Type="smallint" />
+    <Property Name="Port" Type="varchar" MaxLength="16" />
+    <Property Name="TotalValues" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="Currency" Type="varchar" MaxLength="10" />
+    <Property Name="gross_wt" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="in_no" Type="varchar" MaxLength="11" />
+    <Property Name="Container" Type="varchar" MaxLength="300" />
+    <Property Name="ClpNo" Type="varchar" MaxLength="18" />
+    <Property Name="Remark" Type="varchar" MaxLength="300" />
+    <Property Name="Operator" Type="varchar" MaxLength="16" />
+  </EntityType>
+  <EntityType Name="DailyDataforCustoms">
+    <Key>
+      <PropertyRef Name="reportdate" />
+    </Key>
+    <Property Name="reportdate" Type="varchar" MaxLength="8" Nullable="false" />
+    <Property Name="jjytgjzxbs" Type="smallint" />
+    <Property Name="jjytgjzxzs" Type="smallint" />
+    <Property Name="jjytgjzxmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="jjytgjzxjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="jjytgdcsl" Type="smallint" />
+    <Property Name="jjytgdcmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="jjytgdcjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="jjytgmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="jjytgjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="jjytgps" Type="smallint" />
+    <Property Name="jjytgbgd" Type="smallint" />
+    <Property Name="jjhyzgjzxbs" Type="smallint" />
+    <Property Name="jjhyzgjzxzs" Type="smallint" />
+    <Property Name="jjhyzgjzxmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="jjhyzgjzxjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="jjhyzgdcsl" Type="smallint" />
+    <Property Name="jjhyzgdcmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="jjhyzgdcjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="jjhyzgmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="jjhyzgjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="jjhyzgps" Type="smallint" />
+    <Property Name="jjhyzgbgd" Type="smallint" />
+    <Property Name="jjllzgjzxbs" Type="smallint" />
+    <Property Name="jjllzgjzxzs" Type="smallint" />
+    <Property Name="jjllzgjzxmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="jjllzgjzxjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="jjllzgdcsl" Type="smallint" />
+    <Property Name="jjllzgdcmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="jjllzgdcjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="jjllzgmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="jjllzgjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="jjllzgps" Type="smallint" />
+    <Property Name="jjllzgbgd" Type="smallint" />
+    <Property Name="cjhyjzxbs" Type="smallint" />
+    <Property Name="cjhyjzxzs" Type="smallint" />
+    <Property Name="cjhyjzxmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cjhyjzxjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cjhydcsl" Type="smallint" />
+    <Property Name="cjhydcmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cjhydcjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cjhymz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cjhyjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cjhyps" Type="smallint" />
+    <Property Name="cjhybgd" Type="smallint" />
+    <Property Name="cjlljzxbs" Type="smallint" />
+    <Property Name="cjlljzxzs" Type="smallint" />
+    <Property Name="cjlljzxmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cjlljzxjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cjlldcsl" Type="smallint" />
+    <Property Name="cjlldcmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cjlldcjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cjllmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cjlljz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cjllps" Type="smallint" />
+    <Property Name="cjllbgd" Type="smallint" />
+    <Property Name="cjllzgjzxbs" Type="smallint" />
+    <Property Name="cjllzgjzxzs" Type="smallint" />
+    <Property Name="cjllzgjzxmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cjllzgjzxjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cjllzgdcsl" Type="smallint" />
+    <Property Name="cjllzgdcmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cjllzgdcjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cjllzgmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cjllzgjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cjllzgps" Type="smallint" />
+    <Property Name="cjllzgbgd" Type="smallint" />
+    <Property Name="rqqgckybmyjzxbs" Type="smallint" />
+    <Property Name="rqqgckybmyjzxzs" Type="smallint" />
+    <Property Name="rqqgckybmyjzxmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="rqqgckybmyjzxjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="rqqgckybmydcsl" Type="smallint" />
+    <Property Name="rqqgckybmydcmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="rqqgckybmydcjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="rqqgckybmymz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="rqqgckybmyjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="rqqgckybmyps" Type="smallint" />
+    <Property Name="rqqgckybmybgd" Type="smallint" />
+    <Property Name="rqqgckjgmyjzxbs" Type="smallint" />
+    <Property Name="rqqgckjgmyjzxzs" Type="smallint" />
+    <Property Name="rqqgckjgmyjzxmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="rqqgckjgmyjzxjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="rqqgckjgmydcsl" Type="smallint" />
+    <Property Name="rqqgckjgmydcmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="rqqgckjgmydcjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="rqqgckjgmymz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="rqqgckjgmyjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="rqqgckjgmyps" Type="smallint" />
+    <Property Name="rqqgckjgmybgd" Type="smallint" />
+    <Property Name="rqzgckjzxbs" Type="smallint" />
+    <Property Name="rqzgckjzxzs" Type="smallint" />
+    <Property Name="rqzgckjzxmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="rqzgckjzxjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="rqzgckdcsl" Type="smallint" />
+    <Property Name="rqzgckdcmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="rqzgckdcjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="rqzgckmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="rqzgckjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="rqzgckps" Type="smallint" />
+    <Property Name="rqzgckbgd" Type="smallint" />
+    <Property Name="cqqgjkybmyjzxbs" Type="smallint" />
+    <Property Name="cqqgjkybmyjzxzs" Type="smallint" />
+    <Property Name="cqqgjkybmyjzxmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cqqgjkybmyjzxjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cqqgjkybmydcsl" Type="smallint" />
+    <Property Name="cqqgjkybmydcmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cqqgjkybmydcjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cqqgjkybmymz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cqqgjkybmyjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cqqgjkybmyps" Type="smallint" />
+    <Property Name="cqqgjkybmybgd" Type="smallint" />
+    <Property Name="cqqgjkjgmyjzxbs" Type="smallint" />
+    <Property Name="cqqgjkjgmyjzxzs" Type="smallint" />
+    <Property Name="cqqgjkjgmyjzxmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cqqgjkjgmyjzxjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cqqgjkjgmydcsl" Type="smallint" />
+    <Property Name="cqqgjkjgmydcmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cqqgjkjgmydcjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cqqgjkjgmymz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cqqgjkjgmyjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cqqgjkjgmyps" Type="smallint" />
+    <Property Name="cqqgjkjgmybgd" Type="smallint" />
+    <Property Name="cqzgjkjzxbs" Type="smallint" />
+    <Property Name="cqzgjkjzxzs" Type="smallint" />
+    <Property Name="cqzgjkjzxmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cqzgjkjzxjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cqzgjkdcsl" Type="smallint" />
+    <Property Name="cqzgjkdcmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cqzgjkdcjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cqzgjkmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cqzgjkjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cqzgjkps" Type="smallint" />
+    <Property Name="cqzgjkbgd" Type="smallint" />
+    <Property Name="jzxbs" Type="smallint" />
+    <Property Name="jzxzs" Type="smallint" />
+    <Property Name="jzxmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="jzxjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="dcsl" Type="smallint" />
+    <Property Name="dcmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="dcjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="mz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="jz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="ps" Type="smallint" />
+    <Property Name="bgd" Type="smallint" />
+    <Property Name="kcmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="kcjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="jmsps" Type="smallint" />
+    <Property Name="jmsbgd" Type="smallint" />
+    <Property Name="jmsjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="ysbcktsps" Type="smallint" />
+    <Property Name="ysbcktsmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="ysbcktsjz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="gs" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="sk" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="zsbgd" Type="smallint" />
+    <Property Name="fckmz" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="fckjz" Type="decimal" Precision="18" Scale="3" />
+  </EntityType>
+  <EntityType Name="DailyTurnover">
+    <Key>
+      <PropertyRef Name="cbmid" />
+    </Key>
+    <Property Name="cbmid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Account" Type="char" MaxLength="20" Nullable="false" />
+    <Property Name="CFS_Year" Type="int" Nullable="false" />
+    <Property Name="CFS_Month" Type="int" Nullable="false" />
+    <Property Name="CFS_Date" Type="int" Nullable="false" />
+    <Property Name="Receiving" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="Loading" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="Repacked" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="Repacking" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="IEFlag" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="ieChange" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="confirmed" Type="bit" Nullable="false" />
+    <Property Name="OperateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="DebitNoteNo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Year" Type="varchar" MaxLength="10" />
+    <Property Name="MaxId" Type="int" />
+    <Property Name="vvt" Type="varchar" MaxLength="200" />
+    <Property Name="InsertTime" Type="datetime" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“ypmfdata_yn.dbo.decl_no”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="decl_no">
+    <Key>
+      <PropertyRef Name="contro_no" />
+      <PropertyRef Name="decl_no" />
+      <PropertyRef Name="bill_no" />
+    </Key>
+    <Property Name="contro_no" Type="char" MaxLength="20" Nullable="false" />
+    <Property Name="decl_no" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="bill_no" Type="char" MaxLength="11" Nullable="false" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6013: 表/视图“ypmfdata_yn.dbo.Demo_SaveDateTimeByUiPath”未定义主键，并且无法推断有效的主键。已排除了此表/视图。若要使用实体，将需要检查您的架构、添加正确的键并取消对实体的注释。
+        <EntityType Name="Demo_SaveDateTimeByUiPath">
+          <Property Name="date" Type="datetime" />
+        </EntityType>-->
+  <EntityType Name="dest">
+    <Key>
+      <PropertyRef Name="destination" />
+    </Key>
+    <Property Name="DID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="destination" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="Country" Type="varchar" MaxLength="30" />
+  </EntityType>
+  <EntityType Name="destination">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="dest" Type="char" MaxLength="30" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DestInfo2">
+    <Key>
+      <PropertyRef Name="DestID" />
+    </Key>
+    <Property Name="DestID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DestName" Type="varchar" MaxLength="100" />
+    <Property Name="ChineseName" Type="varchar" MaxLength="100" />
+    <Property Name="Country" Type="varchar" MaxLength="100" />
+    <Property Name="DestCode" Type="varchar" MaxLength="50" />
+    <Property Name="CountryCode" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="DestOfBRSI">
+    <Key>
+      <PropertyRef Name="DID" />
+    </Key>
+    <Property Name="DID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Dest" Type="char" MaxLength="30" Nullable="false" />
+  </EntityType>
+  <EntityType Name="dobitNoteLog">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Vessel" Type="varchar" MaxLength="50" />
+    <Property Name="Voyage" Type="varchar" MaxLength="50" />
+    <Property Name="ExchangeRate" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="CFSCargoHandlingFee" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="DocumentFee" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="THC" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="ExportTime" Type="datetime" />
+  </EntityType>
+  <EntityType Name="dtproperties">
+    <Key>
+      <PropertyRef Name="id" />
+      <PropertyRef Name="property" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="objectid" Type="int" />
+    <Property Name="property" Type="varchar" MaxLength="64" Nullable="false" />
+    <Property Name="value" Type="varchar" MaxLength="255" />
+    <Property Name="uvalue" Type="nvarchar" MaxLength="255" />
+    <Property Name="lvalue" Type="image" />
+    <Property Name="version" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EDIExcptnReg">
+    <Key>
+      <PropertyRef Name="operatedate" />
+      <PropertyRef Name="so_no" />
+      <PropertyRef Name="exceptiontype" />
+    </Key>
+    <Property Name="operatedate" Type="datetime" Nullable="false" />
+    <Property Name="so_no" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="exceptiontype" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="account" Type="varchar" MaxLength="30" />
+  </EntityType>
+  <EntityType Name="Employees">
+    <Key>
+      <PropertyRef Name="EID" />
+    </Key>
+    <Property Name="EID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EmpID" Type="char" MaxLength="6" Nullable="false" />
+    <Property Name="Name" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="Department" Type="char" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="ExclusionCustoms">
+    <Key>
+      <PropertyRef Name="CID" />
+    </Key>
+    <Property Name="CID" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Customs_co" Type="varchar" MaxLength="5" Nullable="false" />
+    <Property Name="customs_na" Type="varchar" MaxLength="16" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FCR_Detail">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="fcr_no" Type="varchar" MaxLength="25" />
+    <Property Name="seq" Type="varchar" MaxLength="3" />
+    <Property Name="clpno" Type="varchar" MaxLength="50" />
+    <Property Name="cfsso" Type="varchar" MaxLength="25" />
+    <Property Name="cont_no" Type="varchar" MaxLength="11" />
+    <Property Name="seal_no" Type="varchar" MaxLength="18" />
+  </EntityType>
+  <EntityType Name="FCR_Discharging_Port">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="discharging_port" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="FCR_Factory">
+    <Key>
+      <PropertyRef Name="factoryID" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="supplierID" Type="varchar" MaxLength="15" />
+    <Property Name="factoryID" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="factoryName" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="FCR_Head">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="fcr_no" Type="varchar" MaxLength="25" Nullable="false" />
+    <Property Name="factory" Type="varchar" MaxLength="100" />
+    <Property Name="bl_no" Type="varchar" MaxLength="50" />
+    <Property Name="vessel" Type="varchar" MaxLength="30" />
+    <Property Name="voyage" Type="varchar" MaxLength="20" />
+    <Property Name="discharging_port" Type="varchar" MaxLength="50" />
+    <Property Name="destination" Type="varchar" MaxLength="50" />
+    <Property Name="docReceived_date" Type="datetime" />
+    <Property Name="cargoReceived_date" Type="datetime" />
+    <Property Name="reg_date" Type="datetime" />
+    <Property Name="last_modify_date" Type="datetime" />
+    <Property Name="creater_user" Type="varchar" MaxLength="20" />
+    <Property Name="last_modify_user" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="FCR_Supplier">
+    <Key>
+      <PropertyRef Name="supplierID" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="supplierID" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="supplierName" Type="varchar" MaxLength="100" />
+    <Property Name="group" Type="varchar" MaxLength="250" />
+  </EntityType>
+  <EntityType Name="FcrSMBaseCharge">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ChargeName" Type="varchar" MaxLength="250" />
+    <Property Name="UnitPrice" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="CalculationMethod" Type="varchar" MaxLength="50" />
+    <Property Name="Unit" Type="varchar" MaxLength="50" />
+    <Property Name="Fixed" Type="bit" />
+    <Property Name="UpdateData" Type="datetime" />
+    <Property Name="StopUse" Type="bit" />
+  </EntityType>
+  <EntityType Name="FinalLoadingPlan">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="JOB_NO" Type="nchar" MaxLength="100" />
+    <Property Name="Origin_port" Type="nvarchar" MaxLength="100" />
+    <Property Name="Ship_mode" Type="nvarchar" MaxLength="59" />
+    <Property Name="Consol_no" Type="nvarchar" MaxLength="50" />
+    <Property Name="Remarks" Type="nvarchar" MaxLength="500" />
+    <Property Name="Vendor_Name" Type="nvarchar" MaxLength="100" />
+    <Property Name="Mfr_Name1" Type="nvarchar" MaxLength="100" />
+    <Property Name="Mfr_Country" Type="nchar" MaxLength="10" />
+    <Property Name="Customer_Name" Type="nvarchar" MaxLength="200" />
+    <Property Name="Receiving_point" Type="nvarchar" MaxLength="100" />
+    <Property Name="CustomerPO" Type="nvarchar" MaxLength="100" />
+    <Property Name="First_Date" Type="datetime" />
+    <Property Name="Cancel_Date" Type="datetime" />
+    <Property Name="SalesOrd_STO" Type="nvarchar" MaxLength="50" />
+    <Property Name="ItemNO" Type="nvarchar" MaxLength="50" />
+    <Property Name="CustomerMaterialNumber" Type="nvarchar" MaxLength="50" />
+    <Property Name="SalesMaterial" Type="nvarchar" MaxLength="200" />
+    <Property Name="Material" Type="nvarchar" MaxLength="200" />
+    <Property Name="CustomerDescription" Type="nvarchar" MaxLength="200" />
+    <Property Name="Short_text" Type="nvarchar" MaxLength="200" />
+    <Property Name="Deliv_date" Type="datetime" />
+    <Property Name="PurchDoc" Type="nvarchar" MaxLength="50" />
+    <Property Name="Item" Type="nvarchar" MaxLength="50" />
+    <Property Name="Matl_Group" Type="nvarchar" MaxLength="50" />
+    <Property Name="PO_quantity" Type="nvarchar" MaxLength="50" />
+    <Property Name="CartonPCS" Type="int" />
+    <Property Name="TotalCarton" Type="nvarchar" MaxLength="50" />
+    <Property Name="CartonGrossWeight" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="TotalGrossWeight" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="CartonVolume" Type="decimal" Precision="18" Scale="6" />
+    <Property Name="TotalVolume" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="CartonNetWeight" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="TotalNetWeight" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="CartonWidth_L" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="CartonDepth_W" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="CartonHeight" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="MainBatt" Type="nvarchar" MaxLength="50" />
+    <Property Name="MainBattQty" Type="nvarchar" MaxLength="50" />
+    <Property Name="ShipToName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ShipToCountry" Type="nvarchar" MaxLength="50" />
+    <Property Name="OverallCredStat" Type="nvarchar" MaxLength="50" />
+    <Property Name="SMprofomalINV" Type="nvarchar" MaxLength="50" />
+    <Property Name="DeliveryNo" Type="nvarchar" MaxLength="50" />
+    <Property Name="BookingNo" Type="varchar" MaxLength="50" />
+    <Property Name="Booking_date" Type="datetime" />
+    <Property Name="Booking_doc_uploaded_date" Type="datetime" />
+    <Property Name="SO" Type="varchar" MaxLength="50" />
+    <Property Name="SO_release_date" Type="datetime" />
+    <Property Name="CY_open" Type="datetime" />
+    <Property Name="CY_closing" Type="datetime" />
+    <Property Name="Cus_Sys_INV" Type="varchar" MaxLength="50" />
+    <Property Name="Close_shipping_doc_submssion_date" Type="datetime" />
+    <Property Name="Vessel" Type="varchar" MaxLength="50" />
+    <Property Name="Voyage" Type="varchar" MaxLength="50" />
+    <Property Name="Cust_SI" Type="datetime" />
+    <Property Name="Send_SI" Type="datetime" />
+    <Property Name="Confirm_SI" Type="datetime" />
+    <Property Name="Payment_Date" Type="datetime" />
+    <Property Name="FCR_Date" Type="datetime" />
+    <Property Name="Type" Type="varchar" MaxLength="15" />
+    <Property Name="ImportDate" Type="datetime" />
+    <Property Name="Cont_No" Type="varchar" MaxLength="50" />
+    <Property Name="Seal_No" Type="varchar" MaxLength="50" />
+    <Property Name="Cont_Date" Type="datetime" />
+    <Property Name="ETD" Type="datetime" />
+    <Property Name="BL" Type="varchar" MaxLength="50" />
+    <Property Name="Invoice_Date" Type="datetime" />
+    <Property Name="Shipment_Type" Type="varchar" MaxLength="50" />
+    <Property Name="Loading_Port" Type="varchar" MaxLength="50" />
+    <Property Name="Unloading_Port" Type="varchar" MaxLength="50" />
+    <Property Name="Destination" Type="varchar" MaxLength="50" />
+    <Property Name="Shipper" Type="varchar" MaxLength="50" />
+    <Property Name="Consignee" Type="varchar" MaxLength="500" />
+    <Property Name="Notify_Party" Type="varchar" MaxLength="500" />
+    <Property Name="Shipping_Mark" Type="varchar" MaxLength="500" />
+    <Property Name="Whs" Type="varchar" MaxLength="100" />
+    <Property Name="SM_Operator" Type="varchar" MaxLength="50" />
+    <Property Name="Job_Rec_Date" Type="datetime" />
+    <Property Name="Ship_Date" Type="datetime" />
+    <Property Name="Exception" Type="varchar" MaxLength="256" />
+    <Property Name="NST" Type="datetime" />
+    <Property Name="NLT" Type="datetime" />
+    <Property Name="Vendor_Confirm_Date" Type="datetime" />
+    <Property Name="rec_so_date" Type="datetime" />
+    <Property Name="Operator" Type="varchar" MaxLength="50" />
+    <Property Name="First_Job_Rec_Date" Type="datetime" />
+    <Property Name="Courier_tracking_no" Type="varchar" MaxLength="50" />
+    <Property Name="IsSendEmail" Type="bit" />
+    <Property Name="Update_time" Type="datetime" />
+    <Property Name="Update_user" Type="varchar" MaxLength="36" />
+    <Property Name="Update_GR_time" Type="datetime" />
+    <Property Name="Status" Type="int" />
+    <Property Name="Shipment_Status" Type="varchar" MaxLength="50" />
+    <Property Name="Loading_Date" Type="datetime" />
+    <Property Name="Carrier_deliver_date" Type="datetime" />
+    <Property Name="Vessel_2" Type="varchar" MaxLength="50" />
+    <Property Name="Voyage_2" Type="varchar" MaxLength="50" />
+    <Property Name="ETD_2" Type="datetime" />
+    <Property Name="Loading_Port_2" Type="varchar" MaxLength="50" />
+    <Property Name="Carrier" Type="varchar" MaxLength="50" />
+    <Property Name="Size" Type="varchar" MaxLength="50" />
+    <Property Name="Cargo_Receiving_Criterion" Type="varchar" MaxLength="200" />
+    <Property Name="Terminal_POD_UploadDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="FinalLoadingPlan_Payment">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="JOB_NO" Type="nvarchar" MaxLength="100" />
+    <Property Name="Value" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="Payment_Date" Type="datetime" />
+    <Property Name="Label_Fee" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="Fwd_INV" Type="varchar" MaxLength="50" />
+    <Property Name="Remark" Type="varchar" MaxLength="100" />
+    <Property Name="Oth_Charge" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="InvoiceNo" Type="varchar" MaxLength="15" />
+  </EntityType>
+  <EntityType Name="FinalLoadPlanAmazonVendor">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Mfr_Name" Type="varchar" MaxLength="100" />
+    <Property Name="AmazonVendor" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="FinalLoadPlanHoliday">
+    <Key>
+      <PropertyRef Name="hID" />
+    </Key>
+    <Property Name="hID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="holiday" Type="date" />
+    <Property Name="remark" Type="nchar" MaxLength="10" />
+    <Property Name="NameofDay" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FinalLoadPlanJobRecord">
+    <Key>
+      <PropertyRef Name="jlID" />
+    </Key>
+    <Property Name="jlID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="JOB_NO" Type="varchar" MaxLength="100" />
+    <Property Name="Action_Type" Type="varchar" MaxLength="32" />
+    <Property Name="Action_Field" Type="varchar" MaxLength="128" />
+    <Property Name="Remark" Type="varchar" MaxLength="1024" />
+    <Property Name="input_date" Type="datetime" />
+  </EntityType>
+  <EntityType Name="FinalLoadPlanRPALog">
+    <Key>
+      <PropertyRef Name="fID" />
+    </Key>
+    <Property Name="fID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="job_no" Type="nvarchar" MaxLength="100" />
+    <Property Name="action_status" Type="varchar" MaxLength="32" />
+    <Property Name="info" Type="varchar" MaxLength="512" />
+    <Property Name="inputtime" Type="datetime" />
+  </EntityType>
+  <EntityType Name="FinalPo_Cancel_Record">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="pID" Type="int" />
+    <Property Name="cancel_time" Type="datetime" />
+    <Property Name="cancel_user" Type="varchar" MaxLength="50" />
+    <Property Name="release" Type="int" />
+    <Property Name="release_user" Type="varchar" MaxLength="50" />
+    <Property Name="remark" Type="varchar" MaxLength="256" />
+  </EntityType>
+  <EntityType Name="FinalPoList">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Brand" Type="varchar" MaxLength="64" />
+    <Property Name="Carton_Depth_W" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="Carton_GrossWeight" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="Carton_Height" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="Carton_NetWeight" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="Carton_PCS" Type="int" />
+    <Property Name="Carton_Width_L" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="Comments" Type="varchar" MaxLength="256" />
+    <Property Name="Deliv_Date" Type="datetime" />
+    <Property Name="Delivery_Number" Type="varchar" MaxLength="64" />
+    <Property Name="Item" Type="varchar" MaxLength="64" />
+    <Property Name="ItemNO" Type="varchar" MaxLength="64" />
+    <Property Name="Material" Type="varchar" MaxLength="256" />
+    <Property Name="Matl_Group" Type="varchar" MaxLength="256" />
+    <Property Name="Mfr_Country" Type="varchar" MaxLength="32" />
+    <Property Name="Mfr_Name1" Type="varchar" MaxLength="128" />
+    <Property Name="PO_quantity" Type="int" />
+    <Property Name="Purch_Doc" Type="varchar" MaxLength="64" />
+    <Property Name="Sales_Material" Type="varchar" MaxLength="256" />
+    <Property Name="SalesOrd_STO" Type="varchar" MaxLength="64" />
+    <Property Name="Ship_To_Country" Type="varchar" MaxLength="32" />
+    <Property Name="ShipTo_Name" Type="varchar" MaxLength="64" />
+    <Property Name="Short_text" Type="varchar" MaxLength="256" />
+    <Property Name="Total_Carton" Type="int" />
+    <Property Name="Total_GrossWeight" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="Total_Volume" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="Vendor_Name" Type="varchar" MaxLength="128" />
+    <Property Name="FOB_Cancel_Date" Type="datetime" />
+    <Property Name="FOB_Carton_Volume" Type="decimal" Precision="18" Scale="6" />
+    <Property Name="FOB_Customer_Description" Type="varchar" MaxLength="256" />
+    <Property Name="FOB_Customer_Material_Number" Type="varchar" MaxLength="256" />
+    <Property Name="FOB_Customer_Name" Type="varchar" MaxLength="128" />
+    <Property Name="FOB_Customer_PO" Type="varchar" MaxLength="128" />
+    <Property Name="FOB_First_Date" Type="datetime" />
+    <Property Name="FOB_LOG" Type="varchar" MaxLength="128" />
+    <Property Name="FOB_MainBatt" Type="varchar" MaxLength="128" />
+    <Property Name="FOB_MainBattQty" Type="int" />
+    <Property Name="FOB_OverallCredStat" Type="varchar" MaxLength="128" />
+    <Property Name="FOB_Proforma_Invoice" Type="varchar" MaxLength="128" />
+    <Property Name="FOB_Receiving_Point" Type="varchar" MaxLength="128" />
+    <Property Name="FOB_Total_NetWeight" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="FOB_Booking_Date" Type="datetime" />
+    <Property Name="FOB_Ship_MODE" Type="varchar" MaxLength="32" />
+    <Property Name="DOM_Delivery_Quantity" Type="int" />
+    <Property Name="DOM_Domestic_Dest" Type="varchar" MaxLength="128" />
+    <Property Name="DOM_Finaloadingport" Type="varchar" MaxLength="128" />
+    <Property Name="DOM_Inbound" Type="varchar" MaxLength="128" />
+    <Property Name="DOM_Invoice" Type="varchar" MaxLength="128" />
+    <Property Name="DOM_Mfr_City" Type="varchar" MaxLength="64" />
+    <Property Name="DOM_Qty_Delivered" Type="int" />
+    <Property Name="DOM_Route" Type="varchar" MaxLength="128" />
+    <Property Name="DOM_Shipment_Number" Type="varchar" MaxLength="128" />
+    <Property Name="DOM_Sloc" Type="varchar" MaxLength="128" />
+    <Property Name="DOM_StatDelD" Type="datetime" />
+    <Property Name="DOM_STO_Delivery_Date" Type="datetime" />
+    <Property Name="DOM_STO_MA_Date" Type="datetime" />
+    <Property Name="DOM_To_Be_Del" Type="int" />
+    <Property Name="DOM_Vendor" Type="varchar" MaxLength="128" />
+    <Property Name="PO_List_Type" Type="varchar" MaxLength="8" />
+    <Property Name="Import_Date" Type="datetime" />
+    <Property Name="Vendor_User" Type="varchar" MaxLength="64" />
+    <Property Name="Vendor_Latest_Update" Type="datetime" />
+  </EntityType>
+  <EntityType Name="FinalVendorInput">
+    <Key>
+      <PropertyRef Name="VID" />
+    </Key>
+    <Property Name="VID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PID" Type="int" Nullable="false" />
+    <Property Name="PO_Line" Type="varchar" MaxLength="64" />
+    <Property Name="Created_By" Type="varchar" MaxLength="64" />
+    <Property Name="Matl_Group_Sales" Type="varchar" MaxLength="64" />
+    <Property Name="Matrix" Type="varchar" MaxLength="64" />
+    <Property Name="Slip_Sheet" Type="varchar" MaxLength="64" />
+    <Property Name="Packing_Status" Type="varchar" MaxLength="128" />
+    <Property Name="Inspection_End_Date" Type="date" />
+    <Property Name="Inspection_Result" Type="varchar" MaxLength="128" />
+    <Property Name="FOB_Local_Charges_Settlement" Type="varchar" MaxLength="128" />
+    <Property Name="FCR_Bill_Return_Date" Type="date" />
+    <Property Name="Certificate_Application_Date" Type="date" />
+    <Property Name="Certificate_Return_TO_SMDate" Type="date" />
+    <Property Name="Qty_Delivered" Type="int" />
+    <Property Name="To_be_del" Type="varchar" MaxLength="64" />
+    <Property Name="OTD_Reason_Code" Type="varchar" MaxLength="256" />
+    <Property Name="Delay_Details" Type="varchar" MaxLength="256" />
+    <Property Name="Carton_delivered" Type="int" />
+    <Property Name="Booking_No" Type="varchar" MaxLength="32" />
+    <Property Name="Loading_Date" Type="datetime" />
+    <Property Name="CFS_Closing_Date" Type="datetime" />
+    <Property Name="ETD" Type="datetime" />
+    <Property Name="Shipment_Status" Type="varchar" MaxLength="64" />
+    <Property Name="InputTime" Type="datetime" />
+    <Property Name="loginName" Type="varchar" MaxLength="64" />
+    <Property Name="Dischaging_Port" Type="varchar" MaxLength="64" />
+    <Property Name="Vessel" Type="varchar" MaxLength="64" />
+    <Property Name="Voyage" Type="varchar" MaxLength="32" />
+    <Property Name="Loading_Port" Type="varchar" MaxLength="64" />
+    <Property Name="Booking_Date" Type="datetime" />
+    <Property Name="ETA" Type="datetime" />
+    <Property Name="CY_Closing_Date" Type="datetime" />
+    <Property Name="SI_Cut_Time" Type="datetime" />
+    <Property Name="Arrive_WHS_Date" Type="datetime" />
+    <Property Name="Arrive_terminal_Date" Type="datetime" />
+    <Property Name="Delivery_CBM" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="Container_NO" Type="varchar" MaxLength="32" />
+    <Property Name="Seal_NO" Type="varchar" MaxLength="32" />
+    <Property Name="Vehicle_Type" Type="varchar" MaxLength="16" />
+    <Property Name="SO_Release_Date" Type="datetime" />
+    <Property Name="CY_Open_date" Type="datetime" />
+    <Property Name="CFS_Open_Date" Type="datetime" />
+    <Property Name="Ship_Mode" Type="varchar" MaxLength="32" />
+    <Property Name="Forward_Name" Type="nvarchar" MaxLength="128" />
+    <Property Name="Courier_tracking_no" Type="nchar" MaxLength="25" />
+    <Property Name="Update_GR_time" Type="datetime" />
+  </EntityType>
+  <EntityType Name="FinalVendorInputTrucking">
+    <Key>
+      <PropertyRef Name="tID" />
+    </Key>
+    <Property Name="tID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="vID" Type="int" />
+    <Property Name="Container_NO" Type="varchar" MaxLength="32" />
+    <Property Name="Seal_NO" Type="varchar" MaxLength="32" />
+    <Property Name="Vehicle_Type" Type="varchar" MaxLength="16" />
+    <Property Name="CTN" Type="int" />
+    <Property Name="Trucking_NO" Type="varchar" MaxLength="32" />
+    <Property Name="CBM" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="Qty" Type="int" />
+    <Property Name="Trucking_Arrive_WHS_Date" Type="datetime" />
+    <Property Name="Trucking_Arrive_terminal_Date" Type="datetime" />
+  </EntityType>
+  <EntityType Name="financeCharge">
+    <Key>
+      <PropertyRef Name="cID" />
+    </Key>
+    <Property Name="cID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="chargeID" Type="int" />
+    <Property Name="carrier" Type="varchar" MaxLength="50" />
+    <Property Name="cont_size" Type="varchar" MaxLength="50" />
+    <Property Name="charge" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="remark" Type="varchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="forwarder_code">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="forwarder_code" Type="varchar" MaxLength="250" />
+    <Property Name="forwarder_name" Type="varchar" MaxLength="250" />
+    <Property Name="StopUse" Type="bit" />
+    <Property Name="remark" Type="varchar" MaxLength="250" />
+  </EntityType>
+  <EntityType Name="in_head">
+    <Key>
+      <PropertyRef Name="so_no" />
+    </Key>
+    <Property Name="so_no" Type="char" MaxLength="50" Nullable="false" />
+    <Property Name="client" Type="char" MaxLength="20" Nullable="false" />
+    <Property Name="consg_code" Type="char" MaxLength="50" />
+    <Property Name="load_port" Type="varchar" MaxLength="30" />
+    <Property Name="dest" Type="varchar" MaxLength="30" />
+    <Property Name="dest_port" Type="varchar" MaxLength="30" />
+    <Property Name="division" Type="varchar" MaxLength="30" />
+    <Property Name="bill_no" Type="varchar" MaxLength="18" />
+    <Property Name="cont_no" Type="varchar" MaxLength="16" />
+    <Property Name="frmctry" Type="varchar" MaxLength="20" />
+    <Property Name="etd" Type="datetime" />
+    <Property Name="eta" Type="datetime" />
+    <Property Name="nst" Type="datetime" />
+    <Property Name="nlt" Type="datetime" />
+    <Property Name="factory" Type="varchar" MaxLength="80" />
+    <Property Name="vendor" Type="varchar" MaxLength="80" />
+    <Property Name="vessel" Type="varchar" MaxLength="30" />
+    <Property Name="voyage" Type="varchar" MaxLength="15" />
+    <Property Name="seal_no" Type="varchar" MaxLength="15" />
+    <Property Name="btotal" Type="int" />
+    <Property Name="completed" Type="bit" Nullable="false" />
+    <Property Name="cust" Type="varchar" MaxLength="20" />
+    <Property Name="commodity" Type="varchar" MaxLength="50" />
+    <Property Name="ieflag" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="repacked" Type="bit" />
+    <Property Name="remark1" Type="varchar" MaxLength="15" />
+    <Property Name="remark2" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="remark" Type="varchar" MaxLength="50" />
+    <Property Name="LinkToIn" Type="bit" Nullable="false" />
+    <Property Name="socbm" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="poType" Type="varchar" MaxLength="20" />
+    <Property Name="cfsso" Type="varchar" MaxLength="25" />
+    <Property Name="whs" Type="nvarchar" MaxLength="20" />
+    <Property Name="operator" Type="varchar" MaxLength="50" />
+    <Property Name="inputstarttime" Type="datetime" />
+    <Property Name="inputendtime" Type="datetime" />
+    <Property Name="Ecv_Status" Type="int" />
+  </EntityType>
+  <EntityType Name="in_item">
+    <Key>
+      <PropertyRef Name="so_no" />
+      <PropertyRef Name="seq" />
+    </Key>
+    <Property Name="so_no" Type="char" MaxLength="50" Nullable="false" />
+    <Property Name="seq" Type="char" MaxLength="3" Nullable="false" />
+    <Property Name="item_no" Type="char" MaxLength="30" />
+    <Property Name="rec_date" Type="datetime" />
+    <Property Name="decldate" Type="datetime" />
+    <Property Name="input_date" Type="datetime" />
+    <Property Name="dest_port" Type="char" MaxLength="20" />
+    <Property Name="destination" Type="varchar" MaxLength="50" />
+    <Property Name="stk" Type="char" MaxLength="20" />
+    <Property Name="po" Type="char" MaxLength="30" />
+    <Property Name="sku" Type="char" MaxLength="20" />
+    <Property Name="case_no" Type="char" MaxLength="15" />
+    <Property Name="style_no" Type="char" MaxLength="15" />
+    <Property Name="location" Type="char" MaxLength="10" />
+    <Property Name="in_no" Type="char" MaxLength="10" />
+    <Property Name="desc_code" Type="char" MaxLength="15" />
+    <Property Name="pallet" Type="int" />
+    <Property Name="pltbal" Type="int" />
+    <Property Name="ctn" Type="int" />
+    <Property Name="ctnbal" Type="int" />
+    <Property Name="pcs" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="pcsbal" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="qty" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="qtybal" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="unit" Type="char" MaxLength="10" />
+    <Property Name="poqty" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="spec" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="size" Type="char" MaxLength="10" />
+    <Property Name="cbm" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="length" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="width" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="height" Type="numeric" Precision="18" Scale="4" />
+    <Property Name="cubeunit" Type="char" MaxLength="16" />
+    <Property Name="weight" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="unitwei" Type="numeric" Precision="18" Scale="4" />
+    <Property Name="kgs_unit" Type="char" MaxLength="16" />
+    <Property Name="netwei" Type="numeric" Precision="18" Scale="4" />
+    <Property Name="unitnetwei" Type="numeric" Precision="18" Scale="4" />
+    <Property Name="netwei_unit" Type="numeric" Precision="18" Scale="4" />
+    <Property Name="shuttle" Type="char" MaxLength="10" />
+    <Property Name="shuttle_fee" Type="money" />
+    <Property Name="patterno" Type="char" MaxLength="50" />
+    <Property Name="pattern_name" Type="char" MaxLength="50" />
+    <Property Name="currency" Type="char" MaxLength="3" />
+    <Property Name="refund" Type="bit" Nullable="false" />
+    <Property Name="part" Type="char" MaxLength="10" />
+    <Property Name="vessel" Type="char" MaxLength="30" />
+    <Property Name="voyage" Type="char" MaxLength="20" />
+    <Property Name="seal_no" Type="char" MaxLength="15" />
+    <Property Name="etd" Type="datetime" />
+    <Property Name="eta" Type="datetime" />
+    <Property Name="remark" Type="char" MaxLength="60" />
+    <Property Name="remark1" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="remark2" Type="char" MaxLength="30" />
+    <Property Name="commodity" Type="char" MaxLength="60" />
+    <Property Name="repacked" Type="bit" Nullable="false" />
+    <Property Name="Prod_des" Type="varchar" MaxLength="100" />
+    <Property Name="pcsperqty" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="line" Type="varchar" MaxLength="50" />
+    <Property Name="description" Type="varchar" MaxLength="30" />
+    <Property Name="SI_Weight" Type="decimal" Precision="18" Scale="4" />
+    <Property Name="SI_WeightRemark" Type="varchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="In2So">
+    <Key>
+      <PropertyRef Name="So_No" />
+      <PropertyRef Name="LinkSeq" />
+    </Key>
+    <Property Name="LinkID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="So_No" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="LinkSeq" Type="smallint" Nullable="false" />
+    <Property Name="pre_entry" Type="varchar" MaxLength="11" Nullable="false" />
+    <Property Name="In_No" Type="varchar" MaxLength="12" Nullable="false" />
+    <Property Name="g_no" Type="char" MaxLength="5" Nullable="false" />
+    <Property Name="Seq" Type="char" MaxLength="3" Nullable="false" />
+    <Property Name="NewSeq" Type="varchar" MaxLength="3" />
+    <Property Name="Item_No" Type="varchar" MaxLength="20" />
+    <Property Name="Pack_No" Type="int" />
+    <Property Name="PackBal" Type="int" />
+    <Property Name="Spec" Type="int" />
+    <Property Name="PCS" Type="numeric" Precision="12" Scale="3" />
+    <Property Name="PCSBal" Type="numeric" Precision="12" Scale="3" />
+    <Property Name="Remark" Type="varchar" MaxLength="25" />
+  </EntityType>
+  <EntityType Name="InDocContainer">
+    <Key>
+      <PropertyRef Name="pre_entry" />
+      <PropertyRef Name="ContainerNo" />
+    </Key>
+    <Property Name="CID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="pre_entry" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="ContainerNo" Type="varchar" MaxLength="11" Nullable="false" />
+    <Property Name="Cont_Size" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Remark" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="InDocVehicle">
+    <Key>
+      <PropertyRef Name="pre_entry" />
+      <PropertyRef Name="VehicleID" />
+    </Key>
+    <Property Name="IID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="pre_entry" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="VehicleID" Type="varchar" MaxLength="12" Nullable="false" />
+    <Property Name="VehicleType" Type="varchar" MaxLength="10" />
+    <Property Name="Remark" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Inhead">
+    <Key>
+      <PropertyRef Name="pre_entry" />
+    </Key>
+    <Property Name="ihid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="pre_entry" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="act_date" Type="varchar" MaxLength="10" />
+    <Property Name="agent_code" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="agent_name" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="appl_no" Type="varchar" MaxLength="16" />
+    <Property Name="appr_no" Type="varchar" MaxLength="20" />
+    <Property Name="bill_no" Type="varchar" MaxLength="20" />
+    <Property Name="carbox_no" Type="varchar" MaxLength="10" />
+    <Property Name="cert_mark" Type="char" MaxLength="7" />
+    <Property Name="co_owner" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="contr_no" Type="varchar" MaxLength="20" />
+    <Property Name="customs_co" Type="varchar" MaxLength="4" Nullable="false" />
+    <Property Name="cut_mode" Type="varchar" MaxLength="3" />
+    <Property Name="d_date" Type="varchar" MaxLength="10" />
+    <Property Name="port_line" Type="char" MaxLength="4" Nullable="false" />
+    <Property Name="district_c" Type="char" MaxLength="5" Nullable="false" />
+    <Property Name="entry_id" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="ex_source" Type="char" MaxLength="1" />
+    <Property Name="factory" Type="varchar" MaxLength="30" />
+    <Property Name="fee_curr" Type="char" MaxLength="3" />
+    <Property Name="fee_mark" Type="char" MaxLength="1" />
+    <Property Name="fee_rate" Type="numeric" Precision="10" Scale="0" />
+    <Property Name="givetax" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="gross_wt" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="i_e_date" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="i_e_port" Type="char" MaxLength="4" Nullable="false" />
+    <Property Name="duty_ratio" Type="smallint" />
+    <Property Name="insur_curr" Type="char" MaxLength="3" />
+    <Property Name="insur_mark" Type="char" MaxLength="1" />
+    <Property Name="insur_rate" Type="numeric" Precision="10" Scale="0" />
+    <Property Name="items_no" Type="int" />
+    <Property Name="license_no" Type="varchar" MaxLength="20" />
+    <Property Name="manual_no" Type="varchar" MaxLength="12" />
+    <Property Name="net_wt" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="note_s" Type="varchar" MaxLength="40" />
+    <Property Name="other_curr" Type="char" MaxLength="3" />
+    <Property Name="other_mark" Type="char" MaxLength="1" />
+    <Property Name="other_rate" Type="numeric" Precision="10" Scale="0" />
+    <Property Name="owner_code" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="owner_name" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="pack_no" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="pay_mode" Type="char" MaxLength="1" />
+    <Property Name="pay_way" Type="char" MaxLength="1" />
+    <Property Name="sfdj0" Type="varchar" MaxLength="33" />
+    <Property Name="sfdj1" Type="varchar" MaxLength="33" />
+    <Property Name="sfdj2" Type="varchar" MaxLength="33" />
+    <Property Name="sfdj3" Type="varchar" MaxLength="33" />
+    <Property Name="sfdj4" Type="varchar" MaxLength="33" />
+    <Property Name="sfdj5" Type="varchar" MaxLength="33" />
+    <Property Name="sfdj6" Type="varchar" MaxLength="33" />
+    <Property Name="status" Type="char" MaxLength="2" />
+    <Property Name="tax_rate" Type="smallint" />
+    <Property Name="traf_mode" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="traf_name" Type="varchar" MaxLength="26" Nullable="false" />
+    <Property Name="trade_code" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="trade_coun" Type="varchar" MaxLength="3" Nullable="false" />
+    <Property Name="trade_mode" Type="varchar" MaxLength="4" Nullable="false" />
+    <Property Name="trade_name" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="trans_mode" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="typer" Type="varchar" MaxLength="5" Nullable="false" />
+    <Property Name="use_to_cod" Type="char" MaxLength="2" />
+    <Property Name="wrap_type" Type="char" MaxLength="2" Nullable="false" />
+    <Property Name="printed" Type="char" MaxLength="1" />
+    <Property Name="oper_type" Type="varchar" MaxLength="30" />
+    <Property Name="note_1" Type="varchar" MaxLength="30" />
+    <Property Name="input_corp" Type="varchar" MaxLength="10" />
+    <Property Name="In_No" Type="varchar" MaxLength="12" Nullable="false" />
+    <Property Name="Declar_No" Type="varchar" MaxLength="12" />
+    <Property Name="BP_No" Type="varchar" MaxLength="9" />
+    <Property Name="CustomsDocuType" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="LinkToSo" Type="bit" Nullable="false" />
+    <Property Name="Sended" Type="bit" Nullable="false" />
+    <Property Name="Confirmdate" Type="datetime" />
+    <Property Name="TransType" Type="varchar" MaxLength="6" Nullable="false" />
+    <Property Name="Trans_Number" Type="smallint" />
+    <Property Name="Cont_Number" Type="smallint" />
+    <Property Name="StdardContNumber" Type="smallint" />
+    <Property Name="Cont_Size" Type="varchar" MaxLength="5" />
+    <Property Name="ReturnTax" Type="bit" Nullable="false" />
+    <Property Name="Seal_No" Type="varchar" MaxLength="22" />
+    <Property Name="Cert_No" Type="varchar" MaxLength="40" />
+    <Property Name="VehicleID" Type="varchar" MaxLength="10" />
+    <Property Name="Vehicle_Number" Type="smallint" />
+    <Property Name="Remark" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="InList">
+    <Key>
+      <PropertyRef Name="pre_entry" />
+      <PropertyRef Name="g_no" />
+    </Key>
+    <Property Name="idgid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="pre_entry" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="g_no" Type="varchar" MaxLength="5" Nullable="false" />
+    <Property Name="code_s" Type="varchar" MaxLength="2" />
+    <Property Name="code_t" Type="varchar" MaxLength="8" Nullable="false" />
+    <Property Name="class_mark" Type="char" MaxLength="1" />
+    <Property Name="contr_item" Type="varchar" MaxLength="5" />
+    <Property Name="curr_code" Type="varchar" MaxLength="3" Nullable="false" />
+    <Property Name="duty_mode" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="factor" Type="numeric" Precision="11" Scale="3" />
+    <Property Name="g_name" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="g_qty" Type="numeric" Precision="13" Scale="3" Nullable="false" />
+    <Property Name="g_qty_remain" Type="numeric" Precision="13" Scale="3" />
+    <Property Name="g_spec" Type="varchar" MaxLength="30" />
+    <Property Name="g_unit" Type="char" MaxLength="3" Nullable="false" />
+    <Property Name="goods_id" Type="varchar" MaxLength="30" />
+    <Property Name="qty_1" Type="numeric" Precision="13" Scale="3" Nullable="false" />
+    <Property Name="qty_2" Type="numeric" Precision="13" Scale="3" />
+    <Property Name="orign_coun" Type="varchar" MaxLength="3" Nullable="false" />
+    <Property Name="trade_ttl" Type="numeric" Precision="13" Scale="2" Nullable="false" />
+    <Property Name="unit_code1" Type="char" MaxLength="3" Nullable="false" />
+    <Property Name="unit_code2" Type="char" MaxLength="3" />
+    <Property Name="unit_price" Type="numeric" Precision="13" Scale="4" Nullable="false" />
+    <Property Name="g_weight" Type="numeric" Precision="13" Scale="3" />
+    <Property Name="g_netwei" Type="numeric" Precision="12" Scale="3" />
+    <Property Name="exg_ver" Type="varchar" MaxLength="9" />
+    <Property Name="w_code_t" Type="varchar" MaxLength="8" />
+    <Property Name="w_code_s" Type="varchar" MaxLength="2" />
+    <Property Name="w_curr" Type="varchar" MaxLength="3" />
+    <Property Name="w_total" Type="numeric" Precision="13" Scale="2" />
+    <Property Name="In_No" Type="varchar" MaxLength="12" />
+    <Property Name="pack_no" Type="int" />
+    <Property Name="pcs" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="DocuType" Type="char" MaxLength="4" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6013: 表/视图“ypmfdata_yn.dbo.inno”未定义主键，并且无法推断有效的主键。已排除了此表/视图。若要使用实体，将需要检查您的架构、添加正确的键并取消对实体的注释。
+        <EntityType Name="inno">
+          <Property Name="so_no" Type="char" MaxLength="10" />
+          <Property Name="inno" Type="char" MaxLength="10" />
+        </EntityType>-->
+  <EntityType Name="invoice">
+    <Key>
+      <PropertyRef Name="iID" />
+    </Key>
+    <Property Name="iID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="invoiceNo" Type="varchar" MaxLength="12" />
+    <Property Name="so_no" Type="varchar" MaxLength="30" />
+    <Property Name="exchange_rate" Type="decimal" Precision="18" Scale="4" />
+    <Property Name="Total_USD" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="invoice_date" Type="datetime" />
+    <Property Name="rec_date" Type="datetime" />
+    <Property Name="vendor" Type="varchar" MaxLength="50" />
+    <Property Name="cbm_price" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="cbm" Type="decimal" Precision="18" Scale="3" />
+  </EntityType>
+  <EntityType Name="invoiceExchange">
+    <Key>
+      <PropertyRef Name="eID" />
+    </Key>
+    <Property Name="eID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="exchange_Rate" Type="decimal" Precision="18" Scale="4" />
+  </EntityType>
+  <EntityType Name="latecome">
+    <Key>
+      <PropertyRef Name="so_no" />
+      <PropertyRef Name="seq" />
+    </Key>
+    <Property Name="so_no" Type="char" MaxLength="20" Nullable="false" />
+    <Property Name="seq" Type="char" MaxLength="3" Nullable="false" />
+    <Property Name="cbm" Type="numeric" Precision="18" Scale="3" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Load_Fee">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="clpno" Type="char" MaxLength="20" Nullable="false" />
+    <Property Name="Account" Type="char" MaxLength="64" Nullable="false" />
+    <Property Name="la_no" Type="char" MaxLength="20" Nullable="false" />
+    <Property Name="invoiceno" Type="char" MaxLength="10" />
+    <Property Name="amount" Type="numeric" Precision="12" Scale="3" Nullable="false" />
+    <Property Name="plandate" Type="datetime" />
+    <Property Name="cfschg" Type="money" />
+  </EntityType>
+  <EntityType Name="Loading">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrderNo" Type="varchar" MaxLength="20" />
+    <Property Name="OperateDate" Type="datetime" />
+    <Property Name="StartTime" Type="datetime" />
+    <Property Name="EndTime" Type="datetime" />
+    <Property Name="Employer" Type="varchar" MaxLength="10" />
+    <Property Name="Account" Type="varchar" MaxLength="20" />
+    <Property Name="Ctn" Type="int" />
+    <Property Name="Paires" Type="int" />
+    <Property Name="CBM" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="VehicleType" Type="varchar" MaxLength="10" />
+    <Property Name="VehicleNumber" Type="varchar" MaxLength="10" />
+    <Property Name="Warehouse" Type="varchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="LoadPlanUpdateRecord">
+    <Key>
+      <PropertyRef Name="uID" />
+    </Key>
+    <Property Name="uID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="lID" Type="int" />
+    <Property Name="update_content" Type="nvarchar" MaxLength="512" />
+    <Property Name="update_date" Type="datetime" />
+    <Property Name="input_date" Type="datetime" />
+  </EntityType>
+  <EntityType Name="LPCont_Info">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="job_No" Type="varchar" MaxLength="100" />
+    <Property Name="num" Type="int" />
+    <Property Name="size" Type="varchar" MaxLength="30" />
+  </EntityType>
+  <EntityType Name="LPStatus">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="code" Type="int" />
+    <Property Name="status_Name" Type="varchar" MaxLength="64" />
+  </EntityType>
+  <EntityType Name="MaxId">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="GroupValue" Type="varchar" MaxLength="50" />
+    <Property Name="Maxid" Type="int" />
+    <Property Name="Year" Type="varchar" MaxLength="20" />
+    <Property Name="Remark" Type="nvarchar" MaxLength="250" />
+    <Property Name="remark2" Type="nvarchar" MaxLength="250" />
+  </EntityType>
+  <EntityType Name="newpacking">
+    <Key>
+      <PropertyRef Name="so_no" />
+      <PropertyRef Name="newseq" />
+    </Key>
+    <Property Name="so_no" Type="char" MaxLength="20" Nullable="false" />
+    <Property Name="newseq" Type="char" MaxLength="3" Nullable="false" />
+    <Property Name="qty" Type="int" />
+    <Property Name="qtybal" Type="int" />
+    <Property Name="pcs" Type="int" />
+    <Property Name="pcsbal" Type="int" />
+    <Property Name="qtyinplt" Type="int" />
+    <Property Name="unit" Type="char" MaxLength="10" />
+    <Property Name="length" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="width" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="height" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="cbm" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="unitwei" Type="numeric" Precision="18" Scale="4" />
+    <Property Name="weight" Type="numeric" Precision="18" Scale="4" />
+    <Property Name="spec" Type="numeric" Precision="18" Scale="4" />
+    <Property Name="repackdate" Type="datetime" />
+    <Property Name="po" Type="char" MaxLength="20" />
+    <Property Name="item_no" Type="char" MaxLength="30" />
+    <Property Name="remark" Type="char" MaxLength="60" />
+    <Property Name="LinkToIn" Type="bit" />
+  </EntityType>
+  <EntityType Name="newpacklist">
+    <Key>
+      <PropertyRef Name="PID" />
+    </Key>
+    <Property Name="PID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="so_no" Type="char" MaxLength="20" Nullable="false" />
+    <Property Name="newseq" Type="char" MaxLength="3" Nullable="false" />
+    <Property Name="booking" Type="char" MaxLength="20" Nullable="false" />
+    <Property Name="item_no" Type="char" MaxLength="20" />
+    <Property Name="seq" Type="char" MaxLength="3" Nullable="false" />
+    <Property Name="pcs" Type="numeric" Precision="18" Scale="3" />
+  </EntityType>
+  <EntityType Name="out_head">
+    <Key>
+      <PropertyRef Name="clpno" />
+    </Key>
+    <Property Name="clpno" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="la_no" Type="varchar" MaxLength="20" />
+    <Property Name="client" Type="varchar" MaxLength="20" />
+    <Property Name="cont_no" Type="varchar" MaxLength="11" />
+    <Property Name="seal_no" Type="varchar" MaxLength="18" />
+    <Property Name="pod" Type="varchar" MaxLength="50" />
+    <Property Name="division" Type="varchar" MaxLength="30" />
+    <Property Name="destination" Type="varchar" MaxLength="30" />
+    <Property Name="cust_ordno" Type="varchar" MaxLength="20" />
+    <Property Name="booking" Type="varchar" MaxLength="35" />
+    <Property Name="vessel" Type="varchar" MaxLength="30" />
+    <Property Name="voyage" Type="varchar" MaxLength="20" />
+    <Property Name="cont_size" Type="varchar" MaxLength="10" />
+    <Property Name="Plan_date" Type="datetime" />
+    <Property Name="loa_date" Type="datetime" />
+    <Property Name="deliv_date" Type="datetime" />
+    <Property Name="sail_date" Type="datetime" />
+    <Property Name="carrier" Type="varchar" MaxLength="15" />
+    <Property Name="close_date" Type="datetime" />
+    <Property Name="SI_Date" Type="datetime" />
+    <Property Name="shuttle" Type="char" MaxLength="20" />
+    <Property Name="shuttle_fee" Type="money" />
+    <Property Name="input_date" Type="datetime" />
+    <Property Name="decl_mode" Type="varchar" MaxLength="25" />
+    <Property Name="loadport" Type="varchar" MaxLength="30" />
+    <Property Name="export_form" Type="varchar" MaxLength="16" />
+    <Property Name="totalqty" Type="numeric" Precision="18" Scale="4" />
+    <Property Name="totalcbm" Type="numeric" Precision="18" Scale="4" />
+    <Property Name="decl_date" Type="datetime" />
+    <Property Name="ieflag" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="remark" Type="varchar" MaxLength="60" />
+    <Property Name="remark1" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="remark2" Type="char" MaxLength="30" />
+    <Property Name="beloaded" Type="bit" Nullable="false" />
+    <Property Name="trans_type" Type="char" MaxLength="7" />
+    <Property Name="recla_date" Type="datetime" />
+    <Property Name="terclos_date" Type="datetime" />
+    <Property Name="permit_date" Type="datetime" />
+    <Property Name="email_date" Type="datetime" />
+    <Property Name="G_Veh" Type="char" MaxLength="10" />
+    <Property Name="G_Order" Type="datetime" />
+    <Property Name="G_Back" Type="datetime" />
+    <Property Name="B_Veh" Type="char" MaxLength="10" />
+    <Property Name="B_Order" Type="datetime" />
+    <Property Name="B_Back" Type="datetime" />
+    <Property Name="ContYard" Type="char" MaxLength="10" />
+    <Property Name="TerYard" Type="char" MaxLength="10" />
+    <Property Name="ExchFee" Type="decimal" Precision="8" Scale="3" />
+    <Property Name="ContFee" Type="decimal" Precision="8" Scale="3" />
+    <Property Name="CharDocFee" Type="decimal" Precision="8" Scale="3" />
+    <Property Name="SuffocatingFee" Type="decimal" Precision="8" Scale="3" />
+    <Property Name="Employee" Type="char" MaxLength="10" />
+    <Property Name="StuffStart" Type="datetime" />
+    <Property Name="Stufffinish" Type="datetime" />
+    <Property Name="BLNO" Type="varchar" MaxLength="50" />
+    <Property Name="HBL" Type="varchar" MaxLength="50" />
+    <Property Name="PickAddress" Type="varchar" MaxLength="50" />
+    <Property Name="ReturnAddress" Type="varchar" MaxLength="50" />
+    <Property Name="VGM_Weight" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="Customs_Declaration" Type="int" />
+    <Property Name="forwarder_code" Type="nvarchar" MaxLength="100" />
+    <Property Name="Terminal_POD_UploadDate" Type="datetime" />
+    <Property Name="shipment_ID" Type="varchar" MaxLength="16" />
+  </EntityType>
+  <EntityType Name="out_head_cy">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="la_no" Type="varchar" MaxLength="25" />
+    <Property Name="cont_no" Type="varchar" MaxLength="15" />
+    <Property Name="vessel" Type="varchar" MaxLength="50" />
+    <Property Name="voyage" Type="varchar" MaxLength="20" />
+    <Property Name="ETD" Type="datetime" />
+    <Property Name="ETA" Type="datetime" />
+    <Property Name="seal_no" Type="varchar" MaxLength="50" />
+    <Property Name="cont_type" Type="varchar" MaxLength="20" />
+    <Property Name="POE" Type="varchar" MaxLength="30" />
+    <Property Name="booking_number" Type="varchar" MaxLength="25" />
+    <Property Name="destination" Type="varchar" MaxLength="25" />
+    <Property Name="division" Type="varchar" MaxLength="25" />
+    <Property Name="total_pcs" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="total_ctn" Type="int" />
+    <Property Name="total_cbm" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="total_weight" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="acceptance" Type="varchar" MaxLength="50" />
+    <Property Name="Carrier" Type="varchar" MaxLength="100" />
+    <Property Name="MBL" Type="varchar" MaxLength="100" />
+    <Property Name="HBL" Type="varchar" MaxLength="100" />
+    <Property Name="FcrData" Type="date" />
+    <Property Name="ECV_Status" Type="nvarchar" MaxLength="100" />
+    <Property Name="shipment_id" Type="varchar" MaxLength="16" />
+    <Property Name="Closingdate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="out_item">
+    <Key>
+      <PropertyRef Name="clpno" />
+      <PropertyRef Name="oseq" />
+    </Key>
+    <Property Name="clpno" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="oseq" Type="char" MaxLength="3" Nullable="false" />
+    <Property Name="consg_code" Type="varchar" MaxLength="64" />
+    <Property Name="so_no" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="seq" Type="varchar" MaxLength="3" />
+    <Property Name="LinkSeq" Type="varchar" MaxLength="3" />
+    <Property Name="g_no" Type="varchar" MaxLength="5" />
+    <Property Name="stk" Type="varchar" MaxLength="20" />
+    <Property Name="po" Type="varchar" MaxLength="50" />
+    <Property Name="sku" Type="varchar" MaxLength="50" />
+    <Property Name="pre_entry" Type="varchar" MaxLength="11" />
+    <Property Name="in_no" Type="varchar" MaxLength="11" />
+    <Property Name="case_no" Type="varchar" MaxLength="20" />
+    <Property Name="style_no" Type="varchar" MaxLength="20" />
+    <Property Name="item_no" Type="varchar" MaxLength="30" />
+    <Property Name="patterno" Type="varchar" MaxLength="50" />
+    <Property Name="pattern_name" Type="varchar" MaxLength="50" />
+    <Property Name="sample_no" Type="varchar" MaxLength="20" />
+    <Property Name="cat_code" Type="varchar" MaxLength="20" />
+    <Property Name="descr" Type="varchar" MaxLength="60" />
+    <Property Name="pallet" Type="int" />
+    <Property Name="qty" Type="numeric" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="ctns" Type="int" />
+    <Property Name="pcs" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="unit" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="unitwei" Type="numeric" Precision="18" Scale="4" />
+    <Property Name="weight" Type="numeric" Precision="18" Scale="4" />
+    <Property Name="length" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="width" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="height" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="cbm" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="Location" Type="varchar" MaxLength="20" />
+    <Property Name="remark" Type="varchar" MaxLength="30" />
+    <Property Name="la_no" Type="varchar" MaxLength="20" />
+    <Property Name="plan_date" Type="datetime" />
+    <Property Name="beloaded" Type="bit" />
+    <Property Name="remark1" Type="varchar" MaxLength="50" />
+    <Property Name="size" Type="varchar" MaxLength="10" />
+    <Property Name="NewSeq" Type="varchar" MaxLength="3" />
+    <Property Name="ScanQty" Type="int" />
+    <Property Name="ScanFlag" Type="bit" />
+    <Property Name="Act_Weight" Type="decimal" Precision="18" Scale="4" />
+  </EntityType>
+  <EntityType Name="out_item_cy">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="aID" Type="int" />
+    <Property Name="so_no" Type="varchar" MaxLength="30" />
+    <Property Name="order_no" Type="varchar" MaxLength="30" />
+    <Property Name="po" Type="varchar" MaxLength="30" />
+    <Property Name="stock_no" Type="varchar" MaxLength="20" />
+    <Property Name="pattern_no" Type="varchar" MaxLength="20" />
+    <Property Name="pattern_name" Type="varchar" MaxLength="20" />
+    <Property Name="rec_date" Type="datetime" />
+    <Property Name="destination" Type="varchar" MaxLength="50" />
+    <Property Name="pairage" Type="int" />
+    <Property Name="ctn" Type="int" />
+    <Property Name="cbm" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="weight" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="supplier" Type="varchar" MaxLength="50" />
+    <Property Name="commodity" Type="varchar" MaxLength="100" />
+    <Property Name="packing" Type="varchar" MaxLength="20" />
+    <Property Name="htsus_no" Type="varchar" MaxLength="20" />
+    <Property Name="line_no" Type="varchar" MaxLength="5" />
+    <Property Name="Material_Group_Desc" Type="varchar" MaxLength="256" />
+    <Property Name="ECV_Status" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="OutDocContainer">
+    <Key>
+      <PropertyRef Name="pre_entry" />
+      <PropertyRef Name="ContainerNo" />
+    </Key>
+    <Property Name="CID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="pre_entry" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="ContainerNo" Type="char" MaxLength="11" Nullable="false" />
+    <Property Name="Cont_Size" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Remark" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="OutDocVehicle">
+    <Key>
+      <PropertyRef Name="pre_entry" />
+      <PropertyRef Name="VehicleID" />
+    </Key>
+    <Property Name="IID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="pre_entry" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="VehicleID" Type="varchar" MaxLength="12" Nullable="false" />
+    <Property Name="VehicleType" Type="varchar" MaxLength="10" />
+    <Property Name="Remark" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Outhead">
+    <Key>
+      <PropertyRef Name="pre_entry" />
+    </Key>
+    <Property Name="ebID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="pre_entry" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="act_date" Type="varchar" MaxLength="10" />
+    <Property Name="agent_code" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="agent_name" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="appl_no" Type="varchar" MaxLength="16" />
+    <Property Name="appr_no" Type="varchar" MaxLength="20" />
+    <Property Name="bill_no" Type="varchar" MaxLength="20" />
+    <Property Name="carbox_no" Type="varchar" MaxLength="10" />
+    <Property Name="cert_mark" Type="varchar" MaxLength="7" />
+    <Property Name="co_owner" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="contr_no" Type="varchar" MaxLength="20" />
+    <Property Name="customs_co" Type="varchar" MaxLength="4" Nullable="false" />
+    <Property Name="cut_mode" Type="varchar" MaxLength="3" />
+    <Property Name="d_date" Type="varchar" MaxLength="10" />
+    <Property Name="port_line" Type="char" MaxLength="4" Nullable="false" />
+    <Property Name="district_c" Type="char" MaxLength="5" Nullable="false" />
+    <Property Name="entry_id" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="ex_source" Type="char" MaxLength="1" />
+    <Property Name="factory" Type="varchar" MaxLength="30" />
+    <Property Name="fee_curr" Type="char" MaxLength="3" />
+    <Property Name="fee_mark" Type="char" MaxLength="1" />
+    <Property Name="fee_rate" Type="numeric" Precision="10" Scale="0" />
+    <Property Name="givetax" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="gross_wt" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="i_e_date" Type="char" MaxLength="10" />
+    <Property Name="i_e_port" Type="char" MaxLength="4" Nullable="false" />
+    <Property Name="duty_ratio" Type="smallint" />
+    <Property Name="insur_curr" Type="char" MaxLength="3" />
+    <Property Name="insur_mark" Type="char" MaxLength="1" />
+    <Property Name="insur_rate" Type="numeric" Precision="10" Scale="0" />
+    <Property Name="items_no" Type="int" />
+    <Property Name="license_no" Type="varchar" MaxLength="20" />
+    <Property Name="manual_no" Type="varchar" MaxLength="12" />
+    <Property Name="net_wt" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="note_s" Type="varchar" MaxLength="40" />
+    <Property Name="other_curr" Type="char" MaxLength="3" />
+    <Property Name="other_mark" Type="char" MaxLength="1" />
+    <Property Name="other_rate" Type="numeric" Precision="10" Scale="0" />
+    <Property Name="owner_code" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="owner_name" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="pack_no" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="pay_mode" Type="char" MaxLength="1" />
+    <Property Name="pay_way" Type="char" MaxLength="1" />
+    <Property Name="sfdj0" Type="varchar" MaxLength="33" />
+    <Property Name="sfdj1" Type="varchar" MaxLength="33" />
+    <Property Name="sfdj2" Type="varchar" MaxLength="33" />
+    <Property Name="sfdj3" Type="varchar" MaxLength="33" />
+    <Property Name="sfdj4" Type="varchar" MaxLength="33" />
+    <Property Name="sfdj5" Type="varchar" MaxLength="33" />
+    <Property Name="sfdj6" Type="varchar" MaxLength="33" />
+    <Property Name="status" Type="char" MaxLength="2" />
+    <Property Name="tax_rate" Type="smallint" />
+    <Property Name="traf_mode" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="traf_name" Type="varchar" MaxLength="26" Nullable="false" />
+    <Property Name="trade_code" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="trade_coun" Type="char" MaxLength="3" Nullable="false" />
+    <Property Name="trade_mode" Type="char" MaxLength="4" Nullable="false" />
+    <Property Name="trade_name" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="trans_mode" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="typer" Type="varchar" MaxLength="5" Nullable="false" />
+    <Property Name="use_to_cod" Type="char" MaxLength="2" />
+    <Property Name="wrap_type" Type="char" MaxLength="2" Nullable="false" />
+    <Property Name="printed" Type="char" MaxLength="1" />
+    <Property Name="oper_type" Type="varchar" MaxLength="30" />
+    <Property Name="note_1" Type="varchar" MaxLength="30" />
+    <Property Name="input_corp" Type="varchar" MaxLength="10" />
+    <Property Name="Declar_No" Type="varchar" MaxLength="12" />
+    <Property Name="BP_No" Type="varchar" MaxLength="9" />
+    <Property Name="CustomsDocuType" Type="varchar" MaxLength="20" />
+    <Property Name="clpno" Type="varchar" MaxLength="20" />
+    <Property Name="Sended" Type="bit" />
+    <Property Name="Confirmdate" Type="datetime" />
+    <Property Name="TransType" Type="varchar" MaxLength="6" Nullable="false" />
+    <Property Name="Trans_Number" Type="smallint" />
+    <Property Name="Cont_Number" Type="smallint" />
+    <Property Name="StdardContNumber" Type="smallint" />
+    <Property Name="Cont_Size" Type="varchar" MaxLength="5" />
+    <Property Name="ReturnTax" Type="bit" Nullable="false" />
+    <Property Name="Seal_No" Type="varchar" MaxLength="22" />
+    <Property Name="Cert_No" Type="varchar" MaxLength="40" />
+    <Property Name="VehicleID" Type="varchar" MaxLength="10" />
+    <Property Name="Vehicle_Number" Type="smallint" />
+    <Property Name="Remark" Type="varchar" MaxLength="50" />
+    <Property Name="Customs_Weight" Type="decimal" Precision="18" Scale="3" />
+  </EntityType>
+  <EntityType Name="OutList">
+    <Key>
+      <PropertyRef Name="pre_entry" />
+      <PropertyRef Name="g_no" />
+    </Key>
+    <Property Name="ebgID" Type="decimal" Precision="10" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="pre_entry" Type="varchar" MaxLength="11" Nullable="false" />
+    <Property Name="g_no" Type="varchar" MaxLength="5" Nullable="false" />
+    <Property Name="code_s" Type="varchar" MaxLength="2" />
+    <Property Name="code_t" Type="varchar" MaxLength="8" Nullable="false" />
+    <Property Name="class_mark" Type="char" MaxLength="1" />
+    <Property Name="contr_item" Type="varchar" MaxLength="5" />
+    <Property Name="curr_code" Type="varchar" MaxLength="3" Nullable="false" />
+    <Property Name="duty_mode" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="factor" Type="numeric" Precision="11" Scale="3" />
+    <Property Name="g_name" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="g_qty" Type="numeric" Precision="13" Scale="3" Nullable="false" />
+    <Property Name="g_spec" Type="varchar" MaxLength="30" />
+    <Property Name="g_unit" Type="char" MaxLength="3" Nullable="false" />
+    <Property Name="goods_id" Type="varchar" MaxLength="30" />
+    <Property Name="qty_1" Type="numeric" Precision="13" Scale="3" Nullable="false" />
+    <Property Name="qty_2" Type="numeric" Precision="13" Scale="3" />
+    <Property Name="orign_coun" Type="varchar" MaxLength="3" Nullable="false" />
+    <Property Name="trade_ttl" Type="numeric" Precision="13" Scale="2" Nullable="false" />
+    <Property Name="unit_code1" Type="char" MaxLength="3" Nullable="false" />
+    <Property Name="unit_code2" Type="varchar" MaxLength="3" />
+    <Property Name="unit_price" Type="numeric" Precision="13" Scale="4" Nullable="false" />
+    <Property Name="g_weight" Type="numeric" Precision="13" Scale="3" />
+    <Property Name="g_netwei" Type="numeric" Precision="12" Scale="3" />
+    <Property Name="exg_ver" Type="varchar" MaxLength="9" />
+    <Property Name="w_code_t" Type="varchar" MaxLength="8" />
+    <Property Name="w_code_s" Type="varchar" MaxLength="2" />
+    <Property Name="w_curr" Type="varchar" MaxLength="3" />
+    <Property Name="w_total" Type="numeric" Precision="13" Scale="2" />
+    <Property Name="pack_no" Type="smallint" />
+    <Property Name="CustomsDocuType" Type="varchar" MaxLength="16" />
+    <Property Name="ClpNo" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="OutListItems">
+    <Key>
+      <PropertyRef Name="OID" />
+    </Key>
+    <Property Name="OID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="pre_entry" Type="varchar" MaxLength="11" Nullable="false" />
+    <Property Name="g_no" Type="varchar" MaxLength="5" Nullable="false" />
+    <Property Name="clpno" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="oseq" Type="char" MaxLength="3" Nullable="false" />
+  </EntityType>
+  <EntityType Name="pick_return_charge">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="pick_address" Type="varchar" MaxLength="50" />
+    <Property Name="return_address" Type="varchar" MaxLength="50" />
+    <Property Name="cont_size" Type="varchar" MaxLength="50" />
+    <Property Name="chargeID" Type="int" />
+    <Property Name="charge" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="remark" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="Port">
+    <Key>
+      <PropertyRef Name="PID" />
+    </Key>
+    <Property Name="PID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="POD" Type="char" MaxLength="30" Nullable="false" />
+    <Property Name="DESTINATION" Type="char" MaxLength="30" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“ypmfdata_yn.dbo.ProdesOfVIFA”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="ProdesOfVIFA">
+    <Key>
+      <PropertyRef Name="PID" />
+    </Key>
+    <Property Name="PID" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Prod_des" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="rec_amount">
+    <Key>
+      <PropertyRef Name="account" />
+      <PropertyRef Name="rec_date" />
+    </Key>
+    <Property Name="account" Type="char" MaxLength="20" Nullable="false" />
+    <Property Name="rec_date" Type="datetime" Nullable="false" />
+    <Property Name="amount" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+  </EntityType>
+  <EntityType Name="recdtl">
+    <Key>
+      <PropertyRef Name="so_no" />
+      <PropertyRef Name="recline" />
+      <PropertyRef Name="seq_no" />
+    </Key>
+    <Property Name="so_no" Type="char" MaxLength="50" Nullable="false" />
+    <Property Name="recline" Type="char" MaxLength="3" Nullable="false" />
+    <Property Name="seq_no" Type="numeric" Precision="7" Scale="0" Nullable="false" />
+    <Property Name="rec_date" Type="datetime" />
+    <Property Name="prod_des" Type="varchar" MaxLength="200" />
+    <Property Name="sku" Type="varchar" MaxLength="50" />
+    <Property Name="po" Type="char" MaxLength="18" />
+    <Property Name="poctns" Type="int" />
+    <Property Name="skn" Type="varchar" MaxLength="35" />
+    <Property Name="c_ono" Type="char" MaxLength="18" />
+    <Property Name="artno" Type="char" MaxLength="18" />
+    <Property Name="size" Type="char" MaxLength="10" />
+    <Property Name="ctns" Type="int" />
+    <Property Name="Qty" Type="int" />
+    <Property Name="spec" Type="char" MaxLength="20" />
+    <Property Name="pallet" Type="int" />
+    <Property Name="pkg" Type="char" MaxLength="10" />
+    <Property Name="unitwei" Type="decimal" Precision="10" Scale="3" />
+    <Property Name="rweight" Type="decimal" Precision="15" Scale="3" />
+    <Property Name="length" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="width" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="height" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="cbm" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="cl_cbm" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="location" Type="char" MaxLength="10" />
+    <Property Name="pod" Type="char" MaxLength="20" />
+    <Property Name="dest" Type="char" MaxLength="20" />
+    <Property Name="Recbal" Type="int" />
+    <Property Name="QtyBal" Type="int" />
+    <Property Name="remark" Type="varchar" MaxLength="180" />
+    <Property Name="line_no" Type="int" />
+  </EntityType>
+  <EntityType Name="rechead">
+    <Key>
+      <PropertyRef Name="so_no" />
+      <PropertyRef Name="seq_no" />
+    </Key>
+    <Property Name="so_no" Type="char" MaxLength="50" Nullable="false" />
+    <Property Name="seq_no" Type="numeric" Precision="7" Scale="0" Nullable="false" />
+    <Property Name="client" Type="char" MaxLength="20" Nullable="false" />
+    <Property Name="vendor" Type="char" MaxLength="60" />
+    <Property Name="totctns" Type="int" Nullable="false" />
+    <Property Name="account" Type="char" MaxLength="20" />
+    <Property Name="vess_voy" Type="char" MaxLength="30" />
+    <Property Name="totcbm" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="Rec_Status" Type="bit" Nullable="false" />
+    <Property Name="linked" Type="bit" Nullable="false" />
+    <Property Name="fsd" Type="datetime" />
+    <Property Name="lsd" Type="datetime" />
+    <Property Name="EDI_Status" Type="bit" />
+    <Property Name="totwei" Type="decimal" Precision="12" Scale="3" />
+    <Property Name="Ispartial" Type="bit" />
+    <Property Name="SkMark" Type="char" MaxLength="2" />
+  </EntityType>
+  <EntityType Name="RecRegistrationHead">
+    <Key>
+      <PropertyRef Name="RegHID" />
+    </Key>
+    <Property Name="RegHID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RegDate" Type="datetime" Nullable="false" />
+    <Property Name="In_No" Type="varchar" MaxLength="12" Nullable="false" />
+    <Property Name="Vendor" Type="varchar" MaxLength="50" />
+    <Property Name="TotalAmount" Type="int" />
+    <Property Name="Remark" Type="varchar" MaxLength="60" />
+  </EntityType>
+  <EntityType Name="RecRegistrationItems">
+    <Key>
+      <PropertyRef Name="RegDID" />
+    </Key>
+    <Property Name="RegDID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="In_No" Type="varchar" MaxLength="12" Nullable="false" />
+    <Property Name="ItemSeq" Type="smallint" Nullable="false" />
+    <Property Name="So_No" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Amount" Type="int" Nullable="false" />
+    <Property Name="Client" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Prod_Des" Type="varchar" MaxLength="60" />
+    <Property Name="Inspection" Type="bit" />
+    <Property Name="Remark" Type="varchar" MaxLength="60" />
+  </EntityType>
+  <EntityType Name="RecRegVehicle">
+    <Key>
+      <PropertyRef Name="RegVID" />
+    </Key>
+    <Property Name="RegVID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="In_No" Type="char" MaxLength="11" Nullable="false" />
+    <Property Name="VehicleID" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="VehicleType" Type="char" MaxLength="10" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“ypmfdata_yn.dbo.repertory”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="repertory">
+    <Key>
+      <PropertyRef Name="rep_id" />
+      <PropertyRef Name="rep_name" />
+      <PropertyRef Name="rep_address" />
+    </Key>
+    <Property Name="rep_id" Type="int" Nullable="false" />
+    <Property Name="rep_name" Type="varchar" MaxLength="80" Nullable="false" />
+    <Property Name="rep_address" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="rep_phone" Type="varchar" MaxLength="30" />
+    <Property Name="rep_connecter" Type="varchar" MaxLength="15" />
+    <Property Name="rep_type" Type="varchar" MaxLength="10" />
+    <Property Name="rep_state" Type="int" />
+    <Property Name="rep_area" Type="varchar" MaxLength="20" />
+    <Property Name="whs_name" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“ypmfdata_yn.dbo.service”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="service">
+    <Key>
+      <PropertyRef Name="ser_type" />
+    </Key>
+    <Property Name="ser_type" Type="char" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6013: 表/视图“ypmfdata_yn.dbo.Sheet1$”未定义主键，并且无法推断有效的主键。已排除了此表/视图。若要使用实体，将需要检查您的架构、添加正确的键并取消对实体的注释。
+        <EntityType Name="Sheet1$">
+          <Property Name="Customer Name (in SM Load Plan)" Type="nvarchar" MaxLength="255" />
+          <Property Name="Shorthand (简写)" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“ypmfdata_yn.dbo.shipcorp”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="shipcorp">
+    <Key>
+      <PropertyRef Name="carrier" />
+      <PropertyRef Name="corpname" />
+    </Key>
+    <Property Name="carrier" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="corpname" Type="char" MaxLength="60" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ShipperNameList">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="VendorName" Type="varchar" MaxLength="250" />
+    <Property Name="MfrName1" Type="varchar" MaxLength="250" />
+    <Property Name="ShipperName" Type="varchar" MaxLength="1000" />
+  </EntityType>
+  <EntityType Name="spe_opertype">
+    <Key>
+      <PropertyRef Name="OID" />
+    </Key>
+    <Property Name="OID" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="operatetype" Type="char" MaxLength="30" Nullable="false" />
+    <Property Name="unit" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="flag" Type="char" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="special">
+    <Key>
+      <PropertyRef Name="spid" />
+    </Key>
+    <Property Name="spid" Type="char" MaxLength="20" Nullable="false" />
+    <Property Name="client" Type="char" MaxLength="20" />
+    <Property Name="cust_name" Type="char" MaxLength="60" />
+    <Property Name="consg_code" Type="char" MaxLength="20" />
+    <Property Name="consg_name" Type="char" MaxLength="60" />
+    <Property Name="opdate" Type="datetime" />
+    <Property Name="factory" Type="char" MaxLength="40" />
+    <Property Name="remark" Type="char" MaxLength="60" />
+    <Property Name="remark2" Type="char" MaxLength="60" />
+    <Property Name="contact" Type="char" MaxLength="30" />
+    <Property Name="confirmdate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="special_item">
+    <Key>
+      <PropertyRef Name="spid" />
+      <PropertyRef Name="seq" />
+    </Key>
+    <Property Name="spid" Type="char" MaxLength="20" Nullable="false" />
+    <Property Name="seq" Type="char" MaxLength="3" Nullable="false" />
+    <Property Name="opid" Type="char" MaxLength="50" />
+    <Property Name="con_no" Type="char" MaxLength="20" />
+    <Property Name="cont_size" Type="char" MaxLength="10" />
+    <Property Name="qty" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="weight" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="cbm" Type="numeric" Precision="18" Scale="3" />
+    <Property Name="unit_price" Type="numeric" Precision="18" Scale="2" />
+    <Property Name="price" Type="numeric" Precision="18" Scale="2" />
+    <Property Name="remark1" Type="char" MaxLength="60" />
+    <Property Name="op" Type="char" MaxLength="30" />
+    <Property Name="unit" Type="char" MaxLength="20" />
+    <Property Name="sfmin" Type="char" MaxLength="12" />
+    <Property Name="bz" Type="char" MaxLength="10" />
+    <Property Name="remark" Type="char" MaxLength="60" />
+  </EntityType>
+  <EntityType Name="SpsOperate">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrderNo" Type="varchar" MaxLength="20" />
+    <Property Name="OperateDate" Type="datetime" />
+    <Property Name="StartTime" Type="datetime" />
+    <Property Name="EndTime" Type="datetime" />
+    <Property Name="Employer" Type="nvarchar" MaxLength="10" />
+    <Property Name="Account" Type="nvarchar" MaxLength="20" />
+    <Property Name="Ctn" Type="int" />
+    <Property Name="Paires" Type="int" />
+    <Property Name="CBM" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="Brand" Type="varchar" MaxLength="20" />
+    <Property Name="Type" Type="varchar" MaxLength="30" />
+    <Property Name="Warehouse" Type="nvarchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="Sys_Department">
+    <Key>
+      <PropertyRef Name="depId" />
+    </Key>
+    <Property Name="depId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="depPid" Type="int" Nullable="false" />
+    <Property Name="depName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="depRemark" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="depIconCls" Type="varchar" MaxLength="200" />
+    <Property Name="depIsDel" Type="bit" Nullable="false" />
+    <Property Name="depOrder" Type="int" />
+    <Property Name="depAddTime" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Sys_EasyUI">
+    <Key>
+      <PropertyRef Name="pid" />
+    </Key>
+    <Property Name="pid" Type="int" Nullable="false" />
+    <Property Name="pParent" Type="int" Nullable="false" />
+    <Property Name="pName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="pAreaName" Type="varchar" MaxLength="50" />
+    <Property Name="pControllerName" Type="varchar" MaxLength="50" />
+    <Property Name="pActionName" Type="varchar" MaxLength="50" />
+    <Property Name="pFormMethod" Type="smallint" Nullable="false" />
+    <Property Name="pOperationType" Type="smallint" Nullable="false" />
+    <Property Name="pIco" Type="varchar" MaxLength="200" />
+    <Property Name="pOrder" Type="int" Nullable="false" />
+    <Property Name="pIsLink" Type="bit" Nullable="false" />
+    <Property Name="pLinkUrl" Type="varchar" MaxLength="200" />
+    <Property Name="pIsShow" Type="bit" Nullable="false" />
+    <Property Name="pRemark" Type="varchar" MaxLength="200" />
+    <Property Name="pIsDel" Type="bit" Nullable="false" />
+    <Property Name="pAddTime" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Sys_Log">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Date" Type="datetime" />
+    <Property Name="Thread" Type="varchar" MaxLength="255" />
+    <Property Name="Level" Type="varchar" MaxLength="50" />
+    <Property Name="Logger" Type="varchar" MaxLength="255" />
+    <Property Name="Message" Type="varchar" MaxLength="4000" />
+    <Property Name="Exception" Type="varchar(max)" />
+  </EntityType>
+  <EntityType Name="Sys_Permission">
+    <Key>
+      <PropertyRef Name="pid" />
+    </Key>
+    <Property Name="pid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="pParent" Type="int" Nullable="false" />
+    <Property Name="pName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="pAreaName" Type="varchar" MaxLength="50" />
+    <Property Name="pControllerName" Type="varchar" MaxLength="50" />
+    <Property Name="pActionName" Type="varchar" MaxLength="50" />
+    <Property Name="pFormMethod" Type="smallint" />
+    <Property Name="pOperationType" Type="smallint" />
+    <Property Name="pIco" Type="varchar" MaxLength="200" />
+    <Property Name="pOrder" Type="int" Nullable="false" />
+    <Property Name="pIsLink" Type="bit" />
+    <Property Name="pLinkUrl" Type="varchar" MaxLength="200" />
+    <Property Name="pIsShow" Type="bit" Nullable="false" />
+    <Property Name="pRemark" Type="varchar" MaxLength="200" />
+    <Property Name="pIsDel" Type="bit" Nullable="false" />
+    <Property Name="pOperTime" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Sys_Role">
+    <Key>
+      <PropertyRef Name="rId" />
+    </Key>
+    <Property Name="rId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="rDepId" Type="int" Nullable="false" />
+    <Property Name="rName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="rRemark" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="rIsShow" Type="bit" Nullable="false" />
+    <Property Name="rIsDel" Type="bit" Nullable="false" />
+    <Property Name="rAddTime" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Sys_RolePermission">
+    <Key>
+      <PropertyRef Name="rpId" />
+    </Key>
+    <Property Name="rpId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="rpRId" Type="int" Nullable="false" />
+    <Property Name="rpPId" Type="int" Nullable="false" />
+    <Property Name="rpIsDel" Type="bit" Nullable="false" />
+    <Property Name="rpAddTime" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Sys_UserInfo">
+    <Key>
+      <PropertyRef Name="uId" />
+    </Key>
+    <Property Name="uId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="uDepId" Type="int" Nullable="false" />
+    <Property Name="uLoginName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="uPwd" Type="nvarchar" MaxLength="500" />
+    <Property Name="uGender" Type="bit" Nullable="false" />
+    <Property Name="uPost" Type="varchar" MaxLength="50" />
+    <Property Name="uRemark" Type="varchar" MaxLength="100" />
+    <Property Name="uIsDel" Type="bit" Nullable="false" />
+    <Property Name="uImgUrl" Type="varchar" MaxLength="200" />
+    <Property Name="uAddTime" Type="datetime" Nullable="false" />
+    <Property Name="uVendor_Code" Type="varchar" MaxLength="15" />
+    <Property Name="uTruck_Company_Code" Type="varchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="Sys_UserRole">
+    <Key>
+      <PropertyRef Name="urId" />
+    </Key>
+    <Property Name="urId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="urUId" Type="int" Nullable="false" />
+    <Property Name="urRId" Type="int" Nullable="false" />
+    <Property Name="urIsDel" Type="bit" Nullable="false" />
+    <Property Name="urAddtime" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Sys_UserSetting">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserCode" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="SettingCode" Type="varchar" MaxLength="100" />
+    <Property Name="SettingName" Type="varchar" MaxLength="200" />
+    <Property Name="SettingValue" Type="varchar" MaxLength="100" />
+    <Property Name="Description" Type="varchar" MaxLength="300" />
+  </EntityType>
+  <EntityType Name="Sys_UserVipPermission">
+    <Key>
+      <PropertyRef Name="vipId" />
+    </Key>
+    <Property Name="vipId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="vipUserId" Type="int" Nullable="false" />
+    <Property Name="vipPermission" Type="int" Nullable="false" />
+    <Property Name="vipRemark" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="vipIsDel" Type="bit" Nullable="false" />
+    <Property Name="vipAddTime" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="Truck_Booking_Detail">
+    <Key>
+      <PropertyRef Name="Booking_Number" />
+      <PropertyRef Name="Seq" />
+    </Key>
+    <Property Name="Booking_Number" Type="varchar" MaxLength="12" Nullable="false" />
+    <Property Name="Seq" Type="varchar" MaxLength="3" Nullable="false" />
+    <Property Name="Customer_Name" Type="varchar" MaxLength="50" />
+    <Property Name="SO_No" Type="varchar" MaxLength="50" />
+    <Property Name="Customer_PO" Type="varchar" MaxLength="30" />
+    <Property Name="Line" Type="varchar" MaxLength="10" />
+    <Property Name="Item" Type="varchar" MaxLength="15" />
+    <Property Name="Material" Type="varchar" MaxLength="15" />
+    <Property Name="STO" Type="varchar" MaxLength="15" />
+    <Property Name="Length" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="Width" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="Height" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="Deliv_Date" Type="datetime" />
+    <Property Name="Pcs" Type="int" />
+    <Property Name="Spec" Type="int" />
+    <Property Name="Ctn" Type="int" />
+    <Property Name="GrossWeight" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="CBM" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="remark" Type="varchar" MaxLength="256" />
+    <Property Name="hfe" Type="varchar" MaxLength="30" />
+  </EntityType>
+  <EntityType Name="Truck_Booking_Head">
+    <Key>
+      <PropertyRef Name="Booking_Number" />
+    </Key>
+    <Property Name="Booking_Number" Type="varchar" MaxLength="12" Nullable="false" />
+    <Property Name="Clpno" Type="varchar" MaxLength="11" />
+    <Property Name="Account" Type="varchar" MaxLength="25" />
+    <Property Name="Intype" Type="varchar" MaxLength="10" />
+    <Property Name="Delivery_Type" Type="varchar" MaxLength="10" />
+    <Property Name="Transport_Type" Type="varchar" MaxLength="10" />
+    <Property Name="Declare_Port" Type="varchar" MaxLength="20" />
+    <Property Name="Storage_Yard" Type="varchar" MaxLength="20" />
+    <Property Name="Factory" Type="varchar" MaxLength="50" />
+    <Property Name="Factory_Contact_Person" Type="varchar" MaxLength="20" />
+    <Property Name="Factory_Contact_TelNo" Type="varchar" MaxLength="30" />
+    <Property Name="Truck_Company" Type="varchar" MaxLength="50" />
+    <Property Name="Driver_Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Driver_TelNo" Type="varchar" MaxLength="50" />
+    <Property Name="Cont_NO" Type="varchar" MaxLength="15" />
+    <Property Name="Seal_NO" Type="varchar" MaxLength="15" />
+    <Property Name="Frame_Type" Type="varchar" MaxLength="20" />
+    <Property Name="HeadStockWeight" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="FrameWeight" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="ContainerWeight" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="Pick_address" Type="nvarchar" MaxLength="200" />
+    <Property Name="Return_address" Type="nvarchar" MaxLength="200" />
+    <Property Name="Loading_address" Type="nvarchar" MaxLength="200" />
+    <Property Name="CBM" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="GrossWeight" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="CTN" Type="int" />
+    <Property Name="Vdr_Pickup_date" Type="datetime" />
+    <Property Name="Rq_Arrive_Whs_time" Type="datetime" />
+    <Property Name="Rq_Arrive_Dest_time" Type="datetime" />
+    <Property Name="Arrive_factory_time" Type="datetime" />
+    <Property Name="Leave_factory_time" Type="datetime" />
+    <Property Name="Leave_customs_time" Type="datetime" />
+    <Property Name="Arrive_Whs_time" Type="datetime" />
+    <Property Name="si_date" Type="datetime" />
+    <Property Name="terclos_date" Type="datetime" />
+    <Property Name="closdate" Type="datetime" />
+    <Property Name="Vehicletype" Type="varchar" MaxLength="10" />
+    <Property Name="Fongguan_Address" Type="varchar" MaxLength="50" />
+    <Property Name="Vehicle_number" Type="varchar" MaxLength="50" />
+    <Property Name="VendorCode" Type="varchar" MaxLength="15" />
+    <Property Name="VendorName" Type="varchar" MaxLength="50" />
+    <Property Name="Carrier" Type="varchar" MaxLength="50" />
+    <Property Name="CustomsNo" Type="varchar" MaxLength="25" />
+    <Property Name="Customs_Password" Type="varchar" MaxLength="25" />
+    <Property Name="DingCangNO" Type="varchar" MaxLength="30" />
+    <Property Name="Rocars" Type="bit" />
+    <Property Name="HK_Customs_Clearance" Type="bit" />
+    <Property Name="HK_Local_Transport" Type="bit" />
+    <Property Name="Confirm_date" Type="datetime" />
+    <Property Name="CancelDate" Type="datetime" />
+    <Property Name="Cancelperson" Type="varchar" MaxLength="10" />
+    <Property Name="Own_Company" Type="varchar" MaxLength="20" />
+    <Property Name="Create_Date" Type="datetime" />
+    <Property Name="Create_Person" Type="varchar" MaxLength="10" />
+    <Property Name="InvoiceNo" Type="nvarchar" MaxLength="12" />
+    <Property Name="Release_Pass" Type="bit" />
+    <Property Name="Remark" Type="nvarchar" MaxLength="1500" />
+    <Property Name="Remark2" Type="nvarchar" MaxLength="50" />
+    <Property Name="Electronic_Lock" Type="varchar" MaxLength="20" />
+    <Property Name="Fin_Invo" Type="varchar" MaxLength="20" />
+    <Property Name="LatestUpdateTime" Type="datetime" />
+    <Property Name="TongGuanCard" Type="varchar" MaxLength="20" />
+    <Property Name="Invoice_Date" Type="datetime" />
+    <Property Name="Backway_Time" Type="datetime" />
+    <Property Name="Terminal_Time" Type="datetime" />
+    <Property Name="FactorySeal_Time" Type="datetime" />
+    <Property Name="Reject_Time" Type="datetime" />
+    <Property Name="Truck_CancelReason" Type="nvarchar" MaxLength="200" />
+    <Property Name="Container_Upload_Time" Type="datetime" />
+    <Property Name="Seal_Upload_Time" Type="datetime" />
+    <Property Name="Out_Factory_Time" Type="datetime" />
+    <Property Name="Receipt_Upload_time" Type="datetime" />
+    <Property Name="Start_Unloading_time" Type="datetime" />
+    <Property Name="Leave_Terminal_time" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Truck_Vendor">
+    <Key>
+      <PropertyRef Name="Vendor_Code" />
+    </Key>
+    <Property Name="Vendor_Code" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="Client" Type="varchar" MaxLength="20" />
+    <Property Name="Vendor_Name" Type="varchar" MaxLength="50" />
+    <Property Name="Vendor_Name2" Type="varchar" MaxLength="50" />
+    <Property Name="Simple_Vendor_Name" Type="varchar" MaxLength="50" />
+    <Property Name="Address" Type="nvarchar" MaxLength="200" />
+    <Property Name="Simple_Address" Type="nvarchar" MaxLength="50" />
+    <Property Name="Contact_Person" Type="varchar" MaxLength="15" />
+    <Property Name="Contact_TelNo" Type="varchar" MaxLength="50" />
+    <Property Name="Fax" Type="varchar" MaxLength="15" />
+    <Property Name="Email" Type="varchar" MaxLength="500" />
+    <Property Name="Contact_Person2" Type="varchar" MaxLength="15" />
+    <Property Name="Contact_TelNo2" Type="varchar" MaxLength="20" />
+    <Property Name="Email2" Type="varchar" MaxLength="500" />
+    <Property Name="Contact_Person3" Type="varchar" MaxLength="10" />
+    <Property Name="Contact_TelNo3" Type="varchar" MaxLength="20" />
+    <Property Name="Email3" Type="varchar" MaxLength="500" />
+    <Property Name="Status" Type="varchar" MaxLength="1" />
+  </EntityType>
+  <EntityType Name="TruckUnLoadTime">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Supplierno" Type="char" MaxLength="10" />
+    <Property Name="TruckNo" Type="char" MaxLength="10" />
+    <Property Name="Employee" Type="char" MaxLength="10" />
+    <Property Name="GateIn" Type="datetime" />
+    <Property Name="DocRegister" Type="datetime" />
+    <Property Name="CustomsInspection" Type="datetime" />
+    <Property Name="UnLoadStart" Type="datetime" />
+    <Property Name="UnloadFinish" Type="datetime" />
+    <Property Name="Qty" Type="int" />
+    <Property Name="CBM" Type="decimal" Precision="8" Scale="3" />
+    <Property Name="Remark" Type="char" MaxLength="30" />
+  </EntityType>
+  <EntityType Name="turnover">
+    <Key>
+      <PropertyRef Name="op_date" />
+      <PropertyRef Name="account" />
+    </Key>
+    <Property Name="op_date" Type="datetime" Nullable="false" />
+    <Property Name="account" Type="char" MaxLength="30" Nullable="false" />
+    <Property Name="receiving" Type="decimal" Precision="8" Scale="3" />
+    <Property Name="loading" Type="decimal" Precision="8" Scale="3" />
+    <Property Name="balance" Type="decimal" Precision="8" Scale="3" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“ypmfdata_yn.dbo.unit”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="unit">
+    <Key>
+      <PropertyRef Name="unit" />
+    </Key>
+    <Property Name="unit" Type="char" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Unloading">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrderNo" Type="varchar" MaxLength="25" />
+    <Property Name="OperateDate" Type="datetime" />
+    <Property Name="StartTime" Type="datetime" />
+    <Property Name="EndTime" Type="datetime" />
+    <Property Name="Employer" Type="varchar" MaxLength="10" />
+    <Property Name="Account" Type="varchar" MaxLength="20" />
+    <Property Name="Ctn" Type="int" />
+    <Property Name="Paires" Type="int" />
+    <Property Name="CBM" Type="decimal" Precision="18" Scale="3" />
+    <Property Name="Vehicletype" Type="varchar" MaxLength="10" />
+    <Property Name="VehicleNumber" Type="varchar" MaxLength="10" />
+    <Property Name="Warehouse" Type="varchar" MaxLength="10" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6013: 表/视图“ypmfdata_yn.dbo.User_ECVision”未定义主键，并且无法推断有效的主键。已排除了此表/视图。若要使用实体，将需要检查您的架构、添加正确的键并取消对实体的注释。
+        <EntityType Name="User_ECVision">
+          <Property Name="username" Type="nvarchar" MaxLength="100" />
+          <Property Name="password" Type="nvarchar" MaxLength="100" />
+        </EntityType>-->
+  <EntityType Name="userlog">
+    <Key>
+      <PropertyRef Name="uselogid" />
+    </Key>
+    <Property Name="uselogid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="username" Type="char" MaxLength="20" />
+    <Property Name="op" Type="char" MaxLength="20" />
+    <Property Name="opdate" Type="datetime" />
+    <Property Name="opno" Type="char" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="Vehicle">
+    <Key>
+      <PropertyRef Name="VID" />
+    </Key>
+    <Property Name="VID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Corporation" Type="nchar" MaxLength="60" />
+    <Property Name="VehicleID" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="Status" Type="char" MaxLength="1" Nullable="false" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“ypmfdata_yn.dbo.vendor”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="vendor">
+    <Key>
+      <PropertyRef Name="corpcode" />
+    </Key>
+    <Property Name="corpcode" Type="char" MaxLength="20" Nullable="false" />
+    <Property Name="chinesename" Type="char" MaxLength="60" />
+    <Property Name="englishname" Type="char" MaxLength="60" />
+    <Property Name="Representative" Type="char" MaxLength="10" />
+    <Property Name="Tel" Type="char" MaxLength="16" />
+    <Property Name="Fax" Type="char" MaxLength="16" />
+    <Property Name="Trans" Type="char" MaxLength="60" />
+    <Property Name="Location" Type="char" MaxLength="60" />
+    <Property Name="region" Type="char" MaxLength="10" />
+    <Property Name="shipper" Type="char" MaxLength="60" />
+    <Property Name="shipperTel" Type="char" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="VendorInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Client" Type="char" MaxLength="20" />
+    <Property Name="VendorName" Type="char" MaxLength="60" />
+  </EntityType>
+  <EntityType Name="vessel">
+    <Key>
+      <PropertyRef Name="vessel" />
+      <PropertyRef Name="voyage" />
+    </Key>
+    <Property Name="vessel" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="voyage" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="carry_no" Type="varchar" MaxLength="16" />
+    <Property Name="agent" Type="varchar" MaxLength="20" />
+    <Property Name="vessel_no" Type="varchar" MaxLength="16" />
+    <Property Name="close_date" Type="datetime" />
+    <Property Name="close_time" Type="datetime" />
+    <Property Name="sail_date" Type="datetime" />
+    <Property Name="dest_port" Type="varchar" MaxLength="20" />
+    <Property Name="ETD" Type="datetime" />
+    <Property Name="ETA" Type="datetime" />
+    <Property Name="load_no" Type="varchar" MaxLength="16" />
+  </EntityType>
+  <EntityType Name="whs">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="WHS" Type="varchar" MaxLength="100" />
+    <Property Name="Address" Type="varchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="ypmfuser">
+    <Key>
+      <PropertyRef Name="user_name" />
+    </Key>
+    <Property Name="user_name" Type="char" MaxLength="20" Nullable="false" />
+    <Property Name="EmployeeID" Type="int" />
+    <Property Name="passcode" Type="char" MaxLength="20" />
+    <Property Name="layer" Type="int" />
+    <Property Name="recloa" Type="bit" />
+    <Property Name="del" Type="bit" />
+    <Property Name="dec" Type="bit" />
+    <Property Name="acc" Type="bit" />
+    <Property Name="adminname" Type="bit" />
+    <Property Name="guest" Type="bit" />
+    <Property Name="email" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK_FinalVendorInput_FinalPoList">
+    <End Role="FinalPoList" Type="Self.FinalPoList" Multiplicity="1" />
+    <End Role="FinalVendorInput" Type="Self.FinalVendorInput" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FinalPoList">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="FinalVendorInput">
+        <PropertyRef Name="PID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FinalVendorInputTrucking_FinalVendorInput">
+    <End Role="FinalVendorInput" Type="Self.FinalVendorInput" Multiplicity="0..1" />
+    <End Role="FinalVendorInputTrucking" Type="Self.FinalVendorInputTrucking" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FinalVendorInput">
+        <PropertyRef Name="VID" />
+      </Principal>
+      <Dependent Role="FinalVendorInputTrucking">
+        <PropertyRef Name="vID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_financeCharge_ChargeName">
+    <End Role="ChargeName" Type="Self.ChargeName" Multiplicity="0..1" />
+    <End Role="financeCharge" Type="Self.financeCharge" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ChargeName">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="financeCharge">
+        <PropertyRef Name="chargeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LoadPlanUpdateRecord_FinalLoadingPlan">
+    <End Role="FinalLoadingPlan" Type="Self.FinalLoadingPlan" Multiplicity="0..1" />
+    <End Role="LoadPlanUpdateRecord" Type="Self.LoadPlanUpdateRecord" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FinalLoadingPlan">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="LoadPlanUpdateRecord">
+        <PropertyRef Name="lID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_out_item_cy_out_item_cy">
+    <End Role="out_head_cy" Type="Self.out_head_cy" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="out_item_cy" Type="Self.out_item_cy" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="out_head_cy">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="out_item_cy">
+        <PropertyRef Name="aID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Sys_Role_Sys_Department">
+    <End Role="Sys_Department" Type="Self.Sys_Department" Multiplicity="1" />
+    <End Role="Sys_Role" Type="Self.Sys_Role" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sys_Department">
+        <PropertyRef Name="depId" />
+      </Principal>
+      <Dependent Role="Sys_Role">
+        <PropertyRef Name="rDepId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Sys_RolePermission_Sys_Permission">
+    <End Role="Sys_Permission" Type="Self.Sys_Permission" Multiplicity="1" />
+    <End Role="Sys_RolePermission" Type="Self.Sys_RolePermission" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sys_Permission">
+        <PropertyRef Name="pid" />
+      </Principal>
+      <Dependent Role="Sys_RolePermission">
+        <PropertyRef Name="rpPId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Sys_RolePermission_Sys_Role">
+    <End Role="Sys_Role" Type="Self.Sys_Role" Multiplicity="1" />
+    <End Role="Sys_RolePermission" Type="Self.Sys_RolePermission" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sys_Role">
+        <PropertyRef Name="rId" />
+      </Principal>
+      <Dependent Role="Sys_RolePermission">
+        <PropertyRef Name="rpRId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Sys_UserInfo_Sys_Department">
+    <End Role="Sys_Department" Type="Self.Sys_Department" Multiplicity="1" />
+    <End Role="Sys_UserInfo" Type="Self.Sys_UserInfo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sys_Department">
+        <PropertyRef Name="depId" />
+      </Principal>
+      <Dependent Role="Sys_UserInfo">
+        <PropertyRef Name="uDepId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Sys_UserRole_Sys_Role">
+    <End Role="Sys_Role" Type="Self.Sys_Role" Multiplicity="1" />
+    <End Role="Sys_UserRole" Type="Self.Sys_UserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sys_Role">
+        <PropertyRef Name="rId" />
+      </Principal>
+      <Dependent Role="Sys_UserRole">
+        <PropertyRef Name="urRId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Sys_UserRole_Sys_UserInfo">
+    <End Role="Sys_UserInfo" Type="Self.Sys_UserInfo" Multiplicity="1" />
+    <End Role="Sys_UserRole" Type="Self.Sys_UserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sys_UserInfo">
+        <PropertyRef Name="uId" />
+      </Principal>
+      <Dependent Role="Sys_UserRole">
+        <PropertyRef Name="urUId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <!--生成过程中发现错误:
+警告 6035: 关系“FK_Sys_UserSetting_Sys_UserInfo”在关系主端上有一些列不属于表的键的一部分。已排除了此关系。
+        <Association Name="FK_Sys_UserSetting_Sys_UserInfo" />-->
+  <Association Name="FK_Sys_UserVipPermission_Sys_Permission">
+    <End Role="Sys_UserInfo" Type="Self.Sys_UserInfo" Multiplicity="1" />
+    <End Role="Sys_UserVipPermission" Type="Self.Sys_UserVipPermission" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sys_UserInfo">
+        <PropertyRef Name="uId" />
+      </Principal>
+      <Dependent Role="Sys_UserVipPermission">
+        <PropertyRef Name="vipUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Sys_UserVipPermission_Sys_Permission1">
+    <End Role="Sys_Permission" Type="Self.Sys_Permission" Multiplicity="1" />
+    <End Role="Sys_UserVipPermission" Type="Self.Sys_UserVipPermission" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sys_Permission">
+        <PropertyRef Name="pid" />
+      </Principal>
+      <Dependent Role="Sys_UserVipPermission">
+        <PropertyRef Name="vipPermission" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PK_PickChangeName">
+    <End Role="ChargeName" Type="Self.ChargeName" Multiplicity="0..1" />
+    <End Role="pick_return_charge" Type="Self.pick_return_charge" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ChargeName">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="pick_return_charge">
+        <PropertyRef Name="chargeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ypmfdata_ynModelStoreContainer">
+    <EntitySet Name="Bn_Zodiac" EntityType="Self.Bn_Zodiac" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BookingDetailEdi" EntityType="Self.BookingDetailEdi" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="bookingDtl" EntityType="Self.bookingDtl" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="bookingForward" EntityType="Self.bookingForward" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="bookingHead" EntityType="Self.bookingHead" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BookingHeadEdi" EntityType="Self.BookingHeadEdi" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="bookingUser" EntityType="Self.bookingUser" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="bookingVendor" EntityType="Self.bookingVendor" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="carrier_booking" EntityType="Self.carrier_booking" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="category" EntityType="Self.category" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ChargeDEBITNOTE" EntityType="Self.ChargeDEBITNOTE" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ChargeName" EntityType="Self.ChargeName" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="clp_chargeList" EntityType="Self.clp_chargeList" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="collectlist" EntityType="Self.collectlist" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="consignee" EntityType="Self.consignee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="cont_address" EntityType="Self.cont_address" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ContTransFee" EntityType="Self.ContTransFee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Curr_Rate" EntityType="Self.Curr_Rate" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="custin" EntityType="Self.custin" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="custinno" EntityType="Self.custinno" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="customer" EntityType="Self.customer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="customer1" EntityType="Self.customer1" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CustomsType" EntityType="Self.CustomsType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="custoutno" EntityType="Self.custoutno" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DailyCustomsDocu" EntityType="Self.DailyCustomsDocu" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DailyDataforCustoms" EntityType="Self.DailyDataforCustoms" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DailyTurnover" EntityType="Self.DailyTurnover" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DebitNoteNo" EntityType="Self.DebitNoteNo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="dest" EntityType="Self.dest" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="destination" EntityType="Self.destination" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DestInfo2" EntityType="Self.DestInfo2" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DestOfBRSI" EntityType="Self.DestOfBRSI" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="dobitNoteLog" EntityType="Self.dobitNoteLog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="dtproperties" EntityType="Self.dtproperties" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EDIExcptnReg" EntityType="Self.EDIExcptnReg" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ExclusionCustoms" EntityType="Self.ExclusionCustoms" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FCR_Detail" EntityType="Self.FCR_Detail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FCR_Discharging_Port" EntityType="Self.FCR_Discharging_Port" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FCR_Factory" EntityType="Self.FCR_Factory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FCR_Head" EntityType="Self.FCR_Head" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FCR_Supplier" EntityType="Self.FCR_Supplier" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FcrSMBaseCharge" EntityType="Self.FcrSMBaseCharge" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FinalLoadingPlan" EntityType="Self.FinalLoadingPlan" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FinalLoadingPlan_Payment" EntityType="Self.FinalLoadingPlan_Payment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FinalLoadPlanAmazonVendor" EntityType="Self.FinalLoadPlanAmazonVendor" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FinalLoadPlanHoliday" EntityType="Self.FinalLoadPlanHoliday" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FinalLoadPlanJobRecord" EntityType="Self.FinalLoadPlanJobRecord" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FinalLoadPlanRPALog" EntityType="Self.FinalLoadPlanRPALog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FinalPo_Cancel_Record" EntityType="Self.FinalPo_Cancel_Record" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FinalPoList" EntityType="Self.FinalPoList" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FinalVendorInput" EntityType="Self.FinalVendorInput" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FinalVendorInputTrucking" EntityType="Self.FinalVendorInputTrucking" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="financeCharge" EntityType="Self.financeCharge" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="forwarder_code" EntityType="Self.forwarder_code" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="in_head" EntityType="Self.in_head" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="in_item" EntityType="Self.in_item" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="In2So" EntityType="Self.In2So" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="InDocContainer" EntityType="Self.InDocContainer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="InDocVehicle" EntityType="Self.InDocVehicle" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Inhead" EntityType="Self.Inhead" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="InList" EntityType="Self.InList" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="invoice" EntityType="Self.invoice" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="invoiceExchange" EntityType="Self.invoiceExchange" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="latecome" EntityType="Self.latecome" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Load_Fee" EntityType="Self.Load_Fee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Loading" EntityType="Self.Loading" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LoadPlanUpdateRecord" EntityType="Self.LoadPlanUpdateRecord" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LPCont_Info" EntityType="Self.LPCont_Info" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LPStatus" EntityType="Self.LPStatus" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MaxId" EntityType="Self.MaxId" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="newpacking" EntityType="Self.newpacking" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="newpacklist" EntityType="Self.newpacklist" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="out_head" EntityType="Self.out_head" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="out_head_cy" EntityType="Self.out_head_cy" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="out_item" EntityType="Self.out_item" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="out_item_cy" EntityType="Self.out_item_cy" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OutDocContainer" EntityType="Self.OutDocContainer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OutDocVehicle" EntityType="Self.OutDocVehicle" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Outhead" EntityType="Self.Outhead" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OutList" EntityType="Self.OutList" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OutListItems" EntityType="Self.OutListItems" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="pick_return_charge" EntityType="Self.pick_return_charge" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Port" EntityType="Self.Port" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="rec_amount" EntityType="Self.rec_amount" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="recdtl" EntityType="Self.recdtl" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="rechead" EntityType="Self.rechead" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RecRegistrationHead" EntityType="Self.RecRegistrationHead" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RecRegistrationItems" EntityType="Self.RecRegistrationItems" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RecRegVehicle" EntityType="Self.RecRegVehicle" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ShipperNameList" EntityType="Self.ShipperNameList" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="spe_opertype" EntityType="Self.spe_opertype" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="special" EntityType="Self.special" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="special_item" EntityType="Self.special_item" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SpsOperate" EntityType="Self.SpsOperate" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Sys_Department" EntityType="Self.Sys_Department" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Sys_EasyUI" EntityType="Self.Sys_EasyUI" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Sys_Log" EntityType="Self.Sys_Log" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Sys_Permission" EntityType="Self.Sys_Permission" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Sys_Role" EntityType="Self.Sys_Role" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Sys_RolePermission" EntityType="Self.Sys_RolePermission" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Sys_UserInfo" EntityType="Self.Sys_UserInfo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Sys_UserRole" EntityType="Self.Sys_UserRole" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Sys_UserSetting" EntityType="Self.Sys_UserSetting" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Sys_UserVipPermission" EntityType="Self.Sys_UserVipPermission" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Truck_Booking_Detail" EntityType="Self.Truck_Booking_Detail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Truck_Booking_Head" EntityType="Self.Truck_Booking_Head" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Truck_Vendor" EntityType="Self.Truck_Vendor" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TruckUnLoadTime" EntityType="Self.TruckUnLoadTime" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="turnover" EntityType="Self.turnover" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Unloading" EntityType="Self.Unloading" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="userlog" EntityType="Self.userlog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Vehicle" EntityType="Self.Vehicle" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VendorInfo" EntityType="Self.VendorInfo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="vessel" EntityType="Self.vessel" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="whs" EntityType="Self.whs" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ypmfuser" EntityType="Self.ypmfuser" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="account" EntityType="Self.account" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[account].[client] AS [client], 
+[account].[account] AS [account], 
+[account].[cbm_price] AS [cbm_price], 
+[account].[Free_period] AS [Free_period]
+FROM [dbo].[account] AS [account]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="AdditionalOut" EntityType="Self.AdditionalOut" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[AdditionalOut].[id] AS [id], 
+[AdditionalOut].[operatedate] AS [operatedate], 
+[AdditionalOut].[so_no] AS [so_no], 
+[AdditionalOut].[recline] AS [recline], 
+[AdditionalOut].[po] AS [po], 
+[AdditionalOut].[skn] AS [skn], 
+[AdditionalOut].[sku] AS [sku], 
+[AdditionalOut].[ctns] AS [ctns], 
+[AdditionalOut].[pcs] AS [pcs], 
+[AdditionalOut].[cbm] AS [cbm], 
+[AdditionalOut].[account] AS [account], 
+[AdditionalOut].[Remark] AS [Remark]
+FROM [dbo].[AdditionalOut] AS [AdditionalOut]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="BookingDetail" EntityType="Self.BookingDetail" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[BookingDetail].[so_no] AS [so_no], 
+[BookingDetail].[line_no] AS [line_no], 
+[BookingDetail].[weight] AS [weight], 
+[BookingDetail].[cbm] AS [cbm], 
+[BookingDetail].[Qty] AS [Qty], 
+[BookingDetail].[PKG] AS [PKG], 
+[BookingDetail].[PCS] AS [PCS], 
+[BookingDetail].[carrier] AS [carrier], 
+[BookingDetail].[description] AS [description], 
+[BookingDetail].[Remark] AS [Remark], 
+[BookingDetail].[PO] AS [PO], 
+[BookingDetail].[commodity] AS [commodity], 
+[BookingDetail].[SKU] AS [SKU], 
+[BookingDetail].[description1] AS [description1], 
+[BookingDetail].[description2] AS [description2], 
+[BookingDetail].[description3] AS [description3], 
+[BookingDetail].[description4] AS [description4], 
+[BookingDetail].[rec_weight] AS [rec_weight], 
+[BookingDetail].[rec_cbm] AS [rec_cbm], 
+[BookingDetail].[rec_qty] AS [rec_qty], 
+[BookingDetail].[rec_pcs] AS [rec_pcs], 
+[BookingDetail].[length] AS [length], 
+[BookingDetail].[width] AS [width], 
+[BookingDetail].[height] AS [height], 
+[BookingDetail].[recdate] AS [recdate], 
+[BookingDetail].[Product_Description] AS [Product_Description]
+FROM [dbo].[BookingDetail] AS [BookingDetail]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="CarrierInfo" EntityType="Self.CarrierInfo" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[CarrierInfo].[ID] AS [ID], 
+[CarrierInfo].[Carrier] AS [Carrier], 
+[CarrierInfo].[Agency] AS [Agency], 
+[CarrierInfo].[CarrierName] AS [CarrierName]
+FROM [dbo].[CarrierInfo] AS [CarrierInfo]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="con_size" EntityType="Self.con_size" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[con_size].[size] AS [size], 
+[con_size].[feu_unit] AS [feu_unit]
+FROM [dbo].[con_size] AS [con_size]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="cus_cont" EntityType="Self.cus_cont" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[cus_cont].[client] AS [client], 
+[cus_cont].[size] AS [size], 
+[cus_cont].[cont_chrg] AS [cont_chrg]
+FROM [dbo].[cus_cont] AS [cus_cont]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="cus_hchg" EntityType="Self.cus_hchg" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[cus_hchg].[client] AS [client], 
+[cus_hchg].[start_wgt] AS [start_wgt], 
+[cus_hchg].[end_wgt] AS [end_wgt], 
+[cus_hchg].[chrg_amt] AS [chrg_amt]
+FROM [dbo].[cus_hchg] AS [cus_hchg]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="customs" EntityType="Self.customs" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[customs].[customs_co] AS [customs_co], 
+[customs].[customs_na] AS [customs_na]
+FROM [dbo].[customs] AS [customs]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="customs_head" EntityType="Self.customs_head" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[customs_head].[in_no] AS [in_no], 
+[customs_head].[handtime] AS [handtime], 
+[customs_head].[factory] AS [factory], 
+[customs_head].[trademode] AS [trademode], 
+[customs_head].[declmode] AS [declmode]
+FROM [dbo].[customs_head] AS [customs_head]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="customs_item" EntityType="Self.customs_item" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[customs_item].[in_no] AS [in_no], 
+[customs_item].[per_price] AS [per_price], 
+[customs_item].[goodsname] AS [goodsname], 
+[customs_item].[goodsunit] AS [goodsunit], 
+[customs_item].[goodscode] AS [goodscode], 
+[customs_item].[qty] AS [qty]
+FROM [dbo].[customs_item] AS [customs_item]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="customs_out" EntityType="Self.customs_out" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[customs_out].[clpno] AS [clpno], 
+[customs_out].[decl_form_no] AS [decl_form_no], 
+[customs_out].[carrier_no] AS [carrier_no]
+FROM [dbo].[customs_out] AS [customs_out]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="decl_no" EntityType="Self.decl_no" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[decl_no].[contro_no] AS [contro_no], 
+[decl_no].[decl_no] AS [decl_no], 
+[decl_no].[bill_no] AS [bill_no]
+FROM [dbo].[decl_no] AS [decl_no]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="ProdesOfVIFA" EntityType="Self.ProdesOfVIFA" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[ProdesOfVIFA].[PID] AS [PID], 
+[ProdesOfVIFA].[Prod_des] AS [Prod_des]
+FROM [dbo].[ProdesOfVIFA] AS [ProdesOfVIFA]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="repertory" EntityType="Self.repertory" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[repertory].[rep_id] AS [rep_id], 
+[repertory].[rep_name] AS [rep_name], 
+[repertory].[rep_address] AS [rep_address], 
+[repertory].[rep_phone] AS [rep_phone], 
+[repertory].[rep_connecter] AS [rep_connecter], 
+[repertory].[rep_type] AS [rep_type], 
+[repertory].[rep_state] AS [rep_state], 
+[repertory].[rep_area] AS [rep_area], 
+[repertory].[whs_name] AS [whs_name]
+FROM [dbo].[repertory] AS [repertory]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="service" EntityType="Self.service" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[service].[ser_type] AS [ser_type]
+FROM [dbo].[service] AS [service]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="shipcorp" EntityType="Self.shipcorp" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[shipcorp].[carrier] AS [carrier], 
+[shipcorp].[corpname] AS [corpname]
+FROM [dbo].[shipcorp] AS [shipcorp]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="unit" EntityType="Self.unit" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[unit].[unit] AS [unit]
+FROM [dbo].[unit] AS [unit]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vendor" EntityType="Self.vendor" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[vendor].[corpcode] AS [corpcode], 
+[vendor].[chinesename] AS [chinesename], 
+[vendor].[englishname] AS [englishname], 
+[vendor].[Representative] AS [Representative], 
+[vendor].[Tel] AS [Tel], 
+[vendor].[Fax] AS [Fax], 
+[vendor].[Trans] AS [Trans], 
+[vendor].[Location] AS [Location], 
+[vendor].[region] AS [region], 
+[vendor].[shipper] AS [shipper], 
+[vendor].[shipperTel] AS [shipperTel]
+FROM [dbo].[vendor] AS [vendor]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_FinalVendorInput_FinalPoList" Association="Self.FK_FinalVendorInput_FinalPoList">
+      <End Role="FinalPoList" EntitySet="FinalPoList" />
+      <End Role="FinalVendorInput" EntitySet="FinalVendorInput" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FinalVendorInputTrucking_FinalVendorInput" Association="Self.FK_FinalVendorInputTrucking_FinalVendorInput">
+      <End Role="FinalVendorInput" EntitySet="FinalVendorInput" />
+      <End Role="FinalVendorInputTrucking" EntitySet="FinalVendorInputTrucking" />
+    </AssociationSet>
+    <AssociationSet Name="FK_financeCharge_ChargeName" Association="Self.FK_financeCharge_ChargeName">
+      <End Role="ChargeName" EntitySet="ChargeName" />
+      <End Role="financeCharge" EntitySet="financeCharge" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LoadPlanUpdateRecord_FinalLoadingPlan" Association="Self.FK_LoadPlanUpdateRecord_FinalLoadingPlan">
+      <End Role="FinalLoadingPlan" EntitySet="FinalLoadingPlan" />
+      <End Role="LoadPlanUpdateRecord" EntitySet="LoadPlanUpdateRecord" />
+    </AssociationSet>
+    <AssociationSet Name="FK_out_item_cy_out_item_cy" Association="Self.FK_out_item_cy_out_item_cy">
+      <End Role="out_head_cy" EntitySet="out_head_cy" />
+      <End Role="out_item_cy" EntitySet="out_item_cy" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Sys_Role_Sys_Department" Association="Self.FK_Sys_Role_Sys_Department">
+      <End Role="Sys_Department" EntitySet="Sys_Department" />
+      <End Role="Sys_Role" EntitySet="Sys_Role" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Sys_RolePermission_Sys_Permission" Association="Self.FK_Sys_RolePermission_Sys_Permission">
+      <End Role="Sys_Permission" EntitySet="Sys_Permission" />
+      <End Role="Sys_RolePermission" EntitySet="Sys_RolePermission" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Sys_RolePermission_Sys_Role" Association="Self.FK_Sys_RolePermission_Sys_Role">
+      <End Role="Sys_Role" EntitySet="Sys_Role" />
+      <End Role="Sys_RolePermission" EntitySet="Sys_RolePermission" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Sys_UserInfo_Sys_Department" Association="Self.FK_Sys_UserInfo_Sys_Department">
+      <End Role="Sys_Department" EntitySet="Sys_Department" />
+      <End Role="Sys_UserInfo" EntitySet="Sys_UserInfo" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Sys_UserRole_Sys_Role" Association="Self.FK_Sys_UserRole_Sys_Role">
+      <End Role="Sys_Role" EntitySet="Sys_Role" />
+      <End Role="Sys_UserRole" EntitySet="Sys_UserRole" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Sys_UserRole_Sys_UserInfo" Association="Self.FK_Sys_UserRole_Sys_UserInfo">
+      <End Role="Sys_UserInfo" EntitySet="Sys_UserInfo" />
+      <End Role="Sys_UserRole" EntitySet="Sys_UserRole" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Sys_UserVipPermission_Sys_Permission" Association="Self.FK_Sys_UserVipPermission_Sys_Permission">
+      <End Role="Sys_UserInfo" EntitySet="Sys_UserInfo" />
+      <End Role="Sys_UserVipPermission" EntitySet="Sys_UserVipPermission" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Sys_UserVipPermission_Sys_Permission1" Association="Self.FK_Sys_UserVipPermission_Sys_Permission1">
+      <End Role="Sys_Permission" EntitySet="Sys_Permission" />
+      <End Role="Sys_UserVipPermission" EntitySet="Sys_UserVipPermission" />
+    </AssociationSet>
+    <AssociationSet Name="PK_PickChangeName" Association="Self.PK_PickChangeName">
+      <End Role="ChargeName" EntitySet="ChargeName" />
+      <End Role="pick_return_charge" EntitySet="pick_return_charge" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,167 @@
+﻿@{
+    ViewBag.Title = "TruckingOrderDetails";
+}
+<script src="~/Areas/Scripts/easyui/jquery.min.js"></script>
+<script src="~/Areas/Scripts/easyui/jquery.easyui.min.js"></script>
+<script src="~/Areas/Scripts/ToolKit.js"></script>
+
+<link href="~/Areas/Content/Site.css" rel="stylesheet" />
+<link href="~/Areas/Content/easyui/icon.css" rel="stylesheet" />
+<link href="~/Areas/Content/easyui/bootstrap/easyui.css" rel="stylesheet" />
+
+<script type="text/javascript">
+    $(function () {
+
+        $.ajax({
+            url: '/TMS_Areas/TruckingCompany/GetOrderHead',
+            type: 'POST',
+            dataType: 'json',
+            success:
+                function (json) {
+
+                    var item = eval(json);
+                    $("#ttCTN").textbox('setValue', item.CTN);
+                    $("#ttCBM").textbox('setValue', item.CBM);
+                    $("#ttGrossWeight").textbox('setValue', item.GrossWeight);
+                    $("#ttDeliveryType").textbox('setValue', item.Delivery_Type);
+                    $("#ttVehicleType").textbox('setValue', item.Vehicletype);
+                    $("#ttWarehousingMode").textbox('setValue', item.Intype);
+                    $("#ttClosureAddress").textbox('setValue', item.Fongguan_Address);
+                    $('#ttDDelivery').textbox('setValue', FormatJsonDate(item.Vdr_Pickup_date));
+                    $("#ttLoading").textbox('setValue', item.Pick_address);
+                    $("#ttPDelivery").textbox('setValue', item.Return_address);
+                    $("#ttSealNumbere").textbox('setValue', item.Seal_NO);
+                    $("#ttLicenseplate").textbox('setValue', item.Vehicle_number);
+                    $("#ttDriver").textbox('setValue', item.Driver_Name);
+                    $("#ttTelephone").textbox('setValue', item.Driver_TelNo);
+                    $('#ttCustomsCode').textbox('setValue', item.CustomsNo);
+                    $("#ttPassword").textbox('setValue', item.Customs_Password);
+                    $('#ttContainerNo').textbox('setValue', item.Cont_No);
+                    $('#ttTrailerType').textbox('setValue', item.Frame_Type);
+                    $('#ttHeadWeight').textbox('setValue', item.HeadStockWeight);
+                    $('#ttFrameWeight').textbox('setValue', item.FrameWeight);
+                    $('#ttContainerWeight').textbox('setValue', item.ContainerWeight);
+
+
+                }
+        })
+
+        $('#BookingInfo').datagrid({
+
+            fitColumns: false,
+            pagination: false,
+            singleSelect: false,
+            url: '/TMS_Areas/TruckingCompany/GetOrderDetails',
+            columns: [[
+
+                {
+                    field: 'SO_No', title: 'SO_No', width: 200,
+                    formatter: function (value, row) {
+                        return row.book.SO_No;
+                    }
+                },
+                {
+                    field: 'Booking Ctn', title: 'Booking Ctn', width: 100,
+                    formatter: function (value, row) {
+                        return row.book.Ctn;
+                    }
+                },
+                {
+                    field: 'GrossWeight', title: 'GrossWeight', width: 150,
+                    formatter: function (value, row) {
+                        return row.book.GrossWeight;
+                    }
+                },
+                {
+                    field: 'CBM', title: 'CBM', width: 100,
+                    formatter: function (value, row) {
+                        return row.book.CBM;
+                    }
+                }
+
+
+            ]],
+           // toolbar: "#tb"
+        });
+
+
+    });
+
+
+</script>
+<div style="padding: 5px; height: auto">
+
+    <div>
+
+        <table style="font-size:13px">
+            <tr>
+                <td>TotalCtn:</td>
+                <td><input id="ttCTN" class="easyui-textbox" readonly="readonly"></td>
+                <td>TotalCBM:</td>
+                <td><input id="ttCBM" class="easyui-textbox" readonly="readonly"></td>
+                <td> TotalWeight:</td>
+                <td><input id="ttGrossWeight" class="easyui-textbox" readonly="readonly"></td>
+            </tr>
+
+
+        </table>
+
+
+    </div>
+
+</div>
+<table id="BookingInfo" style="height:200px"></table>
+<div id="tt" class="easyui-tabs" style="height:auto;">
+    <div title="Basic Information" style="padding:20px;background-color:#F2F2F2">
+
+        <table style="font-size:13px">
+            <tr>
+                <td>Delivery type</td>
+                <td><input id="ttDeliveryType" class="easyui-textbox" readonly="readonly"></td>
+                <td>Vehicle type</td>
+                <td><input id="ttVehicleType" class="easyui-textbox" readonly="readonly"></td>
+                <td>Warehousing mode</td>
+                <td><input id="ttWarehousingMode" class="easyui-textbox" readonly="readonly"></td>
+                <td>Closure address</td>
+                <td><input id="ttClosureAddress" class="easyui-textbox" data-options="multiline:true" style="height:68px" readonly="readonly"></td>
+            </tr>
+            <tr>
+                <td>Date of delivery</td>
+                <td><input id="ttDDelivery" class="easyui-textbox" readonly="readonly"></td>
+                <td>Place of loading</td>
+                <td><input id="ttLoading" class="easyui-textbox" readonly="readonly"></td>
+                <td>Place of delivery</td>
+                <td><input id="ttPDelivery" class="easyui-textbox" readonly="readonly"></td>
+                <td>Seal Numbere</td>
+                <td><input id="ttSealNumbere" class="easyui-textbox" readonly="readonly"></td>
+ 
+            </tr>
+            <tr>
+                <td>License plate</td>
+                <td><input id="ttLicenseplate" class="easyui-textbox" readonly="readonly"></td>
+                <td>Driver</td>
+                <td><input id="ttDriver" class="easyui-textbox" readonly="readonly"></td>
+                <td>Telephone</td>
+                <td><input id="ttTelephone" class="easyui-textbox" readonly="readonly"></td>
+                <td>Driver-based Customs Code</td>
+                <td><input id="ttCustomsCode" class="easyui-textbox" readonly="readonly"></td>
+                <td>Password</td>
+                <td><input id="ttPassword" class="easyui-textbox" readonly="readonly"></td>
+            </tr>
+            <tr>
+                <td>Container No</td>
+                <td><input id="ttContainerNo" class="easyui-textbox" readonly="readonly"></td>
+                <td>Trailer type</td>
+                <td><input id="ttTrailerType" class="easyui-textbox" readonly="readonly"></td>
+                <td>Head weight</td>
+                <td><input id="ttHeadWeight" class="easyui-textbox" readonly="readonly"></td>
+                <td>Frame weight</td>
+                <td><input id="ttFrameWeight" class="easyui-textbox" readonly="readonly"></td>
+                <td>Container weight</td>
+                <td><input id="ttContainerWeight" class="easyui-textbox" readonly="readonly"></td>
+            </tr>
+
+        </table>
+    </div>
+
+</div>

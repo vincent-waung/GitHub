@@ -1,0 +1,4342 @@
+﻿using Common;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using Models;
+using NPOI.HSSF.UserModel;
+using NPOI.POIFS.FileSystem;
+using NPOI.HPSF;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
+using MvcZodiac.Controllers;
+using System.Text;
+using System.Text.RegularExpressions;
+using OfficeOpenXml;
+using MvcZodiac.Areas.Models;
+using Common.Attributes;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using NPOI.XWPF.UserModel;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+
+namespace MvcZodiac.Areas.OnlineBooking_Areas.Controllers
+{
+    public class LoadPlanQueryController  : BaseController
+    {
+        //
+        // GET: /OnlineBooking_Areas/LoadPlanQuery/
+
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        public ActionResult DailySumaryIndex()
+        {
+            return View();
+
+        }
+        public ActionResult DashboardIndex()
+        {
+            return View();
+
+        }
+        public ActionResult ContNoFodDownload()
+        {
+            return View();
+
+        }
+
+        public ActionResult CancelPoList()
+        {
+            return View();
+
+        }
+        public ActionResult KPIIndex()
+        {
+            return View();
+
+        }
+
+        public ActionResult VendorInput()
+        {
+            return View();
+
+        }
+        public ActionResult ShowLoadPlan()
+        {
+            return View();
+
+        }
+
+        public ActionResult TruckingKPIIndex()
+        {
+            return View();
+
+        }
+
+
+        public ActionResult PODDownload()
+        {
+            return View();
+        }
+
+        public ActionResult TruckingPODDownload()
+        {
+            return View();
+
+        }
+
+
+        public ActionResult ShowVendorInputView()
+        {
+            return View();
+        }   
+
+        public ActionResult DailyReport()
+        {
+
+            return View();
+        }
+
+
+        public ActionResult MIGOReport()
+        {
+            return View();
+        }
+
+        public ActionResult ShowVendorInputDataView()
+        {
+            return View();
+
+        }
+        public ActionResult LoadPlanImport()
+        {
+            return View();
+
+        }
+
+
+        public ActionResult UploadDownLoad()
+        {
+            return View();
+
+        }
+
+        public ActionResult GetLoadplanByCondition()
+        {
+            int page = 1;
+            int rows = 5;
+            if (Request.Form["rows"] != null && Request.Form["page"] != null)
+            {
+                page = int.Parse(Request.Form["page"]);
+                rows = int.Parse(Request.Form["rows"]);
+            }
+            string sort = null;
+            string order = null;
+            if (Request.Form["sort"] != null && Request.Form["order"] != null)
+            {
+                sort = Request.Form["sort"];
+                order = Request.Form["order"];
+            }
+
+            string JobNo = Request.Form["JobNo"].ToString();
+            string Customer = Request.Form["Customer"].ToString();
+            string SalesOrd = Request.Form["SalesOrd"].ToString();
+ 
+            dynamic dgBookingInfo = Models.Model_FinalLoadingPlan.GetLoadPlanByCondition(page, rows,  JobNo,   Customer,SalesOrd);//  Models.Model_ASNHead.GetASNList(strASN, strcustomsCode);
+            return Content(DataHelper.ObjToJson(dgBookingInfo));
+        }
+
+
+        public ActionResult GetDailyReportByCondition()
+        {
+            int page = 1;
+            int rows = 5;
+            if (Request.Form["rows"] != null && Request.Form["page"] != null)
+            {
+                page = int.Parse(Request.Form["page"]);
+                rows = int.Parse(Request.Form["rows"]);
+            }
+            string sort = null;
+            string order = null;
+            if (Request.Form["sort"] != null && Request.Form["order"] != null)
+            {
+                sort = Request.Form["sort"];
+                order = Request.Form["order"];
+            }
+
+            string JobNo = Request.Form["JobNo"].ToString();
+            string Customer = Request.Form["Customer"].ToString();
+            string SMLG = Request.Form["SMLG"].ToString();
+            DateTime dtStartdate = Convert.ToDateTime(Request.Form["jrstartdate"]);
+            DateTime dtEnddate = Convert.ToDateTime(Request.Form["jrenddate"]);
+
+
+            dynamic dgBookingInfo = Models.Model_FinalLoadingPlan.GetDailyReportByCondition(page, rows, dtStartdate, dtEnddate, JobNo, SMLG, Customer);//  Models.Model_ASNHead.GetASNList(strASN, strcustomsCode);
+            return Content(DataHelper.ObjToJson(dgBookingInfo));
+        }
+
+
+        public ActionResult ExportDailySummary()
+        {
+            string pathFileName = string.Empty;
+            string JobNo = Request.Form["JobNo"].ToString();
+            string Customer = Request.Form["Customer"].ToString();
+            string SMLG = Request.Form["SMLG"].ToString();
+            DateTime dtStartdate = Convert.ToDateTime(Request.Form["jrstartdate"]);
+            DateTime dtEnddate = Convert.ToDateTime(Request.Form["jrenddate"]);
+            var dgBookingInfo = Models.Model_FinalLoadingPlan.GetAllDailyReportByCondition(dtStartdate, dtEnddate, JobNo, SMLG, Customer);//  Models.Model_ASNHead.GetASNList(strASN, strcustomsCode);
+            MemoryStream ms = new MemoryStream();
+            ms = ExportUserExcel(out pathFileName, dgBookingInfo);
+            return File( ms.ToArray(), "application/ms-excel",  "sda.xlsx");  
+            
+            
+            //string fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + ".xlsx";
+            //return File(pathFileName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+         //   return PackagingAjaxmsg(new AjaxMsgModel { BackUrl = null, Data = null, Msg = "导出成功！", Statu = AjaxStatu.ok });
+
+        }
+
+
+        private MemoryStream ExportUserExcel(out string pathFileName, dynamic dgBookingInfo)
+        {
+            //创建存放Excel的文件夹
+            string path = Server.MapPath("~/Upload/");
+            string fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + ".xlsx";
+            pathFileName = path + fileName;
+            FileInfo newFile = new FileInfo(pathFileName);
+            if (newFile.Exists)
+            {
+                newFile.Delete();
+                newFile = new FileInfo(pathFileName);
+            }
+
+
+            using (ExcelPackage package = new ExcelPackage(newFile))
+            {
+                HSSFWorkbook hssfworkbook = new HSSFWorkbook();
+                ISheet sheet = hssfworkbook.CreateSheet("Sheet1");
+
+                HSSFRow row1 = (HSSFRow)sheet.CreateRow(0);
+                row1.CreateCell(0).SetCellValue("Job No.");
+                row1.CreateCell(1).SetCellValue("Customer");
+                row1.CreateCell(2).SetCellValue("SM LG");
+                row1.CreateCell(3).SetCellValue("Job received date");
+                row1.CreateCell(4).SetCellValue("Booking submission date");
+                row1.CreateCell(5).SetCellValue("S/O released date");
+                row1.CreateCell(6).SetCellValue("SI submission date");
+                row1.CreateCell(7).SetCellValue("Ship date");
+                row1.CreateCell(8).SetCellValue("Doc submission date");
+                row1.CreateCell(9).SetCellValue("Remarks");
+                int irow = 1;
+
+                foreach (var dr in dgBookingInfo)
+                {
+                    HSSFRow row = (HSSFRow)sheet.CreateRow(irow);
+
+                    //row.CreateCell(0).SetCellValue(dr["status"].ToString().Substring(1));
+
+                    if (!string.IsNullOrEmpty(dr.JOB_NO))
+                    {
+                        row.CreateCell(0).SetCellValue(dr.JOB_NO.Trim());
+                    }
+
+                    if (!string.IsNullOrEmpty(dr.Customer_Name))
+                    {
+                        row.CreateCell(1).SetCellValue(dr.Customer_Name.Trim());
+                    }
+
+                    if (!string.IsNullOrEmpty(dr.SM_Operator))
+                    {
+                        row.CreateCell(2).SetCellValue(dr.SM_Operator.Trim());
+                    }
+
+                    if (dr.Job_Rec_Date != null && dr.Job_Rec_Date.Year > 2017)
+                    {
+                        row.CreateCell(3).SetCellValue(dr.Job_Rec_Date.ToString());
+                    }
+
+                    if (dr.Booking_date != null && dr.Booking_date.Year > 2017)
+                    {
+                        row.CreateCell(4).SetCellValue(dr.Booking_date.Trim());
+                    }
+
+                    if (dr.SO_release_date != null && dr.SO_release_date.Year > 2017)
+                    {
+                        row.CreateCell(5).SetCellValue(dr.SO_release_date.Trim());
+                    }
+
+                    if (dr.Send_SI != null && dr.Send_SI.Year > 2017)
+                    {
+                        row.CreateCell(6).SetCellValue(dr.Send_SI.Trim());
+                    }
+
+                    if (dr.Ship_Date != null && dr.Ship_Date.Year > 2017)
+                    {
+                        row.CreateCell(7).SetCellValue(dr.Ship_Date.Trim());
+                    }
+
+                    if (dr.Close_shipping_doc_submssion_date != null && dr.Close_shipping_doc_submssion_date.Year > 2017)
+                    {
+                        row.CreateCell(8).SetCellValue(dr.Close_shipping_doc_submssion_date.Trim());
+                    }
+
+                    if (!string.IsNullOrEmpty(dr.Exception))
+                    {
+                        row.CreateCell(9).SetCellValue(dr.Exception.Trim());
+                    }
+                    irow = irow + 1;
+                }
+
+                MemoryStream ms = new MemoryStream();
+                hssfworkbook.Write(ms);
+                ms.Flush();
+                ms.Position = 0;
+                return ms;
+
+                //package.Save();
+            }
+
+        }
+
+        public ActionResult GetCustomerList()
+        {
+          string strMsg = "";
+          var customerlist =  Models.Model_customer1.GetAllCustomer();
+          if (customerlist.Count > 0)
+          {
+              strMsg = "";
+          }
+          else
+          {
+              strMsg = "交货地址加载失败!";
+          }
+          return PackagingAjaxmsg(Common.AjaxStatu.ok, strMsg, customerlist, "");
+        }
+
+       
+        public ActionResult GetOperatorList()
+        {
+            string strMsg = "";
+            var operatorlist = Models.Model_customer1.GetAllOperator();
+            if (operatorlist.Count > 0)
+            {
+                strMsg = "";
+            }
+            else
+            {
+                strMsg = "交货地址加载失败!";
+            }
+            return PackagingAjaxmsg(Common.AjaxStatu.ok, strMsg, operatorlist, "");
+        }
+
+
+        public ActionResult GetLoadplanKPI()
+        {
+            int page = 1;
+            int rows = 5;
+            if (Request.Form["rows"] != null && Request.Form["page"] != null)
+            {
+                page = int.Parse(Request.Form["page"]);
+                rows = int.Parse(Request.Form["rows"]);
+            }
+            string sort = null;
+            string order = null;
+            if (Request.Form["sort"] != null && Request.Form["order"] != null)
+            {
+                sort = Request.Form["sort"];
+                order = Request.Form["order"];
+            }
+            string strPOD = "";
+            if (!Request.Form.AllKeys.Contains("POD"))
+            {
+                strPOD = "";
+            }
+            else
+            {
+                strPOD = Request.Form["POD"].ToString();
+            }
+
+            string Customer_name =Request.Form["Customer_name"].ToString();
+            string Item = Request.Form["Item"].ToString();
+            string DateType = Request.Form["DateType"].ToString();
+            string Purch_Doc = Request.Form["Purch_Doc"].ToString();
+            string Vendor_Name = Request.Form["Vendor_Name"].ToString();
+            DateTime dtStartdate = Convert.ToDateTime(Request.Form["jrstartdate"]);
+            DateTime dtEnddate = Convert.ToDateTime(Request.Form["jrenddate"]);
+            dynamic dgBookingInfo = Models.Model_FinalLoadingPlan.GetLoadPlanKPIByCondition(Customer_name, Item, DateType, dtStartdate, dtEnddate, page, rows, strPOD, Purch_Doc, Vendor_Name);//  Models.Model_ASNHead.GetASNList(strASN, strcustomsCode);
+            return Content(DataHelper.ObjToJson(dgBookingInfo));
+        }
+
+        public ActionResult GetTruckKPI()
+        {
+            int page = 1;
+            int rows = 5;
+            if (Request.Form["rows"] != null && Request.Form["page"] != null)
+            {
+                page = int.Parse(Request.Form["page"]);
+                rows = int.Parse(Request.Form["rows"]);
+            }
+            string sort = null;
+            string order = null;
+            if (Request.Form["sort"] != null && Request.Form["order"] != null)
+            {
+                sort = Request.Form["sort"];
+                order = Request.Form["order"];
+            }
+
+            //string Customer_name = Request.Form["Customer_name"].ToString();
+            string Item = Request.Form["Item"].ToString();
+            string DateType = Request.Form["DateType"].ToString();
+            string Purch_Doc = Request.Form["Purch_Doc"].ToString();
+            //string Vendor_Name = Request.Form["Vendor_Name"].ToString();
+            DateTime dtStartdate = Convert.ToDateTime(Request.Form["jrstartdate"]);
+            DateTime dtEnddate = Convert.ToDateTime(Request.Form["jrenddate"]).AddDays(1);
+
+            string strPOD = "";
+            if (!Request.Form.AllKeys.Contains("POD"))
+            {
+                strPOD = "";
+            }
+            else
+            {
+                strPOD = Request.Form["POD"].ToString();
+            }
+
+            //string strPOD = "on";
+            dynamic dgBookingInfo = Models.Model_FinalLoadingPlan.GetTruckLoadPlanKPIByCondition(Item, DateType, dtStartdate, dtEnddate, page, rows, strPOD, Purch_Doc);//  Models.Model_ASNHead.GetASNList(strASN, strcustomsCode);
+
+
+            return Content(DataHelper.ObjToJson(dgBookingInfo));
+
+        }
+
+
+         
+        public FileResult ExcelOut()
+        {
+            string consol_No = Request.Form["consol_No"].ToString();
+            string DateType = Request.Form["DateType"].ToString();
+            string Sales_order = Request.Form["Sales_order"].ToString();
+            string Vendor_Name = Request.Form["Vendor_Name"].ToString();
+            DateTime dtStartdate = Convert.ToDateTime(Request.Form["jrstartdate"]);
+            DateTime dtEnddate = Convert.ToDateTime(Request.Form["jrenddate"]);
+             string Customer_name =Request.Form["Customer_name"].ToString();
+             var result = Models.Model_FinalLoadingPlan.GetAllLoadPlanKPIByCondition(Customer_name, consol_No, DateType, dtStartdate, dtEnddate, 
+             Sales_order  ,   Vendor_Name  );
+
+            //var result = Models.Model_FinalLoadingPlan.GetAllLoadPlanKPIByCondition(consol_No, DateType, dtStartdate, dtEnddate,   Sales_order);
+
+            NPOI.HSSF.UserModel.HSSFWorkbook book = new NPOI.HSSF.UserModel.HSSFWorkbook();
+            //添加一个sheet
+            NPOI.SS.UserModel.ISheet sheet1 = book.CreateSheet("Sheet1");
+
+            NPOI.SS.UserModel.ISheet sheet2 = book.CreateSheet("MIGO-SDA-TEXT");
+
+            NPOI.SS.UserModel.ISheet sheet3 = book.CreateSheet("VL02N-TEXT(0723)");
+
+            #region export loadplan sheet1
+            
+        
+            //给sheet1添加第一行的头部标题
+            NPOI.SS.UserModel.IRow row1 = sheet1.CreateRow(3);
+            row1.CreateCell(0).SetCellValue("Consol no.");
+            row1.CreateCell(1).SetCellValue("Vendor Name");
+            row1.CreateCell(2).SetCellValue("Mfr Name1");
+            row1.CreateCell(3).SetCellValue("Customer Name");
+            row1.CreateCell(4).SetCellValue("Customer PO(2)");
+            row1.CreateCell(5).SetCellValue("SalesOrd/STO(1)");
+            row1.CreateCell(6).SetCellValue("Item No.");
+            row1.CreateCell(7).SetCellValue("First Date");
+            row1.CreateCell(8).SetCellValue("Cancel Date");
+            row1.CreateCell(9).SetCellValue("Purch.Doc.");
+            row1.CreateCell(10).SetCellValue("Item");
+            row1.CreateCell(11).SetCellValue("Cust Material No.");
+            row1.CreateCell(12).SetCellValue("Sales Material No.");
+            row1.CreateCell(13).SetCellValue("Material No.");
+            row1.CreateCell(14).SetCellValue("Short text(8)");
+            row1.CreateCell(15).SetCellValue("PO quantity");
+            row1.CreateCell(16).SetCellValue("Total Carton(5)");
+
+            row1.CreateCell(17).SetCellValue("Total Gross Weight");
+            row1.CreateCell(18).SetCellValue("Total CBM");
+            row1.CreateCell(19).SetCellValue("Delivery No.");
+            row1.CreateCell(20).SetCellValue("Ship mode");
+            row1.CreateCell(21).SetCellValue("Booking no.");
+            row1.CreateCell(22).SetCellValue("Booking date");
+            //row1.CreateCell(23).SetCellValue("ImportDate");
+            row1.CreateCell(23).SetCellValue("S/O Received from Carrier Date");
+            row1.CreateCell(24).SetCellValue("S/O Release to Factory Date");
+            row1.CreateCell(25).SetCellValue("SI Cut Off Date");
+            row1.CreateCell(26).SetCellValue("Shipment Delivery Open Date");
+            row1.CreateCell(27).SetCellValue("Shipment Delivery Closing Date");
+            row1.CreateCell(28).SetCellValue("ETD");
+            row1.CreateCell(29).SetCellValue("Vessel Name");
+            row1.CreateCell(30).SetCellValue("Voyage");
+            row1.CreateCell(31).SetCellValue("Port of Loading");
+            row1.CreateCell(32).SetCellValue("Port of Discharge");
+            row1.CreateCell(33).SetCellValue("Final Destination");
+            row1.CreateCell(34).SetCellValue("Actual Departure Date from Factory");
+            row1.CreateCell(35).SetCellValue("Actual Arrival Date(CFS)");
+            row1.CreateCell(36).SetCellValue("Actual Arrival Date in Terminals(CY)");
+            row1.CreateCell(37).SetCellValue("Remark");
+            row1.CreateCell(38).SetCellValue("FCR/OB/L submission date");
+            row1.CreateCell(39).SetCellValue("Courier tracking no.");
+         
+           
+
+
+            IDataFormat dataformat = book.CreateDataFormat();  
+
+            ICellStyle style0 = book.CreateCellStyle();
+
+            style0.DataFormat = dataformat.GetFormat("yyyy-MM-dd");  
+
+            int rows = 4;
+            foreach (var a in result)
+            {
+                NPOI.SS.UserModel.IRow row = sheet1.CreateRow(rows);
+                if (a.Consol_no != null)
+                {
+                    row.CreateCell(0).SetCellValue(a.Consol_no.Trim());
+
+                }
+                row.CreateCell(1).SetCellValue(a.Vendor_Name.Trim());
+                row.CreateCell(2).SetCellValue(a.Mfr_Name1);
+                row.CreateCell(3).SetCellValue(a.Customer_Name);
+                row.CreateCell(4).SetCellValue(a.CustomerPO);
+                row.CreateCell(5).SetCellValue(a.SalesOrd_STO);
+                row.CreateCell(6).SetCellValue(a.ItemNO);
+                if (a.First_Date != null)
+                {
+                    row.CreateCell(7).SetCellValue(((DateTime)a.First_Date).ToShortDateString());
+
+                }
+
+                if (a.Cancel_Date != null)
+                {
+                    row.CreateCell(8).SetCellValue(((DateTime)a.Cancel_Date).ToShortDateString());
+
+                }
+
+                row.CreateCell(9).SetCellValue(a.PurchDoc);
+                row.CreateCell(10).SetCellValue(a.Item);
+                row.CreateCell(11).SetCellValue(a.CustomerMaterialNumber);
+                row.CreateCell(12).SetCellValue(a.SalesMaterial);
+                row.CreateCell(13).SetCellValue(a.Material);
+                //row.CreateCell(11).SetCellValue(a.Destination);
+                row.CreateCell(14).SetCellValue(a.Short_text);
+                row.CreateCell(15).SetCellValue(a.PO_quantity);
+                row.CreateCell(16).SetCellValue(a.TotalCarton);
+                 row.CreateCell(17).SetCellValue(Math.Round((decimal)a.TotalGrossWeight,3).ToString());
+                row.CreateCell(18).SetCellValue(Math.Round((decimal)a.TotalVolume, 3).ToString());
+                row.CreateCell(19).SetCellValue(a.DeliveryNo.ToString());
+                row.CreateCell(20).SetCellValue(a.Ship_mode.ToString());
+             
+                row.CreateCell(21).SetCellValue(a.BookingNo);
+                //row.GetCell(17).CellStyle = style0;  
+                if (a.Booking_date != null)
+                {
+                    row.CreateCell(22).SetCellValue(((DateTime)a.Booking_date).ToShortDateString());
+
+                }
+
+                //if (a.SO != null) 
+                //{
+                //row.CreateCell(23).SetCellValue(a.SO.ToString());
+                //}
+
+                if (a.rec_so_date != null)
+                {
+                    row.CreateCell(23).SetCellValue(((DateTime)a.rec_so_date).ToShortDateString());
+
+                }
+
+
+                if (a.SO_release_date != null)
+                {
+                    row.CreateCell(24).SetCellValue(((DateTime)a.SO_release_date).ToShortDateString());
+
+                }
+
+                if (a.Cust_SI != null)
+                {
+                    row.CreateCell(25).SetCellValue(((DateTime)a.Cust_SI).ToShortDateString());
+
+                }
+
+                //row.GetCell(19).CellStyle = style0;  
+                if (a.CY_open != null)
+                {
+                    row.CreateCell(26).SetCellValue(((DateTime)a.CY_open).ToShortDateString());
+
+                }
+
+                if (a.CY_closing != null)
+                {
+                    row.CreateCell(27).SetCellValue(((DateTime)a.CY_closing).ToShortDateString());
+
+                }
+                //row.GetCell(20).CellStyle = style0;  
+             
+                //row.GetCell(21).CellStyle = style0;  
+
+                if (a.ETD != null)
+                {
+                    row.CreateCell(28).SetCellValue(((DateTime)a.ETD).ToShortDateString());
+
+                }
+
+
+                row.CreateCell(29).SetCellValue(a.Vessel);
+                row.CreateCell(30).SetCellValue(a.Voyage);
+                row.CreateCell(31).SetCellValue(a.Loading_Port);
+                row.CreateCell(32).SetCellValue(a.Unloading_Port);
+                row.CreateCell(33).SetCellValue(a.Destination);
+                //row.GetCell(23).CellStyle = style0;  
+                //if (a.Cont_Date != null)
+                //{
+                //    row.CreateCell(23).SetCellValue(((DateTime)a.Cont_Date).ToShortDateString());
+
+                //}
+                //row.GetCell(24).CellStyle = style0;  
+                if (a.Leave_factory_time != null && a.Leave_factory_time.Year > 2000)
+                {
+                    row.CreateCell(34).SetCellValue(((DateTime)a.Leave_factory_time).ToShortDateString());
+
+                }
+
+                if (a.Ship_Date != null && ((DateTime)a.Ship_Date).Year > 2000)
+                {
+                    row.CreateCell(35).SetCellValue(((DateTime)a.Ship_Date).ToShortDateString());
+
+                }
+
+                if (a.Cont_Date != null && a.Cont_Date.Value.Year > 2000)
+                {
+                    row.CreateCell(36).SetCellValue(((DateTime)a.Cont_Date).ToShortDateString());
+
+                }
+
+                row.CreateCell(37).SetCellValue(a.Exception);
+
+                if (a.FCR_Date != null && a.FCR_Date.Value.Year > 2000)
+                {
+                    row.CreateCell(38).SetCellValue(((DateTime)a.FCR_Date).ToShortDateString());
+
+                }
+
+                row.CreateCell(39).SetCellValue(a.Courier_tracking_no);
+                //row.GetCell(25).CellStyle = style0;  
+            
+                rows++;
+            }
+
+            for (int col = 0; col <= 39; col++)
+            {
+                sheet1.AutoSizeColumn(col);//自适应
+            }
+
+            NPOI.SS.UserModel.IRow row0 = sheet1.CreateRow(0);
+            row0.CreateCell(0).SetCellValue("Lead Sail");
+
+
+            NPOI.SS.UserModel.IRow row2 = sheet1.CreateRow(1);
+            row2.CreateCell(0).SetCellValue("Spin Master Track & Trace Report (TTR)");
+
+
+            string daterange = dtStartdate.ToShortDateString() + " To " + dtEnddate.ToShortDateString();
+
+            NPOI.SS.UserModel.IRow row3 = sheet1.CreateRow(2);
+            row3.CreateCell(0).SetCellValue("Period:" + daterange);
+
+
+            IFont font0 = book.CreateFont();
+            font0.FontHeightInPoints = 14;
+            ICellStyle style1 = book.CreateCellStyle();
+            style1.SetFont(font0);
+
+            IFont font2 = book.CreateFont();
+            font2.FontHeightInPoints = 14;
+            ICellStyle style2 = book.CreateCellStyle();
+            style1.SetFont(font2);
+
+            row0.HeightInPoints = 28;
+            row2.HeightInPoints = 28;
+            row3.HeightInPoints = 28;
+
+            row0.GetCell(0).CellStyle = style1;
+            row2.GetCell(0).CellStyle = style1;
+            row3.GetCell(0).CellStyle = style1;
+            #endregion
+
+
+            #region export MIGO-SDA-TEXT
+
+
+            NPOI.SS.UserModel.IRow row21 = sheet2.CreateRow(0);
+            row21.CreateCell(0).SetCellValue("VBELN" + "\n" + "Sales and" + "\n" + " Distribution" + "\n" + " Document Number");
+            row21.CreateCell(1).SetCellValue("VBELP Sales Document Item");
+            row21.CreateCell(2).SetCellValue("EBELN");
+            row21.CreateCell(3).SetCellValue("EBELP Item Number of Purchasing Document");
+            row21.CreateCell(4).SetCellValue("SAP System: Client - QAS : 210" + "\n" + "SAP User - edwardy" + "\n" + "QUERY Script Name - MIGO-SD.qsq" + "\n" + "Records extracted - 3" + "\n" + "Execution Time - 00:00:04" + "\n" + "Download date and time. - Monday, September 15, 2014 11:47:20 AM" + "\n" + "Reason for run - ");
+            row21.CreateCell(5).SetCellValue("Movement Type" + "\n" + " (Inventory Management)" + "\n" + "GODEFAULT_TV-BWART");
+            row21.CreateCell(6).SetCellValue("Posting Date in" + "\n" + "the Document" + "\n" + "GOHEAD-BUDAT");
+            row21.CreateCell(7).SetCellValue("Quantity in Unit of " + "\n" + "Entry" + "\n" + "GOITEM-ERFMG");
+            row21.CreateCell(8).SetCellValue("Delivery Note");
+            row21.CreateCell(9).SetCellValue("Log Winshuttle RUNNER for TRANSACTION 10.7.3 " + "\n" + " MIGO-SD.TxR " + "\n" + "10/9/2018 4:20:31 PM " + "\n" + "Mode:  Batch " + "\n" + "PRD-210, Barbaraj");
+
+            
+            int rows2 = 1;
+            foreach (var a in result)
+            {
+                NPOI.SS.UserModel.IRow row = sheet2.CreateRow(rows2);
+                if (a.SalesOrd_STO != null)
+                {
+                    row.CreateCell(0).SetCellValue(a.SalesOrd_STO.Trim());
+
+                }
+                
+                row.CreateCell(1).SetCellValue(a.ItemNO.Trim());
+                row.CreateCell(2).SetCellValue(a.PurchDoc);
+                row.CreateCell(3).SetCellValue(a.Item);
+                row.CreateCell(4).SetCellValue("");
+                row.CreateCell(5).SetCellValue("101");
+                //CFS:交仓日期，CY:交码头日期， 
+                if (a.CY_closing != null && a.CY_closing.Value.Year > 2000) {
+                    row.CreateCell(6).SetCellValue(((DateTime)a.CY_closing).ToShortDateString());
+                }
+                row.CreateCell(7).SetCellValue(a.PO_quantity);
+                row.CreateCell(8).SetCellValue(a.DeliveryNo);
+                row.CreateCell(9).SetCellValue("");
+                rows2++;
+            }
+
+            for (int col = 0; col <= 9; col++)
+            {
+                sheet2.AutoSizeColumn(col);//自适应
+            }
+            #endregion
+
+
+            #region export VL02N-TEXT(0723)
+
+
+            NPOI.SS.UserModel.IRow row31 = sheet3.CreateRow(0);
+            row31.CreateCell(0).SetCellValue("Delivery LIKP-VBELN");
+            row31.CreateCell(1).SetCellValue("GS_LIKP-ZZ_CYOD");
+            row31.CreateCell(2).SetCellValue("GS_LIKP-ZZ_CYCD");
+            row31.CreateCell(3).SetCellValue("GS_LIKP-ZZ_ETD");
+            row31.CreateCell(4).SetCellValue("Means-of-Transport Type LIKP-TRATY ");
+            row31.CreateCell(5).SetCellValue("Vessel Name / Aircraft LIKP-TRAID");
+            row31.CreateCell(6).SetCellValue("Shipping type" + "\n" +"LIKP-VSART");
+            row31.CreateCell(7).SetCellValue("Special processing indicator" + "\n" +"LIKP-SDABW");
+            row31.CreateCell(8).SetCellValue("Time stamp in short form" + "\n" +" (Local date and time/format)" + "\n" +"ITSEGDIAE-TIME_TST03(01)"  + "\n" +" Booking application date");
+            row31.CreateCell(9).SetCellValue("Time stamp in short form" + "\n" +"  (Local date and time/format)" + "\n" +" ITSEGDIAE-TIME_TST03(02)"   + "\n" +"S/O release date");
+            row31.CreateCell(10).SetCellValue("Vendor Ref");
+            row31.CreateCell(11).SetCellValue("Actual Goods Movement Date" + "\n" +"LIKP-WADAT_IST");
+            row31.CreateCell(12).SetCellValue("Place of loading/unloading" + "\n" +" for foreign trade" + "\n" +"EIKP-LADEL");
+            row31.CreateCell(13).SetCellValue("Comments: Text for foreign" + "\n" +" trade processing" + "\n" +"EIKP-TEXT1");
+            row31.CreateCell(14).SetCellValue("Comments: Text for foreign" + "\n" +" trade processing" + "\n" +"EIKP-TEXT2");
+            row31.CreateCell(15).SetCellValue("GS_LIKP-ZZ_CHD");
+            row31.CreateCell(16).SetCellValue("Log Winshuttle RUNNER for TRANSACTION 10.7.3 " + "\n" +" VL02N-ZEX EXT-LINK.TxR" + "\n" +" 10/17/2018 10:15:57 AM" + "\n" +" Mode:  Winshuttle Function Module" + "\n" +" PRD-210, Barbaraj");
+            row31.CreateCell(17).SetCellValue("Time stamp in short form  " + "\n" +"(Local date and time/format) " + "\n" +"ITSEGDIAE-TIME_TST03(03) " + "\n" + "Actual departure date");
+            row31.CreateCell(18).SetCellValue("Time stamp in short form  " + "\n" +"(Local date and time/format) " + "\n" +"ITSEGDIAE-TIME_TST03(03)"  + "\n" + "SI cut-off date");
+            row31.CreateCell(19).SetCellValue("Log Winshuttle RUNNER for TRANSACTION 10.7.3  " + "\n" +" VL02N-ZEX-new.TxR  " + "\n" +"1/31/2019 10:23:07 PM  " + "\n" +"Mode:  Winshuttle Function Module  " + "\n" +"PRD-210, Barbaraj");
+
+
+            int rows3 = 1;
+            foreach (var a in result)
+            {
+                NPOI.SS.UserModel.IRow row = sheet3.CreateRow(rows3);
+                if (a.DeliveryNo != null)
+                {
+                    row.CreateCell(0).SetCellValue(a.DeliveryNo.Trim());
+
+                }
+                //if (a.CY_open != null && a.CY_open.Value.Year > 2000)
+                //{
+                //    row.CreateCell(1).SetCellValue(((DateTime)a.CY_open).ToShortDateString());
+                //}
+                //row.CreateCell(2).SetCellValue(a.PurchDoc);
+                //row.CreateCell(3).SetCellValue(a.Item);
+                //row.CreateCell(4).SetCellValue("");
+                //row.CreateCell(5).SetCellValue("101");
+               
+                if (a.CY_open != null && a.CY_open.Value.Year > 2000)
+                {
+                    row.CreateCell(1).SetCellValue(((DateTime)a.CY_open).ToShortDateString());
+                }
+
+                if (a.CY_closing != null && a.CY_closing.Value.Year > 2000)
+                {
+                    row.CreateCell(2).SetCellValue(((DateTime)a.CY_closing).ToShortDateString());
+                }
+
+
+                if (a.CY_closing != null && a.CY_closing.Value.Year > 2000)
+                {
+                    row.CreateCell(3).SetCellValue(((DateTime)a.CY_closing).AddDays(7).ToShortDateString());
+                }
+            
+            
+                row.CreateCell(4).SetCellValue("0030");
+                //CY填写船名航次，CFS默认“A VESSEL”Consol CFS CY
+                if (a.Type.Trim() == "CFS")
+                {
+                 row.CreateCell(5).SetCellValue("A VESSEL");
+                }
+
+                if (a.Type.Trim() == "CY" || a.Type.Trim() == "Consol")
+                {
+                    row.CreateCell(5).SetCellValue(a.Vessel.Trim()+" "+a.Voyage.Trim());
+                }
+ 
+
+             
+
+                row.CreateCell(6).SetCellValue("Z1");
+                row.CreateCell(7).SetCellValue(a.Ship_mode);
+                if (a.Booking_date != null && a.Booking_date.Value.Year > 2000)
+                {
+                    row.CreateCell(8).SetCellValue(((DateTime)a.Booking_date).ToShortDateString());
+                   
+                }
+
+                if (a.SO_release_date != null && a.SO_release_date.Value.Year > 2000)
+                {
+                    row.CreateCell(9).SetCellValue(((DateTime)a.SO_release_date).ToShortDateString());
+
+                }
+
+
+                row.CreateCell(10).SetCellValue("");
+                row.CreateCell(11).SetCellValue("");
+                //CFS:交仓日期，CY:交码头日期， 
+                //if (a.CY_closing != null && a.CY_closing.Value.Year > 2000)
+                //{
+                //    row.CreateCell(16).SetCellValue(((DateTime)a.CY_closing).ToShortDateString());
+                //}
+                row.CreateCell(12).SetCellValue(a.Loading_Port);
+                row.CreateCell(13).SetCellValue(a.Unloading_Port);
+                row.CreateCell(14).SetCellValue(a.Destination);
+
+                row.CreateCell(15).SetCellValue("");
+                row.CreateCell(16).SetCellValue("");
+
+                row.CreateCell(17).SetCellValue("");
+
+                ////CY: SI cut-off date; CFS: 为空
+                if (a.Type.Trim() == "CFS")
+                {
+                    row.CreateCell(18).SetCellValue("");
+                }
+
+                if (a.Type.Trim() == "CY" || a.Type.Trim() == "Consol")
+                {
+                    if (a.Cust_SI != null && a.Cust_SI.Value.Year > 2000)
+                        row.CreateCell(18).SetCellValue(Convert.ToDateTime(a.Cust_SI).ToShortDateString());
+                }
+
+              
+                row.CreateCell(19).SetCellValue("");
+
+                rows3++;
+            }
+
+            for (int col = 0; col <= 9; col++)
+            {
+                sheet3.AutoSizeColumn(col);//自适应
+            }
+            #endregion
+            //    string BeginDate = TempData["BeginDate"].ToString();
+        //    string EndDate = TempData["EndDate"].ToString();
+        //    var dateLine1 = Convert.ToDateTime(BeginDate).AddDays(0);
+        //    var dateLine2 = Convert.ToDateTime(EndDate).AddDays(0);
+        //    var checkList = (from p in db.in_Item
+        //                     where p.rec_date > dateLine1 && p.rec_date < dateLine2
+        //                     select p).ToList();
+        //    string TempletFileName = Server.MapPath("~/Areas/WMS_Areas/ExcelTemplate/sampleForIn.xls");
+        //    FileStream file = new FileStream(TempletFileName, FileMode.Open, FileAccess.Read);
+        //    NPOI.HSSF.UserModel.HSSFWorkbook book = new NPOI.HSSF.UserModel.HSSFWorkbook(file);
+        //    string SheetName = book.GetSheetName(0);
+        //    NPOI.SS.UserModel.ISheet sheet1 = book.GetSheet(SheetName);
+        //    for (int i = 0; i < checkList.Count; i++)
+        //    {
+        //        if (i < 65535)
+        //        {
+        //            NPOI.SS.UserModel.IRow rowtemp = sheet1.CreateRow(i + 8);
+        //            rowtemp.CreateCell(0).SetCellValue(checkList[i].rec_date.ToShortDateString());
+        //            rowtemp.CreateCell(1).SetCellValue(checkList[i].so_no.ToString());
+        //            rowtemp.CreateCell(2).SetCellValue(checkList[i].item_no.ToString());
+        //            rowtemp.CreateCell(3).SetCellValue(checkList[i].qty.ToString());
+        //            rowtemp.CreateCell(4).SetCellValue(checkList[i].stk.ToString());
+        //            rowtemp.CreateCell(5).SetCellValue(checkList[i].pcs.ToString());
+        //            rowtemp.CreateCell(6).SetCellValue(checkList[i].ctn.ToString());
+        //            rowtemp.CreateCell(7).SetCellValue(checkList[i].poqty.ToString());
+        //            rowtemp.CreateCell(8).SetCellValue(checkList[i].weight.ToString());
+        //            rowtemp.CreateCell(9).SetCellValue(checkList[i].cbm.ToString());
+        //            rowtemp.CreateCell(10).SetCellValue(checkList[i].length.ToString());
+        //            rowtemp.CreateCell(11).SetCellValue(checkList[i].width.ToString());
+        //            rowtemp.CreateCell(12).SetCellValue(checkList[i].height.ToString());
+        //        }
+
+        //    }
+            System.IO.MemoryStream ms = new System.IO.MemoryStream();
+            book.Write(ms);
+            ms.Seek(0, SeekOrigin.Begin);
+           DateTime dt = DateTime.Now;
+           string datetime = dt.ToString("yyyyMMddhhmmss");
+           string fileName = "LoadPlan_TimeLine" + datetime + ".xls";
+          return File(ms, "appliction/vnd.ms-execl", fileName);
+         }
+
+
+
+        public FileResult MIGOReportChoiceExcelOut()
+        {
+            //string consol_No = Request.Form["consol_No"].ToString();
+            string DateType = Request.Form["DateType"].ToString();
+            string Purch_Doc = Request.Form["Purch_Doc"].ToString();
+            string Item = Request.Form["Item"].ToString();
+            //string Radio_Title = Request.Form["Radio_Title"].ToString();//表格列头标题
+            //string Radio_Fields = Request.Form["Radio_Fields"].ToString();//表格列头属性名称
+            string Vendor_Name = Request.Form["Vendor_Name"].ToString();
+            DateTime dtStartdate = Convert.ToDateTime(Request.Form["jrstartdate"]);
+            DateTime dtEnddate = Convert.ToDateTime(Request.Form["jrenddate"]);
+            string Customer_name = Request.Form["Customer_name"].ToString();
+            var result = Models.Model_FinalLoadingPlan.GeAllMIGOReportForIQueryable(Customer_name, DateType, dtStartdate, dtEnddate,
+            Purch_Doc, Vendor_Name,Item);
+
+              //var result = Models.Model_FinalLoadingPlan.GetAllLoadPlanKPIByCondition(consol_No, DateType, dtStartdate, dtEnddate,   Sales_order);
+
+            NPOI.HSSF.UserModel.HSSFWorkbook book = new NPOI.HSSF.UserModel.HSSFWorkbook();
+            //添加一个sheet
+            NPOI.SS.UserModel.ISheet sheet1 = book.CreateSheet("Sheet1");
+
+            NPOI.SS.UserModel.ISheet sheet2 = book.CreateSheet("MIGO-SDA-TEXT");
+
+            NPOI.SS.UserModel.ISheet sheet3 = book.CreateSheet("VL02N-TEXT(0723)");
+
+            #region export loadplan sheet1
+            
+        
+            //给sheet1添加第一行的头部标题
+            NPOI.SS.UserModel.IRow row1 = sheet1.CreateRow(3);
+            row1.CreateCell(0).SetCellValue("Consol no.");
+            row1.CreateCell(1).SetCellValue("Vendor Name");
+            row1.CreateCell(2).SetCellValue("Mfr Name1");
+            row1.CreateCell(3).SetCellValue("Customer Name");
+            row1.CreateCell(4).SetCellValue("Customer PO(2)");
+            row1.CreateCell(5).SetCellValue("SalesOrd/STO(1)");
+            row1.CreateCell(6).SetCellValue("Item No.");
+            row1.CreateCell(7).SetCellValue("First Date");
+            row1.CreateCell(8).SetCellValue("Cancel Date");
+            row1.CreateCell(9).SetCellValue("Purch.Doc.");
+            row1.CreateCell(10).SetCellValue("Item");
+            row1.CreateCell(11).SetCellValue("Cust Material No.");
+            row1.CreateCell(12).SetCellValue("Sales Material No.");
+            row1.CreateCell(13).SetCellValue("Material No.");
+            row1.CreateCell(14).SetCellValue("Short text(8)");
+            row1.CreateCell(15).SetCellValue("PO quantity");
+            row1.CreateCell(16).SetCellValue("Total Carton(5)");
+
+            row1.CreateCell(17).SetCellValue("Total Gross Weight");
+            row1.CreateCell(18).SetCellValue("Total CBM");
+            row1.CreateCell(19).SetCellValue("Delivery No.");
+            row1.CreateCell(20).SetCellValue("Ship mode");
+            row1.CreateCell(21).SetCellValue("Booking no.");
+            row1.CreateCell(22).SetCellValue("Booking date");
+            //row1.CreateCell(23).SetCellValue("ImportDate");
+            row1.CreateCell(23).SetCellValue("S/O Received from Carrier Date");//11
+            row1.CreateCell(24).SetCellValue("S/O Release to Factory Date");
+            row1.CreateCell(25).SetCellValue("SI Cut Off Date");//1
+            row1.CreateCell(26).SetCellValue("Shipment Delivery Open Date");
+            row1.CreateCell(27).SetCellValue("Shipment Delivery Closing Date");
+            row1.CreateCell(28).SetCellValue("ETD");
+            row1.CreateCell(29).SetCellValue("Vessel Name");
+            row1.CreateCell(30).SetCellValue("Voyage");
+            row1.CreateCell(31).SetCellValue("Port of Loading");
+            row1.CreateCell(32).SetCellValue("Port of Discharge");
+            row1.CreateCell(33).SetCellValue("Final Destination");
+            row1.CreateCell(34).SetCellValue("Actual Departure Date from Factory");
+            row1.CreateCell(35).SetCellValue("Actual Arrival Date(CFS)");
+            row1.CreateCell(36).SetCellValue("Actual Arrival Date in Terminals(CY)");
+            row1.CreateCell(37).SetCellValue("Remark");
+            row1.CreateCell(38).SetCellValue("Courier tracking no.");   
+         
+           
+
+
+            IDataFormat dataformat = book.CreateDataFormat();  
+
+            ICellStyle style0 = book.CreateCellStyle();
+
+            style0.DataFormat = dataformat.GetFormat("yyyy-MM-dd");  
+
+            int rows = 4;
+            foreach (var a in result)
+            {
+                NPOI.SS.UserModel.IRow row = sheet1.CreateRow(rows);
+                if (a.Consol_no != null)
+                {
+                    row.CreateCell(0).SetCellValue(a.Consol_no.Trim());
+
+                }
+                row.CreateCell(1).SetCellValue(a.Vendor_Name.Trim());
+                row.CreateCell(2).SetCellValue(a.Mfr_Name1);
+                row.CreateCell(3).SetCellValue(a.Customer_Name);
+                row.CreateCell(4).SetCellValue(a.CustomerPO);
+                row.CreateCell(5).SetCellValue(a.SalesOrd_STO);
+                row.CreateCell(6).SetCellValue(a.ItemNO);
+                if (a.FOB_First_Date != null)
+                {
+                    row.CreateCell(7).SetCellValue(((DateTime)a.FOB_First_Date).ToShortDateString());
+
+                }
+
+                if (a.Cancel_Date != null)
+                {
+                    row.CreateCell(8).SetCellValue(((DateTime)a.Cancel_Date).ToShortDateString());
+
+                }
+
+                row.CreateCell(9).SetCellValue(a.Purch_Doc);
+                row.CreateCell(10).SetCellValue(a.Item);
+                row.CreateCell(11).SetCellValue(a.CustomerMaterialNumber);
+                row.CreateCell(12).SetCellValue(a.SalesMaterial);
+                row.CreateCell(13).SetCellValue(a.Material);
+                //row.CreateCell(11).SetCellValue(a.Destination);
+                row.CreateCell(14).SetCellValue(a.Short_text);
+                row.CreateCell(15).SetCellValue(a.PO_quantity.ToString());
+
+                if (a.TotalCarton != null)
+                {
+                    row.CreateCell(16).SetCellValue((int)a.TotalCarton);
+
+                }
+                if (a.TotalGrossWeight!=null)
+                {
+                    row.CreateCell(17).SetCellValue(Math.Round((decimal)a.TotalGrossWeight,3).ToString());
+                }
+                if (a.TotalVolume != null)
+                {
+                    row.CreateCell(18).SetCellValue(Math.Round((decimal)a.TotalVolume, 3).ToString());
+                }
+                row.CreateCell(19).SetCellValue(a.DeliveryNo);
+                row.CreateCell(20).SetCellValue(a.Ship_mode);
+
+
+
+
+                row.CreateCell(21).SetCellValue(a.Booking_No);
+                //row.GetCell(17).CellStyle = style0;  
+                if (a.Booking_Date != null)
+                {
+                    row.CreateCell(22).SetCellValue(((DateTime)a.Booking_Date).ToShortDateString());
+
+                }
+
+                //if (a.SO != null) 
+                //{
+                //row.CreateCell(23).SetCellValue(a.SO.ToString());
+                //}
+
+
+               if (a.SO_Release_Date != null)
+               {
+                   row.CreateCell(23).SetCellValue(((DateTime)a.SO_Release_Date).ToShortDateString());
+
+               }
+                //Cust_SI  rec_so_date
+
+
+               if (a.SO_Release_Date != null)
+                {
+                    row.CreateCell(24).SetCellValue(((DateTime)a.SO_Release_Date).ToShortDateString());
+
+                }
+
+                if (a.Cust_SI != null)
+                {
+                    row.CreateCell(25).SetCellValue(((DateTime)a.Cust_SI).ToShortDateString());
+
+                }
+
+                //row.GetCell(19).CellStyle = style0;  
+                if (a.CY_open != null)
+                {
+                    row.CreateCell(26).SetCellValue(((DateTime)a.CY_open).ToShortDateString());
+
+                }
+
+                if (a.CY_closing != null)
+                {
+                    row.CreateCell(27).SetCellValue(((DateTime)a.CY_closing).ToShortDateString());
+
+                }
+                //row.GetCell(20).CellStyle = style0;  
+             
+                //row.GetCell(21).CellStyle = style0;  
+
+                if (a.ETD != null)
+                {
+                    row.CreateCell(28).SetCellValue(((DateTime)a.ETD).ToShortDateString());
+
+                }
+
+
+                row.CreateCell(29).SetCellValue(a.Vessel);
+                row.CreateCell(30).SetCellValue(a.Voyage);
+                row.CreateCell(31).SetCellValue(a.Loading_Port);
+                row.CreateCell(32).SetCellValue(a.Unloading_Port);
+                row.CreateCell(33).SetCellValue(a.Destination);
+                //row.GetCell(23).CellStyle = style0;  
+                //if (a.Cont_Date != null)
+                //{
+                //    row.CreateCell(23).SetCellValue(((DateTime)a.Cont_Date).ToShortDateString());
+
+                //}
+                //row.GetCell(24).CellStyle = style0;  
+                row.CreateCell(34).SetCellValue("");
+
+
+                if (a.Ship_Date != null && ((DateTime)a.Ship_Date).Year > 2000)//11
+                {
+                    row.CreateCell(35).SetCellValue(((DateTime)a.Ship_Date).ToShortDateString());
+
+                }
+
+                if (a.Cont_Date != null && a.Cont_Date.Value.Year > 2000)//11
+                {
+                    row.CreateCell(36).SetCellValue(((DateTime)a.Cont_Date).ToShortDateString());
+
+                }
+
+                row.CreateCell(37).SetCellValue(a.Exception);//11
+
+
+                row.CreateCell(38).SetCellValue(a.Courier_tracking_no);//111
+                //row.GetCell(25).CellStyle = style0;  
+            
+                rows++;
+            }
+
+            for (int col = 0; col <= 39; col++)
+            {
+                sheet1.AutoSizeColumn(col);//自适应
+            }
+
+            NPOI.SS.UserModel.IRow row0 = sheet1.CreateRow(0);
+            row0.CreateCell(0).SetCellValue("Lead Sail");
+
+
+            NPOI.SS.UserModel.IRow row2 = sheet1.CreateRow(1);
+            row2.CreateCell(0).SetCellValue("Spin Master Track & Trace Report (TTR)");
+
+
+            string daterange = dtStartdate.ToShortDateString() + " To " + dtEnddate.ToShortDateString();
+
+            NPOI.SS.UserModel.IRow row3 = sheet1.CreateRow(2);
+            row3.CreateCell(0).SetCellValue("Period:" + daterange);
+
+
+            IFont font0 = book.CreateFont();
+            font0.FontHeightInPoints = 14;
+            ICellStyle style1 = book.CreateCellStyle();
+            style1.SetFont(font0);
+
+            IFont font2 = book.CreateFont();
+            font2.FontHeightInPoints = 14;
+            ICellStyle style2 = book.CreateCellStyle();
+            style1.SetFont(font2);
+
+            row0.HeightInPoints = 28;
+            row2.HeightInPoints = 28;
+            row3.HeightInPoints = 28;
+
+            row0.GetCell(0).CellStyle = style1;
+            row2.GetCell(0).CellStyle = style1;
+            row3.GetCell(0).CellStyle = style1;
+            #endregion
+
+
+            #region export MIGO-SDA-TEXT
+
+
+            NPOI.SS.UserModel.IRow row21 = sheet2.CreateRow(0);
+            row21.CreateCell(0).SetCellValue("VBELN" + "\n" + "Sales and" + "\n" + " Distribution" + "\n" + " Document Number");
+            row21.CreateCell(1).SetCellValue("VBELP Sales Document Item");
+            row21.CreateCell(2).SetCellValue("EBELN");
+            row21.CreateCell(3).SetCellValue("EBELP Item Number of Purchasing Document");
+            row21.CreateCell(4).SetCellValue("SAP System: Client - QAS : 210" + "\n" + "SAP User - edwardy" + "\n" + "QUERY Script Name - MIGO-SD.qsq" + "\n" + "Records extracted - 3" + "\n" + "Execution Time - 00:00:04" + "\n" + "Download date and time. - Monday, September 15, 2014 11:47:20 AM" + "\n" + "Reason for run - ");
+            row21.CreateCell(5).SetCellValue("Movement Type" + "\n" + " (Inventory Management)" + "\n" + "GODEFAULT_TV-BWART");
+            row21.CreateCell(6).SetCellValue("Posting Date in" + "\n" + "the Document" + "\n" + "GOHEAD-BUDAT");
+            row21.CreateCell(7).SetCellValue("Quantity in Unit of " + "\n" + "Entry" + "\n" + "GOITEM-ERFMG");
+            row21.CreateCell(8).SetCellValue("Delivery Note");
+            row21.CreateCell(9).SetCellValue("Log Winshuttle RUNNER for TRANSACTION 10.7.3 " + "\n" + " MIGO-SD.TxR " + "\n" + "10/9/2018 4:20:31 PM " + "\n" + "Mode:  Batch " + "\n" + "PRD-210, Barbaraj");
+
+            
+            int rows2 = 1;
+            foreach (var a in result)
+            {
+                NPOI.SS.UserModel.IRow row = sheet2.CreateRow(rows2);
+                if (a.SalesOrd_STO != null)
+                {
+                    row.CreateCell(0).SetCellValue(a.SalesOrd_STO.Trim());
+
+                }
+                
+                row.CreateCell(1).SetCellValue(a.ItemNO.Trim());
+                row.CreateCell(2).SetCellValue(a.Purch_Doc);
+                row.CreateCell(3).SetCellValue(a.Item);
+                row.CreateCell(4).SetCellValue("");
+                row.CreateCell(5).SetCellValue("101");
+                //CFS:交仓日期，CY:交码头日期， 
+                if (a.Trucking_Arrive_WHS_Date != null)
+                {
+                    row.CreateCell(6).SetCellValue(((DateTime)a.Trucking_Arrive_WHS_Date).ToShortDateString());
+                }
+                row.CreateCell(7).SetCellValue(a.Qty.ToString());
+                row.CreateCell(8).SetCellValue(a.DeliveryNo);
+                row.CreateCell(9).SetCellValue("");
+                rows2++;
+            }
+
+            for (int col = 0; col <= 9; col++)
+            {
+                sheet2.AutoSizeColumn(col);//自适应
+            }
+            #endregion
+
+
+            #region export VL02N-TEXT(0723)
+
+
+            NPOI.SS.UserModel.IRow row31 = sheet3.CreateRow(0);
+            row31.CreateCell(0).SetCellValue("Delivery LIKP-VBELN");
+            row31.CreateCell(1).SetCellValue("GS_LIKP-ZZ_CYOD");
+            row31.CreateCell(2).SetCellValue("GS_LIKP-ZZ_CYCD");
+            row31.CreateCell(3).SetCellValue("GS_LIKP-ZZ_ETD");
+            row31.CreateCell(4).SetCellValue("Means-of-Transport Type LIKP-TRATY ");
+            row31.CreateCell(5).SetCellValue("Vessel Name / Aircraft LIKP-TRAID");
+            row31.CreateCell(6).SetCellValue("Shipping type" + "\n" +"LIKP-VSART");
+            row31.CreateCell(7).SetCellValue("Special processing indicator" + "\n" +"LIKP-SDABW");
+            row31.CreateCell(8).SetCellValue("Time stamp in short form" + "\n" +" (Local date and time/format)" + "\n" +"ITSEGDIAE-TIME_TST03(01)"  + "\n" +" Booking application date");
+            row31.CreateCell(9).SetCellValue("Time stamp in short form" + "\n" +"  (Local date and time/format)" + "\n" +" ITSEGDIAE-TIME_TST03(02)"   + "\n" +"S/O release date");
+            row31.CreateCell(10).SetCellValue("Vendor Ref");
+            row31.CreateCell(11).SetCellValue("Actual Goods Movement Date" + "\n" +"LIKP-WADAT_IST");
+            row31.CreateCell(12).SetCellValue("Place of loading/unloading" + "\n" +" for foreign trade" + "\n" +"EIKP-LADEL");
+            row31.CreateCell(13).SetCellValue("Comments: Text for foreign" + "\n" +" trade processing" + "\n" +"EIKP-TEXT1");
+            row31.CreateCell(14).SetCellValue("Comments: Text for foreign" + "\n" +" trade processing" + "\n" +"EIKP-TEXT2");
+            row31.CreateCell(15).SetCellValue("GS_LIKP-ZZ_CHD");
+            row31.CreateCell(16).SetCellValue("Log Winshuttle RUNNER for TRANSACTION 10.7.3 " + "\n" +" VL02N-ZEX EXT-LINK.TxR" + "\n" +" 10/17/2018 10:15:57 AM" + "\n" +" Mode:  Winshuttle Function Module" + "\n" +" PRD-210, Barbaraj");
+            row31.CreateCell(17).SetCellValue("Time stamp in short form  " + "\n" +"(Local date nd time/format) " + "\n" +"ITSEGDIAE-TIME_TST03(03) " + "\n" + "Actual departure date");
+            row31.CreateCell(18).SetCellValue("Time stamp in short form  " + "\n" +"(Local date and time/format) " + "\n" +"ITSEGDIAE-TIME_TST03(03)"  + "\n" + "SI cut-off date");
+            row31.CreateCell(19).SetCellValue("Log Winshuttle RUNNER for TRANSACTION 10.7.3  " + "\n" +" VL02N-ZEX-new.TxR  " + "\n" +"1/31/2019 10:23:07 PM  " + "\n" +"Mode:  Winshuttle Function Module  " + "\n" +"PRD-210, Barbaraj");
+
+
+            int rows3 = 1;
+            foreach (var a in result)
+            {
+                NPOI.SS.UserModel.IRow row = sheet3.CreateRow(rows3);
+                if (a.DeliveryNo != null)
+                {
+                    row.CreateCell(0).SetCellValue(a.DeliveryNo.Trim());
+
+                }
+                //if (a.CY_open != null && a.CY_open.Value.Year > 2000)
+                //{
+                //    row.CreateCell(1).SetCellValue(((DateTime)a.CY_open).ToShortDateString());
+                //}
+                //row.CreateCell(2).SetCellValue(a.PurchDoc);
+                //row.CreateCell(3).SetCellValue(a.Item);
+                //row.CreateCell(4).SetCellValue("");
+                //row.CreateCell(5).SetCellValue("101");
+
+                if (a.OpenDate != null && a.OpenDate.Value.Year > 2000)
+                {
+                    row.CreateCell(1).SetCellValue(((DateTime)a.OpenDate).ToShortDateString());
+                }
+
+                if (a.CY_Closing_Date != null && a.CY_Closing_Date.Value.Year > 2000)
+                {
+                    row.CreateCell(2).SetCellValue(((DateTime)a.CY_Closing_Date).ToShortDateString());
+                }
+
+
+                if (a.ETD != null)
+                {
+                    row.CreateCell(3).SetCellValue(((DateTime)a.ETD).ToShortDateString());
+                }
+            
+            
+                row.CreateCell(4).SetCellValue("0030");
+                //CY填写船名航次，CFS默认“A VESSEL”Consol CFS CY
+                //if (a.Type.Trim() == "CFS")//11
+                //{
+                //    row.CreateCell(5).SetCellValue("A VESSEL");
+                //}
+
+                //if (a.Type.Trim() == "CY" || a.Type.Trim() == "Consol")
+                //{
+                //    row.CreateCell(5).SetCellValue(a.Vessel.Trim()+" "+a.Voyage.Trim());
+                //}
+                row.CreateCell(5).SetCellValue(a.Vessel + a.Voyage);
+ 
+
+             
+
+                row.CreateCell(6).SetCellValue("Z1");
+                row.CreateCell(7).SetCellValue(a.Ship_mode);
+                if (a.Booking_Date != null && a.Booking_Date.Value.Year > 2000)
+                {
+                    row.CreateCell(8).SetCellValue(((DateTime)a.Booking_Date).ToShortDateString());
+                   
+                }
+
+                if (a.SO_Release_Date != null && a.SO_Release_Date.Value.Year > 2000)
+                {
+                    row.CreateCell(9).SetCellValue(((DateTime)a.SO_Release_Date).ToShortDateString());
+
+                }
+
+
+                row.CreateCell(10).SetCellValue("");
+                row.CreateCell(11).SetCellValue("");
+                //CFS:交仓日期，CY:交码头日期， 
+                //if (a.CY_closing != null && a.CY_closing.Value.Year > 2000)
+                //{
+                //    row.CreateCell(16).SetCellValue(((DateTime)a.CY_closing).ToShortDateString());
+                //}
+
+                row.CreateCell(12).SetCellValue(a.Loading_Port);
+                row.CreateCell(13).SetCellValue("");//a.Unloading_Port
+                row.CreateCell(14).SetCellValue("");//a.Destination
+
+                row.CreateCell(15).SetCellValue("");
+                row.CreateCell(16).SetCellValue("");
+
+                row.CreateCell(17).SetCellValue("");
+
+                //////CY: SI cut-off date; CFS: 为空
+                //if (a.Type.Trim() == "CFS")
+                //{
+                //    row.CreateCell(18).SetCellValue("");
+                //}
+
+                //if (a.Type.Trim() == "CY" || a.Type.Trim() == "Consol")
+                //{
+                //    if (a.Cust_SI != null && a.Cust_SI.Value.Year > 2000)
+                //        row.CreateCell(18).SetCellValue(Convert.ToDateTime(a.Cust_SI).ToShortDateString());
+                //}
+
+              
+                row.CreateCell(19).SetCellValue("");
+
+                rows3++;
+            }
+
+            for (int col = 0; col <= 9; col++)
+            {
+                sheet3.AutoSizeColumn(col);//自适应
+            }
+            #endregion
+            //    string BeginDate = TempData["BeginDate"].ToString();
+        //    string EndDate = TempData["EndDate"].ToString();
+        //    var dateLine1 = Convert.ToDateTime(BeginDate).AddDays(0);
+        //    var dateLine2 = Convert.ToDateTime(EndDate).AddDays(0);
+        //    var checkList = (from p in db.in_Item
+        //                     where p.rec_date > dateLine1 && p.rec_date < dateLine2
+        //                     select p).ToList();
+        //    string TempletFileName = Server.MapPath("~/Areas/WMS_Areas/ExcelTemplate/sampleForIn.xls");
+        //    FileStream file = new FileStream(TempletFileName, FileMode.Open, FileAccess.Read);
+        //    NPOI.HSSF.UserModel.HSSFWorkbook book = new NPOI.HSSF.UserModel.HSSFWorkbook(file);
+        //    string SheetName = book.GetSheetName(0);
+        //    NPOI.SS.UserModel.ISheet sheet1 = book.GetSheet(SheetName);
+        //    for (int i = 0; i < checkList.Count; i++)
+        //    {
+        //        if (i < 65535)
+        //        {
+        //            NPOI.SS.UserModel.IRow rowtemp = sheet1.CreateRow(i + 8);
+        //            rowtemp.CreateCell(0).SetCellValue(checkList[i].rec_date.ToShortDateString());
+        //            rowtemp.CreateCell(1).SetCellValue(checkList[i].so_no.ToString());
+        //            rowtemp.CreateCell(2).SetCellValue(checkList[i].item_no.ToString());
+        //            rowtemp.CreateCell(3).SetCellValue(checkList[i].qty.ToString());
+        //            rowtemp.CreateCell(4).SetCellValue(checkList[i].stk.ToString());
+        //            rowtemp.CreateCell(5).SetCellValue(checkList[i].pcs.ToString());
+        //            rowtemp.CreateCell(6).SetCellValue(checkList[i].ctn.ToString());
+        //            rowtemp.CreateCell(7).SetCellValue(checkList[i].poqty.ToString());
+        //            rowtemp.CreateCell(8).SetCellValue(checkList[i].weight.ToString());
+        //            rowtemp.CreateCell(9).SetCellValue(checkList[i].cbm.ToString());
+        //            rowtemp.CreateCell(10).SetCellValue(checkList[i].length.ToString());
+        //            rowtemp.CreateCell(11).SetCellValue(checkList[i].width.ToString());
+        //            rowtemp.CreateCell(12).SetCellValue(checkList[i].height.ToString());
+        //        }
+
+        //    }
+            System.IO.MemoryStream ms = new System.IO.MemoryStream();
+            book.Write(ms);
+            ms.Seek(0, SeekOrigin.Begin);
+           DateTime dt = DateTime.Now;
+           string datetime = dt.ToString("yyyyMMddhhmmss");
+           string fileName = "MIGOReport" + datetime + ".xls";
+          return File(ms, "appliction/vnd.ms-execl", fileName);
+        }
+
+        public FileResult DailyReportChoiceExcelOut()
+        {
+            //string consol_No = Request.Form["consol_No"].ToString();
+            string DateType = Request.Form["DateType"].ToString();
+            string Purch_Doc = Request.Form["Purch_Doc"].ToString();
+            string Item = Request.Form["Item"].ToString();
+            string Radio_Title = Request.Form["Radio_Title"].ToString();//表格列头标题
+            string Radio_Fields = Request.Form["Radio_Fields"].ToString();//表格列头属性名称
+            string Vendor_Name = Request.Form["Vendor_Name"].ToString();
+            DateTime dtStartdate = Convert.ToDateTime(Request.Form["jrstartdate"]);
+            DateTime dtEnddate = Convert.ToDateTime(Request.Form["jrenddate"]);
+            string Customer_name = Request.Form["Customer_name"].ToString();
+            var result = Models.Model_FinalLoadingPlan.GeAllDailyReportForIQueryable(Customer_name, DateType, dtStartdate, dtEnddate,
+            Purch_Doc, Vendor_Name, Item);
+
+            //var result = Models.Model_FinalLoadingPlan.GetAllLoadPlanKPIByCondition(consol_No, DateType, dtStartdate, dtEnddate,   Sales_order);
+
+            NPOI.HSSF.UserModel.HSSFWorkbook book = new NPOI.HSSF.UserModel.HSSFWorkbook();
+            //添加一个sheet
+            NPOI.SS.UserModel.ISheet sheet1 = book.CreateSheet("Sheet1");
+
+            //NPOI.SS.UserModel.ISheet sheet2 = book.CreateSheet("MIGO-SDA-TEXT");
+
+            //NPOI.SS.UserModel.ISheet sheet3 = book.CreateSheet("VL02N-TEXT(0723)");
+
+            #region export loadplan sheet1
+
+
+            //给sheet1添加第一行的头部标题
+            NPOI.SS.UserModel.IRow row1 = sheet1.CreateRow(3);
+            string[] column = Radio_Title.Split('+');
+            string[] fields = Radio_Fields.Split('+');
+
+            //循环遍历列头标题打印到Exl
+            for (int i = 0; i < column.Length; i++)
+            {
+                row1.CreateCell(i).SetCellValue(column[i]);
+            }
+
+            IDataFormat dataformat = book.CreateDataFormat();
+
+            ICellStyle style0 = book.CreateCellStyle();
+
+            style0.DataFormat = dataformat.GetFormat("yyyy-MM-dd");
+
+
+            int rows = 4;
+            //根据页面列头搜索字段属性添加到exl
+            foreach (var a in result)
+            {
+                NPOI.SS.UserModel.IRow row = sheet1.CreateRow(rows);
+                for (int i = 0; i < fields.Length; i++)
+                {
+
+                    var val = a.GetType().GetProperty(fields[i]);//根据动态属性名找到属性值
+                   
+                    if (val != null)
+                    {
+                        if (val.GetValue(a, null)!=null)
+                        {
+                            if (val.GetValue(a, null).GetType().Name.ToLower()=="int32")
+                            {
+                                row.CreateCell(i).SetCellValue((int)val.GetValue(a, null));
+                            }
+                            else if (val.GetValue(a, null).GetType().Name.ToLower() == "datetime")
+                            {
+                                row.CreateCell(i).SetCellValue(((DateTime)val.GetValue(a, null)).ToShortDateString());
+                            }
+                            else
+                            {
+                                row.CreateCell(i).SetCellValue(val.GetValue(a, null).ToString());
+                            }
+                        }
+                    }
+                }
+                rows++;
+            }
+
+            for (int col = 0; col <= 47; col++)
+            {
+                sheet1.AutoSizeColumn(col);//自适应
+            }
+
+            sheet1.SetColumnWidth(26, 4500);
+            sheet1.SetColumnWidth(27, 4500);
+
+            sheet1.SetRowBreak(3);
+
+            NPOI.SS.UserModel.IRow row0 = sheet1.CreateRow(0);
+            row0.CreateCell(0).SetCellValue("Lead Sail");
+
+
+            NPOI.SS.UserModel.IRow row2 = sheet1.CreateRow(1);
+            row2.CreateCell(0).SetCellValue("Spin Master Daily Report");
+
+
+            string daterange = dtStartdate.ToShortDateString() + " To " + dtEnddate.ToShortDateString();
+
+            NPOI.SS.UserModel.IRow row3 = sheet1.CreateRow(2);
+            row3.CreateCell(0).SetCellValue("Period:" + daterange);
+
+
+            IFont font0 = book.CreateFont();
+            font0.FontHeightInPoints = 14;
+            ICellStyle style1 = book.CreateCellStyle();
+            style1.SetFont(font0);
+
+            IFont font2 = book.CreateFont();
+            font2.FontHeightInPoints = 14;
+            ICellStyle style2 = book.CreateCellStyle();
+            style1.SetFont(font2);
+
+            row0.HeightInPoints = 28;
+            row2.HeightInPoints = 28;
+            row3.HeightInPoints = 28;
+
+            row0.GetCell(0).CellStyle = style1;
+            row2.GetCell(0).CellStyle = style1;
+            row3.GetCell(0).CellStyle = style1;
+            #endregion
+
+
+
+            System.IO.MemoryStream ms = new System.IO.MemoryStream();
+            book.Write(ms);
+            ms.Seek(0, SeekOrigin.Begin);
+            DateTime dt = DateTime.Now;
+            string datetime = dt.ToString("yyyyMMddhhmmss");
+            string fileName = "DailyReport" + datetime + ".xls";
+            return File(ms, "appliction/vnd.ms-execl", fileName);
+        }
+
+
+        public ActionResult CheckDate()
+        {
+            var DateType = Request.Form["data"];
+            var items = JsonConvert.DeserializeObject<List<System.Collections.Hashtable>>(DateType);
+            List<FinalVendorInput> vendorInfoList = new List<FinalVendorInput>();
+            foreach (var item in items)
+            {
+                if (item["Purch.Doc"] != null && item["Item"] != null && item["Item"] != "" && item["Purch.Doc"] != "")
+                {
+                    if (Models.Model_FinalLoadingPlan.CheckDate(item["Purch.Doc"].ToString(), item["Item"].ToString()))
+                    {
+                        return PackagingAjaxmsg(Common.AjaxStatu.none, "Po already has data, cancel", "", "");
+                    }
+                }
+                  
+                 
+            }
+            return PackagingAjaxmsg(Common.AjaxStatu.ok, "Whether to cancel", "", "");
+        }
+
+
+        public ActionResult SAVE_DOMFOB()
+        {
+            try
+            {
+                var DateType = Request.Form["data"];
+                var items = JsonConvert.DeserializeObject<List<System.Collections.Hashtable>>(DateType);
+                List<FinalVendorInput> vendorInfoList = new List<FinalVendorInput>();
+                bool isCancel = false;
+                string bookingnos = "xxxxxxxxxxxxxxx";
+                string Items = "xxxxxxxxxxxxxxx";
+                string purchs = "xxxxxxxxxxxxxxx";
+                List<FinalVendorInputTrucking> TruckingInfoList = new List<FinalVendorInputTrucking>();
+                foreach (var item in items)
+                {
+                    string purch = "";
+                    string itemn = "";
+                    string BookingNo = "";
+                    string CustomerType = "";
+                    if (item["Purch.Doc"] != null)
+                    {
+
+                        purch = item["Purch.Doc"].ToString();
+                    }
+                    if (item["Item"] != null)
+                    {
+
+                        itemn = item["Item"].ToString();
+                    }
+                    if (item["Booking NO"] != null)
+                    {
+
+                        BookingNo = item["Booking NO"].ToString();
+                    }
+                    if (item["Customer Type"] != null)
+                    {
+                        CustomerType = item["Customer Type"].ToString();
+                    }
+                    List<FinalPoList> polist = oc.BllSession.IFinalPoListBLL.GetListBy(a => a.Purch_Doc == purch && a.Item == itemn && a.PO_List_Type == CustomerType && a.Mfr_Name1 == oc.CurrentVendorName).ToList();//&& a.Mfr_Name1 == oc.CurrentVendorName
+
+                    FinalVendorInput vendorInfo = new FinalVendorInput();
+                    if (polist.Count > 0)
+                    {
+                        int id=polist[0].ID;
+                        if (oc.BllSession.IFinalPo_Cancel_RecordBLL.GetListBy(a => a.pID == id && a.release == 0).Count > 0 && isCancel == false) { isCancel = true; }
+                        vendorInfo.PID = polist[0].ID;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                    List<FinalVendorInput> vendoseleteinfo = oc.BllSession.IFinalVendorInputBLL.GetListBy(a => a.PID == vendorInfo.PID && a.Booking_No == BookingNo);
+                    
+                    //if (vendoseleteinfo.Count > 0)
+                    //{
+                    //    FinalVendorInputTrucking trucking = new FinalVendorInputTrucking();
+                    //    trucking.vID = vendoseleteinfo[0].VID;
+                    //    if (item["Container NO."] != null)
+                    //    {
+                    //        trucking.Container_NO = item["Container NO."].ToString();
+                    //    }
+                    //    if (item["Seal No."] != null)
+                    //    {
+                    //        trucking.Seal_NO = item["Seal No."].ToString();
+                    //    }
+                    //    if (item["CTN"] != null)
+                    //    {
+                    //        trucking.CTN = int.Parse(item["CTN"].ToString());
+                    //    }
+                    //    List<FinalVendorInputTrucking> finalVendorInputTruckinginfo = oc.BllSession.IFinalVendorInputTruckingBLL.GetListBy(a => a.vID == trucking.vID && a.Container_NO == trucking.Container_NO);
+                    //    if (finalVendorInputTruckinginfo.Count>0)
+                    //    {
+                    //        trucking.tID = finalVendorInputTruckinginfo[0].tID;
+                    //        Models.Model_FinalLoadingPlan.UpdateUploadVendorInputTrucking(trucking);
+                    //    }
+                    //    else
+                    //    {
+                    //        Models.Model_FinalLoadingPlan.UploadVendorInputTrucking(trucking);
+                    //    }
+                    //}
+                    //vendorInfo.FinalPoList.PO_List_Type = item["Customer Type"].ToString();
+                    if (item["Inspection result"] != null)
+                    {
+                        vendorInfo.Inspection_Result = item["Inspection result"].ToString();
+                    }
+                    if (item["Inspection End Date"] != null)
+                    {
+                        vendorInfo.Inspection_End_Date = item["Inspection End Date"].ToString() == "" ? vendorInfo.Inspection_End_Date : DateTime.Parse(item["Inspection End Date"].ToString());
+                    }
+                    if (item["Matrix"] != null)
+                    {
+                        vendorInfo.Matrix = item["Matrix"].ToString();
+                    }
+                    if (item["Slipsheet"] != null)
+                    {
+                        vendorInfo.Slip_Sheet = item["Slipsheet"].ToString();
+                    }
+                    if (item["Ship Mode"] != null)
+                    {
+                        vendorInfo.Ship_Mode = item["Ship Mode"].ToString();
+                    }
+                    if (item["Booking date"] != null)
+                    {
+                        vendorInfo.Booking_Date = item["Booking date"].ToString() == "" ? vendorInfo.Booking_Date : DateTime.Parse(item["Booking date"].ToString());
+                    }
+                    if (item["Booking NO"] != null)
+                    {
+                        vendorInfo.Booking_No = item["Booking NO"].ToString();
+                    }
+                    if (item["Loading Date"] != null)
+                    {
+                        vendorInfo.Loading_Date = item["Loading Date"].ToString() == "" ? vendorInfo.Loading_Date : DateTime.Parse(item["Loading Date"].ToString());
+                    }
+                    if (item["Forward Name"] != null)
+                    {
+                        vendorInfo.Forward_Name = item["Forward Name"].ToString();
+                    }
+                    if (item["SO Release Date"] != null)
+                    {
+                        vendorInfo.SO_Release_Date = item["SO Release Date"].ToString() == "" ? vendorInfo.SO_Release_Date : DateTime.Parse(item["SO Release Date"].ToString());
+                    }
+                    if (item["Loading  Port"] != null)
+                    {
+                        vendorInfo.Loading_Port = item["Loading  Port"].ToString();
+                    }
+                    if (item["Vessel"] != null)
+                    {
+                        vendorInfo.Vessel = item["Vessel"].ToString();
+                    }
+                    if (item["Voyage"] != null)
+                    {
+                        vendorInfo.Voyage = item["Voyage"].ToString();
+                    }
+                    if (item["Discharging Port"] != null)
+                    {
+                        vendorInfo.Dischaging_Port = item["Discharging Port"].ToString();
+                    }
+                    if (item["ETD"] != null)
+                    {
+                        vendorInfo.ETD = item["ETD"].ToString() == "" ? vendorInfo.ETD : DateTime.Parse(item["ETD"].ToString());
+
+                    }
+                    if (item["Shipment Status"] != null)
+                    {
+                        vendorInfo.Shipment_Status = item["Shipment Status"].ToString();
+                    }
+                    if (item["FOB local charges settlement"] != null)
+                    {
+                        vendorInfo.FOB_Local_Charges_Settlement = item["FOB local charges settlement"].ToString();
+
+                    }
+                    if (item["FCR OR Bill of Loading return to SM Date"] != null)
+                    {
+                        vendorInfo.FCR_Bill_Return_Date = item["FCR OR Bill of Loading return to SM Date"].ToString() == "" ? vendorInfo.FCR_Bill_Return_Date : DateTime.Parse(item["FCR OR Bill of Loading return to SM Date"].ToString());
+                    }
+                    if (item["Certificate Application Date"] != null)
+                    {
+                        vendorInfo.Certificate_Application_Date = item["Certificate Application Date"].ToString() == "" ? vendorInfo.Certificate_Application_Date : DateTime.Parse(item["Certificate Application Date"].ToString());
+                    }
+                    if (item["Certificate return to SM Date"] != null)
+                    {
+                        vendorInfo.Certificate_Return_TO_SMDate = item["Certificate return to SM Date"].ToString() == "" ? vendorInfo.Certificate_Return_TO_SMDate : DateTime.Parse(item["Certificate return to SM Date"].ToString());
+                    }
+                    if (item["ETA"] != null)
+                    {
+                        vendorInfo.ETA = item["ETA"].ToString() == "" ? vendorInfo.ETA : DateTime.Parse(item["ETA"].ToString());
+                    }
+                    if (item["CFS OR CY Open Date"] != null)
+                    {
+                        vendorInfo.CY_Open_date = item["CFS OR CY Open Date"].ToString() == "" ? vendorInfo.CY_Open_date : DateTime.Parse(item["CFS OR CY Open Date"].ToString());
+
+                    }
+                    if (item["CFS OR CY Closing Date"] != null)
+                    {
+                        vendorInfo.CY_Closing_Date = item["CFS OR CY Closing Date"].ToString() == "" ? vendorInfo.CY_Closing_Date : DateTime.Parse(item["CFS OR CY Closing Date"].ToString());
+                    }
+                    if (item["FCR OR OB Courier tracking no."] != null)
+                    {
+                        vendorInfo.Courier_tracking_no = item["FCR OR OB Courier tracking no."].ToString();
+                    }
+                    //if (item["CY Open date"] != null)
+                    //{
+                    //    vendorInfo.CY_Open_date = item["CY Open date"].ToString() == "" ? vendorInfo.CY_Open_date : DateTime.Parse(item["CY Open date"].ToString());
+                    //}
+                    //if (item["Closing Date and Closing Time CY"] != null)
+                    //{
+                    //    vendorInfo.CY_Closing_Date = item["Closing Date and Closing Time CY"].ToString() == "" ? vendorInfo.CY_Closing_Date : DateTime.Parse(item["Closing Date and Closing Time CY"].ToString());
+                    //}
+                    if (item["Delivery Quantity"] != null)
+                    {
+                        vendorInfo.Qty_Delivered = item["Delivery Quantity"].ToString() == "" ? vendorInfo.Qty_Delivered : int.Parse(item["Delivery Quantity"].ToString());
+                    }
+                    if (item["Delivery  Carton"] != null)
+                    {
+                        vendorInfo.Carton_delivered = item["Delivery  Carton"].ToString() == "" ? vendorInfo.Carton_delivered : int.Parse(item["Delivery  Carton"].ToString());
+                    }
+                    if (item["Delivery CBM"] != null)
+                    {
+                        vendorInfo.Delivery_CBM = item["Delivery CBM"].ToString() == "" ? vendorInfo.Delivery_CBM : decimal.Parse(item["Delivery CBM"].ToString());
+                    }
+                    if (item["Delay reason"] != null)
+                    {
+                        vendorInfo.Delay_Details = item["Delay reason"].ToString();
+                    }
+                    if (item["Carrier SI Cut off date"] != null)
+                    {
+                        vendorInfo.SI_Cut_Time = item["Carrier SI Cut off date"].ToString() == "" ? vendorInfo.SI_Cut_Time : DateTime.Parse(item["Carrier SI Cut off date"].ToString());
+                    }
+
+                    if (item["Actual arrive  date in warehouse"] != null)
+                    {
+                        vendorInfo.Arrive_WHS_Date = item["Actual arrive  date in warehouse"].ToString() == "" ? vendorInfo.Arrive_WHS_Date : DateTime.Parse(item["Actual arrive  date in warehouse"].ToString());
+                        if (vendorInfo.Arrive_WHS_Date!=null)
+                        {
+                            if (vendoseleteinfo.Count>0)
+                            {
+                                if (vendoseleteinfo[0].Update_GR_time == null)
+                                {
+                                    vendorInfo.Update_GR_time = DateTime.Parse(DateTime.Now.ToShortDateString());
+                                }
+                            }
+                            else
+                            {
+                                vendorInfo.Update_GR_time = DateTime.Parse(DateTime.Now.ToShortDateString());
+                            }
+
+                        }
+                    }
+                    if (item["Actual arrive  date in terminal"] != null)
+                    {
+                        vendorInfo.Arrive_terminal_Date = item["Actual arrive  date in terminal"].ToString() == "" ? vendorInfo.Arrive_terminal_Date : DateTime.Parse(item["Actual arrive  date in terminal"].ToString());
+                        if (vendorInfo.Arrive_terminal_Date != null)
+                        {
+                            if (vendoseleteinfo.Count > 0)
+                            {
+                                if (vendoseleteinfo[0].Update_GR_time == null)
+                                {
+                                    vendorInfo.Update_GR_time = DateTime.Parse(DateTime.Now.ToShortDateString());
+                                }
+                            }
+                            else
+                            {
+                                vendorInfo.Update_GR_time = DateTime.Parse(DateTime.Now.ToShortDateString());
+                            }
+
+                        }
+                    }
+                    if (item["OTD reason code "] != null)
+                    {
+                        vendorInfo.OTD_Reason_Code = item["OTD reason code "].ToString();
+                    }
+                    FinalVendorInputTrucking truckinginfo = new FinalVendorInputTrucking();
+                    if (vendoseleteinfo.Count > 0)
+                    {
+                        truckinginfo.vID = vendoseleteinfo[0].VID;
+                        vendorInfo.VID = vendoseleteinfo[0].VID;
+                        if (BookingNo != bookingnos)
+                        {//一个booking只修改一次
+                          
+                            vendorInfoList.Add(vendorInfo);
+                            //保存上一个的数据,用于下一次做对比
+                            bookingnos = BookingNo;
+                            purchs = purch;
+                            Items = itemn;
+
+                        }
+                        else
+                        {
+                            //去除重复项
+                            if ((purchs != purch && itemn != Items)||(purchs != purch && itemn == Items)||(purchs == purch && itemn != Items))
+                            {
+                            
+                                vendorInfoList.Add(vendorInfo);
+                                //保存上一个的数据,用于下一次做对比
+                                bookingnos = BookingNo;
+                                purchs = purch;
+                                Items = itemn;
+                            }
+                        }
+                    }
+                    else
+                    {
+                      
+                        Models.Model_FinalLoadingPlan.UploadVendorInput(vendorInfo);
+                        truckinginfo.vID = vendorInfo.VID;
+                    }
+                    if (item["Container NO."] != null)
+                    {
+                        truckinginfo.Container_NO = item["Container NO."].ToString();
+                    }
+                    if (item["Seal No."] != null)
+                    {
+                        truckinginfo.Seal_NO = item["Seal No."].ToString();
+                    }
+                    if (item["CTN. in truck"] != null && item["CTN. in truck"] != "")
+                    {
+                        truckinginfo.CTN = int.Parse(item["CTN. in truck"].ToString());
+                    }
+                    if (item["Quantity. in truck"] != null && item["Quantity. in truck"] != "")
+                    {
+                        truckinginfo.Qty = int.Parse(item["Quantity. in truck"].ToString());
+                    }
+                    if (item["CBM. in truck"] != null && item["CBM. in truck"] != "")
+                    {
+                        truckinginfo.CBM = decimal.Parse(item["CBM. in truck"].ToString());
+                    }
+                    if (item["Trucking No"] != null)
+                    {
+                        truckinginfo.Trucking_NO = item["Trucking No"].ToString();
+                    }
+                    if (item["Vehicle Type"] != null)
+                    {
+                        truckinginfo.Vehicle_Type = item["Vehicle Type"].ToString();
+                    }
+                    if (item["Actual arrive  date in warehouse"] != null)
+                    {
+                        truckinginfo.Trucking_Arrive_WHS_Date = item["Actual arrive  date in warehouse"].ToString() == "" ? truckinginfo.Trucking_Arrive_WHS_Date : DateTime.Parse(item["Actual arrive  date in warehouse"].ToString());
+                    }
+                    if (item["Actual arrive  date in terminal"] != null)
+                    {
+                        truckinginfo.Trucking_Arrive_terminal_Date = item["Actual arrive  date in terminal"].ToString() == "" ? truckinginfo.Trucking_Arrive_terminal_Date : DateTime.Parse(item["Actual arrive  date in terminal"].ToString());
+                    }
+                    List<FinalVendorInputTrucking> finalVendorInputTruckinginfolist = oc.BllSession.IFinalVendorInputTruckingBLL.GetListBy(a => a.vID == truckinginfo.vID && a.Trucking_NO == truckinginfo.Trucking_NO);
+                    if (finalVendorInputTruckinginfolist.Count > 0)
+                    {
+
+                            truckinginfo.tID = finalVendorInputTruckinginfolist[0].tID;
+                            if (!finalVendorInputTruckinginfolist[0].Equals(truckinginfo))
+                            {
+                                TruckingInfoList.Add(truckinginfo);
+                            }
+
+                    }
+
+                    else
+                    {
+                            Models.Model_FinalLoadingPlan.UploadVendorInputTrucking(truckinginfo);
+                    }
+
+                    //if (item["Tid"] != null)
+                    //{
+                    //    if (item["Tid"].ToString() == "0")
+                    //    {
+                    //        Models.Model_FinalLoadingPlan.UploadVendorInputTrucking(truckinginfo);
+                    //    }
+                    //    else
+                    //    {
+                    //        truckinginfo.tID = int.Parse(item["Tid"].ToString());
+                    //        TruckingInfoList.Add(truckinginfo);
+                    //    }
+
+                    //}
+                  
+                }
+
+                Models.Model_FinalLoadingPlan.UpdateUploadVendorInput(vendorInfoList);
+                Models.Model_FinalLoadingPlan.UpdateUploadVendorInputTrucking(TruckingInfoList);
+                if(isCancel){
+                    return PackagingAjaxmsg(Common.AjaxStatu.ok, "'", "", "");
+                }
+                else
+                {
+                    return PackagingAjaxmsg(Common.AjaxStatu.ok, "Data imported successfully", "", "");
+                }
+            }
+            catch (Exception ex)
+            {
+                 return PackagingAjaxmsg(Common.AjaxStatu.err, ex.Message, "", ""); 
+            }
+        }
+
+        /// <summary>
+        /// 判断对象属性是否为空
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public bool isNUll<T>(T model)
+        {
+            System.Reflection.PropertyInfo[] properties = model.GetType().GetProperties();
+            foreach (var truckitem in properties)
+            {
+                if (truckitem.GetValue(model, null) == "" || truckitem.GetValue(model, null) == null)
+                {
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
+        public FileResult DownLoadDOM()
+        {
+            string DateType = Request.Form["DateType"].ToString();
+            DateTime dtStartdate = Convert.ToDateTime(Request.Form["jrstartdate"]);
+            DateTime dtEnddate = Convert.ToDateTime(Request.Form["jrenddate"]);
+            var result = Models.Model_FinalLoadingPlan.GeAllFOBAndDOMDownLoadForIQueryable("", DateType, dtStartdate, dtEnddate,
+            "", oc.CurrentVendorName);
+
+            NPOI.HSSF.UserModel.HSSFWorkbook book = new NPOI.HSSF.UserModel.HSSFWorkbook();
+            //添加一个sheet
+            NPOI.SS.UserModel.ISheet sheet1 = book.CreateSheet("Sheet1");
+
+            NPOI.SS.UserModel.IRow row1 = sheet1.CreateRow(3);
+            row1.CreateCell(0).SetCellValue("SalesOrdORSTO");
+            row1.CreateCell(1).SetCellValue("ItemNO");
+            row1.CreateCell(2).SetCellValue("Purch.Doc");
+            row1.CreateCell(3).SetCellValue("Item");
+            row1.CreateCell(4).SetCellValue("STO MA Date");
+            row1.CreateCell(5).SetCellValue("Delivery Quantity");
+            row1.CreateCell(6).SetCellValue("Delivery  Carton");
+            row1.CreateCell(7).SetCellValue("Delivery CBM");
+            row1.CreateCell(8).SetCellValue("Container NO.");
+            row1.CreateCell(9).SetCellValue("Seal No.");
+            row1.CreateCell(10).SetCellValue("Vehicle Type");
+            row1.CreateCell(11).SetCellValue("Quantity. in truck");
+            row1.CreateCell(12).SetCellValue("CTN. in truck");
+            row1.CreateCell(13).SetCellValue("CBM. in truck");
+            row1.CreateCell(14).SetCellValue("Trucking No");
+            row1.CreateCell(15).SetCellValue("Actual arrive  date in warehouse");
+            row1.CreateCell(16).SetCellValue("Actual arrive  date in terminal");
+            row1.CreateCell(17).SetCellValue("Inspection result");
+            row1.CreateCell(18).SetCellValue("Inspection End Date");
+            row1.CreateCell(19).SetCellValue("Ship Mode");
+            row1.CreateCell(20).SetCellValue("Booking date");
+            row1.CreateCell(21).SetCellValue("Booking NO");
+            row1.CreateCell(22).SetCellValue("Loading Date");
+            row1.CreateCell(23).SetCellValue("SO Release Date");
+            row1.CreateCell(24).SetCellValue("ETD");
+            row1.CreateCell(25).SetCellValue("Shipment Status");
+            row1.CreateCell(26).SetCellValue("CFS OR CY Open Date");
+            row1.CreateCell(27).SetCellValue("CFS OR CY Closing Date");
+            row1.CreateCell(28).SetCellValue("FCR OR OB Courier tracking no.");
+            row1.CreateCell(29).SetCellValue("FCR OR Bill of Loading return to SM Date");
+            row1.CreateCell(30).SetCellValue("Certificate Application Date");
+            row1.CreateCell(31).SetCellValue("Certificate return to SM Date");
+            row1.CreateCell(32).SetCellValue("Loading  Port");
+            row1.CreateCell(33).SetCellValue("Carrier SI Cut off date");
+            row1.CreateCell(34).SetCellValue("Vessel");
+            row1.CreateCell(35).SetCellValue("Voyage");
+            row1.CreateCell(36).SetCellValue("Discharging Port");
+            row1.CreateCell(37).SetCellValue("Month");
+            row1.CreateCell(38).SetCellValue("Weekly");
+            row1.CreateCell(39).SetCellValue("Customer Type");
+            row1.CreateCell(40).SetCellValue("Delay reason");
+            //row1.CreateCell(41).SetCellValue("Tid");
+            
+
+
+
+            IDataFormat dataformat = book.CreateDataFormat();
+            
+            ICellStyle style0 = book.CreateCellStyle();
+            
+            style0.DataFormat = dataformat.GetFormat("yyyy-MM-dd");
+            int rows = 4;
+            foreach (var a in result)
+            {
+                NPOI.SS.UserModel.IRow row = sheet1.CreateRow(rows);
+
+                row.CreateCell(0).SetCellValue(a.SalesOrd_STO);
+                row.CreateCell(1).SetCellValue(a.ItemNO);
+                row.CreateCell(2).SetCellValue(a.Purch_Doc);
+                row.CreateCell(3).SetCellValue(a.Item);
+                if (a.DOM_STO_MA_Date != null)
+                {
+
+                    row.CreateCell(4).SetCellValue(((DateTime)a.DOM_STO_MA_Date).ToShortDateString());
+                }
+                row.CreateCell(12).SetCellValue(a.Booking_No);
+
+                row.CreateCell(39).SetCellValue(a.PO_List_Type);
+                if (a.DOM_STO_MA_Date != null)
+                {
+                    row.CreateCell(37).SetCellValue(((DateTime)a.DOM_STO_MA_Date).Month.ToString());
+                    row.CreateCell(38).SetCellValue((((DateTime)a.DOM_STO_MA_Date).DayOfYear / 7 + 1).ToString());
+                }
+                row.CreateCell(19).SetCellValue(a.ShipMode);
+                if (a.Booking_Date != null)
+                {
+                    row.CreateCell(20).SetCellValue((DateTime)a.Booking_Date);
+                }
+
+                if (a.SO_Release_Date != null)
+                {
+                    row.CreateCell(23).SetCellValue(((DateTime)a.SO_Release_Date).ToShortDateString());
+                }
+                
+                if (a.Loading_Port != null)
+                {
+
+                    row.CreateCell(32).SetCellValue(a.Loading_Port);
+                }
+                else
+                {
+
+                    row.CreateCell(32).SetCellValue("Hai Phong");
+                }
+                row.CreateCell(34).SetCellValue(a.Vessel);
+                row.CreateCell(35).SetCellValue(a.Voyage);
+                row.CreateCell(36).SetCellValue(a.Dischaging_Port);
+
+                if (a.ETD != null)
+                {
+                    row.CreateCell(24).SetCellValue(((DateTime)a.ETD).ToShortDateString());
+                }
+                row.CreateCell(25).SetCellValue(a.Shipment_Status);
+                row.CreateCell(28).SetCellValue(a.Courier_tracking_no);
+
+
+                if (a.FCR_Bill_Return_Date != null)
+                {
+                    row.CreateCell(31).SetCellValue(((DateTime)a.FCR_Bill_Return_Date).ToShortDateString());
+                }
+                if (a.Certificate_Application_Date != null)
+                {
+                    row.CreateCell(30).SetCellValue(((DateTime)a.Certificate_Application_Date).ToShortDateString());
+                }
+                if (a.Certificate_Return_TO_SMDate != null)
+                {
+                    row.CreateCell(29).SetCellValue(((DateTime)a.Certificate_Return_TO_SMDate).ToShortDateString());
+                }
+                if (a.OpenDate != null)
+                {
+                    row.CreateCell(26).SetCellValue(((DateTime)a.OpenDate).ToShortDateString());
+                }
+                if (a.Closing_Date != null)
+                {
+                    row.CreateCell(27).SetCellValue(((DateTime)a.Closing_Date).ToShortDateString());
+                }
+                if (a.Qty_Delivered != null)
+                {
+                    row.CreateCell(5).SetCellValue(((int)a.Qty_Delivered));
+                }
+                if (a.Carton_delivered != null)
+                {
+                    row.CreateCell(6).SetCellValue((int)a.Carton_delivered);
+                }
+                if (a.Delivery_CBM != null)
+                {
+                    row.CreateCell(7).SetCellValue((int)a.Delivery_CBM);
+                }
+                row.CreateCell(40).SetCellValue(a.Delay_Details);
+
+                if (a.SI_Cut_Time != null)
+                {
+                    row.CreateCell(33).SetCellValue(((DateTime)a.SI_Cut_Time).ToShortDateString());
+                }
+                row.CreateCell(8).SetCellValue(a.Container_NO);
+                row.CreateCell(9).SetCellValue(a.Seal_NO);
+                row.CreateCell(10).SetCellValue(a.Vehicle_Type);
+                row.CreateCell(11).SetCellValue((int)a.PO_quantity);
+                if (a.CTN != null)
+                {
+                    row.CreateCell(12).SetCellValue((int)a.CTN);
+                }
+                row.CreateCell(13).SetCellValue(a.CBM.ToString());
+                row.CreateCell(14).SetCellValue(a.TruckingNo);
+                if (a.Trucking_Arrive_WHS_Date != null)
+                {
+                    row.CreateCell(15).SetCellValue(((DateTime)a.Trucking_Arrive_WHS_Date).ToShortDateString());
+                }
+                if (a.Trucking_Arrive_terminal_Date != null)
+                {
+                    row.CreateCell(16).SetCellValue(((DateTime)a.Trucking_Arrive_terminal_Date).ToShortDateString());
+                }
+
+                //row.CreateCell(41).SetCellValue(a.Tid);
+                rows++;
+            }
+            for (int col = 0; col <= 47; col++)
+            {
+                sheet1.AutoSizeColumn(col);//自适应
+            }
+
+            sheet1.SetColumnWidth(26, 4500);
+            sheet1.SetColumnWidth(27, 4500);
+
+            sheet1.SetRowBreak(3);
+
+            NPOI.SS.UserModel.IRow row0 = sheet1.CreateRow(0);
+            row0.CreateCell(0).SetCellValue("Lead Sail");
+
+
+            NPOI.SS.UserModel.IRow row2 = sheet1.CreateRow(1);
+            row2.CreateCell(0).SetCellValue("Spin Master  PO List (DOM)");
+
+
+            string daterange = dtStartdate.ToShortDateString() + " To " + dtEnddate.ToShortDateString();
+
+            NPOI.SS.UserModel.IRow row3 = sheet1.CreateRow(2);
+            row3.CreateCell(0).SetCellValue("Period:" + daterange);
+
+
+            IFont font0 = book.CreateFont();
+            font0.FontHeightInPoints = 14;
+            ICellStyle style1 = book.CreateCellStyle();
+            style1.SetFont(font0);
+
+            IFont font2 = book.CreateFont();
+            font2.FontHeightInPoints = 14;
+            ICellStyle style2 = book.CreateCellStyle();
+            style1.SetFont(font2);
+
+            row0.HeightInPoints = 28;
+            row2.HeightInPoints = 28;
+            row3.HeightInPoints = 28;
+
+            row0.GetCell(0).CellStyle = style1;
+            row2.GetCell(0).CellStyle = style1;
+            row3.GetCell(0).CellStyle = style1;
+
+            System.IO.MemoryStream ms = new System.IO.MemoryStream();
+            book.Write(ms);
+            ms.Seek(0, SeekOrigin.Begin);
+            DateTime dt = DateTime.Now;
+            string datetime = dt.ToString("yyyyMMddhhmmss");
+            string fileName = "DOMDailyReport" + datetime + ".xls";
+            return File(ms, "appliction/vnd.ms-execl", fileName);
+        }
+
+
+
+        public FileResult DownLoadCancel()
+        {
+            string DateType = Request.Form["DateType"].ToString();
+            DateTime dtStartdate = Convert.ToDateTime(Request.Form["jrstartdate"]);
+            DateTime dtEnddate = Convert.ToDateTime(Request.Form["jrenddate"]);
+            var result = Models.Model_FinalLoadingPlan.CancelVendorGetPoListByCondition("", DateType, dtStartdate, dtEnddate,
+            "", oc.CurrentVendorName);
+
+            NPOI.HSSF.UserModel.HSSFWorkbook book = new NPOI.HSSF.UserModel.HSSFWorkbook();
+            //添加一个sheet
+            NPOI.SS.UserModel.ISheet sheet1 = book.CreateSheet("Sheet1");
+
+            NPOI.SS.UserModel.IRow row1 = sheet1.CreateRow(3);
+            row1.CreateCell(0).SetCellValue("LOG");
+            row1.CreateCell(1).SetCellValue("Vendor Name");
+            row1.CreateCell(2).SetCellValue("Mfr Name");
+            row1.CreateCell(3).SetCellValue("Customer Name");
+            row1.CreateCell(4).SetCellValue("First Date");
+            row1.CreateCell(5).SetCellValue("Cancel Date");
+            row1.CreateCell(6).SetCellValue("SalesOrd STO");
+            row1.CreateCell(7).SetCellValue("ItemNO");
+            row1.CreateCell(8).SetCellValue("Purch.Doc");
+            row1.CreateCell(9).SetCellValue("Item");
+            row1.CreateCell(10).SetCellValue("PO quantity");
+            row1.CreateCell(11).SetCellValue("Total Carton");
+            row1.CreateCell(12).SetCellValue("Total Volume");
+            row1.CreateCell(13).SetCellValue("Order status");
+            row1.CreateCell(14).SetCellValue("Cancel");
+
+
+
+            IDataFormat dataformat = book.CreateDataFormat();
+
+            ICellStyle style0 = book.CreateCellStyle();
+
+            style0.DataFormat = dataformat.GetFormat("yyyy-MM-dd");
+            int rows = 4;
+            foreach (var a in result)
+            {
+                NPOI.SS.UserModel.IRow row = sheet1.CreateRow(rows);
+
+                row.CreateCell(0).SetCellValue(a.FOB_LOG);
+                row.CreateCell(1).SetCellValue(a.Vendor_Name);
+                row.CreateCell(2).SetCellValue(a.FOB_Customer_Name);
+                if (a.FOB_First_Date != null)
+                {
+
+                    row.CreateCell(4).SetCellValue(((DateTime)a.FOB_First_Date).ToShortDateString());
+                }
+                if (a.FOB_Cancel_Date != null)
+                {
+                    row.CreateCell(5).SetCellValue(((DateTime)a.FOB_Cancel_Date).ToShortDateString());
+                }
+                row.CreateCell(6).SetCellValue(a.SalesOrd_STO);
+                row.CreateCell(7).SetCellValue(a.ItemNO);
+                row.CreateCell(8).SetCellValue(a.Purch_Doc);
+                row.CreateCell(9).SetCellValue(a.Item);
+                row.CreateCell(10).SetCellValue((int)a.PO_quantity);
+                row.CreateCell(11).SetCellValue((int)a.Total_Carton);
+                row.CreateCell(12).SetCellValue((int)a.Total_GrossWeight);
+                row.CreateCell(13).SetCellValue(a.Order_status);
+                
+                rows++;
+            }
+            for (int col = 0; col <= 47; col++)
+            {
+                sheet1.AutoSizeColumn(col);//自适应
+            }
+
+            sheet1.SetColumnWidth(26, 4500);
+            sheet1.SetColumnWidth(27, 4500);
+
+            sheet1.SetRowBreak(3);
+
+            NPOI.SS.UserModel.IRow row0 = sheet1.CreateRow(0);
+            row0.CreateCell(0).SetCellValue("Lead Sail");
+
+
+            NPOI.SS.UserModel.IRow row2 = sheet1.CreateRow(1);
+            row2.CreateCell(0).SetCellValue("Spin Master  PO List (DOM)");
+
+
+            string daterange = dtStartdate.ToShortDateString() + " To " + dtEnddate.ToShortDateString();
+
+            NPOI.SS.UserModel.IRow row3 = sheet1.CreateRow(2);
+            row3.CreateCell(0).SetCellValue("Period:" + daterange);
+
+
+            IFont font0 = book.CreateFont();
+            font0.FontHeightInPoints = 14;
+            ICellStyle style1 = book.CreateCellStyle();
+            style1.SetFont(font0);
+
+            IFont font2 = book.CreateFont();
+            font2.FontHeightInPoints = 14;
+            ICellStyle style2 = book.CreateCellStyle();
+            style1.SetFont(font2);
+
+            row0.HeightInPoints = 28;
+            row2.HeightInPoints = 28;
+            row3.HeightInPoints = 28;
+
+            row0.GetCell(0).CellStyle = style1;
+            row2.GetCell(0).CellStyle = style1;
+            row3.GetCell(0).CellStyle = style1;
+
+            System.IO.MemoryStream ms = new System.IO.MemoryStream();
+            book.Write(ms);
+            ms.Seek(0, SeekOrigin.Begin);
+            DateTime dt = DateTime.Now;
+            string datetime = dt.ToString("yyyyMMddhhmmss");
+            string fileName = "PolistCancelReport" + datetime + ".xls";
+            return File(ms, "appliction/vnd.ms-execl", fileName);
+        }
+        public FileResult DownLoadFoB()
+        {
+            string DateType = Request.Form["DateType"].ToString();
+            DateTime dtStartdate = Convert.ToDateTime(Request.Form["jrstartdate"]);
+            DateTime dtEnddate = Convert.ToDateTime(Request.Form["jrenddate"]);
+            var result = Models.Model_FinalLoadingPlan.GeAllFOBAndDOMDownLoadForIQueryable("", DateType, dtStartdate, dtEnddate,
+            "", oc.CurrentVendorName);
+
+            NPOI.HSSF.UserModel.HSSFWorkbook book = new NPOI.HSSF.UserModel.HSSFWorkbook();
+            //添加一个sheet
+            NPOI.SS.UserModel.ISheet sheet1 = book.CreateSheet("Sheet1");
+
+            NPOI.SS.UserModel.IRow row1 = sheet1.CreateRow(3);
+            row1.CreateCell(0).SetCellValue("Customer Name");
+            row1.CreateCell(1).SetCellValue("Customer PO");
+            row1.CreateCell(2).SetCellValue("SalesOrd OR STO");
+            row1.CreateCell(3).SetCellValue("ItemNO");
+            row1.CreateCell(4).SetCellValue("Purch.Doc");
+            row1.CreateCell(5).SetCellValue("Item");
+            row1.CreateCell(6).SetCellValue("First Date");
+            row1.CreateCell(7).SetCellValue("Cancel Date");
+            row1.CreateCell(8).SetCellValue("Delivery Quantity");
+            row1.CreateCell(9).SetCellValue("Delivery  Carton");
+            row1.CreateCell(10).SetCellValue("Delivery CBM");
+            row1.CreateCell(11).SetCellValue("Container NO.");
+            row1.CreateCell(12).SetCellValue("Seal No.");
+            row1.CreateCell(13).SetCellValue("Vehicle Type");
+            row1.CreateCell(14).SetCellValue("Quantity. in truck");
+            row1.CreateCell(15).SetCellValue("CTN. in truck");
+            row1.CreateCell(16).SetCellValue("CBM. in truck");
+            row1.CreateCell(17).SetCellValue("Trucking No");
+            row1.CreateCell(18).SetCellValue("Actual arrive  date in warehouse");
+            row1.CreateCell(19).SetCellValue("Actual arrive  date in terminal");
+            row1.CreateCell(20).SetCellValue("Inspection result");
+            row1.CreateCell(21).SetCellValue("Inspection End Date");
+            row1.CreateCell(22).SetCellValue("Ship Mode");
+            row1.CreateCell(23).SetCellValue("Booking date");
+            row1.CreateCell(24).SetCellValue("Booking NO");
+            row1.CreateCell(25).SetCellValue("Loading Date");
+            row1.CreateCell(26).SetCellValue("SO Release Date");
+            row1.CreateCell(27).SetCellValue("ETD");
+            row1.CreateCell(28).SetCellValue("Shipment Status");
+            row1.CreateCell(29).SetCellValue("CFS OR CY Open Date");
+            row1.CreateCell(30).SetCellValue("CFS OR CY Closing Date");
+            row1.CreateCell(31).SetCellValue("FOB local charges settlement");
+            row1.CreateCell(32).SetCellValue("FCR OR OB Courier tracking no.");
+            row1.CreateCell(33).SetCellValue("FCR OR Bill of Loading return to SM Date");
+            row1.CreateCell(34).SetCellValue("Certificate Application Date");
+            row1.CreateCell(35).SetCellValue("Certificate return to SM Date");
+            row1.CreateCell(36).SetCellValue("Loading  Port");
+            row1.CreateCell(37).SetCellValue("Carrier SI Cut off date");
+            row1.CreateCell(38).SetCellValue("Vessel");
+            row1.CreateCell(39).SetCellValue("Voyage");
+            row1.CreateCell(40).SetCellValue("Discharging Port");
+            row1.CreateCell(41).SetCellValue("Month");
+            row1.CreateCell(42).SetCellValue("Weekly");
+            row1.CreateCell(43).SetCellValue("Customer Type");
+            row1.CreateCell(44).SetCellValue("Delay reason");
+            //row1.CreateCell(45).SetCellValue("Tid");
+
+            IDataFormat dataformat = book.CreateDataFormat();
+
+            ICellStyle style0 = book.CreateCellStyle();
+
+            style0.DataFormat = dataformat.GetFormat("yyyy-MM-dd");
+             int rows = 4;
+             foreach (var a in result)
+             {
+                 NPOI.SS.UserModel.IRow row = sheet1.CreateRow(rows);
+                 row.CreateCell(0).SetCellValue(a.FOB_Customer_Name);
+                 row.CreateCell(1).SetCellValue(a.FOB_Customer_PO);
+                 row.CreateCell(2).SetCellValue(a.SalesOrd_STO);
+                 row.CreateCell(3).SetCellValue(a.ItemNO);
+                 row.CreateCell(4).SetCellValue(a.Purch_Doc);  
+                 row.CreateCell(5).SetCellValue(a.Item);
+
+                 if (a.FOB_First_Date != null)
+                 {
+                     row.CreateCell(6).SetCellValue(((DateTime)a.FOB_First_Date).ToShortDateString());
+                     row.CreateCell(41).SetCellValue(((DateTime)a.FOB_First_Date).Month.ToString());
+                     row.CreateCell(42).SetCellValue((((DateTime)a.FOB_First_Date).DayOfYear / 7 + 1).ToString());
+                 }
+
+
+                 if (a.FOB_Cancel_Date != null)
+                 {
+                     row.CreateCell(7).SetCellValue(((DateTime)a.FOB_Cancel_Date).ToShortDateString());
+                 }
+                 row.CreateCell(43).SetCellValue(a.PO_List_Type);
+
+                 row.CreateCell(20).SetCellValue(a.Inspection_Result);
+                 if (a.Inspection_End_Date != null)
+                 {
+                     row.CreateCell(21).SetCellValue(((DateTime)a.Inspection_End_Date).ToShortDateString());
+                 }
+                 row.CreateCell(22).SetCellValue(a.ShipMode);
+                 if (a.Booking_Date != null)
+                 {
+                     row.CreateCell(23).SetCellValue(((DateTime)a.Booking_Date).ToShortDateString());
+                 }
+                 row.CreateCell(24).SetCellValue(a.Booking_No);
+                 if (a.Loading_Date != null)
+                 {
+                     row.CreateCell(25).SetCellValue(((DateTime)a.Loading_Date).ToShortDateString());
+                 }
+
+                 if (a.SO_Release_Date != null)
+                 {
+                     row.CreateCell(26).SetCellValue(((DateTime)a.SO_Release_Date).ToShortDateString());
+                 }
+                 if (a.Loading_Port != null)
+                 {
+
+                     row.CreateCell(36).SetCellValue(a.Loading_Port);
+                 }
+                 else
+                 {
+
+                     row.CreateCell(36).SetCellValue("Hai Phong");
+                 }
+                 row.CreateCell(38).SetCellValue(a.Vessel);
+                 row.CreateCell(39).SetCellValue(a.Voyage);
+                 row.CreateCell(40).SetCellValue(a.Dischaging_Port);
+                 if (a.ETD != null)
+                 {
+                     row.CreateCell(27).SetCellValue(((DateTime)a.ETD).ToShortDateString());
+                 }
+
+                 row.CreateCell(28).SetCellValue(a.Shipment_Status);
+                 row.CreateCell(31).SetCellValue(a.FOB_Local_Charges_Settlement);
+                 row.CreateCell(32).SetCellValue(a.Courier_tracking_no);
+
+                 if (a.FCR_Bill_Return_Date != null)
+                 {
+                     row.CreateCell(33).SetCellValue(((DateTime)a.FCR_Bill_Return_Date).ToShortDateString());
+                 }
+                 if (a.Certificate_Application_Date != null)
+                 {
+                     row.CreateCell(34).SetCellValue(((DateTime)a.Certificate_Application_Date).ToShortDateString());
+                 }
+                 if (a.Certificate_Return_TO_SMDate != null)
+                 {
+                     row.CreateCell(35).SetCellValue(((DateTime)a.Certificate_Return_TO_SMDate).ToShortDateString());
+                 }
+                 if (a.OpenDate != null)
+                 {
+                     row.CreateCell(29).SetCellValue(((DateTime)a.OpenDate).ToShortDateString());
+                 }
+                 if (a.Closing_Date != null)
+                 {
+                     row.CreateCell(30).SetCellValue(((DateTime)a.Closing_Date).ToShortDateString());
+                 }
+                 if (a.Qty_Delivered != null)
+                 {
+                     row.CreateCell(8).SetCellValue((int)a.Qty_Delivered);
+                 }
+
+                 if (a.Carton_delivered != null)
+                 {
+                     row.CreateCell(9).SetCellValue((int)a.Carton_delivered);
+                 }
+                 if (a.Delivery_CBM != null)
+                 {
+                     row.CreateCell(10).SetCellValue((double)a.Delivery_CBM);
+                 }
+
+
+                 row.CreateCell(44).SetCellValue(a.Delay_Details);
+
+                 if (a.SI_Cut_Time != null)
+                 {
+                     row.CreateCell(37).SetCellValue(((DateTime)a.SI_Cut_Time).ToShortDateString());
+                 }
+                 row.CreateCell(11).SetCellValue(a.Container_NO);
+                 row.CreateCell(12).SetCellValue(a.Seal_NO);
+                 row.CreateCell(13).SetCellValue(a.Vehicle_Type);
+                 if (a.PO_quantity!=null)
+                 {
+                     row.CreateCell(14).SetCellValue((int)a.PO_quantity);
+                 }
+                 if (a.CTN != null)
+                 {
+                     row.CreateCell(15).SetCellValue((int)a.CTN);
+                 }
+                 row.CreateCell(16).SetCellValue(a.CBM.ToString());
+                 row.CreateCell(17).SetCellValue(a.TruckingNo);
+
+                 if (a.Trucking_Arrive_WHS_Date != null)
+                 {
+                     row.CreateCell(18).SetCellValue(((DateTime)a.Trucking_Arrive_WHS_Date).ToShortDateString());
+                 }
+                 if (a.Trucking_Arrive_terminal_Date != null)
+                 {
+                     row.CreateCell(19).SetCellValue(((DateTime)a.Trucking_Arrive_terminal_Date).ToShortDateString());
+                 }
+                // row.CreateCell(45).SetCellValue(a.Tid);
+                 rows++;
+
+             }
+                
+             for (int col = 0; col <= 47; col++)
+             {
+                 sheet1.AutoSizeColumn(col);//自适应
+             }
+
+             sheet1.SetColumnWidth(26, 4500);
+             sheet1.SetColumnWidth(27, 4500);
+
+             sheet1.SetRowBreak(3);
+
+             NPOI.SS.UserModel.IRow row0 = sheet1.CreateRow(0);
+             row0.CreateCell(0).SetCellValue("Lead Sail");
+
+
+             NPOI.SS.UserModel.IRow row2 = sheet1.CreateRow(1);
+             row2.CreateCell(0).SetCellValue("Spin Master  PO List (FOB)");
+
+
+             string daterange = dtStartdate.ToShortDateString() + " To " + dtEnddate.ToShortDateString();
+
+             NPOI.SS.UserModel.IRow row3 = sheet1.CreateRow(2);
+             row3.CreateCell(0).SetCellValue("Period:" + daterange);
+
+
+             IFont font0 = book.CreateFont();
+             font0.FontHeightInPoints = 14;
+             ICellStyle style1 = book.CreateCellStyle();
+             style1.SetFont(font0);
+
+             IFont font2 = book.CreateFont();
+             font2.FontHeightInPoints = 14;
+             ICellStyle style2 = book.CreateCellStyle();
+             style1.SetFont(font2);
+
+             row0.HeightInPoints = 28;
+             row2.HeightInPoints = 28;
+             row3.HeightInPoints = 28;
+
+             row0.GetCell(0).CellStyle = style1;
+             row2.GetCell(0).CellStyle = style1;
+             row3.GetCell(0).CellStyle = style1;
+
+            System.IO.MemoryStream ms = new System.IO.MemoryStream();
+            book.Write(ms);
+            ms.Seek(0, SeekOrigin.Begin);
+            DateTime dt = DateTime.Now;
+            string datetime = dt.ToString("yyyyMMddhhmmss");
+            string fileName = "FoBDailyReport" + datetime + ".xls";
+            return File(ms, "appliction/vnd.ms-execl", fileName);
+        }
+
+        
+        public FileResult DailyReportExcelOut()
+        {
+            //string consol_No = Request.Form["consol_No"].ToString();
+            string DateType = Request.Form["DateType"].ToString();
+            string Sales_order = Request.Form["Sales_order"].ToString();
+            string Vendor_Name = Request.Form["Vendor_Name"].ToString();
+            DateTime dtStartdate = Convert.ToDateTime(Request.Form["jrstartdate"]);
+            DateTime dtEnddate = Convert.ToDateTime(Request.Form["jrenddate"]);
+            string Customer_name = Request.Form["Customer_name"].ToString();
+            var result = Models.Model_FinalLoadingPlan.GeAllDailyReportForIQueryable(Customer_name, DateType, dtStartdate, dtEnddate,
+            Sales_order, Vendor_Name);
+
+            //var result = Models.Model_FinalLoadingPlan.GetAllLoadPlanKPIByCondition(consol_No, DateType, dtStartdate, dtEnddate,   Sales_order);
+
+            NPOI.HSSF.UserModel.HSSFWorkbook book = new NPOI.HSSF.UserModel.HSSFWorkbook();
+            //添加一个sheet
+            NPOI.SS.UserModel.ISheet sheet1 = book.CreateSheet("Sheet1");
+
+            //NPOI.SS.UserModel.ISheet sheet2 = book.CreateSheet("MIGO-SDA-TEXT");
+
+            //NPOI.SS.UserModel.ISheet sheet3 = book.CreateSheet("VL02N-TEXT(0723)");
+
+            #region export loadplan sheet1
+
+
+            //给sheet1添加第一行的头部标题
+            NPOI.SS.UserModel.IRow row1 = sheet1.CreateRow(3);
+            row1.CreateCell(0).SetCellValue("Remark");
+            row1.CreateCell(1).SetCellValue("PO");
+            row1.CreateCell(2).SetCellValue("Item");
+            row1.CreateCell(3).SetCellValue("PO/line");
+            row1.CreateCell(4).SetCellValue("Created by");
+            row1.CreateCell(5).SetCellValue("Matl Group");
+            row1.CreateCell(6).SetCellValue("Matl Group Sales");
+            row1.CreateCell(7).SetCellValue("Material");
+            row1.CreateCell(8).SetCellValue("Product Class");
+            row1.CreateCell(9).SetCellValue("Short text");
+            row1.CreateCell(10).SetCellValue("PO quantity");
+            row1.CreateCell(11).SetCellValue("Carton");
+            row1.CreateCell(12).SetCellValue("Matrix");
+            row1.CreateCell(13).SetCellValue("Deliv. Date SPIN");
+            row1.CreateCell(14).SetCellValue("Firstdate MONTH");
+            row1.CreateCell(15).SetCellValue("Firstdate WEEKLY");
+            row1.CreateCell(16).SetCellValue("Slip sheet");
+
+            row1.CreateCell(17).SetCellValue("Packing Status");
+            row1.CreateCell(18).SetCellValue("Inspection End Date");
+            row1.CreateCell(19).SetCellValue("Inspection result");
+            row1.CreateCell(20).SetCellValue("Booking No.");
+            row1.CreateCell(21).SetCellValue("Loading date");
+            row1.CreateCell(22).SetCellValue("Closing date");
+            row1.CreateCell(23).SetCellValue("Closing time");
+            //row1.CreateCell(23).SetCellValue("ImportDate");
+            row1.CreateCell(24).SetCellValue("ETD");
+            row1.CreateCell(25).SetCellValue("Shipment Status");
+            row1.CreateCell(26).SetCellValue("FOB local charges settlement");
+            row1.CreateCell(27).SetCellValue("FCR/Bill of Loading return to SM Date 3 working days after ETD (for Asia customers) 7 working days after ETD (for other countries` customer)");
+            row1.CreateCell(28).SetCellValue("Certificate Application Date (FORM AE, AK etc)3 working days after ETD (for Asia customers) 5 working days after ETD (for other countries` customer)");
+            row1.CreateCell(29).SetCellValue("Certificate return to SM Date");
+            row1.CreateCell(30).SetCellValue("Qty delivered");
+            row1.CreateCell(31).SetCellValue("To be del.");
+            row1.CreateCell(32).SetCellValue("Sales Material");
+            row1.CreateCell(33).SetCellValue("Customer PO");
+            row1.CreateCell(34).SetCellValue("SalesOrd/STO");
+            row1.CreateCell(35).SetCellValue("ItemNO");
+            row1.CreateCell(36).SetCellValue("Domestic Dest.");
+
+            row1.CreateCell(37).SetCellValue("Customer Name");
+            row1.CreateCell(38).SetCellValue("Actual GI Date");
+            row1.CreateCell(39).SetCellValue("Route");
+            row1.CreateCell(40).SetCellValue("Ship To");
+            row1.CreateCell(41).SetCellValue("Ship To Country");
+            row1.CreateCell(42).SetCellValue("ShipTo City");
+            row1.CreateCell(43).SetCellValue("ShipTo Name");
+            row1.CreateCell(44).SetCellValue("Delivery N");
+            row1.CreateCell(45).SetCellValue("OTD Reason Code");
+            row1.CreateCell(46).SetCellValue("Delay Details");
+            row1.CreateCell(47).SetCellValue("First Date");
+            row1.CreateCell(48).SetCellValue("Cancel Date");
+
+
+
+            IDataFormat dataformat = book.CreateDataFormat();
+
+            ICellStyle style0 = book.CreateCellStyle();
+
+            style0.DataFormat = dataformat.GetFormat("yyyy-MM-dd");
+
+            int rows = 4;
+            foreach (var a in result)
+            {
+                NPOI.SS.UserModel.IRow row = sheet1.CreateRow(rows);
+                //if (a.Consol_no != null)
+                //{
+                //    row.CreateCell(0).SetCellValue(a.Consol_no.Trim());
+
+                //}
+                if (a.Purch_Doc != null)
+                {
+                row.CreateCell(1).SetCellValue(a.Purch_Doc);
+                }
+                row.CreateCell(2).SetCellValue(a.Item);
+                row.CreateCell(3).SetCellValue(a.PO_Line);
+                row.CreateCell(4).SetCellValue(a.Created_By);
+                row.CreateCell(5).SetCellValue(a.Matl_Group);
+                row.CreateCell(6).SetCellValue(a.Matl_Group_Sales);
+                row.CreateCell(7).SetCellValue(a.Material);
+                row.CreateCell(8).SetCellValue(a.Brand);
+                row.CreateCell(9).SetCellValue(a.Short_text);
+                row.CreateCell(10).SetCellValue((int)a.PO_quantity);
+                row.CreateCell(11).SetCellValue((int)a.Total_Carton);
+                row.CreateCell(12).SetCellValue(a.Matrix);
+                if (a.Deliv_Date != null)
+                {
+                    row.CreateCell(13).SetCellValue((((DateTime)a.Deliv_Date).ToShortDateString()));
+                }
+ 
+                if (a.FOB_First_Date != null) {
+                    row.CreateCell(14).SetCellValue(((DateTime)a.FOB_First_Date).Month.ToString());
+                }
+
+                if (a.FOB_First_Date != null)
+                {
+                    row.CreateCell(15).SetCellValue((Models.Model_FinalLoadingPlan.getWeekNumInMonth((DateTime)a.FOB_First_Date)).ToString());
+                }
+
+               
+                row.CreateCell(16).SetCellValue(a.Slip_Sheet);
+                row.CreateCell(17).SetCellValue(a.Packing_Status);
+                if (a.Inspection_End_Date != null)
+                {
+                    row.CreateCell(18).SetCellValue(((DateTime)a.Inspection_End_Date).ToShortDateString());
+                }
+                row.CreateCell(19).SetCellValue(a.Inspection_Result.ToString());
+                row.CreateCell(20).SetCellValue(a.Booking_No.ToString());
+                if (a.Loading_Date != null)
+                {
+                    row.CreateCell(21).SetCellValue(((DateTime)a.Loading_Date).ToShortDateString());
+                }
+
+                if (a.Closing_Date != null)
+                {
+                    row.CreateCell(22).SetCellValue(((DateTime)a.Closing_Date).ToShortDateString());
+                }
+
+                if (a.Closing_Date != null)
+                {
+                    row.CreateCell(23).SetCellValue(((DateTime)a.Closing_Date).ToShortTimeString());
+                }
+                //row.GetCell(17).CellStyle = style0;  
+                //if (a.Booking_date != null)
+                //{
+                //    row.CreateCell(22).SetCellValue(((DateTime)a.Booking_date).ToShortDateString());
+
+                //}
+
+                //if (a.SO != null) 
+                //{
+                //row.CreateCell(23).SetCellValue(a.SO.ToString());
+                //}
+                if (a.ETD != null)
+                {
+                    row.CreateCell(24).SetCellValue(((DateTime)a.ETD).ToShortDateString());
+                }
+              
+                row.CreateCell(25).SetCellValue(a.Shipment_Status);
+
+ 
+                    row.CreateCell(26).SetCellValue(a.FOB_Local_Charges_Settlement);
+
+                    if (a.FCR_Bill_Return_Date != null)
+                    {
+                        row.CreateCell(27).SetCellValue(((DateTime)a.FCR_Bill_Return_Date).ToShortDateString());
+                    }
+
+                    if (a.Certificate_Application_Date != null)
+                    {
+                        row.CreateCell(28).SetCellValue(((DateTime)a.Certificate_Application_Date).ToShortDateString());
+                    }
+                //row.GetCell(19).CellStyle = style0;  
+                if (a.Certificate_Return_TO_SMDate != null)
+                {
+                    row.CreateCell(29).SetCellValue(((DateTime)a.Certificate_Return_TO_SMDate).ToShortDateString());
+
+                }
+
+              
+                //row.GetCell(20).CellStyle = style0;  
+
+                //row.GetCell(21).CellStyle = style0;  
+
+                if (a.Qty_Delivered != null) {
+                    row.CreateCell(30).SetCellValue((int)a.Qty_Delivered);
+                }
+               
+
+
+                row.CreateCell(31).SetCellValue(a.To_be_del);
+                row.CreateCell(32).SetCellValue(a.Sales_Material);
+                row.CreateCell(33).SetCellValue(a.FOB_Customer_PO);
+                row.CreateCell(34).SetCellValue(a.SalesOrd_STO);
+                row.CreateCell(35).SetCellValue(a.ItemNO);
+                //row.GetCell(23).CellStyle = style0;  
+                //if (a.Cont_Date != null)
+                //{
+                //    row.CreateCell(23).SetCellValue(((DateTime)a.Cont_Date).ToShortDateString());
+
+                //}
+                //row.GetCell(24).CellStyle = style0;  
+                if (a.DOM_Domestic_Dest != null )
+                {
+                    row.CreateCell(36).SetCellValue(a.DOM_Domestic_Dest);
+
+                }
+
+                if (a.FOB_Customer_Name != null  )
+                {
+                    row.CreateCell(37).SetCellValue(a.FOB_Customer_Name);
+
+                }
+                row.CreateCell(38).SetCellValue("");
+
+            
+
+                if (a.DOM_Route != null  )
+                {
+                    row.CreateCell(39).SetCellValue(a.DOM_Route);
+
+                }
+              
+                row.CreateCell(40).SetCellValue("");
+
+                if (a.Ship_To_Country != null )
+                {
+                    row.CreateCell(41).SetCellValue(a.Ship_To_Country);
+
+                }
+                row.CreateCell(42).SetCellValue("");
+
+                if (a.ShipTo_Name != null)
+                {
+                    row.CreateCell(43).SetCellValue(a.ShipTo_Name);
+
+                }
+
+            
+
+                if (a.Delivery_Number != null)
+                {
+                    row.CreateCell(44).SetCellValue(a.Delivery_Number);
+
+                }
+
+                if (a.OTD_Reason_Code != null)
+                {
+                    row.CreateCell(45).SetCellValue(a.OTD_Reason_Code);
+
+                }
+
+                if (a.Delay_Details != null)
+                {
+                    row.CreateCell(46).SetCellValue(a.Delay_Details);
+
+                }
+
+                if (a.FOB_First_Date != null)
+                {
+                    row.CreateCell(47).SetCellValue(((DateTime)a.FOB_First_Date).ToShortDateString());
+                }
+
+                if (a.FOB_Cancel_Date != null)
+                {
+                    row.CreateCell(48).SetCellValue(((DateTime)a.FOB_Cancel_Date).ToShortDateString());
+                }
+                //row.GetCell(25).CellStyle = style0;  
+
+                rows++;
+            }
+
+            for (int col = 0; col <= 47; col++)
+            {
+                sheet1.AutoSizeColumn(col);//自适应
+            }
+
+            sheet1.SetColumnWidth(26, 4500);
+            sheet1.SetColumnWidth(27, 4500);
+
+            sheet1.SetRowBreak(3);
+
+            NPOI.SS.UserModel.IRow row0 = sheet1.CreateRow(0);
+            row0.CreateCell(0).SetCellValue("Lead Sail");
+
+
+            NPOI.SS.UserModel.IRow row2 = sheet1.CreateRow(1);
+            row2.CreateCell(0).SetCellValue("Spin Master Daily Report");
+
+
+            string daterange = dtStartdate.ToShortDateString() + " To " + dtEnddate.ToShortDateString();
+
+            NPOI.SS.UserModel.IRow row3 = sheet1.CreateRow(2);
+            row3.CreateCell(0).SetCellValue("Period:" + daterange);
+
+
+            IFont font0 = book.CreateFont();
+            font0.FontHeightInPoints = 14;
+            ICellStyle style1 = book.CreateCellStyle();
+            style1.SetFont(font0);
+
+            IFont font2 = book.CreateFont();
+            font2.FontHeightInPoints = 14;
+            ICellStyle style2 = book.CreateCellStyle();
+            style1.SetFont(font2);
+
+            row0.HeightInPoints = 28;
+            row2.HeightInPoints = 28;
+            row3.HeightInPoints = 28;
+
+            row0.GetCell(0).CellStyle = style1;
+            row2.GetCell(0).CellStyle = style1;
+            row3.GetCell(0).CellStyle = style1;
+            #endregion
+
+
+    
+            System.IO.MemoryStream ms = new System.IO.MemoryStream();
+            book.Write(ms);
+            ms.Seek(0, SeekOrigin.Begin);
+            DateTime dt = DateTime.Now;
+            string datetime = dt.ToString("yyyyMMddhhmmss");
+            string fileName = "DailyReport" + datetime + ".xls";
+            return File(ms, "appliction/vnd.ms-execl", fileName);
+        }
+        public ActionResult uploadFOBDOM()
+        {
+            //if (Session["UploadedFile"] == null)
+            //{
+            //    Session["UploadedFile"] = "0";
+            //}
+            //if (Session["Current_Num"] == null)
+            //{
+            //    Session["Current_Num"] = "";
+            //}
+            //if (Session["Seq"] == null)
+            //{
+            //    Session["Seq"] = "0";
+            //}
+
+
+
+            //string strEID = Request.Form["eID"];
+
+            //string strAccount = Request.Form["Account"];
+
+            //string strSO = Request.Form["SO"];
+
+            //获取当前的HttpContext  
+            HttpContextBase contextbase = new HttpContextWrapper(System.Web.HttpContext.Current);
+            //获取当前的请求Request  
+            HttpRequestBase requestBase = contextbase.Request;
+            //获取Request中的请求文件Collection  
+            //通过这个集合就可完成，多个文件的上传。本人Controller中参数为HttpPostedFileBase，则决定了使用单文件上传更好。  
+            //多文件上传的可通过插件的multi选项设定，其默认为true
+            HttpFileCollectionBase myFileDateCollection = requestBase.Files;
+            // HttpPostedFileBase myFileDate2 = myFileDateCollection["uploadFile"];
+
+
+            //获取集合中的指定名称的文件  
+            HttpPostedFileBase myFileDate = myFileDateCollection["Filedata"];  //注意，"Filedata"是插件指定的，可通过fileObjName选项进行修改  
+
+            HttpPostedFileBase file = Request.Files["Filedata"];
+            if (file != null)
+            {
+                string path2 = @"C:\SMLoadPlan";
+                //string pathWjj = System.DateTime.Now.ToString("yyyyMMdd");
+                //string root = path + "/" + pathWjj;
+                if (!Directory.Exists(path2))
+                {
+                    Directory.CreateDirectory(path2);
+                }
+
+                string strYear = System.DateTime.Now.Year.ToString();
+                string strMonth = System.DateTime.Now.Month.ToString();
+                string strfilename = System.DateTime.Now.ToString("yyyyMMdd hhmmhh") + file.FileName;
+                if (!Directory.Exists(path2 + @"\" + strYear + @"\" + strMonth))
+                {
+                    Directory.CreateDirectory(path2 + @"\" + strYear + @"\" + strMonth);
+
+                }
+                else
+                {
+                    string[] FileName = PublicHelper.GetFileNames(path2 + @"\" + strYear + @"\" + strMonth);
+
+                }
+
+                path2 = path2 + @"\" + strYear + @"\" + strMonth;
+
+
+
+                int index = file.FileName.LastIndexOf(".");
+                string lastName = file.FileName.Substring(index, file.FileName.Length - index);//文件后缀
+                //判断是否存在相同文件，如果已经存在相同文件，则删除
+                //if (DirFile.IsExistFile(path2 + "/" + strNumber.Trim() + lastName))
+                //{
+                //    FileOperate.FileDel(path2 + "/" + strNumber.Trim() + lastName);
+                //}
+
+                //file.SaveAs(path2 + "/" + file.FileName);
+
+                file.SaveAs(path2 + "/" + strfilename);
+
+
+                //FileStream fs = new FileStream(path2 + "/" + strNumber.Trim() + lastName, FileMode.Open, FileAccess.Read);
+
+                //IWorkbook hssfworkbook = null;
+
+                //NPOI.HSSF.UserModel.HSSFWorkbook hssfworkbook = null;
+
+                IWorkbook hssfworkbook = null; try
+                {
+
+                    string str = Models.Model_FinalLoadingPlan.ExcelToJson(path2 + "/" + strfilename).Replace("\r\n", "");
+                    return Content(str);
+                }
+                catch (Exception ex)
+                {
+                    
+                    return Content(ex.Message);
+                }
+            }
+            return Content("");
+        }
+
+        public ActionResult Cancel()
+        {      
+
+            var DateType = Request.Form["data"];
+            var items = JsonConvert.DeserializeObject<List<System.Collections.Hashtable>>(DateType);
+            List<FinalPoList> fin = new List<FinalPoList>();//记录要求选哦的polist
+            foreach (var item in items)
+            {
+                FinalPoList poitem = new FinalPoList();
+                if (item["Purch.Doc"] != null)
+                {
+                    poitem.Purch_Doc = item["Purch.Doc"].ToString();
+                }
+                if (item["Purch_Doc"] != null && item["Purch.Doc"] == null)
+                {
+                    poitem.Purch_Doc = item["Purch_Doc"].ToString();
+                }
+                if (item["Item"] != null)
+                {
+                    poitem.Item = item["Item"].ToString();
+                }
+                if (poitem.Purch_Doc != "" && poitem.Item != "")
+                {
+                    if (fin.Where(a => a.Purch_Doc == poitem.Purch_Doc && a.Item == poitem.Item).ToList().Count <= 0)
+                    {
+                        fin.Add(poitem);
+                    }
+                }
+            }
+            return PackagingAjaxmsg(Common.AjaxStatu.ok, Models.Model_FinalLoadingPlan.CancelPolist(fin), "", "");
+            
+
+
+
+
+            
+        }
+            
+
+
+        public ActionResult upload()
+        {
+            //if (Session["UploadedFile"] == null)
+            //{
+            //    Session["UploadedFile"] = "0";
+            //}
+            //if (Session["Current_Num"] == null)
+            //{
+            //    Session["Current_Num"] = "";
+            //}
+            //if (Session["Seq"] == null)
+            //{
+            //    Session["Seq"] = "0";
+            //}
+
+
+
+            //string strEID = Request.Form["eID"];
+
+            //string strAccount = Request.Form["Account"];
+
+            //string strSO = Request.Form["SO"];
+
+            //获取当前的HttpContext  
+            HttpContextBase contextbase = new HttpContextWrapper(System.Web.HttpContext.Current);
+            //获取当前的请求Request  
+            HttpRequestBase requestBase = contextbase.Request;
+            //获取Request中的请求文件Collection  
+            //通过这个集合就可完成，多个文件的上传。本人Controller中参数为HttpPostedFileBase，则决定了使用单文件上传更好。  
+            //多文件上传的可通过插件的multi选项设定，其默认为true
+            HttpFileCollectionBase myFileDateCollection = requestBase.Files;
+            // HttpPostedFileBase myFileDate2 = myFileDateCollection["uploadFile"];
+
+            
+            //获取集合中的指定名称的文件  
+            HttpPostedFileBase myFileDate = myFileDateCollection["Filedata"];  //注意，"Filedata"是插件指定的，可通过fileObjName选项进行修改  
+
+            HttpPostedFileBase file = Request.Files["Filedata"];
+            if (file != null)
+            {
+                string path2 = @"C:\SMLoadPlan";
+                //string pathWjj = System.DateTime.Now.ToString("yyyyMMdd");
+                //string root = path + "/" + pathWjj;
+                if (!Directory.Exists(path2))
+                {
+                    Directory.CreateDirectory(path2);
+                }
+
+                string strYear = System.DateTime.Now.Year.ToString();
+                string strMonth = System.DateTime.Now.Month.ToString();
+                string strfilename = System.DateTime.Now.ToString("yyyyM Mdd hhmmhh") + file.FileName;
+                if (!Directory.Exists(path2 + @"\" + strYear + @"\" + strMonth))
+                {
+                    Directory.CreateDirectory(path2 + @"\" + strYear + @"\" + strMonth);
+
+                }
+                else
+                {
+                    string[] FileName = PublicHelper.GetFileNames(path2 + @"\" + strYear + @"\" + strMonth);
+
+                }
+
+                path2 = path2 + @"\" + strYear + @"\" + strMonth;
+
+
+
+                int index = file.FileName.LastIndexOf(".");
+                string lastName = file.FileName.Substring(index, file.FileName.Length - index);//文件后缀
+                //判断是否存在相同文件，如果已经存在相同文件，则删除
+                //if (DirFile.IsExistFile(path2 + "/" + strNumber.Trim() + lastName))
+                //{
+                //    FileOperate.FileDel(path2 + "/" + strNumber.Trim() + lastName);
+                //}
+
+                //file.SaveAs(path2 + "/" + file.FileName);
+
+                file.SaveAs(path2 + "/" + strfilename);
+
+
+                //FileStream fs = new FileStream(path2 + "/" + strNumber.Trim() + lastName, FileMode.Open, FileAccess.Read);
+
+                //IWorkbook hssfworkbook = null;
+
+                //NPOI.HSSF.UserModel.HSSFWorkbook hssfworkbook = null;
+
+                IWorkbook hssfworkbook = null;
+                FileStream fs = new FileStream(path2 + "/" + strfilename, FileMode.Open, FileAccess.Read);
+                string strErrorInfo = "";
+                string strCurrenExcelRow = "";
+                // hssfworkbook = new HSSFWorkbook(fs);
+                try
+                {
+                    if (strfilename.IndexOf(".xlsx") > 0) // 2007版本
+                        hssfworkbook = new XSSFWorkbook(fs);
+                    else if (strfilename.IndexOf(".xls") > 0) // 2003版本
+                        hssfworkbook = new HSSFWorkbook(fs);
+
+                    int iSheetcount = hssfworkbook.NumberOfSheets;
+                    NPOI.SS.UserModel.ISheet sheet = hssfworkbook.GetSheetAt(0);
+                    int sheetcount = hssfworkbook.NumberOfSheets;
+                    string version = "";
+
+                    string backinfo = "";
+                    int startRow = 1;
+                    int endrow = sheet.LastRowNum;
+
+                    List<FinalLoadingPlan> lLoadplan = new List<FinalLoadingPlan>();
+                    #region 遍历所有excel行
+
+                    for (startRow = 1; startRow <= 10000; ++startRow)
+                    {
+
+                        if (sheet.GetRow(startRow).GetCell(0) == null)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            if (string.IsNullOrEmpty(sheet.GetRow(startRow).GetCell(0).ToString().Trim()) && (sheet.GetRow(startRow).GetCell(1) == null || string.IsNullOrEmpty(sheet.GetRow(startRow).GetCell(1).ToString().Trim())))
+                            {
+                                break;
+                            }
+
+                            FinalLoadingPlan fl = new FinalLoadingPlan();
+                            fl.SM_Operator = sheet.GetRow(startRow).GetCell(0).ToString().Trim();
+                            fl.Vendor_Name = sheet.GetRow(startRow).GetCell(1).ToString().Trim();
+                            if (!Model_FinalLoadingPlan.CheckVendorName(fl.Vendor_Name))
+                            {
+                                backinfo = backinfo + "第" + (startRow + 1).ToString() + "行" + "Vendor Name不存在基础数据,请核查.\r\n";
+                            }
+
+                            fl.Mfr_Name1 = sheet.GetRow(startRow).GetCell(2).ToString().Trim();
+                            fl.Mfr_Country = sheet.GetRow(startRow).GetCell(3).ToString().Trim();
+                            fl.Customer_Name = sheet.GetRow(startRow).GetCell(4).ToString().Trim();
+                            fl.Receiving_point = sheet.GetRow(startRow).GetCell(5).ToString().Trim();
+                            fl.CustomerPO = sheet.GetRow(startRow).GetCell(6).ToString().Trim();
+                            try
+                            {
+                                fl.First_Date = sheet.GetRow(startRow).GetCell(7).DateCellValue;
+                            }
+                            catch
+                            {
+
+                                backinfo = backinfo + "第" + (startRow + 1).ToString() + "行" + "First_Date 数据格式有误请核查.\r\n";
+                            }
+
+                            try
+                            {
+                                fl.Cancel_Date = sheet.GetRow(startRow).GetCell(8).DateCellValue;
+                            }
+                            catch
+                            {
+                                backinfo = backinfo + "第" + (startRow + 1).ToString() + "行" + "Cancel_Date 数据格式有误请核查.\r\n";
+                            }
+                            fl.SalesOrd_STO = sheet.GetRow(startRow).GetCell(9).ToString().Trim();
+                            fl.ItemNO = sheet.GetRow(startRow).GetCell(10).ToString().Trim();
+                            fl.CustomerMaterialNumber = sheet.GetRow(startRow).GetCell(11).ToString().Trim();
+                            fl.SalesMaterial = sheet.GetRow(startRow).GetCell(12).ToString().Trim();
+                            fl.Material = sheet.GetRow(startRow).GetCell(13).ToString().Trim();
+                            fl.CustomerDescription = sheet.GetRow(startRow).GetCell(14).ToString().Trim();
+                            fl.Short_text = sheet.GetRow(startRow).GetCell(15).ToString().Trim();
+                            fl.Deliv_date = sheet.GetRow(startRow).GetCell(16).DateCellValue;
+                            fl.PurchDoc = sheet.GetRow(startRow).GetCell(17).ToString().Trim();
+                            fl.Item = sheet.GetRow(startRow).GetCell(18).ToString().Trim();
+                            fl.Matl_Group = sheet.GetRow(startRow).GetCell(19).ToString().Trim();
+                            try
+                            {
+                                fl.PO_quantity = sheet.GetRow(startRow).GetCell(20).NumericCellValue.ToString();
+                            }
+                            catch
+                            {
+                                backinfo = backinfo + "第" + (startRow + 1).ToString() + "行" + "PO_quantity 数据格式有误请核查.\r\n";
+                            }
+
+                            try
+                            {
+                                fl.CartonPCS = (int)sheet.GetRow(startRow).GetCell(21).NumericCellValue;
+                            }
+                            catch
+                            {
+                                backinfo = backinfo + "第" + (startRow + 1).ToString() + "行" + "Carton PCS 数据格式有误请核查.\r\n";
+                            }
+
+                            try
+                            {
+                                fl.TotalCarton = sheet.GetRow(startRow).GetCell(22).NumericCellValue.ToString();
+                            }
+                            catch
+                            {
+                                backinfo = backinfo + "第" + (startRow + 1).ToString() + "行" + "TotalCarton 数据格式有误请核查.\r\n";
+                            }
+
+                            try
+                            {
+                                fl.CartonGrossWeight = (decimal)sheet.GetRow(startRow).GetCell(23).NumericCellValue;
+                            }
+                            catch
+                            {
+                                backinfo = backinfo + "第" + (startRow + 1).ToString() + "行" + "CartonGrossWeight 数据格式有误请核查.\r\n";
+                            }
+
+                            try
+                            {
+                                fl.TotalGrossWeight = (decimal)sheet.GetRow(startRow).GetCell(24).NumericCellValue;
+
+                            }
+                            catch
+                            {
+                                backinfo = backinfo + "第" + (startRow + 1).ToString() + "行" + "CartonGrossWeight 数据格式有误请核查.\r\n";
+                            }
+
+                            try
+                            {
+                                fl.CartonVolume = (decimal)sheet.GetRow(startRow).GetCell(25).NumericCellValue;
+
+                            }
+                            catch
+                            {
+                                backinfo = backinfo + "第" + (startRow + 1).ToString() + "行" + "CartonVolume 数据格式有误请核查.\r\n";
+                            }
+
+                            try
+                            {
+                                fl.TotalVolume = (decimal)sheet.GetRow(startRow).GetCell(26).NumericCellValue;
+                            }
+                            catch
+                            {
+                                backinfo = backinfo + "第" + (startRow + 1).ToString() + "行" + "TotalVolume 数据格式有误请核查.\r\n";
+                            }
+
+                            try
+                            {
+                                fl.CartonNetWeight = (decimal)sheet.GetRow(startRow).GetCell(27).NumericCellValue;
+                            }
+                            catch
+                            {
+                                backinfo = backinfo + "第" + (startRow + 1).ToString() + "行" + "CartonNetWeight 数据格式有误请核查.\r\n";
+                            }
+
+                            try
+                            {
+                                fl.TotalNetWeight = (decimal)sheet.GetRow(startRow).GetCell(28).NumericCellValue;
+                            }
+                            catch
+                            {
+                                backinfo = backinfo + "第" + (startRow + 1).ToString() + "行" + "TotalNetWeight 数据格式有误请核查.\r\n";
+                            }
+
+                            try
+                            {
+                                fl.CartonWidth_L = (decimal)sheet.GetRow(startRow).GetCell(29).NumericCellValue;
+                            }
+                            catch
+                            {
+                                backinfo = backinfo + "第" + (startRow + 1).ToString() + "行" + "CartonWidth_L 数据格式有误请核查.\r\n";
+                            }
+
+                            try
+                            {
+                                fl.CartonDepth_W = (decimal)sheet.GetRow(startRow).GetCell(30).NumericCellValue;
+                            }
+                            catch
+                            {
+                                backinfo = backinfo + "第" + (startRow + 1).ToString() + "行" + "CartonDepth_W 数据格式有误请核查.";
+                            }
+
+                            try
+                            {
+                                fl.CartonHeight = (decimal)sheet.GetRow(startRow).GetCell(31).NumericCellValue;
+                            }
+                            catch
+                            {
+                                backinfo = backinfo + "第" + (startRow + 1).ToString() + "行" + "CartonHeight 数据格式有误请核查.\r\n";
+                            }
+
+
+                            fl.MainBatt = sheet.GetRow(startRow).GetCell(32).ToString().Trim();
+                            fl.MainBattQty = sheet.GetRow(startRow).GetCell(33).ToString().Trim();
+                            fl.ShipToName = sheet.GetRow(startRow).GetCell(34).ToString().Trim();
+                            fl.ShipToCountry = sheet.GetRow(startRow).GetCell(35).ToString().Trim();
+                            fl.OverallCredStat = sheet.GetRow(startRow).GetCell(36).ToString().Trim();
+                            fl.SMprofomalINV = sheet.GetRow(startRow).GetCell(37).ToString().Trim();
+                            fl.DeliveryNo = sheet.GetRow(startRow).GetCell(38).ToString().Trim();
+                            //fl.Mfr_Name1 = sheet.GetRow(startRow).GetCell(0).ToString().Trim();
+                            lLoadplan.Add(fl);
+
+                        }
+
+
+                    }
+                    if (backinfo.Trim().Length > 0)
+                    {
+                        return PackagingAjaxmsg(Common.AjaxStatu.err, backinfo, "", "");
+                    }
+                    MvcZodiac.Areas.Models.Model_FinalLoadingPlan.Saveloadplan(lLoadplan);
+
+                }
+                catch (Exception ex)
+                {
+
+                    if (string.IsNullOrEmpty(strCurrenExcelRow.Trim()))
+                    {
+                        return PackagingAjaxmsg(Common.AjaxStatu.err, "数据导入失败" + ex.Message, "", "");
+                    }
+                    else
+                    {
+                        return PackagingAjaxmsg(Common.AjaxStatu.err, "数据导入失败" + ex.Message + "第" + strCurrenExcelRow + "数据有误", "", "");
+                    }
+                }
+
+                    #endregion
+
+
+            }
+            return PackagingAjaxmsg(Common.AjaxStatu.ok, "数据导入成功", "", "");
+        }
+         
+
+        public ActionResult GetTKBooking2()
+        {
+
+            string strSTO = Request.Form["STO"].ToString();
+            string strItem = Request.Form["Item"].ToString();
+            string consol = Request.Form["Consol"].ToString();
+            dynamic dgBookingInfo = Models.Model_FinalLoadingPlan.getTKBooking2(strSTO, strItem, consol);
+            return Content(DataHelper.ObjToJson(dgBookingInfo));
+        }
+
+        [Skip]
+        public ActionResult GetLoadPlanList()
+        {
+            string strBookingNumber = Request.Form["BookingNumber"].ToString();
+            string strConsol = Request.Form["Consol"].ToString();
+
+
+
+            dynamic dgLoadplan = Models.Model_FinalLoadingPlan.GetLoadPlanList(strBookingNumber, strConsol);
+
+            return Content(DataHelper.ObjToJson(dgLoadplan));
+        }
+
+
+        [Skip]
+        public FileResult downloadPOD()
+        {
+            string strBookingNumber = Request.QueryString["BookingNumber"].ToString();
+            string Terminal = Request.QueryString["Terminal"].ToString();
+            var bookinghead = Models.Model_FinalLoadingPlan.getTKBookingHeadByBookingNumber(strBookingNumber);
+            //var outhead = Models.Model_FinalLoadingPlan.getLoadingByCTN(strBookingNumber);
+            string stryear = "";
+            string strmonth = "";
+            string filePath = "";
+            string filetype = ".jpg";
+            if (bookinghead.Count > 0)
+            {
+                stryear = bookinghead[0].Vdr_Pickup_date.Value.Year.ToString();
+                strmonth = bookinghead[0].Vdr_Pickup_date.Value.Month.ToString();
+                if (Terminal.ToLower() != "null")
+                {
+
+                    filePath = "D:/TMSPhoto/" + stryear + "/" + strmonth + "/" + strBookingNumber + "/" + "Terminal" + "/" + strBookingNumber + "-1.jpg";
+
+                }
+                else
+                {
+                    filePath = "D:/TMSPhoto/" + stryear + "/" + strmonth + "/" + strBookingNumber + "/" + "wms_receipt" + "/" + strBookingNumber + "-1.jpg";
+                }
+                if (!PublicHelper.IsExistFile(filePath))
+                {
+                    if (Terminal.ToLower() != "null")
+                    {
+
+                        filePath = "D:/TMSPhoto/" + stryear + "/" + strmonth + "/" + strBookingNumber + "/" + "Terminal" + "/" + strBookingNumber + "-1.jpg";
+
+                    }
+                    else
+                    {
+                        filePath = "D:/TMSPhoto/" + stryear + "/" + strmonth + "/" + strBookingNumber + "/" + "wms_receipt" + "/" + strBookingNumber + "-1.jpg";
+                    }
+                    filetype = ".jpg";
+                }
+            }
+                
+            //if (outhead.Count > 0)
+            //{
+            //    stryear = outhead[0].StartTime.Value.Year.ToString();
+            //    strmonth = outhead[0].StartTime.Value.Month.ToString();
+            //    filePath = "D:/TMSPOD/" + stryear + "/" + strmonth + "/" + strBookingNumber + ".pdf";
+            //    if (!PublicHelper.IsExistFile(filePath))
+            //    {
+            //        filePath = "D:/TMSPOD/" + stryear + "/" + strmonth + "/" + strBookingNumber + ".jpg";
+            //        filetype = ".jpg";
+            //    }
+            //}
+
+            
+
+
+
+            return File(filePath, "text/plain", strBookingNumber + filetype);
+        }
+
+
+
+
+        public FileResult ExportLoadPlan()
+        {
+            var strBookingNumber = "";
+            var SO = "";
+            //string strsolist = Request.QueryString["lpList"];
+            if (Request.Form.AllKeys.Contains("tTKNo"))
+            {
+                strBookingNumber = Request.Form["tTKNo"].ToString();
+            }
+
+
+            if (Request.Form.AllKeys.Contains("tConsol"))
+            {
+                SO = Request.Form["tConsol"].ToString();
+            }
+
+
+            // JavaScriptSerializer jss = new JavaScriptSerializer();
+            //////将jason字符串 转换成对象
+            // List<FinalLoadingPlan> bookinglist = jss.Deserialize<List<FinalLoadingPlan>>(strsolist);
+            string path2 = @"D:\SMLoadPlan";
+
+            //iTextSharp.text.Rectangle pageSize = new iTextSharp.text.Rectangle(216f, 716f);
+
+            using (iTextSharp.text.Document document = new iTextSharp.text.Document(PageSize.A4.Rotate(), 0, 0, 20, 20))
+            {
+                // 也可使用系统定义的纸张大小
+                // Document document = new Document(PageSize.A4, 0, 0, 45, 25);
+                // BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
+                iTextSharp.text.Font CellFont = iTextSharp.text.FontFactory.GetFont("Arial", 10, iTextSharp.text.Font.NORMAL);
+
+
+
+                //iTextSharp.text.Font times = new iTextSharp.text.Font(bfTimes, 5, 10,BaseColor.BLACK);
+                string filename = System.DateTime.Now.ToString("yyyyMMddhhmmss") + "loadplan.PDF";
+                var writer = PdfWriter.GetInstance(document, new FileStream(path2 + "/" + filename, FileMode.Create));
+                document.Open();
+
+                //document.AddTitle("SPINMASTER CONTAINER LOADING INSTRUCTION");
+
+                var fTitle = new iTextSharp.text.Paragraph("SPINMASTER CONTAINER LOADING INSTRUCTION");
+                //fTitle.Leading=50;//设置行距
+                fTitle.Alignment = 1;
+                //document.Add(new iTextSharp.text.Paragraph("SPINMASTER CONTAINER LOADING INSTRUCTION"));
+                document.Add(fTitle);
+                PdfPTable table = new PdfPTable(12);
+
+
+
+
+
+                table.DefaultCell.Phrase = new Phrase() { Font = CellFont };
+
+
+
+                table.TotalWidth = 800;
+                table.LockedWidth = true;
+                float[] widths = new float[] { 200, 60, 60, 50, 60, 40, 60, 60, 60, 40, 60, 50 };
+                table.SetWidths(widths);
+
+
+                PdfPCell cell;
+                String gcInfo = string.Empty;
+
+                cell = new PdfPCell(new Paragraph("  ", CellFont));
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                cell.VerticalAlignment = Element.ALIGN_BOTTOM;
+                cell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+                cell.Colspan = 12; // 标段名称 占一行 
+                table.AddCell(cell);
+                //table.AddCell(cell);
+                //table.AddCell(cell);
+                //table.AddCell(cell);
+                //table.AddCell(cell);
+                //table.AddCell(cell);
+                //table.AddCell(cell);
+                //table.AddCell(cell);
+                //table.AddCell(cell);
+                //table.AddCell(cell);
+                //table.AddCell(cell);
+                //table.AddCell(cell);
+
+
+                List<FinalLoadingPlan> dgLoadplan = Models.Model_FinalLoadingPlan.GetLoadPlanListData(strBookingNumber, SO);
+
+                table.AddCell(new Paragraph("Vendor Name", CellFont));
+                table.AddCell(new Paragraph("Customer Name", CellFont));
+                table.AddCell(new Paragraph("SalesOrd/STO", CellFont));
+                table.AddCell(new Paragraph("Item No.", CellFont));
+                table.AddCell(new Paragraph("Purch.Doc.", CellFont));
+                table.AddCell(new Paragraph("Item", CellFont));
+                table.AddCell(new Paragraph("Cust Material No.", CellFont));
+                table.AddCell(new Paragraph("Sales Material No.", CellFont));
+                table.AddCell(new Paragraph("Material No.", CellFont));
+                table.AddCell(new Paragraph("Total Carton", CellFont));
+                table.AddCell(new Paragraph("Total Gross Weight", CellFont));
+                table.AddCell(new Paragraph("Total CBM", CellFont));
+
+                foreach (var row in dgLoadplan)
+                {
+                    table.AddCell(new Paragraph(row.Vendor_Name, CellFont));
+                    table.AddCell(new Paragraph(row.Customer_Name, CellFont));
+                    table.AddCell(new Paragraph(row.SalesOrd_STO, CellFont));
+                    table.AddCell(new Paragraph(row.ItemNO, CellFont));
+                    table.AddCell(new Paragraph(row.PurchDoc, CellFont));
+                    table.AddCell(new Paragraph(row.Item, CellFont));
+                    table.AddCell(new Paragraph(row.CustomerMaterialNumber, CellFont));
+                    table.AddCell(new Paragraph(row.SalesMaterial, CellFont));
+                    table.AddCell(new Paragraph(row.Material, CellFont));
+                    table.AddCell(new Paragraph(row.TotalCarton, CellFont));
+                    table.AddCell(new Paragraph(row.TotalGrossWeight.ToString(), CellFont));
+                    table.AddCell(new Paragraph(row.TotalVolume.ToString(), CellFont));
+
+
+                }
+
+
+                document.Add(table);
+                // 添加文档信息
+                //document.AddTitle("PDF Document Create by iTextSharp");
+                //document.AddSubject("Welcome to use iTextSharp");
+                //document.AddKeywords("PDF,iTextSharp");
+                //document.AddCreator("Create by will");
+                //document.AddAuthor("Will");
+                // 添加文档内容
+                //for (int i = 0; i < 5; i++)
+                //{
+                //    document.Add(new iTextSharp.text.Paragraph("Hello World! Successfuly Create PDF document! "));
+                //}
+                writer.Flush();
+                document.Close();
+
+
+
+                return File(path2 + "/" + filename, "text/plain", filename);
+
+                //FileStream myFile = new FileStream(path2 + "/" + filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+
+
+
+                //filename = depname + y.ToString() + "年" + m.ToString() + "月.pdf";
+                //FileInfo downloadFile = new FileInfo(path2 + "/" + filename);
+                //Response.Clear();
+                //Response.ClearHeaders();
+                //Response.Buffer = false;
+                //Response.ContentType = "application/octet-stream";
+                //Response.AppendHeader("Content-Disposition", "attachment;filename=" + filename);
+                //Response.AppendHeader("Content-Length", downloadFile.Length.ToString());
+                ////System.Web.HttpContext.Current.Response.WriteFile(downloadFile.FullName);
+                //Response.WriteFile(downloadFile.FullName);
+                //Response.Flush();
+                //Response.End();
+
+                //System.IO.MemoryStream ms = new System.IO.MemoryStream();
+
+                //book.Write(ms);
+                //myFile.Seek(0, SeekOrigin.Begin);
+                //DateTime dt = DateTime.Now;
+                //string datetime = dt.ToString("yyyyMMddhhmmss");
+                //string fileName = "LoadPlan_TimeLine" + datetime + ".xls";
+                //return File(myFile, "appliction/vnd.ms-execl", fileName);
+
+
+
+                //string destFileName =  path2 + "/" + filename;
+                //if (System.IO.File.Exists(destFileName))
+                //{
+                //    FileInfo fi = new FileInfo(destFileName);
+                //     Response.Clear();
+                //     Response.ClearHeaders();
+                //     Response.Buffer = false;
+                //     Response.AppendHeader("Content-Disposition", "attachment;filename=" + HttpUtility.UrlEncode(Path.GetFileName(destFileName), System.Text.Encoding.UTF8));
+                //     Response.AppendHeader("Content-Length", fi.Length.ToString());
+                //     Response.ContentType = "application/octet-stream";
+                //     Response.WriteFile(destFileName);
+                //     Response.Flush();
+                //     Response.End();
+                //}
+
+                //return null;
+
+
+                //System.Diagnostics.Process.Start(path2 + "/" + filename);
+                //return null;
+                //return File(pdf, "application/pdf", "test.pdf");
+            }
+
+        }
+
+        [Skip]
+        public FileResult downloadContNoPOD()
+        {
+            string ContNo = Request.QueryString["ContNo"].ToString();
+            string ContDate = Request.QueryString["ContDate"].ToString();
+            //var bookinghead = Models.Model_FinalLoadingPlan.getTKBookingHeadByBookingNumber(strBookingNumber);
+            //var outhead = Models.Model_FinalLoadingPlan.getLoadingByCTN(strBookingNumber);
+            string filePath = "";
+            string filetype = ".png";
+             string p = @"/Date\((\d+)\)/";
+           MatchEvaluator matchEvaluator = new MatchEvaluator(DataHelper.ConvertJsonDateToDateString);
+           Regex reg = new Regex(p);
+           ContDate = reg.Replace(ContDate, matchEvaluator);
+           DateTime time = DateTime.Parse(ContDate);
+           filePath = "D:/POD/" + time.Year + "/" + time.Month + "/" + ContNo + ".png";
+            if (!PublicHelper.IsExistFile(filePath))
+            {
+                filePath = "D:/POD/" + time.Year + "/" + time.Month + "/" + ContNo + ".png";
+                filetype = ".png";
+            }
+           
+
+            //if (outhead.Count > 0)
+            //{
+            //    stryear = outhead[0].StartTime.Value.Year.ToString();
+            //    strmonth = outhead[0].StartTime.Value.Month.ToString();
+            //    filePath = "D:/TMSPOD/" + stryear + "/" + strmonth + "/" + strBookingNumber + ".pdf";
+            //    if (!PublicHelper.IsExistFile(filePath))
+            //    {
+            //        filePath = "D:/TMSPOD/" + stryear + "/" + strmonth + "/" + strBookingNumber + ".jpg";
+            //        filetype = ".jpg";
+            //    }
+            //}
+
+
+
+
+
+            return File(filePath, "text/plain", ContNo + filetype);
+        }
+
+
+        public ActionResult CancelVendorGetPoList()
+        {
+            int page = 1;
+            int rows = 5;
+            if (Request.Form["rows"] != null && Request.Form["page"] != null)
+            {
+                page = int.Parse(Request.Form["page"]);
+                rows = int.Parse(Request.Form["rows"]);
+            }
+            string sort = null;
+            string order = null;
+            if (Request.Form["sort"] != null && Request.Form["order"] != null)
+            {
+                sort = Request.Form["sort"];
+                order = Request.Form["order"];
+            }
+
+            string Sales_order = Request.Form["Sales_order"].ToString();
+            string Customer_name = "";
+            string ItemNO = "";
+            if (Request.Form["Customer_name"] != null)
+            {
+
+                Customer_name = Request.Form["Customer_name"].ToString();
+            }
+            if (Request.Form["Item"] != null)
+            {
+
+                ItemNO = Request.Form["Item"].ToString();
+            }
+            dynamic dgBookingInfo = Models.Model_FinalLoadingPlan.CancelVendorGetPoList(Sales_order, ItemNO, Customer_name, page, rows, oc.CurrentVendorName.Trim());
+            return Content(DataHelper.ObjToJson(dgBookingInfo));
+
+
+        }
+
+        public ActionResult VendorGetPoList()
+        {
+            int page = 1;
+            int rows = 5;
+            if (Request.Form["rows"] != null && Request.Form["page"] != null)
+            {
+                page = int.Parse(Request.Form["page"]);
+                rows = int.Parse(Request.Form["rows"]);
+            }
+            string sort = null;
+            string order = null;
+            if (Request.Form["sort"] != null && Request.Form["order"] != null)
+            {
+                sort = Request.Form["sort"];
+                order = Request.Form["order"];
+            }
+
+            string Sales_order = Request.Form["Sales_order"].ToString();
+            string Customer_name = "";
+            string ItemNO = "";
+            if (Request.Form["Customer_name"] != null)
+            {
+
+                Customer_name = Request.Form["Customer_name"].ToString();
+            }
+            if (Request.Form["ItemNO"] != null)
+            {
+
+                ItemNO = Request.Form["ItemNO"].ToString();
+            }
+            dynamic dgBookingInfo = Models.Model_FinalLoadingPlan.VendorGetPoList(Sales_order, ItemNO, Customer_name, page, rows, oc.CurrentVendorName.Trim());
+            return Content(DataHelper.ObjToJson(dgBookingInfo));
+
+
+        }
+
+
+
+        public ActionResult Vendor_InsertPoInfo()
+        {
+            string strPOID = Request.Form["POID"];
+            //booking
+            string strBookingNumber = Request.Form["txtBookingNumber"];
+            string strDischagingPort = Request.Form["txtDischagingPort"];
+            string strVessel = Request.Form["Vessel"];
+            string strVoyage = Request.Form["Voyage"];
+            //string strCustomerStatus = Request.Form["CustomerStatus"];
+            string strLoadingPort = Request.Form["LoadingPort"];
+            string strbookingdate = Request.Form["bookingdate"];
+            string streta = Request.Form["eta"];
+            string strloadingdate = Request.Form["loadingdate"];
+            string strclosingdate = Request.Form["closingdate"];
+            string strsicuttime = Request.Form["sicuttime"];
+            string stretd = Request.Form["etd"];
+            string strSOReleaseDate = Request.Form["SO_Release_Date"];
+            string strCYOpendate = Request.Form["CY_Open_date"];
+            string strSCFSOpenDate = Request.Form["CFS_Open_Date"];
+            string strcouriertrackingno = Request.Form["courier_tracking_no"];
+            string strForwardName = Request.Form["txtForwardName"];
+            string strdgTrucking = Request.Form["dgTrucking"];  
+            string strshipmode = Request.Form["shipmode"];
+            //shipping
+            string strShipmentStatus = Request.Form["ShipmentStatus"];
+            string strCarton = Request.Form["Carton"];
+            string strQty = Request.Form["Qty"];
+            string strCBM = Request.Form["CBM"];
+            string strTo_be_del = Request.Form["To_be_del"];
+            string strOTD = Request.Form["OTD"];
+            string strDelayDetails = Request.Form["DelayDetails"];
+            string strpo_line = Request.Form["po_line"];
+            string strcreateby = Request.Form["createby"];
+            string strMatl_Group_Sales = Request.Form["Matl_Group_Sales"];
+            string strMatrix = Request.Form["Matrix"];
+            string strSlip_sheet = Request.Form["Slip_sheet"];
+            string strPacking_Status = Request.Form["Packing_Status"];
+            string strInspection_result = Request.Form["Inspection_result"];
+            string strFOB_local_charges_settlement = Request.Form["FOB_local_charges_settlement"];
+            string strInspection_End_Date = Request.Form["Inspection_End_Date"];
+            string strFCR_of_Loading_return_Date = Request.Form["FCR_of_Loading_return_Date"];
+            string strCertificate_Application_Date = Request.Form["Certificate_Application_Date"];
+            string strCertificate_return_Date = Request.Form["Certificate_return_Date"];
+            //Trucking
+            string strContainerNO = Request.Form["ContainerNO"];
+            string strSeal = Request.Form["Seal"];
+            string strVehicle = Request.Form["Vehicle"];
+ 
+
+              FinalVendorInput poinfo = new FinalVendorInput();
+              poinfo.PID = Convert.ToInt32( strPOID);
+              poinfo.Booking_No = strBookingNumber;
+
+              //string str = strloadingdate;
+
+              //只获取正整数部分，不考虑大于1970年问题
+              //string p = @"\\/Date\((\d+)\)\\/";
+              //考虑小于1970年的问题
+              //string p = @"\\/Date\((-*\d+)\)\\/";
+
+              //Regex reg = new Regex(p);
+              //Match match = reg.Match(str);
+
+              //ConvertJsonDateToDateString(match);
+              poinfo.Dischaging_Port = strDischagingPort;
+              poinfo.Vessel = strVessel;
+              poinfo.Voyage = strVoyage;
+              poinfo.Loading_Port = strLoadingPort;
+              poinfo.Courier_tracking_no = strcouriertrackingno;
+              poinfo.Ship_Mode = strshipmode;
+              poinfo.Forward_Name = strForwardName;
+
+              if (!string.IsNullOrEmpty(strsicuttime))
+              {
+                  poinfo.SI_Cut_Time = Convert.ToDateTime(strsicuttime);
+              }
+
+              if (!string.IsNullOrEmpty(strbookingdate))
+              {
+                  poinfo.Booking_Date = Convert.ToDateTime(strbookingdate);
+              }
+
+              if (!string.IsNullOrEmpty(strSOReleaseDate))
+              {
+                  poinfo.SO_Release_Date = Convert.ToDateTime(strSOReleaseDate);
+              }
+
+              if (!string.IsNullOrEmpty(strCYOpendate))
+              {
+                  poinfo.CY_Open_date = Convert.ToDateTime(strCYOpendate);
+              }
+              if (!string.IsNullOrEmpty(strSCFSOpenDate))
+              {
+                  poinfo.CFS_Open_Date = Convert.ToDateTime(strSCFSOpenDate);
+              }
+
+
+              if (!string.IsNullOrEmpty(streta))
+              {
+                  poinfo.ETA = Convert.ToDateTime(streta);
+              }
+
+            
+
+
+              if (strCBM != "")
+              {
+                  poinfo.Delivery_CBM = decimal.Parse(strCBM);
+              }
+
+
+              if (!string.IsNullOrEmpty(strloadingdate))
+              {
+                  poinfo.Loading_Date = Convert.ToDateTime(strloadingdate);
+              }
+              if (!string.IsNullOrEmpty(strclosingdate))
+              {
+                  poinfo.CY_Closing_Date = Convert.ToDateTime(strclosingdate);
+              }
+
+              if (!string.IsNullOrEmpty(stretd))
+              {
+                  poinfo.ETD = Convert.ToDateTime(stretd);
+              }
+
+              poinfo.Shipment_Status = strShipmentStatus;
+              if (!string.IsNullOrEmpty(strCarton))
+              {
+
+                  poinfo.Carton_delivered = Convert.ToInt32(strCarton);
+              }
+
+              if (!string.IsNullOrEmpty(strQty))
+              {
+                  poinfo.Qty_Delivered = Convert.ToInt32(strQty);
+              }
+
+              poinfo.To_be_del = strTo_be_del;
+              poinfo.OTD_Reason_Code = strOTD;
+              poinfo.Delay_Details = strDelayDetails;
+              poinfo.PO_Line = strpo_line;
+              poinfo.Created_By = strcreateby;
+              poinfo.Matl_Group_Sales = strMatl_Group_Sales;
+              poinfo.Matrix = strMatrix;
+              poinfo.Slip_Sheet = strSlip_sheet;
+              poinfo.Packing_Status = strPacking_Status;
+              poinfo.Inspection_Result = strInspection_result;
+              poinfo.FOB_Local_Charges_Settlement = strFOB_local_charges_settlement;
+
+              if (!string.IsNullOrEmpty(strInspection_End_Date))
+              {
+                  poinfo.Inspection_End_Date = Convert.ToDateTime(strInspection_End_Date);
+              }
+
+              if (!string.IsNullOrEmpty(strFCR_of_Loading_return_Date))
+              {
+                  poinfo.FCR_Bill_Return_Date = Convert.ToDateTime(strFCR_of_Loading_return_Date);
+              }
+              if (!string.IsNullOrEmpty(strCertificate_Application_Date))
+              {
+                  poinfo.Certificate_Application_Date = Convert.ToDateTime(strCertificate_Application_Date);
+              }
+              if (!string.IsNullOrEmpty(strCertificate_return_Date))
+              {
+                  poinfo.Certificate_Return_TO_SMDate = Convert.ToDateTime(strCertificate_return_Date);
+              }
+              poinfo.InputTime = System.DateTime.Now;
+
+              poinfo.FinalVendorInputTrucking = DataHelper.JsonDeserialize<List<FinalVendorInputTrucking>>(strdgTrucking);
+
+
+              //Trucking 
+              poinfo.Container_NO = strContainerNO;
+              poinfo.Seal_NO = strSeal;
+              poinfo.Vehicle_Type = strVehicle;
+           
+
+
+
+            AjaxMsgModel amm = new AjaxMsgModel();
+            try
+            {
+                amm = Models.Model_FinalLoadingPlan.Vendor_InsertPoInfo(poinfo);
+            }
+            catch (Exception ex)
+            {
+                return PackagingAjaxmsg(new AjaxMsgModel
+                {
+                    Statu = AjaxStatu.err,
+                    Msg = ex.Message,
+                    Data = null,
+                    BackUrl = null
+                });
+            }
+            //JavaScriptSerializer jss = new JavaScriptSerializer();
+
+            // //var data = JSON.stringify(convertArray(f.serializeArray()));
+            // //var data = pAdd.find('form').serializeArray();
+            ////将jason字符串 转换成对象
+            //var palletInfo= jss.Deserialize<unloadingDtl>(formdata);
+            return PackagingAjaxmsg(amm);
+
+        }
+
+
+        public ActionResult Vendor_UpdatePoInfo()
+        {
+            string strPOID = Request.Form["POID"];
+            string strVID = Request.Form["vID"];
+
+            string strpUpdateGRtime = Request.Form["pUpdateGRtime"];
+            
+            
+            //booking
+            string strBookingNumber = Request.Form["txtBookingNumber"];
+            string strDischagingPort = Request.Form["txtDischagingPort"];
+            string strVessel = Request.Form["Vessel"];
+            string strVoyage = Request.Form["Voyage"];
+            //string strCustomerStatus = Request.Form["CustomerStatus"];
+            string strLoadingPort = Request.Form["LoadingPort"];
+            string strbookingdate = Request.Form["bookingdate"];
+            string streta = Request.Form["eta"];
+            string strloadingdate = Request.Form["loadingdate"];
+            string strclosingdate = Request.Form["closingdate"];
+            string strCYClosingDate = Request.Form["CYClosingDate"];
+            string strsicuttime = Request.Form["sicuttime"];
+            string stretd = Request.Form["etd"];
+            string strSOReleaseDate = Request.Form["SO_Release_Date"];
+            string strCYOpendate = Request.Form["CY_Open_date"];
+            string strSCFSOpenDate = Request.Form["CFS_Open_Date"];
+            string strcouriertrackingno = Request.Form["courier_tracking_no"];
+            string strForwardName = Request.Form["txtForwardName"];
+            string strshipmode = Request.Form["shipmode"];
+            //shipping
+
+            string strShipmentStatus = Request.Form["ShipmentStatus"];
+            string strCarton = Request.Form["Carton"];
+            string strQty = Request.Form["Qty"];
+            string strCBM = Request.Form["CBM"];
+            string strTo_be_del = Request.Form["To_be_del"];
+            string strOTD = Request.Form["OTD"];
+            string strDelayDetails = Request.Form["DelayDetails"];
+            string strpo_line = Request.Form["po_line"];
+            string strcreateby = Request.Form["createby"];
+            string strMatl_Group_Sales = Request.Form["Matl_Group_Sales"];
+            string strMatrix = Request.Form["Matrix"];
+            string strSlip_sheet = Request.Form["Slip_sheet"];
+            string strPacking_Status = Request.Form["Packing_Status"];
+            string strInspection_result = Request.Form["Inspection_result"];
+            string strFOB_local_charges_settlement = Request.Form["FOB_local_charges_settlement"];
+            string strInspection_End_Date = Request.Form["Inspection_End_Date"];
+            string strFCR_of_Loading_return_Date = Request.Form["FCR_of_Loading_return_Date"];
+            string strCertificate_Application_Date = Request.Form["Certificate_Application_Date"];
+            string strCertificate_return_Date = Request.Form["Certificate_return_Date"];
+            string strdgTrucking = Request.Form["dgTrucking"];
+                
+            //Trucking
+            string strContainerNO = Request.Form["ContainerNO"];
+            string strSeal = Request.Form["Seal"];
+            string strVehicle = Request.Form["Vehicle"];
+
+
+            FinalVendorInput poinfo = new FinalVendorInput();
+            poinfo.PID = Convert.ToInt32(strPOID);
+            poinfo.VID = Convert.ToInt32(strVID);
+            //booking begin
+            poinfo.Booking_No = strBookingNumber;
+
+            string str = strloadingdate;
+ 
+            //只获取正整数部分，不考虑大于1970年问题
+            //string p = @"\\/Date\((\d+)\)\\/";
+            //考虑小于1970年的问题
+            //string p = @"\\/Date\((-*\d+)\)\\/";
+ 
+            //Regex reg = new Regex(p);
+            //Match match = reg.Match(str);
+
+            //ConvertJsonDateToDateString(match);
+            poinfo.Dischaging_Port = strDischagingPort;
+            poinfo.Vessel = strVessel;
+            poinfo.Voyage = strVoyage;
+            poinfo.Loading_Port = strLoadingPort;
+            poinfo.Courier_tracking_no = strcouriertrackingno;
+
+            poinfo.Ship_Mode = strshipmode;
+            poinfo.Forward_Name = strForwardName;
+
+            if (!string.IsNullOrEmpty(strsicuttime))
+            {
+                poinfo.SI_Cut_Time = Convert.ToDateTime(strsicuttime);
+            }
+
+            if (!string.IsNullOrEmpty(strCYClosingDate))
+            {
+                poinfo.CY_Closing_Date = Convert.ToDateTime(strCYClosingDate);
+            }
+            if (!string.IsNullOrEmpty(strbookingdate))
+            {
+                poinfo.Booking_Date = Convert.ToDateTime(strbookingdate);
+            }
+            if (!string.IsNullOrEmpty(strSOReleaseDate))
+            {
+                poinfo.SO_Release_Date = Convert.ToDateTime(strSOReleaseDate);
+            }
+
+            if (!string.IsNullOrEmpty(strCYOpendate))
+            {
+                poinfo.CY_Open_date = Convert.ToDateTime(strCYOpendate);
+            }
+            if (!string.IsNullOrEmpty(strSCFSOpenDate))
+            {
+                poinfo.CFS_Open_Date = Convert.ToDateTime(strSCFSOpenDate);
+            }
+
+
+
+            if (!string.IsNullOrEmpty(strSOReleaseDate))
+            {
+                poinfo.SO_Release_Date = Convert.ToDateTime(strSOReleaseDate);
+            }
+
+
+            if (!string.IsNullOrEmpty(strbookingdate))
+            {
+                poinfo.Booking_Date = Convert.ToDateTime(strbookingdate);
+            }
+            if (!string.IsNullOrEmpty(strbookingdate))
+            {
+                poinfo.Booking_Date = Convert.ToDateTime(strbookingdate);
+            }
+            
+
+            if (!string.IsNullOrEmpty(streta))
+            {
+                poinfo.ETA = Convert.ToDateTime(streta);
+            }
+
+
+            if (strCBM != "")
+            {
+                poinfo.Delivery_CBM = decimal.Parse(strCBM);
+            }
+
+
+            if (!string.IsNullOrEmpty(strloadingdate))
+            {
+                poinfo.Loading_Date = Convert.ToDateTime(strloadingdate);
+            }
+            if (!string.IsNullOrEmpty(strclosingdate))
+            {
+                poinfo.CY_Closing_Date = Convert.ToDateTime(strclosingdate);
+            }
+
+            if (!string.IsNullOrEmpty(stretd))
+            {
+                poinfo.ETD = Convert.ToDateTime(stretd);
+            }
+
+            poinfo.Shipment_Status = strShipmentStatus;
+            if (!string.IsNullOrEmpty(strCarton))
+            {
+
+                poinfo.Carton_delivered = Convert.ToInt32(strCarton);
+            }
+
+            if (!string.IsNullOrEmpty(strQty))
+            {
+                poinfo.Qty_Delivered = Convert.ToInt32(strQty);
+            }
+
+            poinfo.To_be_del = strTo_be_del;
+            poinfo.OTD_Reason_Code = strOTD;
+            poinfo.Delay_Details = strDelayDetails;
+
+
+
+            poinfo.PO_Line = strpo_line;
+            poinfo.Created_By = strcreateby;
+            poinfo.Matl_Group_Sales = strMatl_Group_Sales;
+            poinfo.Matrix = strMatrix;
+            poinfo.Slip_Sheet = strSlip_sheet;
+            poinfo.Packing_Status = strPacking_Status;
+            poinfo.Inspection_Result = strInspection_result;
+            poinfo.FOB_Local_Charges_Settlement = strFOB_local_charges_settlement;
+
+            if (!string.IsNullOrEmpty(strInspection_End_Date))
+            {
+                poinfo.Inspection_End_Date = Convert.ToDateTime(strInspection_End_Date);
+            }
+
+            if (!string.IsNullOrEmpty(strFCR_of_Loading_return_Date))
+            {
+                poinfo.FCR_Bill_Return_Date = Convert.ToDateTime(strFCR_of_Loading_return_Date);
+            }
+            if (!string.IsNullOrEmpty(strCertificate_Application_Date))
+            {
+                poinfo.Certificate_Application_Date = Convert.ToDateTime(strCertificate_Application_Date);
+            }
+            if (!string.IsNullOrEmpty(strCertificate_return_Date))
+            {
+                poinfo.Certificate_Return_TO_SMDate = Convert.ToDateTime(strCertificate_return_Date);
+            }
+            poinfo.InputTime = System.DateTime.Now;
+
+
+
+            poinfo.FinalVendorInputTrucking = DataHelper.JsonDeserialize<List<FinalVendorInputTrucking>>(strdgTrucking);
+
+
+            foreach (var item in poinfo.FinalVendorInputTrucking)
+            {
+                if (item.Trucking_Arrive_terminal_Date != null || item.Trucking_Arrive_WHS_Date != null)
+                {
+                    if (strpUpdateGRtime == "")
+                    {
+                        poinfo.Update_GR_time = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd"));
+                    }
+                }
+            }
+            
+
+
+            //Trucking 
+            poinfo.Container_NO = strContainerNO;
+            poinfo.Seal_NO = strSeal;
+            poinfo.Vehicle_Type = strVehicle;
+
+            AjaxMsgModel amm = new AjaxMsgModel();
+            try
+            {
+                amm = Models.Model_FinalLoadingPlan.Vendor_UpdatePoInfo(poinfo);
+            }
+            catch (Exception ex)
+            {
+                return PackagingAjaxmsg(new AjaxMsgModel
+                {
+                    Statu = AjaxStatu.err,
+                    Msg = ex.Message,
+                    Data = null,
+                    BackUrl = null
+                });
+            }
+             
+            return PackagingAjaxmsg(amm);
+
+        }
+
+        public ActionResult Vendor_DeletePoInfo()
+        {
+            string strVID = Request.Form["VID"];
+
+            int ivid = Convert.ToInt32(strVID);
+
+            FinalVendorInput poinfo = new FinalVendorInput();
+            poinfo.VID = Convert.ToInt32(strVID);
+ 
+            AjaxMsgModel amm = new AjaxMsgModel();
+            try
+            {
+                amm = Models.Model_FinalLoadingPlan.Vendor_DeletePoInfo(ivid);
+            }
+            catch (Exception ex)
+            {
+                return PackagingAjaxmsg(new AjaxMsgModel
+                {
+                    Statu = AjaxStatu.err,
+                    Msg = ex.Message,
+                    Data = null,
+                    BackUrl = null
+                });
+            }
+
+            return PackagingAjaxmsg(amm);
+
+        }   
+        public ActionResult GetVendorInputListByPID()
+        {
+           string pID = Request.Form["pID"];
+           dynamic dgBookingInfo = Models.Model_FinalLoadingPlan.GetVendorInputListBYPOID(pID);
+           return Content(DataHelper.ObjToJson(dgBookingInfo));
+        }
+
+        public ActionResult getVendorInputInfoByVID()
+        {
+            string vID = Request.Form["vID"];
+            var ajaxresult = Models.Model_FinalLoadingPlan.getVendorInputInfoByVID(vID);
+
+            if (ajaxresult.Count > 0)
+            {
+                string strMsg = "ok";
+                return PackagingAjaxmsg(Common.AjaxStatu.ok, strMsg, ajaxresult, "");
+            }
+            else
+            {
+                string strMsg = "false";
+                return PackagingAjaxmsg(Common.AjaxStatu.err, strMsg, ajaxresult, "");
+
+            }
+
+        }
+
+        public ActionResult getTruckingByVID()
+        {
+            string vID = Request.Form["vID"];
+            var ajaxresult = Models.Model_FinalLoadingPlan.getTruckingByVID(vID);
+            return Content(DataHelper.ObjToJson(ajaxresult));
+
+        }
+
+
+        public ActionResult getDailyReport()
+        {
+            int page = 1;
+            int rows = 5;
+            if (Request.Form["rows"] != null && Request.Form["page"] != null)
+            {
+                page = int.Parse(Request.Form["page"]);
+                rows = int.Parse(Request.Form["rows"]);
+            }
+            string sort = null;
+            string order = null;
+            if (Request.Form["sort"] != null && Request.Form["order"] != null)
+            {
+                sort = Request.Form["sort"];
+                order = Request.Form["order"];
+            }
+            //string strPOD = "";
+            //if (!Request.Form.AllKeys.Contains("POD"))
+            //{
+            //    strPOD = "";
+            //}
+            //else
+            //{
+            //    strPOD = Request.Form["POD"].ToString();
+            //}
+
+            string Customer_name = Request.Form["Customer_name"].ToString();
+            //string consol_No = Request.Form["consol_No"].ToString();
+            string DateType = Request.Form["DateType"].ToString();
+            string Purch_Doc = Request.Form["Purch_Doc"].ToString();
+            string Item = Request.Form["Item"].ToString();
+            string Vendor_Name = oc.CurrentVendorName;
+            DateTime dtStartdate = Convert.ToDateTime(Request.Form["jrstartdate"]);
+            DateTime dtEnddate = Convert.ToDateTime(Request.Form["jrenddate"]);
+            dynamic dgBookingInfo = Models.Model_FinalLoadingPlan.GetDailyreportByCondition(Customer_name, DateType, dtStartdate, dtEnddate, page, rows, Purch_Doc, Vendor_Name);//  Models.Model_ASNHead.GetASNList(strASN, strcustomsCode);
+            return Content(DataHelper.ObjToJson(dgBookingInfo));
+        }
+        public ActionResult getPolistReport()
+        {
+
+            string key = Request.Form["key"];
+
+            return Content(DataHelper.JsonSerializer(Model_FinalLoadingPlan.getPolistReport(key)));
+        }
+
+
+        public ActionResult getMIGOReport()
+        {
+
+            int page = 1;
+            int rows = 5;
+            if (Request.Form["rows"] != null && Request.Form["page"] != null)
+            {
+                page = int.Parse(Request.Form["page"]);
+                rows = int.Parse(Request.Form["rows"]);
+            }
+            string sort = null;
+            string order = null;
+            if (Request.Form["sort"] != null && Request.Form["order"] != null)
+            {
+                sort = Request.Form["sort"];
+                order = Request.Form["order"];
+            }
+            //string strPOD = "";
+            //if (!Request.Form.AllKeys.Contains("POD"))
+            //{
+            //    strPOD = "";
+            //}
+            //else
+            //{
+            //    strPOD = Request.Form["POD"].ToString();
+            //}
+
+            string Customer_name = Request.Form["Customer_name"].ToString();
+            //string consol_No = Request.Form["consol_No"].ToString();
+            string DateType = Request.Form["DateType"].ToString();
+            string Purch_Doc = Request.Form["Purch_Doc"].ToString();
+            string Item = Request.Form["Item"].ToString();
+            string Vendor_Name = oc.CurrentVendorName;
+            DateTime dtStartdate = Convert.ToDateTime(Request.Form["jrstartdate"]);
+            DateTime dtEnddate = Convert.ToDateTime(Request.Form["jrenddate"]);
+            dynamic dgBookingInfo = Models.Model_FinalLoadingPlan.GetMIGOReportByCondition(Customer_name, DateType, dtStartdate, dtEnddate, page, rows, Purch_Doc, Vendor_Name,Item);//  Models.Model_ASNHead.GetASNList(strASN, strcustomsCode);
+            return Content(DataHelper.ObjToJson(dgBookingInfo));
+        }
+        
+        [Skip]
+        public ActionResult GetTKBooking()
+        {
+
+            string strSTO = Request.Form["STO"].ToString();
+            string strItem = Request.Form["Item"].ToString();
+            string consol = Request.Form["Consol"].ToString();
+            dynamic dgBookingInfo = Models.Model_FinalLoadingPlan.getTKBooking(strSTO, strItem, consol);
+            return Content(DataHelper.ObjToJson(dgBookingInfo));
+        }
+
+
+
+
+
+        private static string ConvertJsonDateToDateString(Match m)
+            {
+                string result = string.Empty;
+                DateTime dt = new DateTime(1970, 1, 1);
+                dt = dt.AddMilliseconds(long.Parse(m.Groups[1].Value));
+                dt = dt.ToLocalTime();
+                result = dt.ToString("yyyy-MM-dd HH:mm:ss");
+                return result;
+            }
+ 
+
+    }
+}

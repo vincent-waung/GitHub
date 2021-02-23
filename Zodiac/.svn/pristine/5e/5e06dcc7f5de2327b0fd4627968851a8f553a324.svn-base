@@ -1,0 +1,48 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>FrozenColumnsinDataGrid</title>
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+            $("#dg").datagrid({
+                url: '/EasyUI_Areas/AdminSys/GetUserInfo',
+                singleSelect: true,
+                columns: [[                 
+                    { field: 'uRemark', title: '备注', width: 100 },
+                    { field: 'uPost', title: '邮编', width: 100 },
+                    { field: 'uGender', title: '性别', width: 100, align: 'right' }
+                ]],
+                frozenColumns: [[
+                    { field: 'uId', title: '用户编号', width: 100 },
+                    { field: 'uLoginName', title: '登录名', width: 100 }                   
+                ]]
+            });
+
+      });
+    </script>
+</head>
+<body>
+     <h2>数据表格中冻结列</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>你能够冻结一些列.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <table id="dg" class="easyui-datagrid" title="数据表格中冻结列" style="width:500px;height:250px"
+            data-options="rownumbers:true,singleSelect:true">
+    
+    </table>
+</body>
+</html>

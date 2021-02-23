@@ -1,0 +1,59 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Basic</title>
+      <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+    <h2>基本树组件</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>点击左边箭头来展开或者收缩节点.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <ul class="easyui-tree">
+        <li>
+            <span>My Documents</span>
+            <ul>
+                <li data-options="state:'closed'">
+                    <span>Photos</span>
+                    <ul>
+                        <li>
+                            <span>Friend</span>
+                        </li>
+                        <li>
+                            <span>Wife</span>
+                        </li>
+                        <li>
+                            <span>Company</span>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span>Program Files</span>
+                    <ul>
+                        <li>Intel</li>
+                        <li>Java</li>
+                        <li>Microsoft Office</li>
+                        <li>Games</li>
+                    </ul>
+                </li>
+                <li>index.html</li>
+                <li>about.html</li>
+                <li>welcome.html</li>
+            </ul>
+        </li>
+    </ul>
+</body>
+</html>

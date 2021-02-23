@@ -1,0 +1,35 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Category</title>
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+    <h2>分类查询</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>选择一个类别然后在输入框中点击搜索按钮或者按Enter键执行查询.</div>
+    </div>
+    <div style="margin: 10px 0;"></div>
+    <input class="easyui-searchbox" data-options="prompt:'请输入...',menu:'#mm',searcher:doSearch" style="width: 300px"></input>
+    <div id="mm" style="width: 120px">
+        <div data-options="name:'all',iconCls:'icon-ok'">所有新闻</div>
+        <div data-options="name:'sports'">体育新闻</div>
+    </div>
+    <script>
+        function doSearch(value, name) {
+            alert('您输入的是: ' + value + '(' + name + ')');
+        }
+    </script>
+</body>
+</html>

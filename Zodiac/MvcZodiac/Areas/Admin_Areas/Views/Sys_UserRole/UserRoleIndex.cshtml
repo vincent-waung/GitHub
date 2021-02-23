@@ -1,0 +1,464 @@
+﻿@{
+    Layout = null;
+}
+@using Models;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>用户管理首页</title>
+    <!--jquery easyui-->
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />  
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+    <script src="~/Scripts/datagrid-defaultview.js"></script>
+    <!--自定义库-->
+    <script src="~/Scripts/processingajaxmsg.js"></script>
+    <script src="~/Scripts/xzUtil.js"></script>
+    <!--自定义的图标样式-->
+    <link href="~/Content/exticon.css" rel="stylesheet" />
+    <script type="text/javascript">
+        /*显示用户的表格*/
+        var dgUser;
+        var searchForm;
+        var genderData;
+        var isDelData;
+        var deptTree;
+        var depId = -1;
+        $(function () {
+            searchForm = $('#searchForm');
+
+            genderData = [
+             {
+                 value: true,
+                 text: '男性'
+             },
+             {
+                 value: false,
+                 text: '女性'
+             }];
+            isDelData = [
+                 {
+                     value: true,
+                     text: '禁用'
+                 },
+                 {
+                     value: false,
+                     text: '启用'
+                 }];
+
+            deptTree = $('#deptTree').tree({
+                url: '/Admin_Areas/Sys_Department/GetTreeDepInfo',
+                lines: true,
+                onLoadSuccess: function (node, data) {
+                    if (data.Msg) {
+                        xz.dealWith(data);
+                    }
+                },
+                onClick: function (node) {
+                    dgUser.datagrid('load',
+                        { depId: node.id });
+                    dgUser.datagrid('unselectAll');
+                    
+                },
+                onDblClick: function (node) {
+                    if (node.state = 'closed') {
+                        $(this).tree('expand', node.target);
+                    } else {
+                        $(this).tree('collapse', node.target);
+                    }
+                }
+            }
+            );
+
+            $.validateUrl('/Admin_Areas/Sys_UserInfo/GetUserInfoByConditionJoinRoleIds', loadGrid, xz.dealWith, 'POST');
+
+        });
+
+        /**
+        *加载用户列表
+        */
+        function loadGrid() {
+
+            dgUser = $("#dgUser").datagrid({
+                view: detailview,
+                iconCls: 'icon-save',
+                fit: true,
+                fitColumns: true,
+                rownumbers: true,
+                nowrap: false,
+                animate: false,
+                border: false,
+                singleSelect: true,
+                idField: 'rId',
+                pagination: true,
+                pageSize: 5,
+                pageList: [5, 10, 15, 20, 25],
+                url: '/Admin_Areas/Sys_UserInfo/GetUserInfoByConditionJoinRoleIds',
+                toolbar: [{
+                    text: '刷新',
+                    iconCls: 'icon-reload',
+                    handler: function () {
+                        dgUser.datagrid('load');
+                    }
+                }
+                ,
+                '-', {
+                    text: '设置',
+                    iconCls: 'icon-add',
+                    handler: function () {
+                        showSetUserRoleView();
+                    }
+                }
+               ,
+                '-', {
+                    text: '取消选中',
+                    iconCls: 'icon-undo',
+                    handler: function () {
+                        dgUser.datagrid('unselectAll');
+                    }
+                }
+                ],               
+                columns: [[
+                     {
+                         title: '编号',
+                         field: 'uId',
+                         sortable: true,
+                         align: 'center',
+                         width: 50
+                     },
+                     {
+                         title: '用户名称',
+                         field: 'uLoginName',
+                         width: 80,
+                         sortable: true,
+                         align: 'center',
+                         formatter: function (value, row, index) {
+                             if (value) {
+                                 return xz.fs('<span title="{0}">{1}</span>', value, value);
+                             }
+                         }
+                     },
+                     {
+                         title: '所属部门',
+                         field: 'uDepId',
+                         width: 120,
+                         editor: {
+                             type: 'combotree',
+                             options: {
+                                 url: '/Admin_Areas/Sys_Department/GetTreeDepInfo',
+                                 lines: true,
+                                 required: true
+                             }
+                         },
+                         formatter: function (value, row, index) {
+                             if (row.depName) {
+                                 return row.depName;
+                             } else {
+                                 return value;
+                             }
+                         }
+
+
+                     }, {
+                         title: '性别',
+                         field: 'uGender',
+                         width: 80,
+                         formatter: function (value) {
+                             if (value) {
+                                 return xz.fs('<span class="icon-boy" style="display:inline-block;vertical-align:middle;width:16px;height:16px;"></span>{0}', '男');
+                             } else {
+                                 return xz.fs('<span class="icon-girl" style="display:inline-block;vertical-align:middle;width:16px;height:16px;"></span>{0}', '女');
+                             }
+                         }
+
+                     }
+                     ,
+                     {
+                         title: '密码',
+                         field: 'uPwd',
+                         align: 'center',
+                         width: 70,
+                         formatter: function (value) {
+                             if (value) {
+                                 return '******';
+                             }
+                         }
+
+                     }
+                     ,
+                     {
+                         title: '是否禁用',
+                         align: 'center',
+                         field: 'uIsDel',
+                         width: 80,
+                         formatter: xz.formatterEnable
+                     },
+
+                     {
+                         title: '联系电话',
+                         field: 'uPost',
+                         align: 'center',
+                         width: 100
+                     },
+                     {
+                         title: '说明',
+                         field: 'uRemark',
+                         align: 'center',
+                         width: 100
+                     },
+                     {
+                         title: '操作日期',
+                         field: 'uAddTime',
+                         align: 'center',
+                         width: 130,
+                         formatter: function (value) {
+                             if (value) {
+                                 return eval("new " + value.substr(1, value.length - 2)).toLocaleDateString();
+                             }
+                         }
+
+                     },
+                     {
+                         title: '操作',
+                         field: 'Oper',
+                         align: 'center',
+                         width: 100,
+                         formatter: function (value, row) {
+                             var html = '<a href="#" onclick=\'showSetUserRoleView()\'><span class="icon-role" style="display:inline-block;vertical-align:middle;width:16px;height:16px;">&nbsp;</span>[设置角色]</a>';
+                             return html;
+                         }
+
+                     }
+                ]],               
+                detailFormatter: function (index, row) {
+                    return '<div style="padding:2px;"><table id="ddv-'+index+'"></table></div>';
+                },
+                onExpandRow: function (index, row) {
+                    $('#ddv-' + index).datagrid({
+                        url: '/Admin_Areas/Sys_UserRole/GetUserRolesByUserId?userId=' + (row.uId),
+                        fitColumns: true,  
+                        singleSelect: true,
+                        height:'auto',                       
+                        frozenColumns: [[
+                           {
+                               title: '角色编号',
+                               field: 'rId',
+                               sortable: true,
+                               align: 'center',
+                               width: 80
+                           },
+                             {
+                                 title: '角色名称',
+                                 field: 'rName',
+                                 width: 100,
+                                 sortable: true,
+                                 align: 'center',                              
+                                 formatter: function (value, row, index) {
+                                     if (value) {
+                                         return xz.fs('<span title="{0}">{1}</span>', value, value);
+                                     }
+                                 }
+                             }
+                        ]],
+                        columns: [[
+                             {
+                                 title: '所属部门',
+                                 field: 'rDepId',
+                                 width: 200,                               
+                                 formatter: function (value, row, index) {
+                                     if (row.depName) {
+                                         return row.depName;
+                                     } else {
+                                         return value;
+                                     }
+                                 }
+                             },
+                             {
+                                 title: '是否可见',
+                                 field: 'rIsShow',
+                                 width: 80,
+                                 align: 'center',                                
+                                 formatter: xz.formatterEnable
+                             }
+                             ,
+                             {
+                                 title: '是否禁用',
+                                 field: 'rIsDel',
+                                 align: 'center',
+                                 width: 80,                                
+                                 formatter: xz.formatterEnable
+                             }
+                            
+                             ,
+                             {
+                                 title: '操作日期',
+                                 field: 'rAddTime',
+                                 align: 'center',
+                                 width: 180,
+                                 formatter: function (value) {
+                                     if (value) {
+
+                                         return eval("new " + value.substr(1, value.length - 2)).toLocaleDateString();
+                                     }
+                                 }
+                             }
+                        ]],
+                        onResize: function () {
+                            dgUser.datagrid('fixDetailRowHeight', index);
+                        },
+                        onLoadSuccess: function () {
+                            setTimeout(function () {
+                                dgUser.datagrid('fixDetailRowHeight', index);
+                            }, 0);
+                        }                        
+                    });
+                    dgUser.datagrid('fixDetailRowHeight', index);                }
+            });
+        }
+
+        /*过滤用户信息*/
+        function searchUser() {
+            dgUser.datagrid('load', xz.serializeObject(searchForm));
+        }
+
+        /*清空过滤表单*/
+        function clearSearch() {
+            dgUser.datagrid('load', {});
+            searchForm.find('input').val('');
+        }
+
+        /*打开设置用户角色的页面*/
+        function showSetUserRoleView() {
+            $.validateUrl('/Admin_Areas/Sys_UserRole/ShowUserRoleSetView', setUserRole, xz.dealWith, 'Get');
+        }    
+        /**
+        *设置用户角色
+        */
+        function setUserRole() {
+            var node = dgUser.datagrid('getSelected');
+            if (node) {
+                var pAdd = xz.dialog({
+                    title: '设置用户角色',
+                    width: 500,
+                    height: 320,
+                    iconCls: 'icon-add',
+                    href: '/Admin_Areas/Sys_UserRole/ShowUserRoleSetView',
+                    buttons: [{
+                        text: '设置',
+                        iconCls: 'icon-add',
+                        handler: function () {
+                            var f = pAdd.find('form');
+                            f.form('submit', {
+                                url: '/Admin_Areas/Sys_UserRole/SetUserRoles',
+                                success: function (jsonData) {
+                                    jsonData = $.parseJSON(jsonData);
+                                    $.procAjaxMsg(jsonData, function () {
+                                        dgUser.datagrid('reload');
+                                        dgUser.datagrid('unselectAll');
+                                        pAdd.dialog('close');
+                                        $.alertMsg(jsonData.Msg, '操作提示', null);
+                                    }, function () {
+                                        $.alertMsg(jsonData.Msg, '操作提示', null);
+                                    });
+                                }
+                            });
+                        }
+
+                    }],
+                    onLoad: function () {
+                        var f = pAdd.find('form');
+                        var uDepId = f.find('input[name=uDepId]');
+                        var uGender = f.find('input[name=uGender]');
+                        var uLoginName = f.find('input[name=uLoginName]');
+                        var uIsDel = f.find('input[name=uIsDel]');
+                        var roleIds = f.find('input[name=roleIds]');
+                        window.setTimeout(function () {
+                            uLoginName.focus();
+                        }, 100);
+                        uDepId.combotree({
+                            url: '/Admin_Areas/Sys_Department/GetTreeDepInfo',
+                            lines: true,
+                            required: true
+                        });
+                        uIsDel.combobox({
+                            data: isDelData
+                        });
+                        uGender.combobox({
+                            data: genderData,
+                            required: true,
+                            formatter: function (row) {
+                                if (row.value) {
+                                    return xz.fs('<span class="icon-boy" style="display:inline-block;vertical-align:middle;width:16px;height:16px;"></span>{0}', '男');
+                                } else {
+                                    return xz.fs('<span class="icon-girl" style="display:inline-block;vertical-align:middle;width:16px;height:16px;"></span>{0}', '女');
+                                }
+                            }
+                        });
+                        roleIds.combobox({
+                            url: ' /Admin_Areas/Sys_Role/GetAllRoles', 
+                            valueField: 'rId',
+                            textField: 'rName',
+                            multiple: true,
+                            editable: false,
+                            panelHeight: 'auto',
+                            width:380
+
+                        });
+                        /*把选中的组织机构信息绑定到对应的表单上面*/
+                        f.form('load', {
+                            uId: node.uId,
+                            uDepId: node.uDepId,
+                            uIsDel: node.uIsDel,
+                            uGender: node.uGender,
+                            uLoginName: node.uLoginName,
+                            uRemark: node.uRemark,
+                            uPost: node.uPost,
+                            roleIds: xz.getList(node.roleIds)
+                        });
+                     
+                    }
+                });
+            } else {
+                xz.messagerAlert('提示', '请选择要设置角色的用户！', 'error');
+            }
+        }
+    </script>
+</head>
+<body class="easyui-layout" data-options="fit:true">
+    <!--条件检索-->
+    <div data-options="region:'north',title:'过滤条件',split:true,border:false,collapsed:true" style="height:90px;overflow:hidden;">
+        <form id="searchForm">
+            <table class="tableForm datagrid-toolbar" style="width:100%;height:100%;">
+                <tr>
+                    <th>用户名称</th>
+                    <td><input name="uLoginName" style="width:317px;" /></td>
+                </tr>
+                <tr>
+                    <th>最后的修改日期</th>
+                    <td>
+                        <input class="easyui-datetimebox" name="operDateStart"
+                               data-options="editable:false" style="width:155px">
+                        至
+                        <input class="easyui-datetimebox" name="operDateEnd"
+                               data-options="editable:false" style="width:155px">
+                        <a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="searchUser();">过滤</a>
+                        <a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-undo'" onclick="clearSearch();">清空</a>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <!--部门信息-->
+    <div data-options="region:'west',border:true" style="overflow:hidden;width:180px;">
+        <ul id="deptTree" style="margin-top:5px;"></ul>
+    </div>
+    <!--用户信息-->
+    <div data-options="region:'center',border:false" style="overflow:hidden;">
+        <table id="dgUser"></table>
+    </div>
+   
+</body>
+</html>

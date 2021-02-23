@@ -1,0 +1,49 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Alert</title>
+     <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+  <h2>提醒消息组件</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>点击每个按钮显示不同的提醒消息框.</div>
+    </div>
+    <div style="margin:10px 0;">
+        <a href="#" class="easyui-linkbutton" onclick="alert1()">提醒消息</a>
+        <a href="#" class="easyui-linkbutton" onclick="alert2()">错误消息</a>
+        <a href="#" class="easyui-linkbutton" onclick="alert3()">信息消息</a>
+        <a href="#" class="easyui-linkbutton" onclick="alert4()">问题消息</a>
+        <a href="#" class="easyui-linkbutton" onclick="alert5()">警告消息</a>
+    </div>
+    <script>
+        function alert1() {
+            $.messager.alert('我的标题', '这是一个消息!');
+        }
+        function alert2() {
+            $.messager.alert('我的标题', '这是一个错误消息!', 'error');
+        }
+        function alert3() {
+            $.messager.alert('我的标题', '这是一个信息消息!', 'info');
+        }
+        function alert4() {
+            $.messager.alert('我的标题', '这是一个问题消息!', 'question');
+        }
+        function alert5() {
+            $.messager.alert('我的标题', '这是一个警告消息!', 'warning');
+        }
+    </script>
+</body>
+</html>

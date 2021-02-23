@@ -1,0 +1,50 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>TabsTools</title>、
+      <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+    <h2>选项卡工具</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>点击选项卡右边按钮添加或者删除选项卡面板.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div id="tt" class="easyui-tabs" data-options="tools:'#tab-tools'" style="width:700px;height:250px">
+    </div>
+    <div id="tab-tools">
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'" onclick="addPanel()"></a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'" onclick="removePanel()"></a>
+    </div>
+    <script type="text/javascript">
+        var index = 0;
+        function addPanel() {
+            index++;
+            $('#tt').tabs('add', {
+                title: '选项卡' + index,
+                content: '<div style="padding:10px">内容' + index + '</div>',
+                closable: true
+            });
+        }
+        function removePanel() {
+            var tab = $('#tt').tabs('getSelected');
+            if (tab) {
+                var index = $('#tt').tabs('getTabIndex', tab);
+                $('#tt').tabs('close', index);
+            }
+        }
+    </script>
+</body>
+</html>

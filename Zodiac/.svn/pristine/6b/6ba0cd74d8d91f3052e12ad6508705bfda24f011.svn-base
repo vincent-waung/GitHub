@@ -1,0 +1,57 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Tools</title>
+     <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+           
+            //$('#p').panel({
+            //    iconCls: 'icon-save',
+            //    collapsible: true,
+            //    minimizable: true,
+            //    closable: true
+            //});
+         
+        });
+    </script>
+</head>
+<body>
+      <h2>面板工具</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>点击右上角按钮执行面板相关操作.</div>
+    </div>
+    <div style="margin:10px 0;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#p').panel('open')">打开</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#p').panel('close')">关闭</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#p').panel('expand',true)">展开</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#p').panel('collapse',true)">折叠</a>
+    </div>
+    <div style="height:350px;border:1px solid #ccc;">
+        <div id="p" class="easyui-panel" title="面板工具" style="width:500px;height:200px;padding:10px;"
+               >
+            <p style="font-size:14px">jQuery EasyUI框架能够让你轻松构建Web页面.</p>
+            <ul>
+                <li>easyui是一套基于JQuery的用户界面插件集合.</li>
+                <li>easyui为构建现代流行的交互式体验JavaScript应用程序提供了基本功能.</li>
+                <li>使用easyui你不需要写很多javascript代码，你通常只需要写一些html标签来定义用户界面.</li>
+                <li>完美支持HTML5.</li>
+                <li>easyui能够有效地节省你的开发时间.</li>
+                <li>easyui很简单但是很强大.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

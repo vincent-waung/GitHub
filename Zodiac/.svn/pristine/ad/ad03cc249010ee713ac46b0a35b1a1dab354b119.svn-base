@@ -1,0 +1,84 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>DataGridwithToolbar</title>
+     <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#dgUsers").datagrid({
+                rownumbers: true,
+                title:"数据表格工具条",
+                singleSelect: true,
+                url: '/EasyUI_Areas/AdminSys/GetUserInfo',
+                toolbar: toolbar
+
+            });
+
+        });
+        var toolbar = [{
+            text: '添加',
+            iconCls: 'icon-add',
+            handler: function () { alert('添加') }
+        }, {
+            text: '删除',
+            iconCls: 'icon-remove',
+            handler: function () {
+                //用户的编号
+                var row = $('#dgUsers').datagrid('getSelected');
+                var userId = row.uId;
+                $.ajax(
+                    {
+                        type: "post",
+                        url: "/Admin_Areas/AdminSys/DeleteUserInfo",
+                        data:  {
+                            uId: userId                     
+                        },
+                        dataType: "text",
+                        success: function (data, status) {                          
+                            alert(data);
+                            $("#dgUsers").datagrid("reload");
+                        }
+                    }
+                    );
+            }
+        }, '-', {
+            text: '保存',
+            iconCls: 'icon-save',
+            handler: function () { alert('保存') }
+        }];
+    </script>
+</head>
+<body>
+     <h2>数据表格工具条</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>点击数据表格顶部工具条上的按钮.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <table id="dgUsers"   style="width:705px;height:250px"
+           >
+        <thead>
+            <tr>
+             
+                <th data-options="field: 'uId', title: '用户编号', width: 100"></th>
+                <th data-options="field: 'uLoginName', title: '登录名', width: 100 "></th>
+                <th data-options="field: 'uRemark', title: '备注', width: 100"></th>
+                <th data-options="field: 'uPost', title: '邮编', width: 100"></th>
+                <th data-options="field: 'uGender', title: '性别', width: 100, align: 'right'"></th>
+            </tr>
+        </thead>
+    </table>
+  
+</body>
+</html>

@@ -1,0 +1,28 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Range</title>
+     <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+     <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>时间被限制在指定范围内.</div>
+    </div>
+    <div style="margin:10px 0;">
+        <span>08:30到18:00</span>
+    </div>
+    <input class="easyui-timespinner" data-options="min:'08:30',max:'18:00'" style="width:80px;">
+</body>
+</html>

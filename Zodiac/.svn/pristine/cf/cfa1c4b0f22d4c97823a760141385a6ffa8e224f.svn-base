@@ -1,0 +1,100 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>EditableTreeGrid</title>
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+     <h2>可编辑树形表格</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>选择一个节点点击编辑按钮执行编辑操作.</div>
+    </div>
+    <div style="margin:10px 0;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="edit()">编辑</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="save()">保存</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="cancel()">结束</a>
+    </div>
+    <table id="tg" class="easyui-treegrid" title="可编辑树形表格" style="width:700px;height:250px"
+           data-options="
+                iconCls: 'icon-ok',
+                rownumbers: true,
+                animate: true,
+                collapsible: true,
+                fitColumns: true,
+                url: '/EasyUI_Areas/AdminIndex/GetAllDeptsTwo',
+                idField: 'id',
+                treeField: 'text',
+                showFooter: true
+            ">
+        <thead>
+            <tr>
+                <th data-options="field:'id',editor:'text'">部门编号</th>
+                <th data-options="field:'text',editor:'text'">部门名称</th>
+                <th data-options="field:'depRemark',editor:'text'">说明</th>
+                <th data-options="field:'depAddTime',editor:'datebox'">操作日期</th>
+                <th data-options="field:'progress',editor:'text',width:120,formatter:formatProgress">人气比</th>
+            </tr>
+        </thead>
+    </table>
+    <script type="text/javascript">
+        function formatProgress(value) {
+            if (value) {
+                var s = '<div style="width:100%;border:1px solid #ccc">' +
+                        '<div style="width:' + value + '%;background:#cc0000;color:#fff">' + value + '%' + '</div>'
+                '</div>';
+                return s;
+            } else {
+                return '';
+            }
+        }
+        var editingId;
+        function edit() {
+            if (editingId != undefined) {
+                $('#tg').treegrid('select', editingId);
+                return;
+            }
+            var row = $('#tg').treegrid('getSelected');
+            if (row) {
+                editingId = row.id
+                $('#tg').treegrid('beginEdit', editingId);
+            }
+        }
+        function save() {
+            if (editingId != undefined) {
+                var t = $('#tg');
+                t.treegrid('endEdit', editingId);
+                editingId = undefined;
+                var persons = 0;
+                var rows = t.treegrid('getChildren');
+                for (var i = 0; i < rows.length; i++) {
+                    var p = parseInt(rows[i].persons);
+                    if (!isNaN(p)) {
+                        persons += p;
+                    }
+                }
+                var frow = t.treegrid('getFooterRows')[0];
+                frow.persons = persons;
+                t.treegrid('reloadFooter');
+            }
+        }
+        function cancel() {
+            if (editingId != undefined) {
+                $('#tg').treegrid('cancelEdit', editingId);
+                editingId = undefined;
+            }
+        }
+    </script>
+</body>
+</html>

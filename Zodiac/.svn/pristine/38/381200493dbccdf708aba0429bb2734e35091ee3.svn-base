@@ -1,0 +1,27 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Animation</title>
+      <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+    <h2>动画效果树</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>把‘animate’属性设置为true让树有动画效果.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <ul class="easyui-tree" data-options="url:'/EasyUI_Areas/AdminIndex/GetAllDepts',animate:true"></ul>
+</body>
+</html>

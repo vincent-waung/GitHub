@@ -1,0 +1,104 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" charset="utf-8" />
+    <title>Basic EasyLoader - jQuery EasyUI Demo</title>
+    <!--加载所有EasyUi组件的样式-->
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <!--加载所有的图标样式式-->
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <!--EasyUI提供的Demo所使用的样式-->
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+     <!--加载jQuery文件-->
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <!--加载easyui文件-->
+   @* <script src="~/EasyUI/jquery.easyui.min.js"></script>*@
+    <!--解析时使用简体中文-->
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+   <!--本案例使用到的单独js文件-->
+    <script src="~/EasyUI/easyloader.js"></script>
+</head>
+<body>
+    <h2>基本EasyLoader组件</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>点击下面按钮动态加载组件.</div>
+    </div>
+
+    <div style="margin: 10px 0;">
+        <a href="#" class="easyui-linkbutton" onclick="load1()">加载日历</a>
+        <a href="#" class="easyui-linkbutton" onclick="load2()">加载对话框</a>
+        <a href="#" class="easyui-linkbutton" onclick="load3()">加载数据表格</a>
+    </div>
+
+    <div id="rili"></div>
+    <div id="dd"></div>
+    <table id="tt"></table> 
+
+    <script type="text/javascript">
+        function load1() {
+            //easyui组件本质就是jQuery的插件
+            //通过easyloader的load方法加载calendar插件，并通过回调函数使用插件
+            easyloader.load('calendar', function () {
+                $('#rili').calendar({
+                    width: 280,
+                    height: 180
+                });
+            });
+        }
+
+        function load2() {
+            using(['dialog', 'messager'], function () {
+                $('#dd').dialog({
+                    title: '对话框',
+                    width: 300,
+                    height: 200
+                });
+
+                $.messager.show({
+                    title: '系统提示',
+                    msg: '对话框被创建'
+                });
+
+            });
+
+        }
+
+        function load3() {
+            using('datagrid', function () {
+               
+                $('#tt').datagrid({
+                    width: 'auto',
+                    height: 'auto',
+                    fitColumns: true,
+                    striped: true,
+                    singleSelect: true,
+                    url: '/AdminSys/GetPermData',
+                    //queryParams:{},
+                    loadMsg: '数据加载中请稍后……',
+                    pagination: true,//启用分页，默认每页10行
+                    rownumbers: true,//显示页码，默认 提供 10 - 50 的页容量选择下拉框
+                    pageSize: 5,//设置 页容量为 5
+                    pageList: [5, 10],//设置 页容量下拉框
+                    columns: [[
+                     { field: 'pName', title: '权限名', width: 100 },
+                     { field: 'pAreaName', title: '区域名', width: 100 },
+                     { field: 'pControllerName', title: '控制名', width: 100 },
+                     { field: 'pActionName', title: 'Action', width: 100 }
+
+                    ]]
+                });
+
+
+            });
+
+        }
+
+    </script>
+</body>
+</html>

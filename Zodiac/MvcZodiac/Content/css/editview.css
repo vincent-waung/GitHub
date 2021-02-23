@@ -1,0 +1,28 @@
+﻿
+    #div_EditView {
+    margin:10px 20px;
+    }
+    #div_EditView table tr {
+    height:30px;
+    }
+    #div_EditView table tr td input {
+        border:1px solid #0094ff;
+        height:20px;
+        vertical-align:text-bottom;            
+    }
+    #div_EidtBanner {
+        width: 100%;
+        height: 50px;
+        background: url(../images/AdminIndex/index_top_bg.jpg) repeat-x;
+    }
+.titleFont {
+   height:50px;
+   font-size:20px;
+   font-family:Verdana,Geneva,sans-serif;
+   color:white;
+   display:block;
+   float:left;
+   width:300px;
+   line-height:50px;
+   padding-left:10px;
+}

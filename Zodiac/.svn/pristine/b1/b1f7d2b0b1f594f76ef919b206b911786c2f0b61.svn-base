@@ -1,0 +1,27 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>InitializeValueforDateTime</title>
+         <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>>
+</head>
+<body>
+    <h2>为日期时间组件初始化值</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>当日期时间组件创建后值被初始化.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <input class="easyui-datetimebox" value="2013-11-11 2:3:56" style="width:150px">
+</body>
+</html>

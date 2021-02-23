@@ -1,0 +1,60 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ComplexLayout</title>
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+    <h2>复杂布局</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>这个示例教大家如何创建一个复杂布局.</div>
+    </div>
+    <div style="margin: 10px 0;"></div>
+    <div class="easyui-layout" style="width: 700px; height: 350px;">
+        <div data-options="region:'north'" style="height: 50px"></div>
+        <div data-options="region:'south',split:true" style="height: 50px;"></div>
+        <div data-options="region:'east',split:true" title="东" style="width: 180px;">
+            <ul class="easyui-tree" data-options="url:'/EasyUI_Areas/AdminIndex/GetAllEasyUI',animate:true,dnd:true"></ul>
+        </div>
+        <div data-options="region:'west',split:true" title="西" style="width: 100px;">
+            <div class="easyui-accordion" data-options="fit:true,border:false">
+                <div title="标题一" style="padding: 10px;">
+                    内容一
+                </div>
+                <div title="标题二" data-options="selected:true" style="padding: 10px;">
+                    内容二
+                </div>
+                <div title="标题三" style="padding: 10px">
+                    内容三
+                </div>
+            </div>
+        </div>
+        <div data-options="region:'center',title:'主面板区域',iconCls:'icon-ok'">
+            <div class="easyui-tabs" data-options="fit:true,border:false,plain:true">
+                <div title="关于" data-options="href:'/EasyUI_Areas/Tooltip/_Content'" style="padding: 10px"></div>
+                <div title="数据表格" style="padding: 5px">
+                    <table class="easyui-propertygrid"
+                           data-options="
+                        url: '/EasyUI_Areas/AdminSys/GetRoleData',
+                        showGroup: true,
+                        fit: true,
+                        border: true
+                    "></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

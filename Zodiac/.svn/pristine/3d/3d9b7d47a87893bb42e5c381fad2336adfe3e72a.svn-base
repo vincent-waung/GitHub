@@ -1,0 +1,54 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>TreeActions</title>
+      <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+   <h2>树相关操作</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>点击下面按钮执行相关操作.</div>
+    </div>
+    <div style="margin:10px 0;">
+        <a href="#" class="easyui-linkbutton" onclick="collapseAll()">收缩所有</a>
+        <a href="#" class="easyui-linkbutton" onclick="expandAll()">展开所有</a>
+        <a href="#" class="easyui-linkbutton" onclick="expandTo()">展开到</a>
+        <a href="#" class="easyui-linkbutton" onclick="getSelected()">获取选中节点</a>
+    </div>
+    <ul id="tt" class="easyui-tree" data-options="url:'/EasyUI_Areas/AdminIndex/GetAllDepts',animate:true"></ul>
+    <script type="text/javascript">
+        function collapseAll() {
+            $('#tt').tree('collapseAll');
+        }
+        function expandAll() {
+            $('#tt').tree('expandAll');
+        }
+        function expandTo() {
+            var node = $('#tt').tree('find', 5);
+            $('#tt').tree('expandTo', node.target).tree('select', node.target);
+        }
+        function getSelected() {
+            var node = $('#tt').tree('getSelected');
+            if (node) {
+                var s = node.text;
+                if (node.attributes) {
+                    s += "," + node.attributes.p1 + "," + node.attributes.p2;
+                }
+                alert(s);
+            }
+        }
+    </script>
+</body>
+</html>

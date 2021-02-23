@@ -1,0 +1,88 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ContextMenuonDataGrid</title>
+     <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+   <h2>数据表格右键菜单</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>右击数据表格头部显示菜单.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <table id="dg"></table>
+    <script type="text/javascript">
+        $(function () {
+            $('#dg').datagrid({
+                url: '/EasyUI_Areas/AdminSys/GetUserInfo',
+                title: '数据表格右键菜单',
+                iconCls: 'icon-save',
+                width: 700,
+                height: 250,
+                fitColumns: true,
+                singleSelect: true,
+                columns: [[
+                    { field: 'uId', title: '用户编号', width: 100 },
+                    { field: 'uLoginName', title: '登录名', width: 100 },
+                    { field: 'uRemark', title: '备注', width: 100 },
+                    { field: 'uPost', title: '邮编', width: 100 },
+                    { field: 'uGender', title: '性别', width: 100, align: 'right' }
+                ]],
+                onHeaderContextMenu: function (e, field) {
+                    e.preventDefault();
+                    if (!cmenu) {
+                        createColumnMenu();
+                    }
+                    cmenu.menu('show', {
+                        left: e.pageX,
+                        top: e.pageY
+                    });
+                }
+            });
+        });
+        var cmenu;
+        function createColumnMenu() {
+            cmenu = $('<div/>').appendTo('body');
+            cmenu.menu({
+                onClick: function (item) {
+                    if (item.iconCls == 'icon-ok') {
+                        $('#dg').datagrid('hideColumn', item.name);
+                        cmenu.menu('setIcon', {
+                            target: item.target,
+                            iconCls: 'icon-empty'
+                        });
+                    } else {
+                        $('#dg').datagrid('showColumn', item.name);
+                        cmenu.menu('setIcon', {
+                            target: item.target,
+                            iconCls: 'icon-ok'
+                        });
+                    }
+                }
+            });
+            var fields = $('#dg').datagrid('getColumnFields');
+            for (var i = 0; i < fields.length; i++) {
+                var field = fields[i];
+                var col = $('#dg').datagrid('getColumnOption', field);
+                cmenu.menu('appendItem', {
+                    text: col.title,
+                    name: field,
+                    iconCls: 'icon-ok'
+                });
+            }
+        }
+    </script>
+</body>
+</html>

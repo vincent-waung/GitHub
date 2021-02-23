@@ -1,0 +1,299 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section scripts{
+    <script src="~/Scripts/processingajaxmsg.js"></script>
+    <script src="~/Scripts/xzUtil.js"></script>
+}
+<script type="text/javascript">
+    var editIndex = undefined;
+    $(function () {
+        //var type = $("#Type").textbox('getValue');
+        //    alert(type);
+        //if (type == "DOM") {
+        //    $(".DOM").css("display","none");
+        //}
+
+    });
+
+
+    function formatDateTime(dateTime) {
+        var jsondate = dateTime;
+        if (dateTime != null&&jsondate.indexOf("Date") != -1) {
+            jsondate = jsondate.replace("/Date(", "").replace(")/", "");
+
+            if (jsondate.indexOf("+") > 0) {
+                jsondate = jsondate.substring(0, jsondate.indexOf("+"));
+            } else if (jsondate.indexOf("-") > 0) {
+                jsondate = jsondate.substring(0, jsondate.indexOf("-"));
+            }
+            var date = new Date(parseInt(jsondate, 10));
+
+
+            var formatDate = DateUtil.formatDateTime(date, "MM/dd/yyyy")
+            return formatDate;
+
+            //PClosing_Date.datebox('setValue', Closing_Date);
+        } else {
+            return jsondate;
+        }
+
+    }
+
+    function endEditing() {
+        if (editIndex == undefined) { return true }
+        if ($('#dgTrucking').datagrid('validateRow', editIndex)) {
+            var WHS = $('#dgTrucking').datagrid('getEditor', { index: editIndex, field: 'Trucking_Arrive_WHS_Date' });
+            var terminal = $('#dgTrucking').datagrid('getEditor', { index: editIndex, field: 'Trucking_Arrive_terminal_Date' });
+            var WHSname = $(WHS.target).datebox('getValue');
+            var terminalname = $(terminal.target).datebox('getValue');
+            $('#dgTrucking').datagrid('getRows')[editIndex]['Trucking_Arrive_WHS_Date'] = WHSname;
+            $('#dgTrucking').datagrid('getRows')[editIndex]['Trucking_Arrive_terminal_Date'] = terminalname;
+            $('#dgTrucking').datagrid('endEdit', editIndex);
+            editIndex = undefined;
+            return true;
+        } else {
+            return false;
+        }
+    }
+    function onClickRow(index) {
+        if (editIndex != index) {
+            if (endEditing()) {
+                var row = $('#dgTrucking').datagrid('getSelected');
+                var WHSval = formatDateTime(row.Trucking_Arrive_WHS_Date);
+                var terminalval = formatDateTime(row.Trucking_Arrive_terminal_Date);
+                $('#dgTrucking').datagrid('selectRow', index)
+                        .datagrid('beginEdit', index);
+                var WHS = $('#dgTrucking').datagrid('getEditor', { index: index, field: 'Trucking_Arrive_WHS_Date' });
+                var terminal = $('#dgTrucking').datagrid('getEditor', { index: index, field: 'Trucking_Arrive_terminal_Date' });
+                $(WHS.target).datebox('setValue', WHSval);
+                $(terminal.target).datebox('setValue', terminalval);
+                editIndex = index;
+            } else {
+                $('#dgTrucking').datagrid('selectRow', editIndex);
+            }
+        }
+    }
+    function append() {
+        if (endEditing()) {
+            $('#dgTrucking').datagrid('appendRow', { CTN: '0', Qty: '0', CBM: '0' });
+            editIndex = $('#dgTrucking').datagrid('getRows').length - 1;
+            $('#dgTrucking').datagrid('selectRow', editIndex)
+                    .datagrid('beginEdit', editIndex);
+        }
+    }
+    function removeit() {
+        if (editIndex == undefined) { return }
+        $('#dgTrucking').datagrid('cancelEdit', editIndex)
+                .datagrid('deleteRow', editIndex);
+        editIndex = undefined;
+    }
+    function accept() {
+        if (endEditing()) {
+            $('#dgTrucking').datagrid('acceptChanges');
+        }
+    }
+    function reject() {
+        $('#dgTrucking').datagrid('rejectChanges');
+        editIndex = undefined;
+    }
+</script>
+
+<form id="poData">
+    <div id="tt" class="easyui-tabs" style="width:1045px;height:300px;">
+        <div title="Booking" style="overflow:hidden; height:290px;margin:5px">
+            <div>
+                <table>
+                    <tr style="height:30px">
+                        <td align="right"  class="DOM">Booking No.: </td>
+                        <td align="left" valign="middle" class="DOM"><input class="easyui-textbox" id="txtBookingNumber" name="txtBookingNumber"></td>
+                        <td align="right" class="DOM">Discharging Port.: </td>
+                        <td align="left" valign="middle" class="DOM"><input class="easyui-textbox" id="txtDischagingPort" name="txtDischagingPort"></td>
+                        @*<td align="right">Vessel.: </td>
+        <td align="left" valign="middle"><input class="easyui-textbox" id="txtVessel" name="Vessel"></td>*@
+                        <td align="right">Loading  Port.: </td>
+                        <td align="left" valign="middle"><input id="LoadingPort" name="LoadingPort" class="easyui-combobox" value="Hai Phong" data-options="editable:false, width:150, panelHeight:'auto',valueField: 'label',textField: 'value',data: [{label: 'Hai Phong',value: 'Hai Phong'},{label: 'Da Nang',value: 'Da Nang'},{label: 'Ha Noi',value: 'Ha Noi'},{label: 'CAI MEP',value: 'CAI MEP'}]"> </td>
+
+                    </tr>
+
+                    <tr style="height:30px" class="DOM">
+                        @*<td align="right">Voyage.: </td>
+        <td align="left" valign="middle"><input class="easyui-textbox" id="txtVoyage" name="Voyage"></td>*@
+
+                        <td align="right">Ship Mode.: </td>
+                        <td align="left" valign="middle"><input id="shipmode" name="shipmode" class="easyui-combobox" value="" data-options="editable:false, width:150, panelHeight:'auto',valueField: 'label',textField: 'value',data: [{label: 'DECN',value: 'DECN'},{label: 'EXCO',value: 'EXCO'},{label: 'EXLC',value: 'EXLC'},{label: 'LCL',value: 'LCL'},{label: 'EXFC',value: 'EXFC'},{label: 'FCL',value: 'FCL'}]"> </td>
+
+
+                        <td align="right">FCR/OB Courier tracking no.:</td>
+                        <td align="left" valign="middle"><input id="courier_tracking_no" name="courier_tracking_no" value="" class="easyui-textbox" style="width:120px"></td>
+
+                        <td align="right">Loading date: </td>
+                        <td align="left" valign="middle">
+                            <input id="loadingdate" name="loadingdate" value="" class="easyui-datebox" style="width:120px">
+                        </td>
+                    </tr>
+
+                    <tr style="height:30px" class="DOM">
+                        <td align="right">Booking date.: </td>
+                        <td align="left" valign="middle">
+                            <input id="bookingdate" name="bookingdate" value="" class="easyui-datebox" style="width:120px">
+                        </td>
+                        <td align="right">CFS/CY open date:</td>
+                        <td align="left" valign="middle"><input id="CY_Open_date" name="CY_Open_date" value="" class="easyui-datebox" style="width:120px"></td>
+
+                        <td align="right">CFS/CY Closing Date:</td>
+                        <td align="left" valign="middle"><input id="closingdate" name="closingdate" value="" class="easyui-datebox" style="width:140px"></td>
+                    </tr>
+
+                    <tr style="height:30px" class="DOM">
+                        @*<td align="right">Carrier SI cut off date: </td>
+        <td align="left" valign="middle">
+            <input id="sicuttime" name="sicuttime" value="" class="easyui-datebox" style="width:140px">
+        </td>*@
+                        <td align="right"> SO release date:</td>
+                        <td align="left" valign="middle"><input id="SO_Release_Date" name="SO_Release_Date" value="" class="easyui-datebox" style="width:120px"></td>
+                        <td align="right">ETD:</td>
+                        <td align="left" valign="middle"><input id="etd" name="etd" value="" class="easyui-datebox" style="width:120px"></td>
+
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+        <div title="Shipping" style="overflow:hidden; height:290px;margin:5px">
+            <div>
+
+                <table>
+                    <tr style="height:30px">
+                        <td align="right">Delivery  Carton:</td>
+                        <td align="left" valign="middle"><input class="easyui-textbox" id="Carton" name="Carton"> </td>
+                        <td align="right">Delivery Quantity:</td>
+                        <td align="left" valign="middle"><input class="easyui-textbox" id="Qty" name="Qty"> </td>
+                        <td align="right">Delivery CBM:</td>
+                        <td align="left" valign="middle"><input class="easyui-textbox" id="CBM" name="CBM"> </td>
+                    </tr>
+                    <tr style="height:30px">
+                        <td align="right">Delay Details:</td>
+                        <td align="left" valign="middle"><input id="DelayDetails" name="DelayDetails" class="easyui-combobox" value="" data-options="editable:false, width:150, panelHeight:'auto',valueField: 'label',textField: 'value',data: [{label: 'Customer Postponement',value: 'Customer Postponement'},{label: 'Engineering change',value: 'Engineering change'},{label: 'Quality issues',value: 'Quality issues'},{label: 'Material shortage - Vendor',value: 'Material shortage - Vendor'},{label: 'Material shortage - Spin Master',value: 'Material shortage - Spin Master'},{label: 'Inspection -Amrep',value: 'Inspection -Amrep'},{label: 'Others',value: 'Others'}]">  </td>
+                        <td align="right"  class="DOM"> FOB local charges settlement:</td>
+                        <td align="left" valign="middle"  class="DOM"><input id="FOB_local_charges_settlement" name="FOB_local_charges_settlement" class="easyui-combobox" value="" data-options="editable:false, width:150, panelHeight:'auto',valueField: 'label',textField: 'value',data: [{label: 'Paid By LS',value: 'Paid By LS'},{label: 'Paid By Vendor',value: 'Paid By Vendor'},{label: 'Not Yet Paid',value: 'Not Yet Paid'},{label: 'others',value: 'others'}]">  </td>
+                        <td align="right" class="DOM">Shipment Status:</td>
+                        <td align="left" valign="middle" class="DOM"><input id="ShipmentStatus" name="ShipmentStatus" class="easyui-combobox" value="" data-options="editable:false, width:150, panelHeight:'auto',valueField: 'label',textField: 'value',data: [{label: 'Open Order',value: 'Open Order'},{label: 'Shipped',value: 'Shipped'}]"> </td>
+                       
+                    </tr>
+                    <tr style="height:30px" class="DOM">
+                        <td align="right">Inspection result:</td>
+                        <td align="left" valign="middle"><input id="Inspection_result" name="Inspection_result" class="easyui-combobox" value="" data-options="editable:false, width:150, panelHeight:'auto',valueField: 'label',textField: 'value',data: [{label: 'Pass',value: 'Pass'},{label: 'Failed',value: 'Failed'}]"> </td>
+                        <td align="right">Inspection End Date:</td>
+                        <td align="left" valign="middle"><input id="Inspection_End_Date" name="Inspection_End_Date" value="" class="easyui-datebox" style="width:120px"></td>
+                        <td align="right">FCR/Bill of Loading return to SM Date:</td>
+                        <td align="left" valign="middle"><input id="FCR_of_Loading_return_Date" name="FCR_of_Loading_return_Date" value="" class="easyui-datebox" style="width:120px"></td>
+                    </tr>
+                    <tr style="height:30px" class="DOM">
+                        <td align="right">Certificate Application Date:</td>
+                        <td align="left" valign="middle"><input id="Certificate_Application_Date" name="Certificate_Application_Date" value="" class="easyui-datebox" style="width:120px"></td>
+                        <td align="right">Certificate return to SM Date:</td>
+                        <td align="left" valign="middle"><input id="Certificate_return_Date" name="Certificate_return_Date" value="" class="easyui-datebox" style="width:120px"> </td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+
+        <div title="Trucking" style="overflow:hidden; height:290px;margin:10px">
+               <div>
+
+                   <table id="dgTrucking" class="easyui-datagrid" title="Row Editing in DataGrid" style="width:1045px;height:290px"
+                          data-options="
+				iconCls: 'icon-edit',
+                singleSelect: true,
+				toolbar: '#tb',
+				onClickRow: onClickRow
+			">
+                       <thead>
+                           <tr>
+
+                               <th data-options="field:'Container_NO',width:100,editor:'textbox'">Container NO.</th>
+                               <th data-options="field:'Seal_NO',width:100,editor:'textbox'">Seal No.</th>
+                               @*<th data-options="field:'Vehicle_Type',width:100,
+                        formatter:function(value,row){
+                            return row.Vehicle_Type;
+                        },
+                        editor:{
+                            type:'combobox',
+                            options:{
+                                valueField:'label',
+                                textField:'value',
+                                data: [{label: '1.25T',value: '1.25T'},{label: '2.5T',value: '2.5T'},{label: '3.5T',value: '3.5T'},{label: '5T',value: '5T'},{label: '8T',value: '8T'},{label: '10T',value: '10T'},{label: '20GP',value: '20GP'},{label: '40GP',value: '40GP'},{label: '40HQ',value: '40HQ'},{label: '45HQ',value: '45HQ'},{label: '40REF',value: '40REF'},{label: '40NORs',value: '40NOR'}]
+                            }
+                        }">Vehicle Type</th>*@
+                           <th data-options="field:'Qty',width:70,editor:{type:'textbox',options:{value:'0'}}">Delivery Quantity.in truck</th>
+                           <th data-options="field:'CTN',width:70,editor:{type:'textbox',options:{value:'0'}}">Delivery CTN.in truck</th>
+                           <th data-options="field:'CBM',width:70,editor:{type:'textbox',options:{value:'0'}}">Delivery CBM.in truck</th>
+                           <th data-options="field:'Trucking_NO',width:100,editor:'textbox'">Plate number</th>
+                               <th data-options="field:'Trucking_Arrive_WHS_Date',width:180,editor:'datebox',
+                                   formatter:function(value,row){
+                                     if (value) {
+                                        return formatDateTime(value);
+                                   }
+                        }">Actual arrive  date in warehouse</th>
+                               <th data-options="field:'Trucking_Arrive_terminal_Date',width:180,editor:'datebox',
+                                   formatter:function(value,row){
+                                     if (value) {
+                                       return formatDateTime(value);
+                                   }
+                        }">Actual arrive  date in terminal</th>
+                           </tr>
+                       </thead>
+                   </table>
+
+                   <div id="tb" style="height:auto">
+                       <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="append()">Append</a>
+                       <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeit()">Remove</a>
+                       <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="accept()">Accept</a>
+                       <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="reject()">Reject</a>
+                   </div>
+
+
+
+                    @*<table>
+                        <tr style="height:30px">
+                            <td align="right" style="width:30px"></td>
+                            <td align="right">Container NO.:</td>
+                            <td align="left" valign="middle"><input class="easyui-textbox" id="ContainerNO" name="ContainerNO" style="width:180px"></td>
+                            <td align="right" style="width:30px"></td>
+                            <td align="right">Seal No.:</td>
+                            <td align="left" valign="middle"><input class="easyui-textbox" id="Seal" name="Seal" style="width:180px"></td>
+                            <td align="right" style="width:30px"></td>  
+                            <td align="right">Vehicle Type.:</td>
+                            <td align="left" valign="middle"><input id="Vehicle" name="Vehicle" class="easyui-combobox" value="" data-options="editable:false, width:150, panelHeight:'auto',></td>
+                        </tr>
+                    </table>*@
+
+                </div>
+
+               <div style="display:none">
+
+                   <input class="easyui-textbox" id="POID" name="POID" style="display:none">
+
+                   <input class="easyui-textbox" id="Type" name="Type" style="display:none">
+
+                   <input class="easyui-textbox" id="pUpdateGRtime" name="pUpdateGRtime" style="display:none">
+
+                   <input class="easyui-textbox" id="vID" name="vID" style="display:none">
+
+
+               </div>
+
+
+
+
+            <div class="clear"></div>
+        </div>
+
+        </div>
+
+
+
+</form>

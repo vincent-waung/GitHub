@@ -1,0 +1,30 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Basic</title>
+      <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+    <h2>基本搜索框组件</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>在输入框中点击搜索按钮或者按Enter键执行查询.</div>
+    </div>
+    <div style="margin: 10px 0;"></div>
+    <input class="easyui-searchbox" data-options="prompt:'请输入...',searcher:doSearch" style="width:300px;" />
+    <script type="text/javascript">
+        function doSearch(value) {
+            alert('您输入的是: ' + value);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Basic</title>
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+     <script type="text/javascript">
+         var mycolumns = [[
+         { field: 'name', title: '角色名', width: 100, sortable: true },
+         { field: 'value', title: '角色编号', width: 100, resizable: false }
+         ]];
+    </script>
+</head>
+<body>
+     <h2>基本属性表格</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>点击行来改变每个属性值.</div>
+    </div>
+    <div style="margin:10px 0;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="showGroup()">显示分组</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="hideGroup()">隐藏分组</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="showHeader()">显示头部</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="hideHeader()">隐藏头部</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="getChanges()">获取变化</a>
+    </div>
+    <table id="pg" class="easyui-propertygrid" style="width:300px"
+            data-options="url: '/AdminSys/GetRoleData',showGroup:true,scrollbarSize:0,fit:true,
+                        border: true,
+                        columns: mycolumns"></table>
+    <script type="text/javascript">
+        function showGroup() {
+            $('#pg').propertygrid({
+                showGroup: true
+            });
+        }
+        function hideGroup() {
+            $('#pg').propertygrid({
+                showGroup: false
+            });
+        }
+        function showHeader() {
+            $('#pg').propertygrid({
+                showHeader: true
+            });
+        }
+        function hideHeader() {
+            $('#pg').propertygrid({
+                showHeader: false
+            });
+        }
+        function getChanges() {
+            var s = '';
+            var rows = $('#pg').propertygrid('getChanges');
+            for (var i = 0; i < rows.length; i++) {
+                s += rows[i].name + ':' + rows[i].value + ',';
+            }
+            alert(s)
+        }
+    </script>
+</body>
+</html>

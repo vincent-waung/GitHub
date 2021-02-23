@@ -1,0 +1,36 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ShowReports</title>
+   
+    <style type="text/css">
+        ul, li {
+            margin:0px;
+            padding:0px;
+       }
+            li a {
+            
+               list-style:none;
+               text-decoration:none;
+            }
+           
+    </style>
+</head>
+<body>
+    <div>
+      <ul>
+          <li>@Html.ActionLink("导出用户基本信息统计报表", "ExportUserReport", "Sys_UserInfo")</li>
+          <li><a href="javascript:void(0)" onclick="printUserInfo(); return false;">打印用户基本信息统计报表</a></li>
+          <li><a href="/Admin_Areas/Sys_UserInfo/ShowUserReport" target="_blank">显示用户基本信息统计报表</a></li>
+          <li></li>
+          <li></li>
+      </ul>
+    </div>
+</body>
+</html>

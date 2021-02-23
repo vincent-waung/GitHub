@@ -1,0 +1,45 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Basic</title>
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+   <h2>基本布局组件</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>布局包含北，南，西，东和中五个区域.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-layout" style="width:700px;height:350px;">
+        <div data-options="region:'north'" style="height:50px"></div>
+        <div data-options="region:'south',split:true" style="height:50px;"></div>
+        <div data-options="region:'east',split:true" title="东" style="width:180px;"></div>
+        <div data-options="region:'west',split:true" title="西" style="width:100px;"></div>
+        <div data-options="region:'center',title:'主区域标题',iconCls:'icon-ok'">
+            <table id="dg" class="easyui-datagrid"
+                   data-options="url:'/EasyUI_Areas/AdminSys/GetPermData',pageSize:5,pagination:true,rownumbers:true, pageList:[5, 10],fit:true,fitColumns:true,singleSelect:true">
+                <thead>
+                    <tr>
+                        <th data-options="field:'pName',width:80">菜单名</th>
+                        <th data-options="field:'pAreaName',width:100">区域名</th>
+                        <th data-options="field:'pControllerName',width:80,align:'right'">控制器名</th>
+                        <th data-options="field:'pActionName',width:80,align:'right'">方法名</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

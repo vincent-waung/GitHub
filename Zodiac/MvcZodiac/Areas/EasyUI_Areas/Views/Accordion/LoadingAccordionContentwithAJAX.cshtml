@@ -1,0 +1,37 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>LoadingAccordionContentwithAJAX</title>
+       <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+   <h2>通过AJAX加载内容</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>点击AJAX面板头部通过AJAX加载内容.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-accordion" style="width:500px;height:300px;">
+        <div title="关于" data-options="iconCls:'icon-ok'" style="overflow:auto;padding:10px;">
+            <h3 style="color:#0099FF;">可折叠面板</h3>
+            <p>可折叠面板是jquery easyui框架的一部分. 他可以让你轻松地在Web页面上定义可折叠元素.</p>
+        </div>
+        <div title="帮助" data-options="iconCls:'icon-help'" style="padding:10px;">
+            <p>可折叠面板允许你同时显示多个面板，每个面板支持展开和折叠，点击面板头部展开和折叠面板体，面板内容可以通过AJAX加载，用户能够定义某一个面板默认选中，如果没有指定，则第一个面板默认选中.</p>       
+        </div>
+        <div title="Ajax" data-options="href:'/EasyUI_Areas/Tooltip/_Content'" style="padding:10px">
+        </div>
+    </div>
+</body>
+</html>

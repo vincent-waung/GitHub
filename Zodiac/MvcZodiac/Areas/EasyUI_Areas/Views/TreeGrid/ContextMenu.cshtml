@@ -1,0 +1,112 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ContextMenu</title>
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+    <h2>树形表格右键菜单</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>右击树节点显示菜单.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <table id="tg" class="easyui-treegrid" title="树形表格右键菜单" style="width:700px;height:250px"
+           data-options="
+                iconCls: 'icon-ok',
+                rownumbers: true,
+                animate: true,
+                collapsible: true,
+                fitColumns: true,
+                url: '/EasyUI_Areas/AdminIndex/GetAllDeptsTwo',
+                idField: 'id',
+                treeField: 'text',
+                onContextMenu: onContextMenu
+            ">
+        <thead>
+            <tr>
+                <th data-options="field:'id'">部门编号</th>
+                <th data-options="field:'text'">部门名称</th>
+                <th data-options="field:'depRemark'">说明</th>
+                <th data-options="field:'depAddTime'">操作日期</th>
+                <th data-options="field:'progress',width:120,formatter:formatProgress">人气比</th>
+            </tr>
+        </thead>
+    </table>
+    <div id="mm" class="easyui-menu" style="width:120px;">
+        <div onclick="append()" data-options="iconCls:'icon-add'">添加</div>
+        <div onclick="removeIt()" data-options="iconCls:'icon-remove'">删除</div>
+        <div class="menu-sep"></div>
+        <div onclick="collapse()">收缩</div>
+        <div onclick="expand()">展开</div>
+    </div>
+    <script type="text/javascript">
+        function formatProgress(value) {
+            if (value) {
+                var s = '<div style="width:100%;border:1px solid #ccc">' +
+                        '<div style="width:' + value + '%;background:#cc0000;color:#fff">' + value + '%' + '</div>'
+                '</div>';
+                return s;
+            } else {
+                return '';
+            }
+        }
+        function onContextMenu(e, row) {
+            e.preventDefault();
+            $(this).treegrid('select', row.id);
+            $('#mm').menu('show', {
+                left: e.pageX,
+                top: e.pageY
+            });
+        }
+        var idIndex = 100;
+        function append() {
+            idIndex++;
+            var d1 = new Date();
+            var d2 = new Date();
+            d2.setMonth(d2.getMonth() + 1);
+            var node = $('#tg').treegrid('getSelected');
+            $('#tg').treegrid('append', {
+                parent: node.id,
+                data: [{
+                    id: idIndex,
+                    name: 'New Task' + idIndex,
+                    persons: parseInt(Math.random() * 10),
+                    begin: $.fn.datebox.defaults.formatter(d1),
+                    end: $.fn.datebox.defaults.formatter(d2),
+                    progress: parseInt(Math.random() * 100)
+                }]
+            })
+        }
+        function removeIt() {
+            var node = $('#tg').treegrid('getSelected');
+            if (node) {
+                $('#tg').treegrid('remove', node.id);
+            }
+        }
+        function collapse() {
+            var node = $('#tg').treegrid('getSelected');
+            if (node) {
+                $('#tg').treegrid('collapse', node.id);
+            }
+        }
+        function expand() {
+            var node = $('#tg').treegrid('getSelected');
+            if (node) {
+                $('#tg').treegrid('expand', node.id);
+            }
+        }
+    </script>
+</body>
+</html>

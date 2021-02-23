@@ -1,0 +1,4271 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using Common;
+using Models;
+using System.Linq.Expressions;
+using Models.PocoModel;
+using Models.ReportModel;
+using Newtonsoft.Json.Linq;
+using System.Data;
+using System.Text;
+
+namespace MvcZodiac.Areas.Models
+{
+    public partial class Model_FinalLoadingPlan
+    {
+
+        #region 根据筛选条件查询LoadPlan信息
+        public static dynamic GetLoadPlanByCondition(int page, int rows,
+             string JobNo = "", string customer="",string SalesOrd="", string sort = null, string order = null)
+        {
+            int total = 0;
+            var roles = GetRoleInfoForIQueryable(out total, page, rows,
+               JobNo, customer, SalesOrd, sort, order).ToList();
+
+            //var roleList = roles.Select(r => new
+            //{
+            //    r.rId,
+            //    r.Sys_Department.depId,
+            //    r.Sys_Department.depName,
+            //    r.rDepId,
+            //    r.rName,
+            //    r.rRemark,
+            //    r.rIsDel,
+            //    r.rIsShow,
+            //    r.rAddTime
+            //}).ToList();
+
+            return new DataGrid
+            {
+                total = total,
+                rows = roles,
+                footer = null
+            };
+        }
+        #endregion
+        
+        #region 根据筛选条件查询LoadPlan信息+IQueryable<Sys_Role>
+        private static IQueryable<FinalLoadingPlan> GetRoleInfoForIQueryable(out int total, int page, int rows,
+           string JobNo = "",string customer = "", string SalesOrd = "",  string sort = null, string order = null)
+         {
+            total = 0;
+            PropertySortCondition<FinalLoadingPlan> psc = null;
+            if (sort == null)
+            {
+                psc = new PropertySortCondition<FinalLoadingPlan>(r => r.id);
+            }
+            else
+            {
+                psc = new PropertySortCondition<FinalLoadingPlan>(sort, order.Equals("asc") ? ListSortDirection.Ascending : ListSortDirection.Descending);
+            }
+
+            var loadplans = oc.BllSession.IFinalLoadingPlanBLL.Entities.Where(r => r.JOB_NO.Contains(JobNo) && r.Customer_Name.Contains(customer) && r.SalesOrd_STO.Contains(SalesOrd), page, rows, out total, psc);
+           
+            return loadplans;
+        }
+        #endregion
+
+
+
+        #region 根据筛选条件查询DailyReport信息
+        public static dynamic GetDailyReportByCondition(int page, int rows,
+            DateTime operDateStart, DateTime operDateEnd, string JobNo = "", string smlg = "", string customer = "", string sort = null, string order = null)
+        {
+            int total = 0;
+            var roles = GetDailyInfoForIQueryable( operDateStart, operDateEnd,
+               JobNo, smlg, customer, sort, order).ToList();
+
+            var roleList = roles.Select(r => new
+            {
+              JOB_NO = r.JOB_NO,
+              Customer_Name=  r.Customer_Name,
+              SM_Operator=  r.SM_Operator,
+               Job_Rec_Date= r.Job_Rec_Date,
+              Booking_date=  r.Booking_date,
+              SO_release_date=  r.SO_release_date,
+              Send_SI=  r.Send_SI,
+              Ship_Date=  r.Ship_Date,
+              Close_shipping_doc_submssion_date=  r.Close_shipping_doc_submssion_date,
+              Exception=  r.Exception
+            }).Distinct().ToList();
+
+            var dailylist = roleList.Skip((page - 1) * rows).Take(rows);
+     
+            return new DataGrid
+            {
+                total = roleList.Count,
+                rows = dailylist,
+                footer = null
+            };
+        }
+        #endregion
+
+        #region 根据筛选条件查询DailyReport信息+IQueryable<Sys_Role>
+        private static IQueryable<FinalLoadingPlan> GetDailyInfoForIQueryable(  DateTime operDateStart, DateTime operDateEnd, string JobNo = "", string smlg = "", string customer = "", string sort = null, string order = null)
+        {
+           
+            PropertySortCondition<FinalLoadingPlan> psc = null;
+            if (sort == null)
+            {
+                psc = new PropertySortCondition<FinalLoadingPlan>(r => r.id);
+            }
+            else
+            {
+                psc = new PropertySortCondition<FinalLoadingPlan>(sort, order.Equals("asc") ? ListSortDirection.Ascending : ListSortDirection.Descending);
+            }
+
+            var loadplans = oc.BllSession.IFinalLoadingPlanBLL.Entities.Where(r => r.JOB_NO.Contains(JobNo) && r.Job_Rec_Date >= operDateStart && r.Job_Rec_Date <= operDateEnd && r.Customer_Name.Contains(customer) && r.SM_Operator.Contains(smlg) );
+
+            return loadplans;
+        }
+        #endregion
+
+
+
+
+        #region 根据筛选条件查询所有DailyReport信息
+        public static dynamic GetAllDailyReportByCondition( DateTime operDateStart, DateTime operDateEnd, string JobNo = "", string smlg = "", string customer = "", string sort = null, string order = null)
+        {
+            int total = 0;
+            var roles = GetALLDailyInfoForIQueryable(operDateStart, operDateEnd, JobNo, smlg, customer, sort, order).ToList();
+
+            var roleList = roles.Select(r => new
+            {
+                r.JOB_NO,
+                r.Customer_Name,
+                r.SM_Operator,
+                r.Job_Rec_Date,
+                r.Booking_date,
+                r.SO_release_date,
+                r.Send_SI,
+                r.Ship_Date,
+                r.Close_shipping_doc_submssion_date,
+                r.Exception
+            }).Distinct().ToList();
+
+            return roleList;
+            //return new DataGrid
+            //{
+            //    total = roleList.Count,
+            //    rows = roleList,
+            //    footer = null
+            //};
+        }
+        #endregion
+
+
+
+        #region 根据筛选条件查询所有DailyReport信息+IQueryable<Sys_Role>
+        private static IQueryable<FinalLoadingPlan> GetALLDailyInfoForIQueryable(  DateTime operDateStart, DateTime operDateEnd, string JobNo = "", string smlg = "", string customer = "", string sort = null, string order = null)
+        {
+            
+            PropertySortCondition<FinalLoadingPlan> psc = null;
+            if (sort == null)
+            {
+                psc = new PropertySortCondition<FinalLoadingPlan>(r => r.id);
+            }
+            else
+            {
+                psc = new PropertySortCondition<FinalLoadingPlan>(sort, order.Equals("asc") ? ListSortDirection.Ascending : ListSortDirection.Descending);
+            }
+
+            var loadplans = oc.BllSession.IFinalLoadingPlanBLL.Entities.Where(r => r.JOB_NO.Contains(JobNo) && r.Job_Rec_Date >= operDateStart && r.Job_Rec_Date <= operDateEnd && r.Customer_Name.Contains(customer) && r.SM_Operator.Contains(smlg));
+
+            return loadplans;
+        }
+        #endregion
+
+        public static List<FinalLoadingPlan> GetLoadPlanListData(string strBookingNumber, string strConsol)
+        {
+            List<FinalLoadingPlan> lloadplan = new List<FinalLoadingPlan>();
+
+            var truckDetail = oc.BllSession.ITruck_Booking_DetailBLL.GetListBy(a => a.Booking_Number == strBookingNumber);
+
+            if (truckDetail.Count > 0)
+            {
+                foreach (var detailrow in truckDetail)
+                {
+                    FinalLoadingPlan loadplan = new FinalLoadingPlan();
+                    string strSTO = detailrow.STO.Trim();
+                    string strLine = detailrow.Line.TrimStart('0');
+                    string strfulline = detailrow.Line.PadLeft(6, '0').Trim();
+
+
+                    loadplan = oc.BllSession.IFinalLoadingPlanBLL.GetListBy(aa => aa.SalesOrd_STO == strSTO && (aa.ItemNO.Trim() == strLine || aa.ItemNO.Trim() == strfulline)).FirstOrDefault();
+
+                    if (loadplan != null)
+                    {
+                        loadplan.TotalCarton = detailrow.Ctn.ToString();
+                        loadplan.TotalGrossWeight = detailrow.GrossWeight;
+                        loadplan.TotalVolume = detailrow.CBM;
+
+                        lloadplan.Add(loadplan);
+                    }
+                }
+            }
+
+            //////如果是交2号仓的货物，则必须显示出仓的loadplan 而不是交仓的loadplan 
+            if (strConsol.Length > 7 && strConsol.Substring(0, 2).ToUpper() == "LS")
+            {
+                string strSO = strConsol.Substring(0, strConsol.Length - 1);
+                string ss = strSO.Substring(strSO.Length - 1);
+                if (strSO.Substring(strSO.Length - 2) == "-")
+                {
+                    strSO = strSO.Substring(0, strConsol.Length - 1);
+                }
+
+                lloadplan = oc.BllSession.IFinalLoadingPlanBLL.GetListBy(ab => ab.Consol_no.Contains(strSO));
+
+            }
+
+
+            return lloadplan;
+
+
+
+        }
+
+
+
+        #region 根据筛选条件查询KPI信息
+        public static dynamic GetLoadPlanKPIByCondition(string Customer_name, string Item, string DateType, DateTime operDateStart, DateTime operDateEnd, int page, int rows, string fod,
+             string Sales_order = "", string Vendor_Name = "", string sort = null, string order = null)
+        {
+            int total = 0;
+            var roles = GetLoadPlanKPIForIQueryable(Customer_name, Item, DateType, operDateStart, operDateEnd, out total, page, rows, fod,
+               Sales_order, Vendor_Name, sort, order).ToList();
+ 
+            return new DataGrid
+            {
+                total = total,
+                rows = roles,
+                footer = null
+            };
+        }
+        #endregion
+
+        #region 根据筛选条件查询LoadPlanKPI信息+IQueryable<Sys_Role>
+        private static List<FinalLoadingPlan> GetLoadPlanKPIForIQueryable(string Customer_name, string Item, string DateType, DateTime operDateStart, DateTime operDateEnd, out int total, int page, int rows, string fod,
+           string Purch_Doc = "", string Vendor_Name = "", string sort = null, string order = null)
+        {
+            total = 0;
+            PropertySortCondition<FinalLoadingPlan> psc = null;
+            if (sort == null)
+            {
+                if (DateType.Trim() == "First Date")
+                {
+                    psc = new PropertySortCondition<FinalLoadingPlan>(r => r.First_Date);
+                }
+                else if (DateType.Trim() == "Booking Date")
+                {
+                    psc = new PropertySortCondition<FinalLoadingPlan>(r => r.Booking_date);
+
+                }
+                else if (DateType.Trim() == "Update GR time")
+                {
+                    psc = new PropertySortCondition<FinalLoadingPlan>(r => r.Update_GR_time);
+                }
+                else
+                {
+                    psc = new PropertySortCondition<FinalLoadingPlan>(r => r.CY_closing);
+                }
+            }
+            else
+            {
+                psc = new PropertySortCondition<FinalLoadingPlan>(sort, order.Equals("asc") ? ListSortDirection.Ascending : ListSortDirection.Descending);
+            }
+
+            List<FinalLoadingPlan> loadplans;
+            if (DateType.Trim() == "First Date") {
+
+                if (fod == "on")
+                {
+                    loadplans = oc.BllSession.IFinalLoadingPlanBLL.Entities.Where(r => r.Customer_Name.Contains(Customer_name) && r.Item.Contains(Item) && r.PurchDoc.Contains(Purch_Doc) && r.Vendor_Name.Contains(Vendor_Name) && r.First_Date >= operDateStart && r.Consol_no.ToUpper().Contains("LS") && r.First_Date <= operDateEnd && r.Terminal_POD_UploadDate != null, page, rows, out total, psc).ToList();
+
+                }
+                else
+                {
+
+                    loadplans = oc.BllSession.IFinalLoadingPlanBLL.Entities.Where(r => r.Customer_Name.Contains(Customer_name) && r.Item.Contains(Item) && r.PurchDoc.Contains(Purch_Doc) && r.Vendor_Name.Contains(Vendor_Name) && r.First_Date >= operDateStart && r.Consol_no.ToUpper().Contains("LS") && r.First_Date <= operDateEnd, page, rows, out total, psc).ToList();
+
+                }
+            
+            }
+            else if (DateType.Trim() == "Booking Date")
+            {
+
+
+                if (fod == "on")
+                {
+                    loadplans = oc.BllSession.IFinalLoadingPlanBLL.Entities.Where(r => r.Customer_Name.Contains(Customer_name) && r.Item.Contains(Item) && r.PurchDoc.Contains(Purch_Doc) && r.Vendor_Name.Contains(Vendor_Name) && r.Booking_date >= operDateStart && r.Consol_no.ToUpper().Contains("LS") && r.Booking_date <= operDateEnd && r.Terminal_POD_UploadDate != null, page, rows, out total, psc).ToList();
+
+                }
+                else
+                {
+                    loadplans = oc.BllSession.IFinalLoadingPlanBLL.Entities.Where(r => r.Customer_Name.Contains(Customer_name) && r.Item.Contains(Item) && r.PurchDoc.Contains(Purch_Doc) && r.Vendor_Name.Contains(Vendor_Name) && r.Booking_date >= operDateStart && r.Consol_no.ToUpper().Contains("LS") && r.Booking_date <= operDateEnd, page, rows, out total, psc).ToList();
+
+                }
+            }
+            else if (DateType.Trim() == "Update GR time")
+            {
+
+                if (fod == "on")
+                {
+                    loadplans = oc.BllSession.IFinalLoadingPlanBLL.Entities.Where(r => r.Customer_Name.Contains(Customer_name) && r.Item.Contains(Item) && r.PurchDoc.Contains(Purch_Doc) && r.Vendor_Name.Contains(Vendor_Name) && r.Update_GR_time >= operDateStart && r.Consol_no.ToUpper().Contains("LS") && r.Update_GR_time <= operDateEnd && r.Terminal_POD_UploadDate != null, page, rows, out total, psc).ToList();
+
+                }
+                else
+                {
+                    loadplans = oc.BllSession.IFinalLoadingPlanBLL.Entities.Where(r => r.Customer_Name.Contains(Customer_name) && r.Item.Contains(Item) && r.PurchDoc.Contains(Purch_Doc) && r.Vendor_Name.Contains(Vendor_Name) && r.Booking_date >= operDateStart && r.Consol_no.ToUpper().Contains("LS") && r.Booking_date <= operDateEnd, page, rows, out total, psc).ToList();
+
+                }
+            }
+            else
+            {
+                if (fod == "on")
+                {
+                    loadplans = oc.BllSession.IFinalLoadingPlanBLL.Entities.Where(r => r.Customer_Name.Contains(Customer_name) && r.Item.Contains(Item) && r.PurchDoc.Contains(Purch_Doc) && r.Vendor_Name.Contains(Vendor_Name) && r.CY_closing >= operDateStart && r.Consol_no.ToUpper().Contains("LS") && r.CY_closing <= operDateEnd && r.Terminal_POD_UploadDate != null, page, rows, out total, psc).ToList();
+                }
+                else
+                {
+                    loadplans = oc.BllSession.IFinalLoadingPlanBLL.Entities.Where(r => r.Customer_Name.Contains(Customer_name) && r.Item.Contains(Item) && r.PurchDoc.Contains(Purch_Doc) && r.Vendor_Name.Contains(Vendor_Name) && r.CY_closing >= operDateStart && r.Consol_no.ToUpper().Contains("LS") && r.CY_closing <= operDateEnd, page, rows, out total, psc).ToList();
+
+                }
+            }
+             
+            foreach(var a in loadplans){
+                a.Transport_mode = "Ocean";
+
+
+               //if(!string.IsNullOrEmpty(a.Consol_no)){
+
+               // var lRec_no =  oc.BllSession.IRecRegistrationItems_NewBLL.Entities.Where(rd => rd.So_No == a.Consol_no).Select(ss => ss.Rec_No).ToList();
+                
+               // if (lRec_no.Count() > 0)
+               // {
+               //     string rec_no = lRec_no[0];
+               //     var lASN = oc.BllSession.IRecRegistrationHead_NewBLL.Entities.Where(rh => rh.Rec_No == rec_no).Select(ss => ss.Asn).FirstOrDefault();
+               //   if (!string.IsNullOrEmpty(lASN))
+               //   {
+               //       var lticket = oc.BllSession.IticketBLL.Entities.Where(t => t.ASN.Contains(lASN)).OrderByDescending(aa => aa.TID).FirstOrDefault();
+               //       if (lticket != null)
+               //       {
+               //           a.Arrive_WHS_Date = lticket.PrintTime;
+               //       }
+               //   }
+               // }
+
+               // var tmsticket = oc.BllSession.ITruck_Booking_DetailBLL.Entities.Where(bd => bd.SO_No == a.Consol_no).ToList();
+               // if (tmsticket.Count() > 0)
+               // {
+               //     string tmsBookingNo = tmsticket[0].Booking_Number;
+               //     var bookinghead = oc.BllSession.ITruck_Booking_HeadBLL.Entities.Where(bh => bh.Booking_Number == tmsBookingNo).ToList().FirstOrDefault();
+               //     if (bookinghead.Terminal_Time != null)
+               //     {
+               //         a.Arrived_Terminal = (DateTime)bookinghead.Terminal_Time;
+               //     }
+
+               //     if (bookinghead.Leave_factory_time != null)
+               //     {
+
+               //         a.Leave_factory_time = (DateTime)bookinghead.Leave_factory_time;
+               //     }
+               // }
+
+                
+
+
+
+               
+               //}
+
+            }
+
+            return loadplans;
+ 
+        }
+        #endregion
+
+
+
+        #region 根据筛选条件查询所有KPI信息
+        public static List<FinalLoadingPlan> GetAllLoadPlanKPIByCondition(string Customer_name, string consol_No, string DateType, DateTime operDateStart, DateTime operDateEnd, 
+           string Sales_order = "", string Vendor_Name = "", string sort = null, string order = null)
+        {
+            int total = 0;
+            //var roles = GetLoadPlanKPIForIQueryable(operDateStart, operDateEnd, out total, page, rows,
+            //   JobNo, customer ).ToList();
+             List<FinalLoadingPlan> roles ;
+
+             if (DateType.Trim() == "First Date")
+             {
+                 roles = oc.BllSession.IFinalLoadingPlanBLL.Entities.Where(r => r.Customer_Name.Contains(Customer_name) && r.Consol_no.Contains(consol_No) && r.SalesOrd_STO.Contains(Sales_order) && r.Vendor_Name.Contains(Vendor_Name) && r.First_Date >= operDateStart && r.First_Date <= operDateEnd ).ToList();
+             }
+             else if (DateType.Trim() == "Booking Date")
+             {
+                 roles = oc.BllSession.IFinalLoadingPlanBLL.Entities.Where(r => r.Customer_Name.Contains(Customer_name) && r.Consol_no.Contains(consol_No) && r.SalesOrd_STO.Contains(Sales_order) && r.Vendor_Name.Contains(Vendor_Name) && r.Booking_date >= operDateStart && r.Booking_date <= operDateEnd   ).ToList();
+             }
+             else if (DateType.Trim() == "Update GR time")
+             {
+                 roles = oc.BllSession.IFinalLoadingPlanBLL.Entities.Where(r => r.Customer_Name.Contains(Customer_name) && r.Consol_no.Contains(consol_No) && r.SalesOrd_STO.Contains(Sales_order) && r.Vendor_Name.Contains(Vendor_Name) && r.Update_GR_time >= operDateStart && r.Update_GR_time <= operDateEnd ).ToList();
+             }
+             else
+             {
+                 roles = oc.BllSession.IFinalLoadingPlanBLL.Entities.Where(r => r.Customer_Name.Contains(Customer_name) && r.Consol_no.Contains(consol_No) && r.SalesOrd_STO.Contains(Sales_order) && r.Vendor_Name.Contains(Vendor_Name) && r.CY_closing >= operDateStart && r.CY_closing <= operDateEnd ).ToList();
+             }
+            //if (DateType.Trim() == "First Date")
+            //{
+            //    roles = oc.BllSession.IFinalLoadingPlanBLL.Entities.Where(r => r.SalesOrd_STO.Contains(Sales_order) && r.Vendor_Name.Contains(Vendor_Name) && r.First_Date >= operDateStart && r.First_Date <= operDateEnd).OrderBy(r => r.First_Date).ToList();
+            //}
+
+            //else if (DateType.Trim() == "Booking Date")
+            //{
+            //    roles = oc.BllSession.IFinalLoadingPlanBLL.Entities.Where(r => r.Customer_Name.Contains(Customer_name) && r.Consol_no.Contains(consol_No) && r.SalesOrd_STO.Contains(Sales_order) && r.Vendor_Name.Contains(Vendor_Name) && r.Booking_date >= operDateStart && r.Booking_date <= operDateEnd ).ToList();
+            //}
+            //else if (DateType.Trim() == "Update GR time")
+            //{
+            //    roles = oc.BllSession.IFinalLoadingPlanBLL.Entities.Where(r => r.Customer_Name.Contains(Customer_name) && r.Consol_no.Contains(consol_No) && r.SalesOrd_STO.Contains(Sales_order) && r.Vendor_Name.Contains(Vendor_Name) && r.Update_GR_time >= operDateStart && r.Update_GR_time <= operDateEnd, page, rows, out total, psc).ToList();
+            //}
+            //else
+            //{
+            //    roles = oc.BllSession.IFinalLoadingPlanBLL.Entities.Where(r => r.Customer_Name.Contains(Customer_name) && r.Consol_no.Contains(consol_No) && r.SalesOrd_STO.Contains(Sales_order) && r.Vendor_Name.Contains(Vendor_Name) && r.CY_closing >= operDateStart && r.CY_closing <= operDateEnd, page, rows, out total, psc).ToList();
+            //}
+
+
+            //else
+            //{
+            //    roles = oc.BllSession.IFinalLoadingPlanBLL.Entities.Where(r => r.SalesOrd_STO.Contains(Sales_order) && r.Vendor_Name.Contains(Vendor_Name) && r.CY_closing >= operDateStart && r.CY_closing <= operDateEnd).OrderBy(r => r.CY_closing).ToList();
+            //}
+            foreach (var a in roles)
+            {
+                a.Transport_mode = "Ocean";
+                //if (!string.IsNullOrEmpty(a.Consol_no))
+                //{
+
+                //    var lRec_no = oc.BllSession.IRecRegistrationItems_NewBLL.Entities.Where(rd => rd.So_No == a.Consol_no).Select(ss => ss.Rec_No).ToList();
+
+                //    if (lRec_no.Count() > 0)
+                //    {
+                //        string rec_no = lRec_no[0];
+                //        var lASN = oc.BllSession.IRecRegistrationHead_NewBLL.Entities.Where(rh => rh.Rec_No == rec_no).Select(ss => ss.Asn).FirstOrDefault();
+                //        if (!string.IsNullOrEmpty(lASN))
+                //        {
+                //            var lticket = oc.BllSession.IticketBLL.Entities.Where(t => t.ASN.Contains(lASN)).OrderByDescending(aa => aa.TID).FirstOrDefault();
+                //            if (lticket != null)
+                //            {
+                //                a.Ship_Date = lticket.PrintTime;
+                //            }
+                //        }
+                //    }
+
+                //    var tmsticket = oc.BllSession.ITruck_Booking_DetailBLL.Entities.Where(bd => bd.SO_No == a.Consol_no).ToList();
+                //    if (tmsticket.Count() > 0)
+                //    {
+                //        string tmsBookingNo = tmsticket[0].Booking_Number;
+                //        var bookinghead = oc.BllSession.ITruck_Booking_HeadBLL.Entities.Where(bh => bh.Booking_Number == tmsBookingNo).ToList().FirstOrDefault();
+                //        if (bookinghead.Terminal_Time != null)
+                //        { 
+                //        a.Arrived_Terminal = (DateTime)bookinghead.Terminal_Time;
+                     
+                //        }
+
+
+                //        if (bookinghead.Leave_factory_time != null)
+                //        {
+
+                //            a.Leave_factory_time = (DateTime)bookinghead.Leave_factory_time;
+                //        }
+                //    }
+
+
+
+                //}
+
+            }
+
+            return roles;
+       
+        }
+        #endregion
+
+
+
+        #region 保存导入的loadplan
+        public static void Saveloadplan(List<FinalLoadingPlan> lloadplan)
+        {
+            for (int i = 0; i < lloadplan.Count; i++)
+            {
+                string strsto = lloadplan[i].SalesOrd_STO;
+                string stritemno = lloadplan[i].ItemNO;
+                var exitstoitem = oc.BllSession.IFinalLoadingPlanBLL.GetListBy(a => a.SalesOrd_STO == strsto && a.ItemNO == stritemno).ToList();
+                if (exitstoitem.Count > 0)
+                {
+                    lloadplan[i].id = exitstoitem.FirstOrDefault().id;
+                    lloadplan[i].Update_time = System.DateTime.Now;
+                    //   Expression<Func<FinalLoadingPlan, object>>[] ignoreProperties =
+                    //new Expression<Func<FinalLoadingPlan, object>>[] { p => p.JOB_NO, p => p.Origin_port, p => p.Ship_mode, p => p.Consol_no, p => p.BookingNo, p => p.Booking_date, p => p.Booking_doc_uploaded_date, p => p.SO, p => p.SO_release_date, p => p.CY_open, p => p.CY_closing, p => p.Cus_Sys_INV, p => p.Close_shipping_doc_submssion_date, p => p.Vessel, p => p.Voyage, p => p.Cust_SI, p => p.Send_SI, p => p.Confirm_SI, p => p.Payment_Date, p => p.FCR_Date, p => p.Type, p => p.ImportDate, p => p.Cont_No, p => p.Seal_No, p => p.Cont_Date, p => p.ETD, p => p.BL, p => p.Invoice_Date, p => p.Shipment_Type, p => p.Loading_Port, p => p.Unloading_Port, p => p.Destination, p => p.Shipper, p => p.Consignee, p => p.Notify_Party, p => p.Shipping_Mark, p => p.Whs, p => p.SM_Operator, p => p.Job_Rec_Date, p => p.Ship_Date, p => p.Exception, p => p.NST, p => p.NLT, p => p.Vendor_Confirm_Date, p => p.rec_so_date, p => p.First_Job_Rec_Date, p => p.Courier_tracking_no, p => p.Operator, p => p.IsSendEmail, p => p.Arrive_WHS_Date, p => p.Arrived_Terminal, p => p.Leave_factory_time, p => p.Transport_mode };
+
+                    var iresult = oc.BllSession.IFinalLoadingPlanBLL.Modify(lloadplan[i], "SM_Operator", "Vendor_Name",
+                        "Mfr_Name1",
+                        "Mfr_Country",
+                        "Customer_Name",
+                        "Receiving_point",
+                        "CustomerPO", "First_Date"
+                        , "Cancel_Date",
+                        "SalesOrd_STO", "ItemNO", "CustomerMaterialNumber", "SalesMaterial", "Material", "CustomerDescription", "Short_text", "Deliv_date",
+                        "PurchDoc", "Item", "Matl_Group", "PO_quantity"
+                        , "CartonPCS"
+                        , "TotalCarton"
+                        , "CartonGrossWeight"
+                        , "TotalGrossWeight"
+                        , "CartonVolume"
+                        , "TotalVolume"
+                        , "CartonNetWeight"
+                        , "TotalNetWeight"
+                        , "CartonWidth_L"
+                        , "CartonDepth_W"
+                        , "CartonHeight"
+                        , "MainBatt"
+                        , "MainBattQty"
+                        , "ShipToName"
+                        , "ShipToCountry"
+                           , "OverallCredStat"
+                           , "SMprofomalINV"
+                           , "DeliveryNo"
+                           , "Update_time"
+                        );
+                }
+                else
+                {
+
+                    var iinsert = oc.BllSession.IFinalLoadingPlanBLL.Add(lloadplan[i]);
+                }
+            }
+
+        }
+        #endregion
+
+
+        #region 校验VendorName是否存在
+        public static bool CheckVendorName(string strVendorName)
+        {
+            var result = oc.BllSession.IbookingVendorBLL.GetListBy(a => a.vendor_name == strVendorName);
+            if (result.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        #endregion
+
+
+        #region 根据筛选条件查询TruckKPI信息
+
+        public static dynamic GetTruckLoadPlanKPIByCondition(string Item, string DateType, DateTime operDateStart, DateTime operDateEnd, int page, int rows,
+            string POD, string Purch_Doc = "", string Vendor_Name = "", string sort = null, string order = null)
+        {
+            int total = 0;
+            var roles = GetTruckKPIForIQueryable(Item, DateType, operDateStart, operDateEnd, out total, page, rows,
+             POD, Purch_Doc, Vendor_Name, sort, order).ToList();
+
+            return new DataGrid
+            {
+                total = total,
+                rows = roles,
+                footer = null
+            };
+        }
+        #endregion
+
+
+
+        public static dynamic GetLoadPlanList(string strBookingNumber, string strConsol)
+        {
+            List<FinalLoadingPlan> lloadplan = new List<FinalLoadingPlan>();
+
+            var truckDetail = oc.BllSession.ITruck_Booking_DetailBLL.GetListBy(a => a.Booking_Number == strBookingNumber);
+
+            if (truckDetail.Count > 0)
+            {
+                foreach (var detailrow in truckDetail)
+                {
+                    FinalLoadingPlan loadplan = new FinalLoadingPlan();
+                    string strSTO = detailrow.STO.Trim();
+                    string strLine = detailrow.Line.TrimStart('0');
+                    string strfulline = detailrow.Line.PadLeft(6, '0').Trim();
+
+
+                    loadplan = oc.BllSession.IFinalLoadingPlanBLL.GetListBy(aa => aa.SalesOrd_STO == strSTO && (aa.ItemNO.Trim() == strLine || aa.ItemNO.Trim() == strfulline)).FirstOrDefault();
+
+                    if (loadplan != null)
+                    {
+                        loadplan.TotalCarton = detailrow.Ctn.ToString();
+                        loadplan.TotalGrossWeight = detailrow.GrossWeight;
+                        loadplan.TotalVolume = detailrow.CBM;
+
+                        lloadplan.Add(loadplan);
+                    }
+                }
+            }
+
+            //////如果是交2号仓的货物，则必须显示出仓的loadplan 而不是交仓的loadplan 
+            if (strConsol.Length > 7 && strConsol.Substring(0, 2).ToUpper() == "LS")
+            {
+                string strSO = strConsol.Substring(0, strConsol.Length - 1);
+                string ss = strSO.Substring(strSO.Length - 1);
+                if (strSO.Substring(strSO.Length - 2) == "-")
+                {
+                    strSO = strSO.Substring(0, strConsol.Length - 1);
+                }
+
+                lloadplan = oc.BllSession.IFinalLoadingPlanBLL.GetListBy(ab => ab.Consol_no.Contains(strSO));
+
+            }
+
+            return new DataGrid
+            {
+                total = lloadplan.Count(),
+                rows = lloadplan,
+                footer = null
+            };
+
+
+        }
+
+        private static List<FinalLoadingPlan> GetTruckKPIForIQueryable(string Item, string DateType, DateTime operDateStart, DateTime operDateEnd, out int total, int page, int rows,
+          string POD, string Purch_Doc = "", string Vendor_Name = "", string sort = null, string order = null)
+        {
+            total = 0;
+            PropertySortCondition<FinalLoadingPlan> psc = null;
+            if (sort == null)
+            {
+                if (DateType.Trim() == "First Date")
+                {
+                    psc = new PropertySortCondition<FinalLoadingPlan>(r => r.First_Date);
+                }
+                else if (DateType.Trim() == "Booking Date")
+                {
+                    psc = new PropertySortCondition<FinalLoadingPlan>(r => r.Booking_date);
+
+                }
+                else if (DateType.Trim() == "Update GR time")
+                {
+                    psc = new PropertySortCondition<FinalLoadingPlan>(r => r.Booking_date);
+
+                }
+                else
+                {
+                    psc = new PropertySortCondition<FinalLoadingPlan>(r => r.CY_closing);
+                }
+            }
+            else
+            {
+                psc = new PropertySortCondition<FinalLoadingPlan>(sort, order.Equals("asc") ? ListSortDirection.Ascending : ListSortDirection.Descending);
+            }
+
+            List<FinalLoadingPlan> loadplans = new List<FinalLoadingPlan>();
+
+            //if (DateType.Trim() == "Delivery Date")
+            //{
+            //  loadplans = oc.BllSession.IFinalLoadingPlanBLL.Entities.Where(r => r.Customer_Name.Contains(Customer_name) && r.Consol_no.Contains(consol_No) && r.SalesOrd_STO.Contains(Sales_order) && r.Vendor_Name.Contains(Vendor_Name) && r.First_Date >= operDateStart && r.First_Date <= operDateEnd, page, rows, out total, psc).ToList() ;
+            var truckbookinghead = oc.BllSession.ITruck_Booking_HeadBLL.GetListBy(r => r.Vdr_Pickup_date >= operDateStart && r.Vdr_Pickup_date < operDateEnd).Join(oc.BllSession.ITruck_VendorBLL.GetListBy(b => b.Client == "SpinMaster"), e => e.VendorCode, o => o.Vendor_Code, (e, o) => e).ToList();
+
+            var lTKNo = truckbookinghead.Select(a => a.Booking_Number).ToList();
+
+            var truckbookingDetail = oc.BllSession.ITruck_Booking_DetailBLL.Entities.Where(aa => lTKNo.Contains(aa.Booking_Number) && aa.hfe.Contains(Purch_Doc) && aa.Item.Contains(Item));
+
+            var truckings = (from a in truckbookinghead join b in truckbookingDetail on a.Booking_Number equals b.Booking_Number select new { Consol_no = b.SO_No, Customer_Name = b.Customer_Name, hfe = b.hfe, ItemNO = b.Line, TotalCarton = b.Ctn, TotalGrossWeight = b.GrossWeight, TotalVolume = b.CBM, Leave_factory_time = a.Leave_factory_time, Cont_Date = a.Terminal_Time, Ship_Date = a.Arrive_Whs_time, Arrive_WHS_Date = a.Receipt_Upload_time, Shipment_Type = a.Delivery_Type, Cont_No = a.Cont_NO, Vendor_Name = a.VendorName }).ToList();
+
+
+
+            var so = truckings.Select(aa => aa.Consol_no).Distinct().ToList();
+
+            foreach (var truckingenty in truckings)
+            {
+                var lineno = truckingenty.ItemNO.TrimStart('0');    
+                var loadplanrecord = oc.BllSession.IFinalLoadingPlanBLL.Entities.Where(b => b.SalesOrd_STO == truckingenty.hfe && (b.ItemNO == truckingenty.ItemNO || b.ItemNO == lineno));
+                if (loadplanrecord.Count() == 0)
+                {
+                    FinalLoadingPlan lpentity = new FinalLoadingPlan();
+                    lpentity.Consol_no = truckingenty.Consol_no;
+                    lpentity.Customer_Name = truckingenty.Customer_Name;
+                    lpentity.SalesOrd_STO = truckingenty.hfe;
+                    lpentity.ItemNO = truckingenty.ItemNO;
+                    lpentity.TotalCarton = truckingenty.TotalCarton.ToString();
+                    lpentity.TotalGrossWeight = truckingenty.TotalGrossWeight;
+                    lpentity.TotalVolume = truckingenty.TotalVolume;
+                    lpentity.Shipment_Type = truckingenty.Shipment_Type;
+                    lpentity.Cont_No = truckingenty.Cont_No;
+                    lpentity.Vendor_Name = truckingenty.Vendor_Name;
+
+                    if (truckingenty.Leave_factory_time != null)
+                    {
+                        lpentity.Leave_factory_time = (DateTime)truckingenty.Leave_factory_time;
+                    };
+
+                    if (truckingenty.Ship_Date != null)
+                    {
+                        lpentity.Ship_Date = (DateTime)truckingenty.Ship_Date;
+                    };
+                    if (truckingenty.Cont_Date != null)
+                    {
+                        lpentity.Cont_Date = (DateTime)truckingenty.Cont_Date;
+                    }
+
+                    if (truckingenty.Arrive_WHS_Date != null)
+                    {
+                        lpentity.Arrive_WHS_Date = (DateTime)truckingenty.Arrive_WHS_Date;
+                    }
+
+                    lpentity.POD = true;
+                    if (truckingenty.Arrive_WHS_Date == null && truckingenty.Cont_Date == null)
+                    {
+                        lpentity.POD = false;
+                    }
+
+                    loadplans.Add(lpentity);
+                }
+            }
+
+
+
+            //var solist = oc.BllSession.IFinalLoadingPlanBLL.Entities.Where(b => so.Contains(b.Consol_no)).Select(ac=>ac.Consol_no).ToList();
+            //var truckings2 = truckings.Where(aa => !solist.Contains(aa.Consol_no));
+
+            //foreach (var truckingenty in truckings2)
+            //{
+            //    FinalLoadingPlan lpentity = new FinalLoadingPlan();
+            //    lpentity.Consol_no =truckingenty.Consol_no;
+            //    lpentity.Customer_Name = truckingenty.Customer_Name;
+            //    lpentity.SalesOrd_STO = truckingenty.SalesOrd_STO; 
+            //    lpentity.ItemNO = truckingenty.ItemNO; 
+            //    lpentity.TotalCarton = truckingenty.TotalCarton.ToString();
+            //    lpentity.TotalGrossWeight = truckingenty.TotalGrossWeight;
+            //    lpentity.TotalVolume = truckingenty.TotalVolume;
+            //    lpentity.Shipment_Type = truckingenty.Shipment_Type;
+            //    lpentity.Cont_No = truckingenty.Cont_No;
+            //    lpentity.Vendor_Name = truckingenty.Vendor_Name;
+
+            //    if (truckingenty.Leave_factory_time != null) 
+            //    {
+            //        lpentity.Leave_factory_time = (DateTime)truckingenty.Leave_factory_time;
+            //    };
+            //    if (truckingenty.Cont_Date != null)
+            //    {
+            //        lpentity.Cont_Date = (DateTime)truckingenty.Cont_Date;
+            //    }
+
+            //    if (truckingenty.Arrive_WHS_Date != null)
+            //    {
+            //        lpentity.Arrive_WHS_Date = (DateTime)truckingenty.Arrive_WHS_Date;
+            //    }
+
+            //    lpentity.POD = true;
+            //    if (truckingenty.Arrive_WHS_Date == null)
+            //    {
+            //        lpentity.POD = false;
+            //    }
+            //    loadplans.Add(lpentity);
+            //}
+
+            if (POD == "on")
+            {
+                total = loadplans.Where(lps => lps.POD == true).Count();
+                loadplans = loadplans.Where(lps => lps.POD == true).Skip((page - 1) * rows).Take(rows).ToList();
+               
+            }
+            else
+            {
+                total = loadplans.Count();
+                loadplans = loadplans.Skip((page - 1) * rows).Take(rows).ToList();
+            }
+
+            //total = truckings.Count();
+            //loadplans = truckings.Skip((page - 1) * rows).Take(rows).ToList();
+
+            return loadplans;
+            //foreach (var detail in truckbookingDetail)
+            //{
+            //    FinalLoadingPlan lpentity = new FinalLoadingPlan();
+            //    lpentity.Consol_no = detail.SO_No;
+            //    lpentity.Customer_Name = detail.Customer_Name;
+            //    lpentity.SalesOrd_STO = detail.STO;
+            //    lpentity.ItemNO = detail.Line;
+            //    lpentity.TotalCarton = detail.Ctn.ToString();
+            //    lpentity.TotalGrossWeight = detail.GrossWeight;
+            //    lpentity.TotalVolume = detail.CBM;
+            //    lpentity.Leave_factory_time=
+
+            //}
+
+            //loadplans = oc.BllSession.IFinalLoadingPlanBLL.Entities.Where(r => r.Customer_Name.Contains(Customer_name) && r.Consol_no.Contains(consol_No) && r.SalesOrd_STO.Contains(Sales_order) && r.Vendor_Name.Contains(Vendor_Name) && r.First_Date >= operDateStart && r.First_Date <= operDateEnd).ToList();
+            //}
+
+        }
+
+
+
+        public static dynamic getTKBooking2(string strSTO, string strItem, string consol)
+        {
+            var bl = oc.BllSession.ITruck_Booking_DetailBLL.GetListBy(a => a.hfe == strSTO && a.SO_No == consol && a.Line == strItem).Select(b => b.Booking_Number).Distinct().ToList();
+
+            var bh = oc.BllSession.ITruck_Booking_HeadBLL.GetListBy(a => bl.Contains(a.Booking_Number));
+
+            return bh;
+        }
+
+        public static List<Truck_Booking_Head> getTKBookingHeadByBookingNumber(string strBookingNumber)
+        {
+            var bookingList = oc.BllSession.ITruck_Booking_HeadBLL.GetListBy(a => a.Booking_Number == strBookingNumber).ToList();
+            return bookingList;
+        }
+
+
+        public static dynamic VendorGetPoList(string sto, string itemno, string customer,   int page, int rows, string vendorname)
+        {
+                int total = 0;
+            var roles = VendorGetPoListByCondition(sto, itemno, customer,   out total, page, rows, vendorname).Select(p=>p.ToPOCO()).ToList();
+
+            return new DataGrid
+            {
+                total = total,
+                rows = roles,
+                footer = null
+            };
+
+        }
+
+
+        public static dynamic CancelVendorGetPoList(string sto, string itemno, string customer, int page, int rows, string vendorname)
+        {
+            int total = 0;
+            var roles = CancelVendorGetPoListByCondition(sto, itemno, customer, out total, page, rows, vendorname).ToList();
+
+            return new DataGrid
+            {
+                total = total,
+                rows = roles,
+                footer = null
+            };
+
+        }
+
+
+
+        public static List<FinalPoList> VendorGetPoListByCondition(string sto, string itemno, string customer, out int total, int page, int rows, string vendorname)
+        {
+
+            total = 0;
+
+            var result = oc.BllSession.IFinalPoListBLL.GetListBy(a => a.Purch_Doc.Contains(sto) && a.Mfr_Name1 == vendorname && a.Item.Contains(itemno)).ToList();
+            total = result.Count;
+            var pageresult = result.Skip((page - 1) * rows).Take(rows).ToList();
+
+            return pageresult;
+
+        }
+
+
+
+        public static List<R_Polist_CancelReport> CancelVendorGetPoListByCondition(string sto, string itemno, string customer, out int total, int page, int rows, string vendorname)
+        {
+
+            total = 0;
+            List<R_Polist_CancelReport> polist = new List<R_Polist_CancelReport>();
+            polist.Where(a => a.Vendor_Name == "" && a.Vendor_Name == "");
+
+            var result = oc.BllSession.IFinalPoListBLL.GetListBy(a => a.Purch_Doc.Contains(sto) && a.Item.Contains(itemno)).ToList();
+            var pidlist = result.Select(a => a.ID);
+
+
+            var cancellist = oc.BllSession.IFinalPo_Cancel_RecordBLL.GetListBy(a => pidlist.Contains(a.pID));
+            List<R_Polist_CancelReport> list = new List<R_Polist_CancelReport>();
+            foreach (var item in result)
+            {
+                R_Polist_CancelReport report = new R_Polist_CancelReport();
+                report.FOB_Cancel_Date = item.FOB_Cancel_Date;
+                report.FOB_Customer_Name = item.FOB_Customer_Name;
+                report.FOB_Customer_PO = item.FOB_Customer_PO;
+                report.FOB_First_Date = item.FOB_First_Date;
+                report.FOB_LOG = item.FOB_LOG;
+                report.Item = item.Item;
+                report.ItemNO = item.ItemNO;
+                report.PO_quantity = item.PO_quantity;
+                report.Purch_Doc = item.Purch_Doc;
+                report.SalesOrd_STO = item.SalesOrd_STO;
+                report.Total_Carton = item.Total_Carton;
+                report.Total_GrossWeight = item.Total_GrossWeight;
+                report.Vendor_Name = item.Vendor_Name;
+                var cancel = cancellist.Where(a => a.pID == item.ID).ToList();
+                if (cancel.Count>0)
+                {
+                    if (cancel[0].release == 0)
+                    {
+                        report.Order_status = "Non Start";
+                    }
+                    else
+                    {
+                        report.Order_status = "Start";
+                    }
+                }
+                else
+                {
+
+                    report.Order_status = "Start";
+                }
+                list.Add(report);
+            }
+            total = result.Count;
+            var pageresult = result.Skip((page - 1) * rows).Take(rows).ToList();
+
+            return list;
+
+        }
+
+        public static List<R_Polist_CancelReport> CancelVendorGetPoListByCondition(string Customer_name, string DateType, DateTime operDateStart, DateTime operDateEnd,
+        string Sales_order = "", string Vendor_Name = "")
+        {
+            List<FinalPoList> result = new List<FinalPoList>();
+
+            if (DateType.Trim() == "First Date")
+            {
+                result = oc.BllSession.IFinalPoListBLL.GetListBy(a => a.Mfr_Name1 == Vendor_Name && a.FOB_First_Date >= operDateStart && a.FOB_First_Date <= operDateEnd).ToList();
+            }
+            else if (DateType.Trim() == "STO MA Date")
+            {
+                result = oc.BllSession.IFinalPoListBLL.GetListBy(a => a.Mfr_Name1 == Vendor_Name && a.DOM_STO_MA_Date >= operDateStart && a.DOM_STO_MA_Date <= operDateEnd).ToList();
+            }
+            else
+            {
+                result = oc.BllSession.IFinalPoListBLL.GetListBy(a => a.Mfr_Name1 == Vendor_Name && a.FOB_First_Date >= operDateStart && a.FOB_First_Date <= operDateEnd).ToList();
+            }
+
+            var pidlist = result.Select(a => a.ID);
+            var cancellist = oc.BllSession.IFinalPo_Cancel_RecordBLL.GetListBy(a => pidlist.Contains(a.pID));
+            List<R_Polist_CancelReport> list = new List<R_Polist_CancelReport>();
+            foreach (var item in result)
+            {
+                R_Polist_CancelReport report = new R_Polist_CancelReport();
+                report.FOB_Cancel_Date = item.FOB_Cancel_Date;
+                report.FOB_Customer_Name = item.FOB_Customer_Name;
+                report.FOB_Customer_PO = item.FOB_Customer_PO;
+                report.FOB_First_Date = item.FOB_First_Date;
+                report.FOB_LOG = item.FOB_LOG;
+                report.Item = item.Item;
+                report.ItemNO = item.ItemNO;
+                report.PO_quantity = item.PO_quantity;
+                report.Purch_Doc = item.Purch_Doc;
+                report.SalesOrd_STO = item.SalesOrd_STO;
+                report.Total_Carton = item.Total_Carton;
+                report.Total_GrossWeight = item.Total_GrossWeight;
+                report.Vendor_Name = item.Vendor_Name;
+                var cancel = cancellist.Where(a => a.pID == item.ID).ToList();
+                if (cancel.Count > 0)
+                {
+                    if (cancel[0].release == 0)
+                    {
+                        report.Order_status = "Non Start";
+                    }
+                    else
+                    {
+                        report.Order_status = "Start";
+                    }
+                }
+                else
+                {
+
+                    report.Order_status = "Start";
+                }
+                list.Add(report);
+            }
+            return list;
+
+        }
+
+        public static AjaxMsgModel Vendor_InsertPoInfo(FinalVendorInput enty)
+        {
+
+                   int iresult  =   oc.BllSession.IFinalVendorInputBLL.Add(enty);
+                   //foreach (var item in enty.FinalVendorInputTrucking)
+                   //{
+                   //    item.vID = enty.VID;
+                   //    oc.BllSession.IFinalVendorInputTruckingBLL.Add(item);
+                   //}
+
+                   if (iresult <= 0)
+                   {
+
+                       return new AjaxMsgModel
+                       {
+                           Statu = AjaxStatu.err,
+                           Msg = "fail to save",
+                           Data = null,
+                           BackUrl = null
+                       };
+                   }
+                   else
+                   {
+                       return new AjaxMsgModel
+                       {
+                           Statu = AjaxStatu.ok,
+                           Msg = "save successfully",
+                           Data = null,
+                           BackUrl = null
+                       };
+                   }
+        }
+
+
+
+        #region 根据SO查询拖车订单
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static dynamic getTKBooking(string strSTO, string strItem, string consol)
+        {
+            string stritemno = strItem.TrimStart('0');
+
+
+            var bookingList = oc.BllSession.ITruck_Booking_DetailBLL.GetListBy(a => a.STO == strSTO && (a.Line == strItem || a.Line == stritemno)).Select(b => b.Booking_Number).ToList().Distinct();
+
+            var result = oc.BllSession.ITruck_Booking_HeadBLL.GetListBy(a => bookingList.Contains(a.Booking_Number)).ToList();
+
+            ////获取自己仓库拖车交码头的POD
+            if (consol.Trim().Length >= 8 && consol.Substring(0, 2).Trim().ToUpper() == "LS")
+            {
+                var loplans = oc.BllSession.IFinalLoadingPlanBLL.GetListBy(a => a.SalesOrd_STO == strSTO && a.ItemNO == strItem);
+                foreach (var item in loplans)
+                {
+                    Booking_Head truckhead = new Booking_Head();
+                    truckhead.Booking_Number = item.Cont_No;
+                    truckhead.Cont_Date = item.Cont_Date;
+                    truckhead.Pod_UploadTime = item.Terminal_POD_UploadDate;
+
+                    result.Add(truckhead);
+                }
+            }
+
+            return new DataGrid
+            {
+                total = result.Count(),
+                rows = result,
+                footer = null
+            };
+        }
+        #endregion
+
+
+        public static AjaxMsgModel Vendor_DeletePoInfo(int vid)
+        {
+
+            int resulttk = oc.BllSession.IFinalVendorInputTruckingBLL.DelBy(a => a.vID == vid);
+            int result = oc.BllSession.IFinalVendorInputBLL.DelBy(a => a.VID == vid);
+            if (result >= 1 && resulttk >= 1)
+            {
+                return new AjaxMsgModel
+                {
+                    Statu = AjaxStatu.ok,
+                    Msg = "successfully delete！",
+                    Data = null,
+                    BackUrl = null
+                };
+            }
+            else
+            {
+                return new AjaxMsgModel
+                {
+                    Statu = AjaxStatu.err,
+                    Msg = "fail to delete",
+                    Data = null,
+                    BackUrl = null
+                };
+            }
+        }
+
+        /// <summary>
+        /// excel转换为json
+        /// </summary>
+        /// <param name="filePath"></param>
+        public static string ExcelToJson(string filePath)
+        {
+            List<string> tableNames = ExcelHelper.GetExcelSheetNames(filePath);
+            var json = new JObject();
+            tableNames.ForEach(tableName =>
+            {
+                var table = new JArray() as dynamic;
+                DataTable dataTable = ExcelHelper.GetExcelContent(filePath, tableName);
+                foreach (DataRow dataRow in dataTable.Rows)
+                {
+                    JObject row = new JObject();
+
+                    if (dataRow["Customer Type"].ToString() == "FOB")
+                    {
+                        if (!filePath.Contains("Polist"))
+                        {
+                            string Purch = dataRow["Purch.Doc"].ToString();
+                            string Item = dataRow["Item"].ToString();
+                            int Quantitycount = 0;
+                            int Cartoncount = 0;
+                            decimal CBMcount = 0;
+                            List<FinalPoList> polist = oc.BllSession.IFinalPoListBLL.GetListBy(a => a.Purch_Doc == Purch && a.Item == Item && a.Mfr_Name1 == oc.CurrentVendorName);//找到polist&& a.Mfr_Name1 == oc.CurrentVendorName
+                            if (polist.Count > 0)
+                            {
+
+                                //int Carton = polist[0].Total_Carton;
+                                //int GrossWeight = polist[0].PO_quantity;
+                                //int Volume = polist[0].Total_Volume; 
+
+                                DataRow[] rows = dataTable.Select(" Purch.Doc ='" + polist[0].Purch_Doc + "' and Item='" + polist[0].Item + "'");//搜索exl里的polist下的所有booking
+                                string Carton = "0";
+                                string bookingno = "$$$";
+                                string Quantity = "0";
+                                string CBM = "0";
+                                List<string> bookings = new List<string>();
+
+                                foreach (DataRow item in rows)//循环将所有booking和polist进行货量对比
+                                {
+                                    int CTNs = 0;
+                                    int QIYs = 0;
+                                    decimal CBMs = 0;
+                                    Carton = item["Delivery Carton"].ToString();
+                                    Quantity = item["Delivery Quantity"].ToString();
+                                    CBM = item["Delivery CBM"].ToString();
+                                    if (Quantity != "")
+                                    {
+                                        try
+                                        {
+                                            if (bookingno != item["Booking NO"].ToString())//相同bookingNo不递增
+                                            {
+                                                Quantitycount += int.Parse(Quantity);
+                                            }
+                                        }
+                                        catch (Exception)
+                                        {
+                                            item["Delivery Quantity"] = "0";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        item["Delivery Quantity"] = "0";
+                                    }
+                                    if (Carton != "")
+                                    {
+                                        try
+                                        {
+                                            if (bookingno != item["Booking NO"].ToString())
+                                            {
+                                                Cartoncount += int.Parse(Carton);
+                                            }
+                                        }
+                                        catch (Exception)
+                                        {
+                                            item["Delivery Carton"] = "0";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        item["Delivery Carton"] = "0";
+                                    }
+                                    if (CBM != "")
+                                    {
+                                        try
+                                        {
+                                            if (bookingno != item["Booking NO"].ToString())
+                                            {
+                                                CBMcount += decimal.Parse(CBM);
+                                            }
+                                        }
+                                        catch (Exception)
+                                        {
+                                            item["Delivery CBM"] = "0";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        item["Delivery CBM"] = "0";
+                                    }
+                                    //trucking和bookingctn ,cbm,qty对比。
+                                    DataRow[] rowss = dataTable.Select(" Purch.Doc ='" + item["Purch.Doc"].ToString() + "' and Item='" + item["Item"].ToString() + "' and [Booking No] ='" + item["Booking NO"].ToString() + "'");
+                                    foreach (DataRow itemtrking in rowss)
+                                    {
+                                        try
+                                        {
+                                            CTNs += int.Parse(itemtrking["Delivery CTN.in truck"].ToString());
+                                        }
+                                        catch (Exception)
+                                        {
+                                            itemtrking["Delivery CTN.in truck"] = "0";
+                                        }
+                                        try
+                                        {
+                                            QIYs += int.Parse(itemtrking["Delivery Quantity.in truck"].ToString());
+                                        }
+                                        catch (Exception)
+                                        {
+                                            itemtrking["Delivery Quantity.in truck"] = "0";
+                                        }
+                                        try
+                                        {
+                                            CBMs += decimal.Parse(itemtrking["Delivery CBM.in truck"].ToString());
+                                        }
+                                        catch (Exception)
+                                        {
+                                            itemtrking["Delivery CBM.in truck"] = "0";
+                                        }
+                                    }
+
+                                    try
+                                    {
+                                        if (int.Parse(Carton) != CTNs || int.Parse(Quantity) != QIYs || decimal.Parse(CBM) != CBMs)//trucking和booking对比不同就标黄色
+                                        {
+                                            bookings.Add(item["Booking NO"].ToString());
+                                        }
+                                    }
+                                    catch (Exception)
+                                    {
+                                        bookings.Add(item["Booking NO"].ToString());
+                                    }
+
+                                    bookingno = item["Booking NO"].ToString();
+                                }
+
+                                if (polist[0].PO_quantity == null)
+                                {
+                                    polist[0].PO_quantity = 0;
+                                }
+                                if (polist[0].Total_Carton == null)
+                                {
+                                    polist[0].Total_Carton = 0;
+                                }
+                                if (polist[0].Total_Volume == null)
+                                {
+                                    polist[0].Total_Volume = 0;
+                                }
+
+                                decimal? c = polist[0].Total_Volume + polist[0].Total_Volume * 0.05m;
+                                decimal? b = polist[0].Total_Volume - polist[0].Total_Volume * 0.05m;
+                                if (Quantitycount != polist[0].PO_quantity || Cartoncount != polist[0].Total_Carton || CBMcount > c || CBMcount < b)//将booking总数和Polist进行对比,其中一个不对就标红色
+                                {
+                                    row.Add("Color", "red");
+                                }
+                                if (bookings.Contains(dataRow["Booking NO"].ToString()))//trucking和booking对比不同就标黄色
+                                {
+                                    row.Add("Colors", "ye");
+                                }
+                            }
+                            else
+                            {
+                                row.Add("Color", "red");
+                            }
+                        }
+                        else
+                        {
+
+                            if (dataRow["Cancel"] != null)
+                            {
+                                if (dataRow["Cancel"].ToString().ToLower() != "y")
+                                {
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //FOB单只有一个booking多个Trking判断颜色
+                        if (!filePath.Contains("Polist"))
+                        {
+                            string Purch = dataRow["Purch.Doc"].ToString();
+                            string Item = dataRow["Item"].ToString();
+                            int Quantitycount = 0;
+                            int Cartoncount = 0;
+                            decimal CBMcount = 0;
+                            List<FinalPoList> polist = oc.BllSession.IFinalPoListBLL.GetListBy(a => a.Purch_Doc == Purch && a.Item == Item && a.Mfr_Name1 == oc.CurrentVendorName);//找到polist&& a.Mfr_Name1 == oc.CurrentVendorName
+                            if (polist.Count > 0)
+                            {
+
+                                //int Carton = polist[0].Total_Carton;
+                                //int GrossWeight = polist[0].PO_quantity;
+                                //int Volume = polist[0].Total_Volume; 
+
+                                DataRow[] rows = dataTable.Select(" Purch.Doc ='" + polist[0].Purch_Doc + "' and Item='" + polist[0].Item + "'");//搜索exl里的polist下的所有booking
+                                string Carton = "0";
+                                string bookingno = "$$$";
+                                string Quantity = "0";
+                                string CBM = "0";
+                                List<string> bookings = new List<string>();
+
+                                foreach (DataRow item in rows)//循环将所有booking和polist进行货量对比
+                                {
+                                    int CTNs = 0;
+                                    int QIYs = 0;
+                                    decimal CBMs = 0;
+                                    Carton = item["Delivery Carton"].ToString();
+                                    Quantity = item["Delivery Quantity"].ToString();
+                                    CBM = item["Delivery CBM"].ToString();
+                                    if (Quantity != "")
+                                    {
+                                        try
+                                        {
+                                                Quantitycount= int.Parse(Quantity);
+                                            
+                                        }
+                                        catch (Exception)
+                                        {
+                                            item["Delivery Quantity"] = "0";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        item["Delivery Quantity"] = "0";
+                                    }
+                                    if (Carton != "")
+                                    {
+                                        try
+                                        {
+                                                Cartoncount = int.Parse(Carton);
+                                        }
+                                        catch (Exception)
+                                        {
+                                            item["Delivery Carton"] = "0";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        item["Delivery Carton"] = "0";
+                                    }
+                                    if (CBM != "")
+                                    {
+                                        try
+                                        {
+                                                CBMcount = decimal.Parse(CBM);
+                                        }
+                                        catch (Exception)
+                                        {
+                                            item["Delivery CBM"] = "0";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        item["Delivery CBM"] = "0";
+                                    }
+                                    //trucking和bookingctn ,cbm,qty对比。
+                                    DataRow[] rowss = dataTable.Select(" Purch.Doc ='" + item["Purch.Doc"].ToString() + "' and Item='" + item["Item"].ToString() + "'");
+                                    foreach (DataRow itemtrking in rowss)
+                                    {
+                                        try
+                                        {
+                                            CTNs += int.Parse(itemtrking["Delivery CTN.in truck"].ToString());
+                                        }
+                                        catch (Exception)
+                                        {
+                                            itemtrking["Delivery CTN.in truck"] = "0";
+                                        }
+                                        try
+                                        {
+                                            QIYs += int.Parse(itemtrking["Delivery Quantity.in truck"].ToString());
+                                        }
+                                        catch (Exception)
+                                        {
+                                            itemtrking["Delivery Quantity.in truck"] = "0";
+                                        }
+                                        try
+                                        {
+                                            CBMs += decimal.Parse(itemtrking["Delivery CBM.in truck"].ToString());
+                                        }
+                                        catch (Exception)
+                                        {
+                                            itemtrking["Delivery CBM.in truck"] = "0";
+                                        }
+                                    }
+
+                                    try
+                                    {
+                                        if (int.Parse(Carton) != CTNs || int.Parse(Quantity) != QIYs || decimal.Parse(CBM) != CBMs)//trucking和booking对比不同就标黄色
+                                        {
+                                            if (row.Property("Colors") == null)
+                                            {
+                                                //成员abc存在
+                                                row.Add("Colors", "ye");
+                                            }
+                                        }
+                                    }
+                                    catch (Exception)
+                                    {
+                                        if (row.Property("Colors") == null)
+                                        {
+                                            //成员abc存在
+                                            row.Add("Colors", "ye");
+                                        }
+                                    }
+
+                                }
+
+                                if (polist[0].PO_quantity == null)
+                                {
+                                    polist[0].PO_quantity = 0;
+                                }
+                                if (polist[0].Total_Carton == null)
+                                {
+                                    polist[0].Total_Carton = 0;
+                                }
+                                if (polist[0].Total_Volume == null)
+                                {
+                                    polist[0].Total_Volume = 0;
+                                }
+
+                                decimal? c = polist[0].Total_Volume + polist[0].Total_Volume * 0.05m;
+                                decimal? b = polist[0].Total_Volume - polist[0].Total_Volume * 0.05m;
+                                if (Quantitycount != polist[0].PO_quantity || Cartoncount != polist[0].Total_Carton || CBMcount > c || CBMcount < b)//将booking总数和Polist进行对比,其中一个不对就标红色
+                                {
+                                    row.Add("Color", "red");
+                                }
+                                //if (bookings.Contains(dataRow["Booking NO"].ToString()))//trucking和booking对比不同就标黄色
+                                //{
+                                //    row.Add("Colors", "ye");
+                                //}
+                            }
+                            else
+                            {
+                                row.Add("Color", "red");
+                            }
+                        }
+                        else
+                        {
+
+                            if (dataRow["Cancel"] != null)
+                            {
+                                if (dataRow["Cancel"].ToString().ToLower() != "y")
+                                {
+                                    continue;
+                                }
+                            }
+                        }
+
+
+                    }
+
+
+                    foreach (DataColumn column in dataTable.Columns)
+                    {
+                        row.Add(column.ColumnName, dataRow[column.ColumnName].ToString());
+                    }
+                    table.Add(row);
+                }
+                json.Add(tableName, table);
+            });
+            return json.ToString();
+        }
+
+
+
+        public static dynamic GetVendorInputListBYPOID(string strPOID)
+        {
+            int ipoid = Convert.ToInt32( strPOID);
+            var roles = oc.BllSession.IFinalVendorInputBLL.GetListBy(a=>a.PID==ipoid).Select(p=>p.ToPOCO()).ToList();
+            
+            return new DataGrid
+            {
+                total = roles.Count,
+                rows = roles,
+                footer = null
+            };
+        }
+
+        public static List<FinalVendorInput> getVendorInputInfoByVID(string strVID)
+        {
+            int ivid = Convert.ToInt32(strVID);
+            var result = oc.BllSession.IFinalVendorInputBLL.GetListBy(a => a.VID == ivid).Select(p => p.ToPOCO()).ToList();
+            
+            return result;
+        }
+
+        public static List<FinalVendorInputTrucking> getTruckingByVID(string strVID)
+        {
+            int ivid = Convert.ToInt32(strVID);
+            var result = oc.BllSession.IFinalVendorInputTruckingBLL.GetListBy(a => a.vID == ivid).Select(p => p.ToPOCO()).ToList();
+            return result;
+        }
+        
+        
+
+        public static AjaxMsgModel Vendor_DeletePoInfo(string vid)
+        {
+            int ivid = Convert.ToInt32(vid);
+            int iret = oc.BllSession.IFinalVendorInputBLL.DelBy(vendorinput => vendorinput.VID == ivid);
+            if (iret >= 1)
+            {
+                return new AjaxMsgModel
+                {
+                    Statu = AjaxStatu.ok,
+                    Msg = "successfully delete！",
+                    Data = null,
+                    BackUrl = null
+                };
+            }
+            else
+            {
+                return new AjaxMsgModel
+                {
+                    Statu = AjaxStatu.err,
+                    Msg = "fail to delete",
+                    Data = null,
+                    BackUrl = null
+                };
+            }
+        }
+
+
+
+        public static AjaxMsgModel Vendor_UpdatePoInfo(FinalVendorInput vendorinput) 
+        {
+            var vendorinputentity = vendorinput.ToPOCO();
+
+            Expression<Func<FinalVendorInput, object>>[] ignoreProperties;
+
+            if (vendorinputentity.Update_GR_time == null)
+            {
+                ignoreProperties = new Expression<Func<FinalVendorInput, object>>[] { p => p.VID, p => p.PID, p => p.FinalPoList, p => p.Update_GR_time, p => p.FinalVendorInputTrucking };
+            }
+            else
+            {
+                ignoreProperties = new Expression<Func<FinalVendorInput, object>>[] { p => p.VID, p => p.PID, p => p.FinalPoList, p => p.FinalVendorInputTrucking };
+            }
+
+            oc.BllSession.IFinalVendorInputTruckingBLL.DelBy(a => a.vID == vendorinputentity.VID);
+
+            foreach (var item in vendorinput.FinalVendorInputTrucking)
+            {
+                item.vID = vendorinput.VID;
+                oc.BllSession.IFinalVendorInputTruckingBLL.Add(item);
+            }
+
+
+            int iResult = oc.BllSession.IFinalVendorInputBLL.Modify(vendorinputentity, ignoreProperties);
+            if (iResult >= 1)
+            {
+                return new AjaxMsgModel
+                {
+                    Statu = AjaxStatu.ok,
+                    Msg = "modify successfully！",
+                    Data = null,
+                    BackUrl = null
+                };
+            }
+            else
+            {
+                return new AjaxMsgModel
+                {
+                    Statu = AjaxStatu.err,
+                    Msg = "failed",
+                    Data = null,
+                    BackUrl = null
+                };
+            }
+        }
+
+
+
+
+        #region 根据筛选条件查询dailyreport信息
+        public static dynamic  GetDailyreportByCondition(string Customer_name,  string DateType, DateTime operDateStart, DateTime operDateEnd, int page, int rows,
+             string Purch_Doc = "", string Vendor_Name = "", string Item = "", string sort = null, string order = null)
+        {
+            int total = 0;
+            var roles = GetDailyReportForIQueryable(Customer_name, DateType, operDateStart, operDateEnd, out total, page, rows,
+               Purch_Doc, Vendor_Name, Item, sort, order);
+
+            return new DataGrid
+            {
+                total = total,
+                rows = roles,
+                footer = null
+            };
+        }
+        #endregion
+
+
+        public static R_LoadPlan_DailyReport AddRLoadPlan(FinalVendorInput dd)
+        {
+            return new R_LoadPlan_DailyReport { Purch_Doc = dd.FinalPoList.Purch_Doc, Item = dd.FinalPoList.Item, PO_Line = dd.PO_Line, Created_By = dd.Created_By, Matl_Group = dd.FinalPoList.Matl_Group, Matl_Group_Sales = dd.Matl_Group_Sales, Material = dd.FinalPoList.Material, Brand = dd.FinalPoList.Brand, Short_text = dd.FinalPoList.Short_text, PO_quantity = (int)dd.FinalPoList.PO_quantity, Total_Carton = (int)dd.FinalPoList.Total_Carton, Matrix = dd.Matrix, Deliv_Date = dd.FinalPoList.Deliv_Date, Slip_Sheet = dd.Slip_Sheet, Packing_Status = dd.Packing_Status, Inspection_End_Date = dd.Inspection_End_Date, Inspection_Result = dd.Inspection_Result, Booking_No = dd.Booking_No, Loading_Date = dd.Loading_Date, Closing_Date = dd.CFS_Closing_Date, ETD = dd.ETD, Shipment_Status = dd.Shipment_Status, FOB_Local_Charges_Settlement = dd.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = dd.FCR_Bill_Return_Date, Certificate_Application_Date = dd.Certificate_Application_Date, Certificate_Return_TO_SMDate = dd.Certificate_Return_TO_SMDate, Qty_Delivered = dd.Qty_Delivered, To_be_del = dd.To_be_del, Sales_Material = dd.FinalPoList.Sales_Material, FOB_Customer_PO = dd.FinalPoList.FOB_Customer_PO, SalesOrd_STO = dd.FinalPoList.SalesOrd_STO, ItemNO = dd.FinalPoList.ItemNO, DOM_Domestic_Dest = dd.FinalPoList.DOM_Domestic_Dest, FOB_Customer_Name = dd.FinalPoList.FOB_Customer_Name, DOM_Route = dd.FinalPoList.DOM_Route, Ship_To_Country = dd.FinalPoList.Ship_To_Country, ShipTo_Name = dd.FinalPoList.ShipTo_Name, Delivery_Number = dd.FinalPoList.Delivery_Number, OTD_Reason_Code = dd.OTD_Reason_Code, Delay_Details = dd.Delay_Details, FOB_First_Date = dd.FinalPoList.FOB_First_Date, FOB_Cancel_Date = dd.FinalPoList.FOB_Cancel_Date, FOB_Carton_Volume = dd.FinalPoList.FOB_Carton_Volume.ToString(), FOB_Customer_Description = dd.FinalPoList.FOB_Customer_Description, FOB_Customer_Material_Number = dd.FinalPoList.FOB_Customer_Material_Number, FOB_LOG = dd.FinalPoList.FOB_LOG, FOB_MainBatt = dd.FinalPoList.FOB_MainBatt, FOB_MainBattQty = dd.FinalPoList.FOB_MainBattQty.ToString(), FOB_OverallCredStat = dd.FinalPoList.FOB_OverallCredStat, FOB_Proforma_Invoice = dd.FinalPoList.FOB_Proforma_Invoice, FOB_Receiving_Point = dd.FinalPoList.FOB_Receiving_Point, FOB_Total_NetWeight = dd.FinalPoList.FOB_Total_NetWeight.ToString(), DOM_Delivery_Quantity = dd.FinalPoList.DOM_Delivery_Quantity.ToString(), DOM_Finaloadingport = dd.FinalPoList.DOM_Finaloadingport, DOM_Inbound = dd.FinalPoList.DOM_Inbound, DOM_Invoice = dd.FinalPoList.DOM_Inbound, DOM_Mfr_City = dd.FinalPoList.DOM_Mfr_City, DOM_Qty_Delivered = dd.FinalPoList.DOM_Qty_Delivered.ToString(), DOM_Shipment_Number = dd.FinalPoList.DOM_Shipment_Number, DOM_Sloc = dd.FinalPoList.DOM_Sloc, DOM_StatDelD = dd.FinalPoList.DOM_StatDelD, DOM_STO_Delivery_Date = dd.FinalPoList.DOM_STO_Delivery_Date, DOM_STO_MA_Date = dd.FinalPoList.DOM_STO_MA_Date, DOM_To_Be_Del = dd.FinalPoList.DOM_To_Be_Del.ToString(), DOM_Vendor = dd.FinalPoList.DOM_Vendor, Carton_Depth_W = dd.FinalPoList.Carton_Depth_W.ToString(), Carton_GrossWeight = dd.FinalPoList.Carton_GrossWeight.ToString(), Carton_Height = dd.FinalPoList.Carton_Height.ToString(), Carton_NetWeight = dd.FinalPoList.Carton_NetWeight.ToString(), Carton_PCS = dd.FinalPoList.Carton_PCS.ToString(), Carton_Width_L = dd.FinalPoList.Carton_Width_L.ToString(), Comments = dd.FinalPoList.Comments, Mfr_Country = dd.FinalPoList.Mfr_Country, Mfr_Name1 = dd.FinalPoList.Mfr_Name1, Total_GrossWeight = dd.FinalPoList.Total_GrossWeight.ToString(), Total_Volume = dd.FinalPoList.Total_Volume, Vendor_Name = dd.FinalPoList.Vendor_Name, Dischaging_Port = dd.Dischaging_Port, Arrive_terminal_Date = dd.Arrive_terminal_Date, Delivery_CBM = dd.Delivery_CBM, Arrive_WHS_Date = dd.Arrive_WHS_Date, Booking_Date = dd.Booking_Date, Carton_delivered = dd.Carton_delivered, Container_NO = dd.Container_NO, CY_Closing_Date = dd.CY_Closing_Date, ETA = dd.ETA, Loading_Port = dd.Loading_Port == null ? "Hai Phong" : dd.Loading_Port, Seal_NO = dd.Seal_NO, SI_Cut_Time = dd.SI_Cut_Time, Vehicle_Type = dd.Vehicle_Type, Vessel = dd.Vessel, Voyage = dd.Voyage, CustomerType = dd.FinalPoList.PO_List_Type, Mohth = dd.FinalPoList.FOB_First_Date == null ? dd.FinalPoList.DOM_STO_MA_Date.Value.Month.ToString() : dd.FinalPoList.FOB_First_Date.Value.Month.ToString(), Weekly = dd.FinalPoList.FOB_First_Date == null ? getWeekNumInMonth((DateTime)dd.FinalPoList.DOM_STO_MA_Date).ToString() : getWeekNumInMonth((DateTime)dd.FinalPoList.FOB_First_Date).ToString(), ShipMode = dd.Ship_Mode };
+        }
+
+
+        private static TOut TransReflection<TIn, TOut>(TIn tIn)
+        {
+            TOut tOut = Activator.CreateInstance<TOut>();
+            var tInType = tIn.GetType();
+            foreach (var itemOut in tOut.GetType().GetProperties())
+            {
+                var itemIn = tInType.GetProperty(itemOut.Name); ;
+                if (itemIn != null)
+                {
+                    itemOut.SetValue(tOut, itemIn.GetValue(tIn));
+                }
+            }
+            return tOut;
+        }
+
+
+
+        public static void gethead(R_LoadPlan_DailyReport addload, List<Truck_Booking_Head> bookinghead,bool isLS,string bookingno)
+        {
+            var trking = bookinghead.Where(b => b.Booking_Number == bookingno);
+            foreach (var trkingitem in trking)
+            {
+                if (isLS)
+                {
+                    if (trkingitem.Vehicletype != null || trkingitem.Vehicletype != "")
+                    {
+                        addload.Vehicle_Type = trkingitem.Vehicletype;
+                    }
+                    if (trkingitem.Booking_Number != null || trkingitem.Booking_Number != "")
+                    {
+
+                        addload.TruckingNo = trkingitem.Booking_Number;
+                    }
+                    if (trkingitem.Arrive_Whs_time != null)
+                    {
+
+                        addload.Trucking_Arrive_WHS_Date = trkingitem.Arrive_Whs_time;
+                    }
+                    else if (trkingitem.Arrive_Whs_time == null && addload.Trucking_Arrive_WHS_Date != null)
+                    {
+
+                        addload.Trucking_Arrive_WHS_Date = null;
+                    }
+                    if (trkingitem.Terminal_Time != null)
+                    {
+
+                        addload.Trucking_Arrive_terminal_Date = trkingitem.Terminal_Time;
+                    }
+
+                }
+                else
+                {
+                    if (trkingitem.Vehicletype != null || trkingitem.Vehicletype != "")
+                    {
+                        addload.Vehicle_Type = trkingitem.Vehicletype;
+                    }
+                    if (trkingitem.Vehicle_number != null || trkingitem.Vehicle_number != "")
+                    {
+
+                        addload.TruckingNo = trkingitem.Vehicle_number;
+                    }
+
+                    if (trkingitem.Arrive_Whs_time != null)
+                    {
+
+                        addload.Trucking_Arrive_WHS_Date = trkingitem.Arrive_Whs_time;
+                    }else if(trkingitem.Arrive_Whs_time == null&& addload.Trucking_Arrive_WHS_Date != null)
+                    {
+
+                        addload.Trucking_Arrive_WHS_Date = null;
+                    }
+                    if (trkingitem.Terminal_Time != null)
+                    {
+
+                        addload.Trucking_Arrive_terminal_Date = trkingitem.Terminal_Time;
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// 连接数据consl 拖车
+        /// </summary>
+        /// <param name="loadplans"></param>
+        public static void GetConls(List<R_LoadPlan_DailyReport> loadplans)
+        {
+
+            var purchDocs = loadplans.Select(a => a.Purch_Doc).ToList();
+            var bookings = oc.BllSession.ITruck_Booking_DetailBLL.GetListBy(a => purchDocs.Contains(a.hfe));
+            var bookingNumbers=bookings.Select(a=>a.Booking_Number).ToList();
+            var bookinghead = oc.BllSession.ITruck_Booking_HeadBLL.GetListBy(a => bookingNumbers.Contains(a.Booking_Number));
+
+            var SalesOrds = loadplans.Select(a => a.SalesOrd_STO).ToList();
+            List<in_item> Initem = oc.BllSession.Iin_itemBLL.GetListBy(a => a.po != "" && a.sku != "");
+
+            var loplans = oc.BllSession.IFinalLoadingPlanBLL.GetListBy(a => SalesOrds.Contains(a.SalesOrd_STO) && a.Consol_no.Contains("LS"));//&& a.Consol_no.Contains("LS")
+            var loadplansADD = new List<R_LoadPlan_DailyReport>();
+            var bookingHeadDetail = from s in bookings join a in bookinghead on s.Booking_Number equals a.Booking_Number into un from a1 in un.DefaultIfEmpty() select new { Bookingno = s.Booking_Number, Bookingno2 = a1 == null ? "" : s.Booking_Number, Date = a1.Arrive_Whs_time == null ? a1.Terminal_Time : a1.Arrive_Whs_time, po = s.hfe, item = s.Line, CTN = s.Ctn };
+
+            // var tack = oc.BllSession.Iin_itemBLL.Entities.AsQueryable();
+            foreach (var item in loadplans)
+            {
+                bool isLS = true;
+                int? pcs = 0;
+                int? qty = 0;
+                int? ctn = 0;
+                decimal? cbm = 0;
+                //var InItem = oc.BllSession.Iin_itemBLL.GetListBy(a => a.po==item.Purch_Doc && a.sku == item.Item).ToList();
+                foreach (var initem in Initem.Where(i => i.po.Trim() == item.Purch_Doc && i.sku.Trim() == item.Item).ToList())
+                {
+                    
+                    if (!initem.so_no.ToUpper().StartsWith("LS"))
+                    {
+                        break;
+                    }
+                    item.Trucking_Arrive_WHS_Date = initem.rec_date;
+                    pcs += decimal.ToInt32((decimal)initem.pcs);
+                    qty += decimal.ToInt32((decimal)initem.qty);
+                    cbm += initem.cbm;
+                    ctn += initem.ctn;
+                }
+                if (pcs != 0)
+                {
+                    item.Qty_Delivered = pcs;
+                    item.Qty = pcs;
+                }
+                if (pcs != 0)
+                {
+                    item.Carton_delivered = qty;
+                }
+                if (ctn != 0)
+                {
+                    item.CTN = ctn;
+                }
+                if (cbm != 0)
+                {
+                    item.CBM = cbm;
+                }
+
+                if (item.Delivery_CBM == null)
+                {
+                    item.Delivery_CBM = cbm;
+                }
+                var loadingplan = loplans.Where(a => a.ItemNO == item.ItemNO && a.SalesOrd_STO == item.SalesOrd_STO).ToList();
+                if (loadingplan.Count > 0)
+                {
+                    foreach (var fitem in loadingplan)
+                    {
+                        if (!fitem.Consol_no.ToUpper().StartsWith("LS"))
+                        {
+                            isLS = false;
+                            continue;
+                        }
+                        if (fitem.Cont_No != null || fitem.Cont_No != "")
+                        {
+                            item.Container_NO = fitem.Cont_No;
+                        }
+                        if (fitem.Seal_No != null || fitem.Seal_No != "")
+                        {
+                            item.Seal_NO = fitem.Seal_No;
+                        }
+                        if (fitem.Ship_Date != null)
+                        {
+                            item.Trucking_Arrive_WHS_Date = fitem.Ship_Date;
+                        }
+                        if (fitem.Cont_Date != null)
+                        {
+                            item.Trucking_Arrive_terminal_Date = fitem.Cont_Date;
+                        }
+                        if (fitem.Booking_date != null)
+                        {
+                            item.Booking_Date = fitem.Booking_date;
+                        }
+                        if (fitem.BookingNo != null || fitem.BookingNo != "")
+                        {
+                            item.Booking_No = fitem.BookingNo;
+                        }
+                        if (fitem.Ship_mode != null)
+                        {
+                            item.ShipMode = fitem.Ship_mode;
+                        }
+                        if (fitem.Loading_Date != null)
+                        {
+                            item.Loading_Date = fitem.Loading_Date;
+                        }
+                        if (fitem.SO_release_date != null)
+                        {
+                            item.SO_Release_Date = fitem.SO_release_date;
+                        }
+                        if (fitem.ETD != null)
+                        {
+                            item.ETD = fitem.ETD;
+                        }
+                        if (fitem.ETD_2 != null)
+                        {
+                            item.ETD = fitem.ETD_2;
+                        }
+                        if (fitem.Shipment_Status != null || fitem.Shipment_Status != "")
+                        {
+                            item.Shipment_Status = fitem.Shipment_Status;
+                        }
+                        if (fitem.NLT != null)
+                        {
+                            item.Closing_Date = fitem.NLT;
+                        }
+                        if (fitem.Consol_no.ToUpper().StartsWith("LS"))
+                        {
+                            if (fitem.NLT != null)
+                            {
+                                item.CY_Closing_Date = fitem.NLT;
+                            }
+                            if (fitem.NST != null)
+                            {
+                                item.OpenDate = fitem.NST;
+                            }
+                        }
+                        else
+                        {
+                            if (fitem.CY_closing != null)
+                            {
+                                item.CY_Closing_Date = fitem.CY_closing;
+                            }
+                            if (fitem.CY_open != null)
+                            {
+                                item.OpenDate = fitem.CY_open;
+                            }
+                        }
+                        if (fitem.Loading_Port != null || fitem.Loading_Port != "")
+                        {
+                            item.Loading_Port = fitem.Loading_Port;
+                        }
+                        if (fitem.Cust_SI != null)
+                        {
+                            item.SI_Cut_Time = fitem.Cust_SI;
+                        }
+                        if (fitem.Vessel != null || fitem.Vessel != "")
+                        {
+                            item.Vessel = fitem.Vessel;
+                        }
+                        if (fitem.Voyage != null || fitem.Voyage != "")
+                        {
+                            item.Voyage = fitem.Voyage;
+                        }
+                        if (fitem.Vessel != null || fitem.Vessel != "")
+                        {
+                            item.Vessel = fitem.Vessel_2;
+                        }
+                        if (fitem.Voyage != null || fitem.Voyage != "")
+                        {
+                            item.Voyage = fitem.Voyage_2;
+                        }
+                        if (fitem.Unloading_Port != null || fitem.Unloading_Port != "")
+                        {
+                            item.Dischaging_Port = fitem.Unloading_Port;
+                        }
+
+                        if (fitem.Courier_tracking_no != null || fitem.Courier_tracking_no != "")
+                        {
+                            item.Courier_tracking_no = fitem.Courier_tracking_no;
+                        }
+
+                        if (fitem.FCR_Date != null)
+                        {
+                            item.FCR_Bill_Return_Date = fitem.FCR_Date;
+                        }
+
+
+                        if (fitem.LoadPlanUpdateRecord != null)
+                        {
+                            item.FOB_Local_Charges_Settlement = fitem.FOB_Local_Charge_Settlement;
+                        }
+                    }
+
+                }
+                else
+                {
+                    isLS = false;
+                }
+                var booking = bookings.Where(a => a.hfe == item.Purch_Doc && a.Line == item.Item).ToList();
+                if (booking.Count > 0)
+                {
+                    int? a = item.PO_quantity / item.Total_Carton;
+                    int? sum = 0;
+                    for (int i = 0; i < booking.Count; i++)
+                    {
+
+                        if (booking.Count > 1)
+                        {
+                            if (i != 0)
+                            {
+
+                                R_LoadPlan_DailyReport addload = new R_LoadPlan_DailyReport();
+                                addload = TransReflection<R_LoadPlan_DailyReport, R_LoadPlan_DailyReport>(item);
+                                gethead(addload, bookinghead, booking[i].SO_No.StartsWith("LS"), booking[i].Booking_Number);
+                                if (booking[i].SO_No.StartsWith("LS") == false)
+                                {
+                                    addload.CTN = booking[i].Ctn;
+                                    addload.CBM = booking[i].CBM;
+                                    var detaillist = bookingHeadDetail.Where(b => b.po == item.Purch_Doc && b.item == item.Item).OrderByDescending(b => b.Date).ToList();
+
+                                    if (detaillist.Count > 0)
+                                    {
+                                        if (detaillist[0].Bookingno == booking[i].Booking_Number)//最后一次出货
+                                        {
+                                            foreach (var detail in detaillist)
+                                            {
+                                                if (detail.Bookingno == booking[i].Booking_Number)
+                                                {
+                                                    continue;
+                                                }
+                                                sum += detail.CTN * a;
+                                            }
+                                            addload.Qty = item.PO_quantity - sum;
+                                            loadplansADD.Add(addload);
+                                            break;
+                                        }
+                                    }
+                                    addload.Qty = booking[i].Ctn * a;
+                                    loadplansADD.Add(addload);
+                                }
+
+                            }
+                            else
+                            {
+
+                                gethead(item, bookinghead, booking[i].SO_No.StartsWith("LS"), booking[i].Booking_Number);
+                                if (booking[i].SO_No.StartsWith("LS") == false)
+                                {
+                                    if (booking[i].Ctn != null)
+                                    {
+                                        item.CTN = booking[i].Ctn;
+                                    }
+                                    if (booking[i].CBM != null)
+                                    {
+                                        item.CBM = booking[i].CBM;
+                                    }
+                                    var detaillist = bookingHeadDetail.Where(b => b.po == item.Purch_Doc && b.item == item.Item).OrderByDescending(b => b.Date).ToList();
+
+                                    if (detaillist.Count > 1)
+                                    {
+                                        if (detaillist[0].Bookingno == booking[i].Booking_Number)//最后一次出货
+                                        {
+                                            foreach (var detail in detaillist)
+                                            {
+                                                if (detail.Bookingno == booking[i].Booking_Number)//跳过最后一次走货物
+                                                {
+                                                    continue;
+                                                }
+                                                sum += detail.CTN * a;
+                                            }
+                                            item.Qty = item.PO_quantity - sum;
+                                            break;
+                                        }
+                                        item.Qty = booking[i].Ctn * a;
+                                    }
+                                    else
+                                    {
+                                        item.Qty = item.PO_quantity;//一次走
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+
+                            gethead(item, bookinghead, booking[i].SO_No.StartsWith("LS"), booking[i].Booking_Number);
+                            if (booking[i].SO_No.StartsWith("LS") == false)
+                            {
+                                if (booking[i].Ctn != null)
+                                {
+                                    item.CTN = booking[i].Ctn;
+                                }
+                                if (booking[i].CBM != null)
+                                {
+                                    item.CBM = booking[i].CBM;
+                                }
+                                var detaillist = bookingHeadDetail.Where(b => b.po == item.Purch_Doc && b.item == item.Item).OrderByDescending(b => b.Date).ToList();
+
+                                if (detaillist.Count > 1)
+                                {
+                                    if (detaillist[0].Bookingno == booking[i].Booking_Number)//最后一次出货
+                                    {
+                                        foreach (var detail in detaillist)
+                                        {
+                                            if (detail.Bookingno == item.Booking_No)
+                                            {
+                                                continue;
+                                            }
+                                            sum += detail.CTN * a;
+                                        }
+                                        item.Qty = item.PO_quantity - sum;
+                                        break;
+                                    }
+                                    item.Qty = booking[i].Ctn * a;
+                                }
+                                else
+                                {
+                                    item.Qty = item.PO_quantity;//一次走
+                                }
+                            }
+                        }
+
+
+                    }
+
+                }
+                    
+
+            }
+            loadplans.AddRange(loadplansADD);
+        }
+
+        public static void GetConlss(List<R_LoadPlan_DailyReport> loadplans)
+        {
+
+            var purchDocs = loadplans.Select(a => a.Purch_Doc).ToList();
+            var bookings = oc.BllSession.ITruck_Booking_DetailBLL.GetListBy(a => purchDocs.Contains(a.hfe));
+            var bookingNumbers = bookings.Select(a => a.Booking_Number).ToList();
+            var bookinghead = oc.BllSession.ITruck_Booking_HeadBLL.GetListBy(a => bookingNumbers.Contains(a.Booking_Number));
+
+            var SalesOrds = loadplans.Select(a => a.SalesOrd_STO).ToList();
+
+            var loplans = oc.BllSession.IFinalLoadingPlanBLL.GetListBy(a => SalesOrds.Contains(a.SalesOrd_STO));//&& a.Consol_no.Contains("LS")
+            List<in_item> Initem = oc.BllSession.Iin_itemBLL.GetListBy(a => a.po != "" && a.sku != "");
+            //var Initem = (from u in loadplans.AsQueryable()
+            //             from t in oc.BllSession.Iin_itemBLL.Entities.AsQueryable()
+            //             where t.po == u.Purch_Doc && t.sku == u.Item
+            //             select new { ID = u.Purch_Doc, u.Item,t.pcs,t.qty,t.rec_date,t.cbm }).ToList();
+
+            foreach (var item in loadplans)
+            {
+                bool isLS = true;
+                int? pcs = 0;
+                int? qty = 0;
+                decimal? cbm = 0;
+                //var InItem = oc.BllSession.Iin_itemBLL.GetListBy(a => a.po.Contains(item.Purch_Doc) && a.sku == item.Item).ToList();
+               // var InItem = oc.BllSession.Iin_itemBLL.GetListBy(a => a.po == item.Purch_Doc && a.sku == item.Item).ToList();
+                foreach (in_item initem in Initem.Where(i => i.po.Trim() == item.Purch_Doc && i.sku.Trim() == item.Item).ToList())
+                {
+                    item.Trucking_Arrive_WHS_Date = initem.rec_date;
+                    pcs += decimal.ToInt32((decimal)initem.pcs);
+                    qty += decimal.ToInt32((decimal)initem.qty);
+                    cbm += initem.cbm;
+                }
+                if (pcs != 0)
+                {
+                    item.Qty_Delivered = pcs;
+                }
+
+                if (pcs != 0)
+                {
+                    item.Carton_delivered = qty;
+                }
+                if (item.Delivery_CBM == null)
+                {
+                    item.Delivery_CBM = cbm;
+                }
+                var loadingplan = loplans.Where(a => a.ItemNO == item.ItemNO && a.SalesOrd_STO == item.SalesOrd_STO).ToList();
+                if (loadingplan.Count > 0)
+                {
+                    foreach (var fitem in loadingplan)
+                    {
+                        if (!fitem.Consol_no.ToUpper().StartsWith("LS"))
+                        {
+                            isLS = false;
+                            continue;
+                        }
+                        if (fitem.Cont_No != null || fitem.Cont_No != "")
+                        {
+                            item.Container_NO = fitem.Cont_No;
+                        }
+                        if (fitem.Seal_No != null || fitem.Seal_No != "")
+                        {
+                            item.Seal_NO = fitem.Seal_No;
+                        }
+                        if (fitem.Ship_Date != null)
+                        {
+                            item.Trucking_Arrive_WHS_Date = fitem.Ship_Date;
+                        }
+                        if (fitem.Cont_Date != null)
+                        {
+                            item.Trucking_Arrive_terminal_Date = fitem.Cont_Date;
+                        }
+                        if (fitem.Booking_date != null)
+                        {
+                            item.Booking_Date = fitem.Booking_date;
+                        }
+                        if (fitem.BookingNo != null || fitem.BookingNo != "")
+                        {
+                            item.Booking_No = fitem.BookingNo;
+                        }
+                        if (fitem.Ship_mode != null)
+                        {
+                            item.ShipMode = fitem.Ship_mode;
+                        }
+                        if (fitem.Loading_Date != null)
+                        {
+                            item.Loading_Date = fitem.Loading_Date;
+                        }
+                        if (fitem.SO_release_date != null)
+                        {
+                            item.SO_Release_Date = fitem.SO_release_date;
+                        }
+                        if (fitem.ETD != null)
+                        {
+                            item.ETD = fitem.ETD;
+                        }
+                        if (fitem.Shipment_Status != null || fitem.Shipment_Status != "")
+                        {
+                            item.Shipment_Status = fitem.Shipment_Status;
+                        }
+                        if (fitem.NLT != null)
+                        {
+                            item.Closing_Date = fitem.NLT;
+                        }
+                        if (fitem.Consol_no.ToUpper().StartsWith("LS"))
+                        {
+                            if (fitem.NLT != null)
+                            {
+                                item.CY_Closing_Date = fitem.NLT;
+                            }
+                            if (fitem.NST != null)
+                            {
+                                item.OpenDate = fitem.NST;
+                            }
+                        }
+                        else
+                        {
+                            if (fitem.CY_closing != null)
+                            {
+                                item.CY_Closing_Date = fitem.CY_closing;
+                            }
+                            if (fitem.CY_open != null)
+                            {
+                                item.OpenDate = fitem.CY_open;
+                            }
+                        }
+                        if (fitem.Loading_Port != null || fitem.Loading_Port != "")
+                        {
+                            item.Loading_Port = fitem.Loading_Port;
+                        }
+                        if (fitem.Cust_SI != null)
+                        {
+                            item.SI_Cut_Time = fitem.Cust_SI;
+                        }
+                        if (fitem.Vessel != null || fitem.Vessel != "")
+                        {
+                            item.Vessel = fitem.Vessel;
+                        }
+                        if (fitem.Voyage != null || fitem.Voyage != "")
+                        {
+                            item.Voyage = fitem.Voyage;
+                        }
+                        if (fitem.Vessel != null || fitem.Vessel != "")
+                        {
+                            item.Vessel = fitem.Vessel_2;
+                        }
+                        if (fitem.Voyage != null || fitem.Voyage != "")
+                        {
+                            item.Voyage = fitem.Voyage_2;
+                        }
+                        if (fitem.Unloading_Port != null || fitem.Unloading_Port != "")
+                        {
+                            item.Dischaging_Port = fitem.Unloading_Port;
+                        }
+                    }
+
+                }
+                if (!isLS)
+                {
+                    continue;
+                }
+                var booking = bookings.Where(a => a.hfe == item.Purch_Doc && a.Line == item.Item).ToList();
+                if (booking.Count > 0)
+                {
+                    var trking = bookinghead.Where(a => a.Booking_Number == booking[0].Booking_Number);
+                    foreach (var trkingitem in trking)
+                    {
+                        if (trkingitem.Vehicletype != null || trkingitem.Vehicletype != "")
+                        {
+                            item.Vehicle_Type = trkingitem.Vehicletype;
+                        }
+                        if (trkingitem.CTN != null)
+                        {
+
+                            item.CTN = trkingitem.CTN;
+                        }
+                        if (trkingitem.CBM != null)
+                        {
+                            item.CBM = trkingitem.CBM;
+                        }
+                        if (trkingitem.Booking_Number != null || trkingitem.Booking_Number != "")
+                        {
+
+                            item.TruckingNo = trkingitem.Booking_Number;
+                        }
+                    }
+                }
+
+            }
+        }
+
+
+        #region 根据筛选条件查询Dailyreport信息+IQueryable<Sys_Role>
+        private static List<R_LoadPlan_DailyReport> GetDailyReportForIQueryable(string Customer_name, string DateType, DateTime operDateStart, DateTime operDateEnd, out int total, int page, int rows,
+           string Purch_Doc = "", string Vendor_Name = "", string Item = "", string sort = null, string order = null)
+        {
+            total = 0;
+            PropertySortCondition<R_LoadPlan_DailyReport> psc = null;
+            if (sort == null)
+            {
+                if (DateType.Trim() == "First Date")
+                {
+                    psc = new PropertySortCondition<R_LoadPlan_DailyReport>(r => r.FOB_First_Date);
+                }
+                else if (DateType.Trim() == "Closing Date")
+                {
+                    psc = new PropertySortCondition<R_LoadPlan_DailyReport>(r => r.Closing_Date);
+
+                }
+                else if (DateType.Trim() == "Cancel Date")
+                {
+                    psc = new PropertySortCondition<R_LoadPlan_DailyReport>(r => r.FOB_Cancel_Date);
+                }
+                else if (DateType.Trim() == "STO MA Date")
+                {
+                    psc = new PropertySortCondition<R_LoadPlan_DailyReport>(r => r.DOM_STO_MA_Date);
+
+                }
+               
+                else
+                {
+                    psc = new PropertySortCondition<R_LoadPlan_DailyReport>(r => r.Loading_Date);
+                }
+            }
+            else
+            {
+                psc = new PropertySortCondition<R_LoadPlan_DailyReport>(sort, order.Equals("asc") ? ListSortDirection.Ascending : ListSortDirection.Descending);
+            }
+
+            List<R_LoadPlan_DailyReport> loadplans;
+            List<R_LoadPlan_DailyReport> loadplanstwo;
+            List<R_LoadPlan_DailyReport> pageresult;
+            if (DateType.Trim() == "First Date")
+            {
+                //loadplans = oc.BllSession.IFinalPoListBLL.Entities.Where(r => r.FOB_Customer_Name.Contains(Customer_name)).Select(aa=>aa.FinalVendorInputs.)  .IFinalLoadingPlanBLL.Entities.Where(r => r.Customer_Name.Contains(Customer_name) && r.SalesOrd_STO.Contains(Sales_order) && r.Vendor_Name.Contains(Vendor_Name) && r.First_Date >= operDateStart && r.First_Date <= operDateEnd, page, rows, out total, psc).ToList();
+
+
+                //var truckbookinghead = oc.BllSession.ITruck_Booking_HeadBLL.Entities.Where(r => r.Vdr_Pickup_date >= operDateStart && r.Vdr_Pickup_date < operDateEnd).Join(oc.BllSession.ITruck_VendorBLL.Entities.Where(b => b.Client == "SpinMaster"), e => e.VendorCode, o => o.Vendor_Code, (e, o) => e).ToList();
+
+                //var lTKNo = truckbookinghead.Select(a => a.Booking_Number);
+
+                //var truckbookingDetail = oc.BllSession.ITruck_Booking_DetailBLL.Entities.Where(aa => lTKNo.Contains(aa.Booking_Number) && aa.SO_No.Contains(consol_No) && aa.hfe.Contains(Sales_order));
+
+                //var truckings = (from a in truckbookinghead join b in truckbookingDetail on a.Booking_Number equals b.Booking_Number select new { Consol_no = b.SO_No, Customer_Name = b.Customer_Name, hfe = b.hfe, ItemNO = b.Line, TotalCarton = b.Ctn, TotalGrossWeight = b.GrossWeight, TotalVolume = b.CBM, Leave_factory_time = a.Leave_factory_time, Cont_Date = a.Terminal_Time, Ship_Date = a.Arrive_Whs_time, Arrive_WHS_Date = a.Receipt_Upload_time, Shipment_Type = a.Delivery_Type, Cont_No = a.Cont_NO, Vendor_Name = a.VendorName }).ToList();
+
+
+                var polist = oc.BllSession.IFinalPoListBLL.GetListBy(a => a.FOB_Customer_Name.Contains(Customer_name) && a.Mfr_Name1.Contains(Vendor_Name) && a.Purch_Doc.Contains(Purch_Doc) && a.Item.Contains(Item) && a.FOB_First_Date >= operDateStart && a.FOB_First_Date <= operDateEnd);
+
+                var pidlist = polist.Select(a => a.ID).ToList();
+
+                var vendorinputlist = oc.BllSession.IFinalVendorInputBLL.GetListBy(b => pidlist.Contains(b.PID));
+
+
+                var vendoridinputlist = vendorinputlist.Select(a => a.VID).ToList();
+
+
+                var VendorInputTruckinglist = oc.BllSession.IFinalVendorInputTruckingBLL.GetListBy(b => vendoridinputlist.Contains(b.vID));
+
+                /////left join 查询
+                loadplans = (from val1 in polist join val2 in vendorinputlist on val1.ID equals val2.PID  join val3 in VendorInputTruckinglist on val2.VID equals val3.vID into val2Grp from grp in val2Grp.DefaultIfEmpty() select new R_LoadPlan_DailyReport { Purch_Doc = val1.Purch_Doc, Item = val1.Item, PO_Line = val2 == null ? "" : val2.PO_Line, Created_By = val2 == null ? "" : val2.Created_By, Matl_Group = val1.Matl_Group, Matl_Group_Sales = val2 == null ? "" : val2.Matl_Group_Sales, Material = val1.Material, Brand = val1.Brand, Short_text = val1.Short_text, PO_quantity = val1.PO_quantity, Total_Carton = val1.Total_Carton, Matrix = val2 == null ? "" : val2.Matrix, Deliv_Date = val1.Deliv_Date, Slip_Sheet = val2 == null ? "" : val2.Slip_Sheet, Packing_Status = val2 == null ? "" : val2.Packing_Status, Inspection_End_Date = val2 == null ? null : val2.Inspection_End_Date, Inspection_Result = val2 == null ? "" : val2.Inspection_Result, Booking_No = val2 == null ? "" : val2.Booking_No, Loading_Date = val2 == null ? null : val2.Loading_Date, Closing_Date = val2 == null ? null : val2.CFS_Closing_Date, ETD = val2 == null ? null : val2.ETD, Shipment_Status = val2 == null ? "" : val2.Shipment_Status, FOB_Local_Charges_Settlement = val2 == null ? "" : val2.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = val2 == null ? null : val2.FCR_Bill_Return_Date, Certificate_Application_Date = val2 == null ? null : val2.Certificate_Application_Date, Certificate_Return_TO_SMDate = val2 == null ? null : val2.Certificate_Return_TO_SMDate, Qty_Delivered = val2 == null ? 0 : val2.Qty_Delivered, To_be_del = val2 == null ? "" : val2.To_be_del, Sales_Material = val1.Sales_Material, FOB_Customer_PO = val1.FOB_Customer_PO, SalesOrd_STO = val1.SalesOrd_STO, ItemNO = val1.ItemNO, DOM_Domestic_Dest = val1.DOM_Domestic_Dest, FOB_Customer_Name = val1.FOB_Customer_Name, DOM_Route = val1.DOM_Route, Ship_To_Country = val1.Ship_To_Country, ShipTo_Name = val1.ShipTo_Name, Delivery_Number = val1.Delivery_Number, OTD_Reason_Code = val2 == null ? "" : val2.OTD_Reason_Code, Delay_Details = val2 == null ? "" : val2.Delay_Details, FOB_First_Date = val1.FOB_First_Date, FOB_Cancel_Date = val1.FOB_Cancel_Date, FOB_Carton_Volume = val1.FOB_Carton_Volume.ToString(), FOB_Customer_Description = val1.FOB_Customer_Description, FOB_Customer_Material_Number = val1.FOB_Customer_Material_Number, FOB_LOG = val1.FOB_LOG, FOB_MainBatt = val1.FOB_MainBatt, FOB_MainBattQty = val1.FOB_MainBattQty.ToString(), FOB_OverallCredStat = val1.FOB_OverallCredStat, FOB_Proforma_Invoice = val1.FOB_Proforma_Invoice, FOB_Receiving_Point = val1.FOB_Receiving_Point, FOB_Total_NetWeight = val1.FOB_Total_NetWeight.ToString(), DOM_Delivery_Quantity = val1.DOM_Delivery_Quantity.ToString(), DOM_Finaloadingport = val1.DOM_Finaloadingport, DOM_Inbound = val1.DOM_Inbound, DOM_Invoice = val1.DOM_Inbound, DOM_Mfr_City = val1.DOM_Mfr_City, DOM_Qty_Delivered = val1.DOM_Qty_Delivered.ToString(), DOM_Shipment_Number = val1.DOM_Shipment_Number, DOM_Sloc = val1.DOM_Sloc, DOM_StatDelD = val1.DOM_StatDelD, DOM_STO_Delivery_Date = val1.DOM_STO_Delivery_Date, DOM_STO_MA_Date = val1.DOM_STO_MA_Date, DOM_To_Be_Del = val1.DOM_To_Be_Del.ToString(), DOM_Vendor = val1.DOM_Vendor, Carton_Depth_W = val1.Carton_Depth_W.ToString(), Carton_GrossWeight = val1.Carton_GrossWeight.ToString(), Carton_Height = val1.Carton_Height.ToString(), Carton_NetWeight = val1.Carton_NetWeight.ToString(), Carton_PCS = val1.Carton_PCS.ToString(), Carton_Width_L = val1.Carton_Width_L.ToString(), Comments = val1.Comments, Mfr_Country = val1.Mfr_Country, Mfr_Name1 = val1.Mfr_Name1, Total_GrossWeight = val1.Total_GrossWeight.ToString(), Total_Volume = val1.Total_Volume, Vendor_Name = val1.Vendor_Name, Dischaging_Port = val2 == null ? null : val2.Dischaging_Port, Arrive_terminal_Date = val2 == null ? null : val2.Arrive_terminal_Date, Delivery_CBM = val2 == null ? null : val2.Delivery_CBM, Arrive_WHS_Date = val2 == null ? null : val2.Arrive_WHS_Date, Booking_Date = val2 == null ? val1.FOB_Booking_Date : val2.Booking_Date, Carton_delivered = val2 == null ? null : val2.Carton_delivered, Container_NO = grp == null ? null : grp.Container_NO, CY_Closing_Date = val2 == null ? null : val2.CY_Closing_Date, ETA = val2 == null ? null : val2.ETA, Loading_Port = val2 == null ? null : val2.Loading_Port, Seal_NO = grp == null ? null : grp.Seal_NO, SI_Cut_Time = val2 == null ? null : val2.SI_Cut_Time, Vehicle_Type = grp == null ? "" : grp.Vehicle_Type, Vessel = val2 == null ? "" : val2.Vessel, Voyage = val2 == null ? "" : val2.Voyage, CustomerType = val1.PO_List_Type, Mohth = val1.FOB_First_Date == null ? val1.DOM_STO_MA_Date.Value.Month.ToString() : val1.FOB_First_Date.Value.Month.ToString(), Weekly = val1.FOB_First_Date == null ? getWeekNumInMonth((DateTime)val1.DOM_STO_MA_Date).ToString() : getWeekNumInMonth((DateTime)val1.FOB_First_Date).ToString(), TruckingNo = grp == null ? null : grp.Trucking_NO, CTN = grp == null ? null : grp.CTN, ShipMode = val2.FinalPoList.FOB_Ship_MODE, OpenDate = val2.CY_Open_date, CBM = grp == null ? null : grp.CBM, Qty = grp == null ? null : grp.Qty, Trucking_Arrive_terminal_Date = grp == null ? null : grp.Trucking_Arrive_terminal_Date, Trucking_Arrive_WHS_Date = grp == null ? null : grp.Trucking_Arrive_WHS_Date,SO_Release_Date=val2.SO_Release_Date }).ToList();
+
+
+
+
+                loadplanstwo = (from val1 in polist join val2 in vendorinputlist on val1.ID equals val2.PID into val2Grp from grp in val2Grp.DefaultIfEmpty() select new R_LoadPlan_DailyReport { Purch_Doc = val1.Purch_Doc, Item = val1.Item, PO_Line = grp == null ? "" : grp.PO_Line, Created_By = grp == null ? "" : grp.Created_By, Matl_Group = val1.Matl_Group, Matl_Group_Sales = grp == null ? "" : grp.Matl_Group_Sales, Material = val1.Material, Brand = val1.Brand, Short_text = val1.Short_text, PO_quantity = val1.PO_quantity, Total_Carton = val1.Total_Carton, Matrix = grp == null ? "" : grp.Matrix, Deliv_Date = val1.Deliv_Date, Slip_Sheet = grp == null ? "" : grp.Slip_Sheet, Packing_Status = grp == null ? "" : grp.Packing_Status, Inspection_End_Date = grp == null ? null : grp.Inspection_End_Date, Inspection_Result = grp == null ? "" : grp.Inspection_Result, Booking_No = grp == null ? "" : grp.Booking_No, Loading_Date = grp == null ? null : grp.Loading_Date, Closing_Date = grp == null ? null : grp.CFS_Closing_Date, ETD = grp == null ? null : grp.ETD, Shipment_Status = grp == null ? "" : grp.Shipment_Status, FOB_Local_Charges_Settlement = grp == null ? "" : grp.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = grp == null ? null : grp.FCR_Bill_Return_Date, Certificate_Application_Date = grp == null ? null : grp.Certificate_Application_Date, Certificate_Return_TO_SMDate = grp == null ? null : grp.Certificate_Return_TO_SMDate, Qty_Delivered = grp == null ? 0 : grp.Qty_Delivered, To_be_del = grp == null ? "" : grp.To_be_del, Sales_Material = val1.Sales_Material, FOB_Customer_PO = val1.FOB_Customer_PO, SalesOrd_STO = val1.SalesOrd_STO, ItemNO = val1.ItemNO, DOM_Domestic_Dest = val1.DOM_Domestic_Dest, FOB_Customer_Name = val1.FOB_Customer_Name, DOM_Route = val1.DOM_Route, Ship_To_Country = val1.Ship_To_Country, ShipTo_Name = val1.ShipTo_Name, Delivery_Number = val1.Delivery_Number, OTD_Reason_Code = grp == null ? "" : grp.OTD_Reason_Code, Delay_Details = grp == null ? "" : grp.Delay_Details, FOB_First_Date = val1.FOB_First_Date, FOB_Cancel_Date = val1.FOB_Cancel_Date, FOB_Carton_Volume = val1.FOB_Carton_Volume.ToString(), FOB_Customer_Description = val1.FOB_Customer_Description, FOB_Customer_Material_Number = val1.FOB_Customer_Material_Number, FOB_LOG = val1.FOB_LOG, FOB_MainBatt = val1.FOB_MainBatt, FOB_MainBattQty = val1.FOB_MainBattQty.ToString(), FOB_OverallCredStat = val1.FOB_OverallCredStat, FOB_Proforma_Invoice = val1.FOB_Proforma_Invoice, FOB_Receiving_Point = val1.FOB_Receiving_Point, FOB_Total_NetWeight = val1.FOB_Total_NetWeight.ToString(), DOM_Delivery_Quantity = val1.DOM_Delivery_Quantity.ToString(), DOM_Finaloadingport = val1.DOM_Finaloadingport, DOM_Inbound = val1.DOM_Inbound, DOM_Invoice = val1.DOM_Inbound, DOM_Mfr_City = val1.DOM_Mfr_City, DOM_Qty_Delivered = val1.DOM_Qty_Delivered.ToString(), DOM_Shipment_Number = val1.DOM_Shipment_Number, DOM_Sloc = val1.DOM_Sloc, DOM_StatDelD = val1.DOM_StatDelD, DOM_STO_Delivery_Date = val1.DOM_STO_Delivery_Date, DOM_STO_MA_Date = val1.DOM_STO_MA_Date, DOM_To_Be_Del = val1.DOM_To_Be_Del.ToString(), DOM_Vendor = val1.DOM_Vendor, Carton_Depth_W = val1.Carton_Depth_W.ToString(), Carton_GrossWeight = val1.Carton_GrossWeight.ToString(), Carton_Height = val1.Carton_Height.ToString(), Carton_NetWeight = val1.Carton_NetWeight.ToString(), Carton_PCS = val1.Carton_PCS.ToString(), Carton_Width_L = val1.Carton_Width_L.ToString(), Comments = val1.Comments, Mfr_Country = val1.Mfr_Country, Mfr_Name1 = val1.Mfr_Name1, Total_GrossWeight = val1.Total_GrossWeight.ToString(), Total_Volume = val1.Total_Volume, Vendor_Name = val1.Vendor_Name, Dischaging_Port = grp == null ? null : grp.Dischaging_Port, Arrive_terminal_Date = grp == null ? null : grp.Arrive_terminal_Date, Delivery_CBM = grp == null ? null : grp.Delivery_CBM, Arrive_WHS_Date = grp == null ? null : grp.Arrive_WHS_Date, Booking_Date = grp == null ? val1.FOB_Booking_Date : grp.Booking_Date, Carton_delivered = grp == null ? null : grp.Carton_delivered, Container_NO = grp == null ? null : grp.Container_NO, CY_Closing_Date = grp == null ? null : grp.CY_Closing_Date, ETA = grp == null ? null : grp.ETA, Loading_Port = grp == null ? null : grp.Loading_Port, Seal_NO = grp == null ? null : grp.Seal_NO, SI_Cut_Time = grp == null ? null : grp.SI_Cut_Time, Vehicle_Type = grp == null ? "" : grp.Vehicle_Type, Vessel = grp == null ? "" : grp.Vessel, Voyage = grp == null ? "" : grp.Voyage, CustomerType = val1.PO_List_Type, Mohth = val1.FOB_First_Date == null ? val1.DOM_STO_MA_Date.Value.Month.ToString() : val1.FOB_First_Date.Value.Month.ToString(), Weekly = val1.FOB_First_Date == null ? getWeekNumInMonth((DateTime)val1.DOM_STO_MA_Date).ToString() : getWeekNumInMonth((DateTime)val1.FOB_First_Date).ToString(), ShipMode = grp == null ? null : grp.Ship_Mode, SO_Release_Date = grp == null ? null : grp.SO_Release_Date }).ToList();
+
+                foreach (var item in loadplanstwo)
+                {
+
+                    var loadplanstwoadd = loadplans.Where(a => a.Purch_Doc == item.Purch_Doc && a.Item == item.Item).ToList();
+                    if (loadplanstwoadd.Count <= 0)
+                    {
+                        loadplans.Add(item);
+                    }
+                }
+
+                
+                
+
+                //var result = from val1 in polist join val2 in vendorinputlist on val1.ID equals val2.PID into val2Grp from grp in val2Grp.DefaultIfEmpty() select new { Purch_Doc = val1.Purch_Doc, Item = val1.Item, PO_Line = grp == null ? "" : grp.PO_Line, Created_By = grp == null ? "" : grp.Created_By, Matl_Group = val1.Matl_Group, Matl_Group_Sales = grp == null ? "" : grp.Matl_Group_Sales, Material = val1.Material, Brand = val1.Brand, Short_text = val1.Short_text, PO_quantity = val1.PO_quantity, Total_Carton = val1.Total_Carton, Matrix = grp == null ? "" : grp.Matrix, Deliv_Date = val1.Deliv_Date, Slip_Sheet = grp == null ? "" : grp.Slip_Sheet, Packing_Status = grp == null ? "" : grp.Packing_Status, Inspection_End_Date = grp == null ? null : grp.Inspection_End_Date, Inspection_Result = grp == null ? "" : grp.Inspection_Result, Booking_No = grp == null ? "" : grp.Booking_No, Loading_Date = grp == null ? null : grp.Loading_Date, Closing_Date = grp == null ? null : grp.Closing_Date, ETD = grp == null ? null : grp.ETD, Shipment_Status = grp == null ? "" : grp.Shipment_Status, FOB_Local_Charges_Settlement = grp == null ? "" : grp.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = grp == null ? null : grp.FCR_Bill_Return_Date, Certificate_Application_Date = grp == null ? null : grp.Certificate_Application_Date, Certificate_Return_TO_SMDate = grp == null ? null : grp.Certificate_Return_TO_SMDate, Qty_Delivered = grp == null ? 0 : grp.Qty_Delivered, To_be_del = grp == null ? "" : grp.To_be_del, Sales_Material = val1.Sales_Material, FOB_Customer_PO = val1.FOB_Customer_PO, SalesOrd_STO = val1.SalesOrd_STO, ItemNO = val1.ItemNO, DOM_Domestic_Dest = val1.DOM_Domestic_Dest, FOB_Customer_Name = val1.FOB_Customer_Name, DOM_Route = val1.DOM_Route, Ship_To_Country = val1.Ship_To_Country, ShipTo_Name = val1.ShipTo_Name, Delivery_Number = val1.Delivery_Number, OTD_Reason_Code = grp == null ? "" : grp.OTD_Reason_Code, Delay_Details = grp == null ? "" : grp.Delay_Details, FOB_First_Date = val1.FOB_First_Date, FOB_Cancel_Date = val1.FOB_Cancel_Date };
+
+
+              
+                //var result = from val1 in polist join val2 in vendorinputlist on val1.ID equals val2.PID into val2Grp from grp in val2Grp.DefaultIfEmpty() select new R_LoadPlan_DailyReport { Purch_Doc = val1.Purch_Doc, Item = val1.Item, PO_Line = grp.PO_Line, Created_By = grp.Created_By, Matl_Group = val1.Matl_Group, Matl_Group_Sales = grp.Matl_Group_Sales, Material = val1.Material, Brand = val1.Brand, Short_text = val1.Short_text, PO_quantity = val1.PO_quantity, Total_Carton = val1.Total_Carton, Matrix = grp.Matrix, Deliv_Date = val1.Deliv_Date, Slip_Sheet = grp.Slip_Sheet, Packing_Status = grp.Packing_Status, Inspection_End_Date = grp.Inspection_End_Date, Inspection_Result = grp.Inspection_Result, Booking_No = grp.Booking_No, Loading_Date = grp.Loading_Date, Closing_Date = grp.Closing_Date, ETD = grp.ETD, Shipment_Status = grp.Shipment_Status, FOB_Local_Charges_Settlement = grp.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = grp.FCR_Bill_Return_Date, Certificate_Application_Date = grp.Certificate_Application_Date, Certificate_Return_TO_SMDate = grp.Certificate_Return_TO_SMDate, Qty_Delivered = grp.Qty_Delivered, To_be_del = grp.To_be_del, Sales_Material = val1.Sales_Material, FOB_Customer_PO = val1.FOB_Customer_PO, SalesOrd_STO = val1.SalesOrd_STO, ItemNO = val1.ItemNO, DOM_Domestic_Dest = val1.DOM_Domestic_Dest, FOB_Customer_Name = val1.FOB_Customer_Name, DOM_Route = val1.DOM_Route, Ship_To_Country = val1.Ship_To_Country, ShipTo_Name = val1.ShipTo_Name, Delivery_Number = val1.Delivery_Number, OTD_Reason_Code = grp.OTD_Reason_Code, Delay_Details = grp.Delay_Details, FOB_First_Date = val1.FOB_First_Date, FOB_Cancel_Date = val1.FOB_Cancel_Date };
+
+
+                    
+                //loadplans = oc.BllSession.IFinalVendorInputBLL.GetListBy(aa => aa.FinalPoList.FOB_Customer_Name.Contains(Customer_name) && aa.FinalPoList.Mfr_Name1.Contains(Vendor_Name) && aa.FinalPoList.SalesOrd_STO.Contains(Sales_order) && aa.FinalPoList.FOB_First_Date >= operDateStart && aa.FinalPoList.FOB_First_Date <= operDateEnd).Select(dd => new R_LoadPlan_DailyReport { Purch_Doc = dd.FinalPoList.Purch_Doc, Item = dd.FinalPoList.Item, PO_Line = dd.PO_Line, Created_By = dd.Created_By, Matl_Group = dd.FinalPoList.Matl_Group, Matl_Group_Sales = dd.Matl_Group_Sales, Material = dd.FinalPoList.Material, Brand = dd.FinalPoList.Brand, Short_text = dd.FinalPoList.Short_text, PO_quantity = (int)dd.FinalPoList.PO_quantity, Total_Carton = (int)dd.FinalPoList.Total_Carton, Matrix = dd.Matrix, Deliv_Date = dd.FinalPoList.Deliv_Date, Slip_Sheet = dd.Slip_Sheet, Packing_Status = dd.Packing_Status, Inspection_End_Date = dd.Inspection_End_Date, Inspection_Result = dd.Inspection_Result, Booking_No = dd.Booking_No, Loading_Date = dd.Loading_Date, Closing_Date = dd.Closing_Date, ETD = dd.ETD, Shipment_Status = dd.Shipment_Status, FOB_Local_Charges_Settlement = dd.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = dd.FCR_Bill_Return_Date, Certificate_Application_Date = dd.Certificate_Application_Date, Certificate_Return_TO_SMDate = dd.Certificate_Return_TO_SMDate, Qty_Delivered = dd.Qty_Delivered, To_be_del = dd.To_be_del, Sales_Material = dd.FinalPoList.Sales_Material, FOB_Customer_PO = dd.FinalPoList.FOB_Customer_PO, SalesOrd_STO = dd.FinalPoList.SalesOrd_STO, ItemNO = dd.FinalPoList.ItemNO, DOM_Domestic_Dest = dd.FinalPoList.DOM_Domestic_Dest, FOB_Customer_Name = dd.FinalPoList.FOB_Customer_Name, DOM_Route = dd.FinalPoList.DOM_Route, Ship_To_Country = dd.FinalPoList.Ship_To_Country, ShipTo_Name = dd.FinalPoList.ShipTo_Name, Delivery_Number = dd.FinalPoList.Delivery_Number, OTD_Reason_Code = dd.OTD_Reason_Code, Delay_Details = dd.Delay_Details, FOB_First_Date = dd.FinalPoList.FOB_First_Date, FOB_Cancel_Date = dd.FinalPoList.FOB_Cancel_Date }).ToList();
+
+                total = loadplans.Count();
+                pageresult = loadplans.Skip((page - 1) * rows).Take(rows).ToList();
+            }
+
+            else if (DateType.Trim() == "Closing Date")
+            {
+                loadplans = oc.BllSession.IFinalVendorInputBLL.GetListBy(aa => aa.FinalPoList.Mfr_Name1.Contains(Vendor_Name) && aa.FinalPoList.Purch_Doc.Contains(Purch_Doc) && aa.FinalPoList.Item.Contains(Item) && aa.CFS_Closing_Date >= operDateStart && aa.CFS_Closing_Date <= operDateEnd).Select(dd => AddRLoadPlan(dd)).ToList();
+
+                total = loadplans.Count;
+                pageresult = loadplans.Skip((page - 1) * rows).Take(rows).ToList();
+            }
+
+            else if (DateType.Trim() == "STO MA Date")
+            {
+                //loadplans = oc.BllSession.IFinalPoListBLL.Entities.Where(r => r.FOB_Customer_Name.Contains(Customer_name)).Select(aa=>aa.FinalVendorInputs.)  .IFinalLoadingPlanBLL.Entities.Where(r => r.Customer_Name.Contains(Customer_name) && r.SalesOrd_STO.Contains(Sales_order) && r.Vendor_Name.Contains(Vendor_Name) && r.First_Date >= operDateStart && r.First_Date <= operDateEnd, page, rows, out total, psc).ToList();
+
+
+                //var truckbookinghead = oc.BllSession.ITruck_Booking_HeadBLL.Entities.Where(r => r.Vdr_Pickup_date >= operDateStart && r.Vdr_Pickup_date < operDateEnd).Join(oc.BllSession.ITruck_VendorBLL.Entities.Where(b => b.Client == "SpinMaster"), e => e.VendorCode, o => o.Vendor_Code, (e, o) => e).ToList();
+
+                //var lTKNo = truckbookinghead.Select(a => a.Booking_Number);
+
+                //var truckbookingDetail = oc.BllSession.ITruck_Booking_DetailBLL.Entities.Where(aa => lTKNo.Contains(aa.Booking_Number) && aa.SO_No.Contains(consol_No) && aa.hfe.Contains(Sales_order));
+
+                //var truckings = (from a in truckbookinghead join b in truckbookingDetail on a.Booking_Number equals b.Booking_Number select new { Consol_no = b.SO_No, Customer_Name = b.Customer_Name, hfe = b.hfe, ItemNO = b.Line, TotalCarton = b.Ctn, TotalGrossWeight = b.GrossWeight, TotalVolume = b.CBM, Leave_factory_time = a.Leave_factory_time, Cont_Date = a.Terminal_Time, Ship_Date = a.Arrive_Whs_time, Arrive_WHS_Date = a.Receipt_Upload_time, Shipment_Type = a.Delivery_Type, Cont_No = a.Cont_NO, Vendor_Name = a.VendorName }).ToList();
+
+
+                var polist = oc.BllSession.IFinalPoListBLL.GetListBy(a => a.FOB_Customer_Name.Contains(Customer_name) && a.Mfr_Name1.Contains(Vendor_Name) && a.Purch_Doc.Contains(Purch_Doc) && a.Item.Contains(Item) && a.DOM_STO_MA_Date >= operDateStart && a.DOM_STO_MA_Date <= operDateEnd);
+
+                var pidlist = polist.Select(a => a.ID).ToList();
+
+                var vendorinputlist = oc.BllSession.IFinalVendorInputBLL.GetListBy(b => pidlist.Contains(b.PID));
+
+
+                var vendoridinputlist = vendorinputlist.Select(a => a.VID).ToList();
+
+
+                var VendorInputTruckinglist = oc.BllSession.IFinalVendorInputTruckingBLL.GetListBy(b => vendoridinputlist.Contains(b.vID));
+
+                /////left join 查询
+                loadplans = (from val1 in polist join val2 in vendorinputlist on val1.ID equals val2.PID join val3 in VendorInputTruckinglist on val2.VID equals val3.vID into val2Grp from grp in val2Grp.DefaultIfEmpty() select new R_LoadPlan_DailyReport { Purch_Doc = val1.Purch_Doc, Item = val1.Item, PO_Line = val2 == null ? "" : val2.PO_Line, Created_By = val2 == null ? "" : val2.Created_By, Matl_Group = val1.Matl_Group, Matl_Group_Sales = val2 == null ? "" : val2.Matl_Group_Sales, Material = val1.Material, Brand = val1.Brand, Short_text = val1.Short_text, PO_quantity = val1.PO_quantity, Total_Carton = val1.Total_Carton, Matrix = val2 == null ? "" : val2.Matrix, Deliv_Date = val1.Deliv_Date, Slip_Sheet = val2 == null ? "" : val2.Slip_Sheet, Packing_Status = val2 == null ? "" : val2.Packing_Status, Inspection_End_Date = val2 == null ? null : val2.Inspection_End_Date, Inspection_Result = val2 == null ? "" : val2.Inspection_Result, Booking_No = val2 == null ? "" : val2.Booking_No, Loading_Date = val2 == null ? null : val2.Loading_Date, Closing_Date = val2 == null ? null : val2.CFS_Closing_Date, ETD = val2 == null ? null : val2.ETD, Shipment_Status = val2 == null ? "" : val2.Shipment_Status, FOB_Local_Charges_Settlement = val2 == null ? "" : val2.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = val2 == null ? null : val2.FCR_Bill_Return_Date, Certificate_Application_Date = val2 == null ? null : val2.Certificate_Application_Date, Certificate_Return_TO_SMDate = val2 == null ? null : val2.Certificate_Return_TO_SMDate, Qty_Delivered = val2 == null ? 0 : val2.Qty_Delivered, To_be_del = val2 == null ? "" : val2.To_be_del, Sales_Material = val1.Sales_Material, FOB_Customer_PO = val1.FOB_Customer_PO, SalesOrd_STO = val1.SalesOrd_STO, ItemNO = val1.ItemNO, DOM_Domestic_Dest = val1.DOM_Domestic_Dest, FOB_Customer_Name = val1.FOB_Customer_Name, DOM_Route = val1.DOM_Route, Ship_To_Country = val1.Ship_To_Country, ShipTo_Name = val1.ShipTo_Name, Delivery_Number = val1.Delivery_Number, OTD_Reason_Code = val2 == null ? "" : val2.OTD_Reason_Code, Delay_Details = val2 == null ? "" : val2.Delay_Details, FOB_First_Date = val1.FOB_First_Date, FOB_Cancel_Date = val1.FOB_Cancel_Date, FOB_Carton_Volume = val1.FOB_Carton_Volume.ToString(), FOB_Customer_Description = val1.FOB_Customer_Description, FOB_Customer_Material_Number = val1.FOB_Customer_Material_Number, FOB_LOG = val1.FOB_LOG, FOB_MainBatt = val1.FOB_MainBatt, FOB_MainBattQty = val1.FOB_MainBattQty.ToString(), FOB_OverallCredStat = val1.FOB_OverallCredStat, FOB_Proforma_Invoice = val1.FOB_Proforma_Invoice, FOB_Receiving_Point = val1.FOB_Receiving_Point, FOB_Total_NetWeight = val1.FOB_Total_NetWeight.ToString(), DOM_Delivery_Quantity = val1.DOM_Delivery_Quantity.ToString(), DOM_Finaloadingport = val1.DOM_Finaloadingport, DOM_Inbound = val1.DOM_Inbound, DOM_Invoice = val1.DOM_Inbound, DOM_Mfr_City = val1.DOM_Mfr_City, DOM_Qty_Delivered = val1.DOM_Qty_Delivered.ToString(), DOM_Shipment_Number = val1.DOM_Shipment_Number, DOM_Sloc = val1.DOM_Sloc, DOM_StatDelD = val1.DOM_StatDelD, DOM_STO_Delivery_Date = val1.DOM_STO_Delivery_Date, DOM_STO_MA_Date = val1.DOM_STO_MA_Date, DOM_To_Be_Del = val1.DOM_To_Be_Del.ToString(), DOM_Vendor = val1.DOM_Vendor, Carton_Depth_W = val1.Carton_Depth_W.ToString(), Carton_GrossWeight = val1.Carton_GrossWeight.ToString(), Carton_Height = val1.Carton_Height.ToString(), Carton_NetWeight = val1.Carton_NetWeight.ToString(), Carton_PCS = val1.Carton_PCS.ToString(), Carton_Width_L = val1.Carton_Width_L.ToString(), Comments = val1.Comments, Mfr_Country = val1.Mfr_Country, Mfr_Name1 = val1.Mfr_Name1, Total_GrossWeight = val1.Total_GrossWeight.ToString(), Total_Volume = val1.Total_Volume, Vendor_Name = val1.Vendor_Name, Dischaging_Port = val2 == null ? null : val2.Dischaging_Port, Arrive_terminal_Date = val2 == null ? null : val2.Arrive_terminal_Date, Delivery_CBM = val2 == null ? null : val2.Delivery_CBM, Arrive_WHS_Date = val2 == null ? null : val2.Arrive_WHS_Date, Booking_Date = val2 == null ? val1.FOB_Booking_Date : val2.Booking_Date, Carton_delivered = val2 == null ? null : val2.Carton_delivered, Container_NO = grp == null ? null : grp.Container_NO, CY_Closing_Date = val2 == null ? null : val2.CY_Closing_Date, ETA = val2 == null ? null : val2.ETA, Loading_Port = val2 == null ? null : val2.Loading_Port, Seal_NO = grp == null ? null : grp.Seal_NO, SI_Cut_Time = val2 == null ? null : val2.SI_Cut_Time, Vehicle_Type = grp == null ? "" : grp.Vehicle_Type, Vessel = val2 == null ? "" : val2.Vessel, Voyage = val2 == null ? "" : val2.Voyage, CustomerType = val1.PO_List_Type, Mohth = val1.FOB_First_Date == null ? val1.DOM_STO_MA_Date.Value.Month.ToString() : val1.FOB_First_Date.Value.Month.ToString(), Weekly = val1.FOB_First_Date == null ? getWeekNumInMonth((DateTime)val1.DOM_STO_MA_Date).ToString() : getWeekNumInMonth((DateTime)val1.FOB_First_Date).ToString(), TruckingNo = grp == null ? null : grp.Trucking_NO, CTN = grp == null ? null : grp.CTN, ShipMode = val2.FinalPoList.FOB_Ship_MODE, OpenDate = val2.CY_Open_date, CBM = grp == null ? null : grp.CBM, Qty = grp == null ? null : grp.Qty, Trucking_Arrive_terminal_Date = grp == null ? null : grp.Trucking_Arrive_terminal_Date, Trucking_Arrive_WHS_Date = grp == null ? null : grp.Trucking_Arrive_WHS_Date, SO_Release_Date = val2.SO_Release_Date }).ToList();
+
+
+
+
+                loadplanstwo = (from val1 in polist join val2 in vendorinputlist on val1.ID equals val2.PID into val2Grp from grp in val2Grp.DefaultIfEmpty() select new R_LoadPlan_DailyReport { Purch_Doc = val1.Purch_Doc, Item = val1.Item, PO_Line = grp == null ? "" : grp.PO_Line, Created_By = grp == null ? "" : grp.Created_By, Matl_Group = val1.Matl_Group, Matl_Group_Sales = grp == null ? "" : grp.Matl_Group_Sales, Material = val1.Material, Brand = val1.Brand, Short_text = val1.Short_text, PO_quantity = val1.PO_quantity, Total_Carton = val1.Total_Carton, Matrix = grp == null ? "" : grp.Matrix, Deliv_Date = val1.Deliv_Date, Slip_Sheet = grp == null ? "" : grp.Slip_Sheet, Packing_Status = grp == null ? "" : grp.Packing_Status, Inspection_End_Date = grp == null ? null : grp.Inspection_End_Date, Inspection_Result = grp == null ? "" : grp.Inspection_Result, Booking_No = grp == null ? "" : grp.Booking_No, Loading_Date = grp == null ? null : grp.Loading_Date, Closing_Date = grp == null ? null : grp.CFS_Closing_Date, ETD = grp == null ? null : grp.ETD, Shipment_Status = grp == null ? "" : grp.Shipment_Status, FOB_Local_Charges_Settlement = grp == null ? "" : grp.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = grp == null ? null : grp.FCR_Bill_Return_Date, Certificate_Application_Date = grp == null ? null : grp.Certificate_Application_Date, Certificate_Return_TO_SMDate = grp == null ? null : grp.Certificate_Return_TO_SMDate, Qty_Delivered = grp == null ? 0 : grp.Qty_Delivered, To_be_del = grp == null ? "" : grp.To_be_del, Sales_Material = val1.Sales_Material, FOB_Customer_PO = val1.FOB_Customer_PO, SalesOrd_STO = val1.SalesOrd_STO, ItemNO = val1.ItemNO, DOM_Domestic_Dest = val1.DOM_Domestic_Dest, FOB_Customer_Name = val1.FOB_Customer_Name, DOM_Route = val1.DOM_Route, Ship_To_Country = val1.Ship_To_Country, ShipTo_Name = val1.ShipTo_Name, Delivery_Number = val1.Delivery_Number, OTD_Reason_Code = grp == null ? "" : grp.OTD_Reason_Code, Delay_Details = grp == null ? "" : grp.Delay_Details, FOB_First_Date = val1.FOB_First_Date, FOB_Cancel_Date = val1.FOB_Cancel_Date, FOB_Carton_Volume = val1.FOB_Carton_Volume.ToString(), FOB_Customer_Description = val1.FOB_Customer_Description, FOB_Customer_Material_Number = val1.FOB_Customer_Material_Number, FOB_LOG = val1.FOB_LOG, FOB_MainBatt = val1.FOB_MainBatt, FOB_MainBattQty = val1.FOB_MainBattQty.ToString(), FOB_OverallCredStat = val1.FOB_OverallCredStat, FOB_Proforma_Invoice = val1.FOB_Proforma_Invoice, FOB_Receiving_Point = val1.FOB_Receiving_Point, FOB_Total_NetWeight = val1.FOB_Total_NetWeight.ToString(), DOM_Delivery_Quantity = val1.DOM_Delivery_Quantity.ToString(), DOM_Finaloadingport = val1.DOM_Finaloadingport, DOM_Inbound = val1.DOM_Inbound, DOM_Invoice = val1.DOM_Inbound, DOM_Mfr_City = val1.DOM_Mfr_City, DOM_Qty_Delivered = val1.DOM_Qty_Delivered.ToString(), DOM_Shipment_Number = val1.DOM_Shipment_Number, DOM_Sloc = val1.DOM_Sloc, DOM_StatDelD = val1.DOM_StatDelD, DOM_STO_Delivery_Date = val1.DOM_STO_Delivery_Date, DOM_STO_MA_Date = val1.DOM_STO_MA_Date, DOM_To_Be_Del = val1.DOM_To_Be_Del.ToString(), DOM_Vendor = val1.DOM_Vendor, Carton_Depth_W = val1.Carton_Depth_W.ToString(), Carton_GrossWeight = val1.Carton_GrossWeight.ToString(), Carton_Height = val1.Carton_Height.ToString(), Carton_NetWeight = val1.Carton_NetWeight.ToString(), Carton_PCS = val1.Carton_PCS.ToString(), Carton_Width_L = val1.Carton_Width_L.ToString(), Comments = val1.Comments, Mfr_Country = val1.Mfr_Country, Mfr_Name1 = val1.Mfr_Name1, Total_GrossWeight = val1.Total_GrossWeight.ToString(), Total_Volume = val1.Total_Volume, Vendor_Name = val1.Vendor_Name, Dischaging_Port = grp == null ? null : grp.Dischaging_Port, Arrive_terminal_Date = grp == null ? null : grp.Arrive_terminal_Date, Delivery_CBM = grp == null ? null : grp.Delivery_CBM, Arrive_WHS_Date = grp == null ? null : grp.Arrive_WHS_Date, Booking_Date = grp == null ? val1.FOB_Booking_Date : grp.Booking_Date, Carton_delivered = grp == null ? null : grp.Carton_delivered, Container_NO = grp == null ? null : grp.Container_NO, CY_Closing_Date = grp == null ? null : grp.CY_Closing_Date, ETA = grp == null ? null : grp.ETA, Loading_Port = grp == null ? null : grp.Loading_Port, Seal_NO = grp == null ? null : grp.Seal_NO, SI_Cut_Time = grp == null ? null : grp.SI_Cut_Time, Vehicle_Type = grp == null ? "" : grp.Vehicle_Type, Vessel = grp == null ? "" : grp.Vessel, Voyage = grp == null ? "" : grp.Voyage, CustomerType = val1.PO_List_Type, Mohth = val1.FOB_First_Date == null ? val1.DOM_STO_MA_Date.Value.Month.ToString() : val1.FOB_First_Date.Value.Month.ToString(), Weekly = val1.FOB_First_Date == null ? getWeekNumInMonth((DateTime)val1.DOM_STO_MA_Date).ToString() : getWeekNumInMonth((DateTime)val1.FOB_First_Date).ToString(), ShipMode = grp == null ? null : grp.Ship_Mode, SO_Release_Date = grp == null ? null : grp.SO_Release_Date }).ToList();
+
+                foreach (var item in loadplanstwo)
+                {
+
+                    var loadplanstwoadd = loadplans.Where(a => a.Purch_Doc == item.Purch_Doc && a.Item == item.Item).ToList();
+                    if (loadplanstwoadd.Count <= 0)
+                    {
+                        loadplans.Add(item);
+                    }
+                }
+
+
+
+
+                //var result = from val1 in polist join val2 in vendorinputlist on val1.ID equals val2.PID into val2Grp from grp in val2Grp.DefaultIfEmpty() select new { Purch_Doc = val1.Purch_Doc, Item = val1.Item, PO_Line = grp == null ? "" : grp.PO_Line, Created_By = grp == null ? "" : grp.Created_By, Matl_Group = val1.Matl_Group, Matl_Group_Sales = grp == null ? "" : grp.Matl_Group_Sales, Material = val1.Material, Brand = val1.Brand, Short_text = val1.Short_text, PO_quantity = val1.PO_quantity, Total_Carton = val1.Total_Carton, Matrix = grp == null ? "" : grp.Matrix, Deliv_Date = val1.Deliv_Date, Slip_Sheet = grp == null ? "" : grp.Slip_Sheet, Packing_Status = grp == null ? "" : grp.Packing_Status, Inspection_End_Date = grp == null ? null : grp.Inspection_End_Date, Inspection_Result = grp == null ? "" : grp.Inspection_Result, Booking_No = grp == null ? "" : grp.Booking_No, Loading_Date = grp == null ? null : grp.Loading_Date, Closing_Date = grp == null ? null : grp.Closing_Date, ETD = grp == null ? null : grp.ETD, Shipment_Status = grp == null ? "" : grp.Shipment_Status, FOB_Local_Charges_Settlement = grp == null ? "" : grp.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = grp == null ? null : grp.FCR_Bill_Return_Date, Certificate_Application_Date = grp == null ? null : grp.Certificate_Application_Date, Certificate_Return_TO_SMDate = grp == null ? null : grp.Certificate_Return_TO_SMDate, Qty_Delivered = grp == null ? 0 : grp.Qty_Delivered, To_be_del = grp == null ? "" : grp.To_be_del, Sales_Material = val1.Sales_Material, FOB_Customer_PO = val1.FOB_Customer_PO, SalesOrd_STO = val1.SalesOrd_STO, ItemNO = val1.ItemNO, DOM_Domestic_Dest = val1.DOM_Domestic_Dest, FOB_Customer_Name = val1.FOB_Customer_Name, DOM_Route = val1.DOM_Route, Ship_To_Country = val1.Ship_To_Country, ShipTo_Name = val1.ShipTo_Name, Delivery_Number = val1.Delivery_Number, OTD_Reason_Code = grp == null ? "" : grp.OTD_Reason_Code, Delay_Details = grp == null ? "" : grp.Delay_Details, FOB_First_Date = val1.FOB_First_Date, FOB_Cancel_Date = val1.FOB_Cancel_Date };
+
+
+
+                //var result = from val1 in polist join val2 in vendorinputlist on val1.ID equals val2.PID into val2Grp from grp in val2Grp.DefaultIfEmpty() select new R_LoadPlan_DailyReport { Purch_Doc = val1.Purch_Doc, Item = val1.Item, PO_Line = grp.PO_Line, Created_By = grp.Created_By, Matl_Group = val1.Matl_Group, Matl_Group_Sales = grp.Matl_Group_Sales, Material = val1.Material, Brand = val1.Brand, Short_text = val1.Short_text, PO_quantity = val1.PO_quantity, Total_Carton = val1.Total_Carton, Matrix = grp.Matrix, Deliv_Date = val1.Deliv_Date, Slip_Sheet = grp.Slip_Sheet, Packing_Status = grp.Packing_Status, Inspection_End_Date = grp.Inspection_End_Date, Inspection_Result = grp.Inspection_Result, Booking_No = grp.Booking_No, Loading_Date = grp.Loading_Date, Closing_Date = grp.Closing_Date, ETD = grp.ETD, Shipment_Status = grp.Shipment_Status, FOB_Local_Charges_Settlement = grp.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = grp.FCR_Bill_Return_Date, Certificate_Application_Date = grp.Certificate_Application_Date, Certificate_Return_TO_SMDate = grp.Certificate_Return_TO_SMDate, Qty_Delivered = grp.Qty_Delivered, To_be_del = grp.To_be_del, Sales_Material = val1.Sales_Material, FOB_Customer_PO = val1.FOB_Customer_PO, SalesOrd_STO = val1.SalesOrd_STO, ItemNO = val1.ItemNO, DOM_Domestic_Dest = val1.DOM_Domestic_Dest, FOB_Customer_Name = val1.FOB_Customer_Name, DOM_Route = val1.DOM_Route, Ship_To_Country = val1.Ship_To_Country, ShipTo_Name = val1.ShipTo_Name, Delivery_Number = val1.Delivery_Number, OTD_Reason_Code = grp.OTD_Reason_Code, Delay_Details = grp.Delay_Details, FOB_First_Date = val1.FOB_First_Date, FOB_Cancel_Date = val1.FOB_Cancel_Date };
+
+
+
+                //loadplans = oc.BllSession.IFinalVendorInputBLL.GetListBy(aa => aa.FinalPoList.FOB_Customer_Name.Contains(Customer_name) && aa.FinalPoList.Mfr_Name1.Contains(Vendor_Name) && aa.FinalPoList.SalesOrd_STO.Contains(Sales_order) && aa.FinalPoList.FOB_First_Date >= operDateStart && aa.FinalPoList.FOB_First_Date <= operDateEnd).Select(dd => new R_LoadPlan_DailyReport { Purch_Doc = dd.FinalPoList.Purch_Doc, Item = dd.FinalPoList.Item, PO_Line = dd.PO_Line, Created_By = dd.Created_By, Matl_Group = dd.FinalPoList.Matl_Group, Matl_Group_Sales = dd.Matl_Group_Sales, Material = dd.FinalPoList.Material, Brand = dd.FinalPoList.Brand, Short_text = dd.FinalPoList.Short_text, PO_quantity = (int)dd.FinalPoList.PO_quantity, Total_Carton = (int)dd.FinalPoList.Total_Carton, Matrix = dd.Matrix, Deliv_Date = dd.FinalPoList.Deliv_Date, Slip_Sheet = dd.Slip_Sheet, Packing_Status = dd.Packing_Status, Inspection_End_Date = dd.Inspection_End_Date, Inspection_Result = dd.Inspection_Result, Booking_No = dd.Booking_No, Loading_Date = dd.Loading_Date, Closing_Date = dd.Closing_Date, ETD = dd.ETD, Shipment_Status = dd.Shipment_Status, FOB_Local_Charges_Settlement = dd.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = dd.FCR_Bill_Return_Date, Certificate_Application_Date = dd.Certificate_Application_Date, Certificate_Return_TO_SMDate = dd.Certificate_Return_TO_SMDate, Qty_Delivered = dd.Qty_Delivered, To_be_del = dd.To_be_del, Sales_Material = dd.FinalPoList.Sales_Material, FOB_Customer_PO = dd.FinalPoList.FOB_Customer_PO, SalesOrd_STO = dd.FinalPoList.SalesOrd_STO, ItemNO = dd.FinalPoList.ItemNO, DOM_Domestic_Dest = dd.FinalPoList.DOM_Domestic_Dest, FOB_Customer_Name = dd.FinalPoList.FOB_Customer_Name, DOM_Route = dd.FinalPoList.DOM_Route, Ship_To_Country = dd.FinalPoList.Ship_To_Country, ShipTo_Name = dd.FinalPoList.ShipTo_Name, Delivery_Number = dd.FinalPoList.Delivery_Number, OTD_Reason_Code = dd.OTD_Reason_Code, Delay_Details = dd.Delay_Details, FOB_First_Date = dd.FinalPoList.FOB_First_Date, FOB_Cancel_Date = dd.FinalPoList.FOB_Cancel_Date }).ToList();
+
+                total = loadplans.Count();
+                pageresult = loadplans.Skip((page - 1) * rows).Take(rows).ToList();
+            }
+
+            else if (DateType.Trim() == "Cancel Date")
+            {
+                loadplans = oc.BllSession.IFinalVendorInputBLL.GetListBy(aa => aa.FinalPoList.Mfr_Name1.Contains(Vendor_Name) && aa.FinalPoList.Purch_Doc.Contains(Purch_Doc) && aa.FinalPoList.Item.Contains(Item) && aa.FinalPoList.FOB_Cancel_Date >= operDateStart && aa.FinalPoList.FOB_Cancel_Date <= operDateEnd).Select(dd => AddRLoadPlan(dd)).ToList();
+
+                total = loadplans.Count;
+                   pageresult = loadplans.Skip((page - 1) * rows).Take(rows).ToList();
+            }
+           
+            else
+            {
+                loadplans = oc.BllSession.IFinalVendorInputBLL.GetListBy(aa => aa.FinalPoList.Mfr_Name1.Contains(Vendor_Name) && aa.FinalPoList.Purch_Doc.Contains(Purch_Doc) && aa.FinalPoList.Item.Contains(Item) && aa.Loading_Date >= operDateStart && aa.Loading_Date <= operDateEnd).Select(dd => AddRLoadPlan(dd)).ToList();
+
+                total = loadplans.Count;
+                  pageresult = loadplans.Skip((page - 1) * rows).Take(rows).ToList();
+            }
+
+            List<R_LoadPlan_DailyReport> noBookingnoList = pageresult.Where(a=>a.Booking_No=="" || a.Booking_No==null).ToList();
+               
+            foreach (var s in noBookingnoList)
+            {
+              var lsBooking=  oc.BllSession.IFinalLoadingPlanBLL.GetListBy(aa => aa.SalesOrd_STO == s.SalesOrd_STO && aa.ItemNO == s.ItemNO);
+              if (lsBooking.Count > 0 && !string.IsNullOrEmpty(lsBooking[0].BookingNo))
+              {
+                  s.Booking_No = lsBooking[0].BookingNo;
+                  s.Loading_Date = lsBooking[0].Loading_Date;
+                  s.Closing_Date = lsBooking[0].CY_closing;
+                  s.ETD = lsBooking[0].ETD;
+
+              }
+            }
+            GetConls(loadplans);
+            total = loadplans.Count;
+            pageresult = loadplans.Skip((page - 1) * rows).Take(rows).ToList();
+            DateTime update = DateTime.Now.AddDays(-Convert.ToInt32(DateTime.Now.Date.Day - 1)).AddMonths(-1);
+            DateTime firstDateNow = DateTime.Now.AddDays(1 - DateTime.Now.Day).Date;
+            DateTime nextlastDateNow = DateTime.Now.AddDays(1 - DateTime.Now.Day).Date.AddMonths(2).AddSeconds(-1);
+            DateTime lastDateNow = DateTime.Now.AddDays(1 - DateTime.Now.Day).Date.AddMonths(1).AddSeconds(-1);
+            List<FinalLoadPlanHoliday> holidaylist = oc.BllSession.IFinalLoadPlanHolidayBLL.Entities.ToList();
+            foreach (var item in loadplans)
+            {
+                //Shipped
+                if (item.Trucking_Arrive_terminal_Date != null || item.Trucking_Arrive_WHS_Date != null)//PO item已经完成Actual arrive date in WHS/terminal 记录的
+                {
+
+                    item.Status = "Shipped";
+                    continue;
+                }
+                if (item.FOB_First_Date != null)
+                {
+
+                    if (item.FOB_First_Date.Value >= firstDateNow && item.FOB_First_Date.Value <= lastDateNow)
+                    {
+                        if (item.FOB_First_Date.Value.AddDays(-getHoliday(14, holidaylist, item.FOB_First_Date.Value)) < DateTime.Now)//根据First day前14个工作日（不包含 First day当天），此PO ITEM 还没有提供booking NO.记录的
+                        {
+                            if (item.Booking_No == "")
+                            {
+                                item.Status = "Exception";
+                                continue;
+                            }
+                        }
+                    }
+                    if (item.Booking_Date != null)
+                    {
+                        if (DateTime.Now > item.Booking_Date.Value.AddDays(getHoliday(2, holidaylist, item.Booking_Date.Value)))//根据Booking Date.录入当天后2个工作日，OTTP没有SO release date记录的
+                        {
+                            if (item.SO_Release_Date == null)
+                            {
+                                item.Status = "Exception";
+                                continue;
+                            }
+                        }
+                    }
+                    int? Carton = 0;
+                    decimal? cbm = 0;
+                    int? Qty = 0;
+                    decimal? Total_Volume = 0;
+                    foreach (var TItem in loadplans.Where(a => a.Purch_Doc == item.Purch_Doc && a.Item == item.Item))
+                    {
+                        Carton += TItem.Carton_delivered;
+                        cbm += item.Delivery_CBM;
+                        Qty += item.Qty_Delivered;
+                    }
+
+                    if (Carton != null || cbm != null || Qty != null)
+                    {
+                        if (item.Total_Volume != null)
+                        {
+                            Total_Volume = item.Total_Volume;
+                        }
+                        if (item.PO_quantity < Qty - Qty * 0.05m || item.PO_quantity > Qty + Qty * 0.05m || item.Total_Carton < Carton - Carton * 0.05m || item.Total_Carton > Carton + Carton * 0.05m || Total_Volume < cbm - cbm * 0.05m || Total_Volume > cbm + cbm * 0.05m)//PO Quantity ，Carton，CBM（允许+/—5% 差异后） 与原PO list数据不一致的
+                        {
+
+                            item.Status = "Exception";
+                            continue;
+                        }
+
+                    }
+                    
+                    item.Status = "Open Order";
+                   
+                }
+                //}
+
+
+
+            }
+
+            return pageresult;
+       
+
+        }
+
+        public static void InsertLog(List<FinalVendorInputLog> loglist)
+        {
+            foreach (FinalVendorInputLog item in loglist)
+            {
+                oc.BllSession.IFinalVendorInputLogBLL.Add(item);
+            }
+        }
+        #endregion
+
+        public static List<R_LoadPlan_DailyReport> GeAllFOBAndDOMDownLoadForIQueryable(string purch_doc, string DateType, DateTime operDateStart, DateTime operDateEnd,
+        string Vendor_Name = "", string Item = "")
+        {
+
+
+
+            List<R_LoadPlan_DailyReport> loadplans;
+
+            if (DateType.Trim() == "First Date")
+            {
+
+                var polist = oc.BllSession.IFinalPoListBLL.GetListBy(a => a.Purch_Doc.Contains(purch_doc) && a.Item.Contains(Item) && a.Mfr_Name1.Contains(Vendor_Name) && a.FOB_First_Date >= operDateStart && a.FOB_First_Date <= operDateEnd);
+
+                var pidlist = polist.Select(a => a.ID).ToList();
+
+                var vendorinputlist = oc.BllSession.IFinalVendorInputBLL.GetListBy(b => pidlist.Contains(b.PID));
+
+
+                var vendoridinputlist = vendorinputlist.Select(a => a.VID).ToList();
+
+
+                var VendorInputTruckinglist = oc.BllSession.IFinalVendorInputTruckingBLL.GetListBy(b => vendoridinputlist.Contains(b.vID));
+
+
+                /////left join 查询 
+                loadplans = (from val1 in polist join val2 in vendorinputlist on val1.ID equals val2.PID join val3 in VendorInputTruckinglist on val2.VID equals val3.vID into val2Grp from grp in val2Grp.DefaultIfEmpty() select new R_LoadPlan_DailyReport { Purch_Doc = val1.Purch_Doc, Item = val1.Item, PO_Line = val2.PO_Line, Booking_No = val2.Booking_No, Total_Volume = val1.Total_Volume, Total_Carton = val1.Total_Carton, FOB_Customer_Name = val1.FOB_Customer_Name, FOB_Customer_PO = val1.FOB_Customer_PO, SalesOrd_STO = val1.SalesOrd_STO, ItemNO = val1.ItemNO, FOB_First_Date = val1.FOB_First_Date, FOB_Cancel_Date = val1.FOB_Cancel_Date, PO_List_Type = val1.PO_List_Type, Inspection_Result = val2.Inspection_Result, Inspection_End_Date = val2.Inspection_End_Date, Booking_Date = val2.Booking_Date, Loading_Date = val2.Loading_Date, Forward_Name = val2.Forward_Name, SO_Release_Date = val2.SO_Release_Date, Loading_Port = val2.Loading_Port, Vessel = val2.Vessel, Voyage = val2.Voyage, Dischaging_Port = val2.Dischaging_Port, ETD = val2.ETD, Shipment_Status = val2.Shipment_Status, FOB_Local_Charges_Settlement = val2.FOB_Local_Charges_Settlement, Container_NO = grp == null ? null : grp.Container_NO, FCR_Bill_Return_Date = val2.FCR_Bill_Return_Date, Certificate_Application_Date = val2.Certificate_Application_Date, Certificate_Return_TO_SMDate = val2.Certificate_Return_TO_SMDate, OpenDate = val2.CY_Open_date, Closing_Date = val2.CY_Closing_Date, Qty_Delivered = val2.Qty_Delivered, Delay_Details = val2.Delay_Details, SI_Cut_Time = val2.SI_Cut_Time, Seal_NO = grp == null ? null : grp.Seal_NO, CTN = grp == null ? null : grp.CTN, TruckingNo = grp == null ? null : grp.Trucking_NO, Arrive_WHS_Date = val2.Arrive_WHS_Date, Arrive_terminal_Date = val2.Arrive_terminal_Date, OTD_Reason_Code = val2.OTD_Reason_Code, Carton_delivered = val2.Carton_delivered, ShipMode = val2.Ship_Mode, Delivery_CBM = val2.Delivery_CBM, Courier_tracking_no = val2.Courier_tracking_no, Vehicle_Type = grp == null ? null : grp.Vehicle_Type, PO_quantity = val1.PO_quantity, CBM = grp == null ? null : grp.CBM, Trucking_Arrive_terminal_Date = grp == null ? null : grp.Trucking_Arrive_terminal_Date, Trucking_Arrive_WHS_Date = grp == null ? null : grp.Trucking_Arrive_WHS_Date, Tid = grp == null ? 0 : grp.tID, Qty = grp == null ? null : grp.Qty }).ToList();
+
+                //loadplans = oc.BllSession.IFinalPoListBLL.GetListBy(aa => aa.Mfr_Name1.Contains(Vendor_Name) && aa.SalesOrd_STO.Contains(Sales_order) && aa.FOB_First_Date >= operDateStart && aa.FOB_First_Date <= operDateEnd).Distinct().ToList();
+                foreach (var item in polist)
+                {
+                    if (loadplans.Where(a => a.Purch_Doc == item.Purch_Doc && a.Item == item.Item).ToList().Count > 0)//去掉相同订单
+                    {
+                        continue;
+                    }
+                    R_LoadPlan_DailyReport daily = new R_LoadPlan_DailyReport();
+                    daily.FOB_Customer_Name = item.FOB_Customer_Name;
+                    daily.Purch_Doc = item.Purch_Doc;
+                    daily.PO_List_Type = item.PO_List_Type;
+                    daily.FOB_Customer_PO = item.FOB_Customer_PO;
+                    daily.SalesOrd_STO = item.SalesOrd_STO;
+                    daily.ItemNO = item.ItemNO;
+                    daily.Item = item.Item;
+                    daily.Booking_Date = item.FOB_Booking_Date;
+                    daily.ShipMode = item.FOB_Ship_MODE;
+                    daily.FOB_First_Date = item.FOB_First_Date;
+                    daily.FOB_Cancel_Date = item.FOB_Cancel_Date;
+                    daily.PO_quantity = item.PO_quantity;
+                    daily.Total_Carton = item.Total_Carton;
+                    daily.Total_Volume = item.Total_Volume;
+                    loadplans.Add(daily);
+                }
+            }
+
+
+            else if (DateType.Trim() == "STO MA Date")
+            {
+
+                var polist = oc.BllSession.IFinalPoListBLL.GetListBy(a => a.Purch_Doc.Contains(purch_doc) && a.Item.Contains(Item) && a.Mfr_Name1.Contains(Vendor_Name) && a.DOM_STO_MA_Date >= operDateStart && a.DOM_STO_MA_Date <= operDateEnd);
+
+                var pidlist = polist.Select(a => a.ID).ToList();
+
+                var vendorinputlist = oc.BllSession.IFinalVendorInputBLL.GetListBy(b => pidlist.Contains(b.PID));
+
+
+                var vendoridinputlist = vendorinputlist.Select(a => a.VID).ToList();
+
+
+                var VendorInputTruckinglist = oc.BllSession.IFinalVendorInputTruckingBLL.GetListBy(b => vendoridinputlist.Contains(b.vID));
+
+
+                /////left join 查询 
+                loadplans = (from val1 in polist join val2 in vendorinputlist on val1.ID equals val2.PID join val3 in VendorInputTruckinglist on val2.VID equals val3.vID into val2Grp from grp in val2Grp.DefaultIfEmpty() select new R_LoadPlan_DailyReport { Purch_Doc = val1.Purch_Doc, Item = val1.Item, PO_Line = val2.PO_Line, Booking_No = val2.Booking_No, FOB_Customer_Name = val1.FOB_Customer_Name, FOB_Customer_PO = val1.FOB_Customer_PO, SalesOrd_STO = val1.SalesOrd_STO, ItemNO = val1.ItemNO, FOB_First_Date = val1.FOB_First_Date, FOB_Cancel_Date = val1.FOB_Cancel_Date, PO_List_Type = val1.PO_List_Type, Inspection_Result = val2.Inspection_Result, Inspection_End_Date = val2.Inspection_End_Date, Booking_Date = val2.Booking_Date, Loading_Date = val2.Loading_Date, Forward_Name = val2.Forward_Name, SO_Release_Date = val2.SO_Release_Date, Loading_Port = val2.Loading_Port, Vessel = val2.Vessel, Voyage = val2.Voyage, Dischaging_Port = val2.Dischaging_Port, ETD = val2.ETD, Shipment_Status = val2.Shipment_Status, FOB_Local_Charges_Settlement = val2.FOB_Local_Charges_Settlement, Container_NO = grp == null ? null : grp.Container_NO, FCR_Bill_Return_Date = val2.FCR_Bill_Return_Date, Certificate_Application_Date = val2.Certificate_Application_Date, Certificate_Return_TO_SMDate = val2.Certificate_Return_TO_SMDate, OpenDate = val2.CY_Open_date, Closing_Date = val2.CY_Closing_Date, Qty_Delivered = val2.Qty_Delivered, Delay_Details = val2.Delay_Details, SI_Cut_Time = val2.SI_Cut_Time, Seal_NO = grp == null ? null : grp.Seal_NO, CTN = grp == null ? null : grp.CTN, TruckingNo = grp == null ? null : grp.Trucking_NO, Arrive_WHS_Date = val2.Arrive_WHS_Date, Arrive_terminal_Date = val2.Arrive_terminal_Date, OTD_Reason_Code = val2.OTD_Reason_Code, Carton_delivered = val2.Carton_delivered, ShipMode = val2.Ship_Mode, Delivery_CBM = val2.Delivery_CBM, Courier_tracking_no = val2.Courier_tracking_no, Vehicle_Type = grp == null ? null : grp.Vehicle_Type, PO_quantity = val1.PO_quantity, CBM = grp == null ? null : grp.CBM, Trucking_Arrive_terminal_Date = grp == null ? null : grp.Trucking_Arrive_terminal_Date, Trucking_Arrive_WHS_Date = grp == null ? null : grp.Trucking_Arrive_WHS_Date, Tid = grp == null ? 0 : grp.tID, DOM_STO_MA_Date = val1.DOM_STO_MA_Date, Total_Carton = val1.Total_Carton, Total_Volume = val1.Total_Volume, Qty = grp == null ? null : grp.Qty, }).ToList();
+                //loadplans = oc.BllSession.IFinalPoListBLL.GetListBy(aa => aa.Mfr_Name1.Contains(Vendor_Name) && aa.SalesOrd_STO.Contains(Sales_order) && aa.FOB_First_Date >= operDateStart && aa.FOB_First_Date <= operDateEnd).Distinct().ToList();
+                foreach (var item in polist)
+                {
+                    if (loadplans.Where(a => a.Purch_Doc == item.Purch_Doc && a.Item == item.Item).ToList().Count > 0)//去掉相同订单
+                    {
+                        continue;
+                    }
+                    R_LoadPlan_DailyReport daily = new R_LoadPlan_DailyReport();
+                    daily.FOB_Customer_Name = item.FOB_Customer_Name;
+                    daily.Purch_Doc = item.Purch_Doc;
+                    daily.PO_List_Type = item.PO_List_Type;
+                    daily.FOB_Customer_PO = item.FOB_Customer_PO;
+                    daily.SalesOrd_STO = item.SalesOrd_STO;
+                    daily.ItemNO = item.ItemNO;
+                    daily.Item = item.Item;
+                    daily.Booking_Date = item.FOB_Booking_Date;
+                    daily.ShipMode = item.FOB_Ship_MODE;
+                    //daily.FOB_First_Date = item.FOB_First_Date;
+                    daily.DOM_STO_MA_Date = item.DOM_STO_MA_Date;
+                    //daily.FOB_Cancel_Date = item.FOB_Cancel_Date;
+                    daily.PO_quantity = item.PO_quantity;
+                    daily.Total_Carton = item.Total_Carton;
+                    daily.Total_Volume = item.Total_Volume;
+                    loadplans.Add(daily);
+                }
+            }
+
+            else
+            {
+
+                var polist = oc.BllSession.IFinalPoListBLL.GetListBy(a => a.Purch_Doc.Contains(purch_doc) && a.Item.Contains(Item) && a.Mfr_Name1.Contains(Vendor_Name) && a.FOB_First_Date >= operDateStart && a.FOB_First_Date <= operDateEnd);
+
+                var pidlist = polist.Select(a => a.ID).ToList();
+
+                var vendorinputlist = oc.BllSession.IFinalVendorInputBLL.GetListBy(b => pidlist.Contains(b.PID));
+
+
+                var vendoridinputlist = vendorinputlist.Select(a => a.VID).ToList();
+
+
+                var VendorInputTruckinglist = oc.BllSession.IFinalVendorInputTruckingBLL.GetListBy(b => vendoridinputlist.Contains(b.vID));
+
+
+                /////left join 查询 
+                loadplans = (from val1 in polist join val2 in vendorinputlist on val1.ID equals val2.PID join val3 in VendorInputTruckinglist on val2.VID equals val3.vID into val2Grp from grp in val2Grp.DefaultIfEmpty() select new R_LoadPlan_DailyReport { Purch_Doc = val1.Purch_Doc, Item = val1.Item, PO_Line = val2.PO_Line, Booking_No = val2.Booking_No, Total_Volume = val1.Total_Volume, Total_Carton = val1.Total_Carton, FOB_Customer_Name = val1.FOB_Customer_Name, FOB_Customer_PO = val1.FOB_Customer_PO, SalesOrd_STO = val1.SalesOrd_STO, ItemNO = val1.ItemNO, FOB_First_Date = val1.FOB_First_Date, FOB_Cancel_Date = val1.FOB_Cancel_Date, PO_List_Type = val1.PO_List_Type, Inspection_Result = val2.Inspection_Result, Inspection_End_Date = val2.Inspection_End_Date, Booking_Date = val2.Booking_Date, Loading_Date = val2.Loading_Date, Forward_Name = val2.Forward_Name, SO_Release_Date = val2.SO_Release_Date, Loading_Port = val2.Loading_Port, Vessel = val2.Vessel, Voyage = val2.Voyage, Dischaging_Port = val2.Dischaging_Port, ETD = val2.ETD, Shipment_Status = val2.Shipment_Status, FOB_Local_Charges_Settlement = val2.FOB_Local_Charges_Settlement, Container_NO = grp == null ? null : grp.Container_NO, FCR_Bill_Return_Date = val2.FCR_Bill_Return_Date, Certificate_Application_Date = val2.Certificate_Application_Date, Certificate_Return_TO_SMDate = val2.Certificate_Return_TO_SMDate, OpenDate = val2.CY_Open_date, Closing_Date = val2.CY_Closing_Date, Qty_Delivered = val2.Qty_Delivered, Delay_Details = val2.Delay_Details, SI_Cut_Time = val2.SI_Cut_Time, Seal_NO = grp == null ? null : grp.Seal_NO, CTN = grp == null ? null : grp.CTN, TruckingNo = grp == null ? null : grp.Trucking_NO, Arrive_WHS_Date = val2.Arrive_WHS_Date, Arrive_terminal_Date = val2.Arrive_terminal_Date, OTD_Reason_Code = val2.OTD_Reason_Code, Carton_delivered = val2.Carton_delivered, ShipMode = val2.Ship_Mode, Delivery_CBM = val2.Delivery_CBM, Courier_tracking_no = val2.Courier_tracking_no, Vehicle_Type = grp == null ? null : grp.Vehicle_Type, PO_quantity = val1.PO_quantity, CBM = grp == null ? null : grp.CBM, Trucking_Arrive_terminal_Date = grp == null ? null : grp.Trucking_Arrive_terminal_Date, Trucking_Arrive_WHS_Date = grp == null ? null : grp.Trucking_Arrive_WHS_Date, Tid = grp == null ? 0 : grp.tID, Qty = grp == null ? null : grp.Qty }).ToList();
+
+                //loadplans = oc.BllSession.IFinalPoListBLL.GetListBy(aa => aa.Mfr_Name1.Contains(Vendor_Name) && aa.SalesOrd_STO.Contains(Sales_order) && aa.FOB_First_Date >= operDateStart && aa.FOB_First_Date <= operDateEnd).Distinct().ToList();
+                foreach (var item in polist)
+                {
+                    if (loadplans.Where(a => a.Purch_Doc == item.Purch_Doc && a.Item == item.Item).ToList().Count > 0)//去掉相同订单
+                    {
+                        continue;
+                    }
+                    R_LoadPlan_DailyReport daily = new R_LoadPlan_DailyReport();
+                    daily.FOB_Customer_Name = item.FOB_Customer_Name;
+                    daily.Purch_Doc = item.Purch_Doc;
+                    daily.PO_List_Type = item.PO_List_Type;
+                    daily.FOB_Customer_PO = item.FOB_Customer_PO;
+                    daily.SalesOrd_STO = item.SalesOrd_STO;
+                    daily.ItemNO = item.ItemNO;
+                    daily.Item = item.Item;
+                    daily.Booking_Date = item.FOB_Booking_Date;
+                    daily.ShipMode = item.FOB_Ship_MODE;
+                    daily.FOB_First_Date = item.FOB_First_Date;
+                    daily.FOB_Cancel_Date = item.FOB_Cancel_Date;
+                    daily.PO_quantity = item.PO_quantity;
+                    daily.Total_Carton = item.Total_Carton;
+                    daily.Total_Volume = item.Total_Volume;
+                    loadplans.Add(daily);
+
+                }
+            }
+            GetConls(loadplans);
+            return loadplans.OrderBy(a => a.FOB_First_Date).ToList();
+
+
+        }
+
+        
+        public static List<R_LoadPlan_DailyReport> GeAllDailyReportForIQueryable(string Customer_name, string DateType, DateTime operDateStart, DateTime operDateEnd,
+           string Purch_Doc = "", string Vendor_Name = "", string Item = "")
+        {
+
+
+
+            List<R_LoadPlan_DailyReport> loadplans;
+            List<R_LoadPlan_DailyReport> loadplanstwo;
+
+            if (DateType.Trim() == "First Date")
+            {
+                //loadplans = oc.BllSession.IFinalPoListBLL.Entities.Where(r => r.FOB_Customer_Name.Contains(Customer_name)).Select(aa=>aa.FinalVendorInputs.)  .IFinalLoadingPlanBLL.Entities.Where(r => r.Customer_Name.Contains(Customer_name) && r.SalesOrd_STO.Contains(Sales_order) && r.Vendor_Name.Contains(Vendor_Name) && r.First_Date >= operDateStart && r.First_Date <= operDateEnd, page, rows, out total, psc).ToList();
+
+
+
+
+
+                var polist = oc.BllSession.IFinalPoListBLL.GetListBy(a => a.FOB_Customer_Name.Contains(Customer_name) && a.Mfr_Name1.Contains(Vendor_Name) && a.Purch_Doc.Contains(Purch_Doc) && a.Item.Contains(Item) && a.FOB_First_Date >= operDateStart && a.FOB_First_Date <= operDateEnd);
+
+                var pidlist = polist.Select(a => a.ID).ToList();
+
+                var pruid = polist.Select(a => a.Purch_Doc).ToList();
+
+
+
+                var vendorinputlist = oc.BllSession.IFinalVendorInputBLL.GetListBy(b => pidlist.Contains(b.PID));
+
+
+                var vendoridinputlist = vendorinputlist.Select(a => a.VID).ToList();
+
+
+                var VendorInputTruckinglist = oc.BllSession.IFinalVendorInputTruckingBLL.GetListBy(b => vendoridinputlist.Contains(b.vID));
+
+                /////left join 查询
+                loadplans = (from val1 in polist join val2 in vendorinputlist on val1.ID equals val2.PID join val3 in VendorInputTruckinglist on val2.VID equals val3.vID into val2Grp from grp in val2Grp.DefaultIfEmpty() select new R_LoadPlan_DailyReport { Purch_Doc = val1.Purch_Doc, Item = val1.Item, PO_Line = val2 == null ? "" : val2.PO_Line, Created_By = val2 == null ? "" : val2.Created_By, Matl_Group = val1.Matl_Group, Matl_Group_Sales = val2 == null ? "" : val2.Matl_Group_Sales, Material = val1.Material, Brand = val1.Brand, Short_text = val1.Short_text, PO_quantity = val1.PO_quantity, Total_Carton = val1.Total_Carton, Matrix = val2 == null ? "" : val2.Matrix, Deliv_Date = val1.Deliv_Date, Slip_Sheet = val2 == null ? "" : val2.Slip_Sheet, Packing_Status = val2 == null ? "" : val2.Packing_Status, Inspection_End_Date = val2 == null ? null : val2.Inspection_End_Date, Inspection_Result = val2 == null ? "" : val2.Inspection_Result, Booking_No = val2 == null ? "" : val2.Booking_No, Loading_Date = val2 == null ? null : val2.Loading_Date, Closing_Date = val2 == null ? null : val2.CFS_Closing_Date, ETD = val2 == null ? null : val2.ETD, Shipment_Status = val2 == null ? "" : val2.Shipment_Status, FOB_Local_Charges_Settlement = val2 == null ? "" : val2.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = val2 == null ? null : val2.FCR_Bill_Return_Date, Certificate_Application_Date = val2 == null ? null : val2.Certificate_Application_Date, Certificate_Return_TO_SMDate = val2 == null ? null : val2.Certificate_Return_TO_SMDate, Qty_Delivered = val2 == null ? 0 : val2.Qty_Delivered, To_be_del = val2 == null ? "" : val2.To_be_del, Sales_Material = val1.Sales_Material, FOB_Customer_PO = val1.FOB_Customer_PO, SalesOrd_STO = val1.SalesOrd_STO, ItemNO = val1.ItemNO, DOM_Domestic_Dest = val1.DOM_Domestic_Dest, FOB_Customer_Name = val1.FOB_Customer_Name, DOM_Route = val1.DOM_Route, Ship_To_Country = val1.Ship_To_Country, ShipTo_Name = val1.ShipTo_Name, Delivery_Number = val1.Delivery_Number, OTD_Reason_Code = val2 == null ? "" : val2.OTD_Reason_Code, Delay_Details = val2 == null ? "" : val2.Delay_Details, FOB_First_Date = val1.FOB_First_Date, FOB_Cancel_Date = val1.FOB_Cancel_Date, FOB_Carton_Volume = val1.FOB_Carton_Volume.ToString(), FOB_Customer_Description = val1.FOB_Customer_Description, FOB_Customer_Material_Number = val1.FOB_Customer_Material_Number, FOB_LOG = val1.FOB_LOG, FOB_MainBatt = val1.FOB_MainBatt, FOB_MainBattQty = val1.FOB_MainBattQty.ToString(), FOB_OverallCredStat = val1.FOB_OverallCredStat, FOB_Proforma_Invoice = val1.FOB_Proforma_Invoice, FOB_Receiving_Point = val1.FOB_Receiving_Point, FOB_Total_NetWeight = val1.FOB_Total_NetWeight.ToString(), DOM_Delivery_Quantity = val1.DOM_Delivery_Quantity.ToString(), DOM_Finaloadingport = val1.DOM_Finaloadingport, DOM_Inbound = val1.DOM_Inbound, DOM_Invoice = val1.DOM_Inbound, DOM_Mfr_City = val1.DOM_Mfr_City, DOM_Qty_Delivered = val1.DOM_Qty_Delivered.ToString(), DOM_Shipment_Number = val1.DOM_Shipment_Number, DOM_Sloc = val1.DOM_Sloc, DOM_StatDelD = val1.DOM_StatDelD, DOM_STO_Delivery_Date = val1.DOM_STO_Delivery_Date, DOM_STO_MA_Date = val1.DOM_STO_MA_Date, DOM_To_Be_Del = val1.DOM_To_Be_Del.ToString(), DOM_Vendor = val1.DOM_Vendor, Carton_Depth_W = val1.Carton_Depth_W.ToString(), Carton_GrossWeight = val1.Carton_GrossWeight.ToString(), Carton_Height = val1.Carton_Height.ToString(), Carton_NetWeight = val1.Carton_NetWeight.ToString(), Carton_PCS = val1.Carton_PCS.ToString(), Carton_Width_L = val1.Carton_Width_L.ToString(), Comments = val1.Comments, Mfr_Country = val1.Mfr_Country, Mfr_Name1 = val1.Mfr_Name1, Total_GrossWeight = val1.Total_GrossWeight.ToString(), Total_Volume = val1.Total_Volume, Vendor_Name = val1.Vendor_Name, Dischaging_Port = val2 == null ? null : val2.Dischaging_Port, Arrive_terminal_Date = val2 == null ? null : val2.Arrive_terminal_Date, Delivery_CBM = val2 == null ? null : val2.Delivery_CBM, Arrive_WHS_Date = val2 == null ? null : val2.Arrive_WHS_Date, Booking_Date = val2 == null ? val1.FOB_Booking_Date : val2.Booking_Date, Carton_delivered = val2 == null ? null : val2.Carton_delivered, Container_NO = grp == null ? null : grp.Container_NO, CY_Closing_Date = val2 == null ? null : val2.CY_Closing_Date, ETA = val2 == null ? null : val2.ETA, Loading_Port = val2 == null ? null : val2.Loading_Port, Seal_NO = grp == null ? null : grp.Seal_NO, SI_Cut_Time = val2 == null ? null : val2.SI_Cut_Time, Vehicle_Type = grp == null ? "" : grp.Vehicle_Type, Vessel = val2 == null ? "" : val2.Vessel, Voyage = val2 == null ? "" : val2.Voyage, CustomerType = val1.PO_List_Type, Mohth = val1.FOB_First_Date == null ? val1.DOM_STO_MA_Date.Value.Month.ToString() : val1.FOB_First_Date.Value.Month.ToString(), Weekly = val1.FOB_First_Date == null ? getWeekNumInMonth((DateTime)val1.DOM_STO_MA_Date).ToString() : getWeekNumInMonth((DateTime)val1.FOB_First_Date).ToString(), TruckingNo = grp == null ? null : grp.Trucking_NO, CTN = grp == null ? null : grp.CTN, ShipMode = val2.FinalPoList.FOB_Ship_MODE, OpenDate = val2.CY_Open_date, CBM = grp == null ? null : grp.CBM, Qty = grp == null ? null : grp.Qty, Trucking_Arrive_terminal_Date = grp == null ? null : grp.Trucking_Arrive_terminal_Date, Trucking_Arrive_WHS_Date = grp == null ? null : grp.Trucking_Arrive_WHS_Date,SO_Release_Date=val2.SO_Release_Date }).ToList();
+
+
+                loadplanstwo = (from val1 in polist join val2 in vendorinputlist on val1.ID equals val2.PID into val2Grp from grp in val2Grp.DefaultIfEmpty() select new R_LoadPlan_DailyReport { Purch_Doc = val1.Purch_Doc, Item = val1.Item, PO_Line = grp == null ? "" : grp.PO_Line, Created_By = grp == null ? "" : grp.Created_By, Matl_Group = val1.Matl_Group, Matl_Group_Sales = grp == null ? "" : grp.Matl_Group_Sales, Material = val1.Material, Brand = val1.Brand, Short_text = val1.Short_text, PO_quantity = val1.PO_quantity, Total_Carton = val1.Total_Carton, Matrix = grp == null ? "" : grp.Matrix, Deliv_Date = val1.Deliv_Date, Slip_Sheet = grp == null ? "" : grp.Slip_Sheet, Packing_Status = grp == null ? "" : grp.Packing_Status, Inspection_End_Date = grp == null ? null : grp.Inspection_End_Date, Inspection_Result = grp == null ? "" : grp.Inspection_Result, Booking_No = grp == null ? "" : grp.Booking_No, Loading_Date = grp == null ? null : grp.Loading_Date, Closing_Date = grp == null ? null : grp.CFS_Closing_Date, ETD = grp == null ? null : grp.ETD, Shipment_Status = grp == null ? "" : grp.Shipment_Status, FOB_Local_Charges_Settlement = grp == null ? "" : grp.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = grp == null ? null : grp.FCR_Bill_Return_Date, Certificate_Application_Date = grp == null ? null : grp.Certificate_Application_Date, Certificate_Return_TO_SMDate = grp == null ? null : grp.Certificate_Return_TO_SMDate, Qty_Delivered = grp == null ? 0 : grp.Qty_Delivered, To_be_del = grp == null ? "" : grp.To_be_del, Sales_Material = val1.Sales_Material, FOB_Customer_PO = val1.FOB_Customer_PO, SalesOrd_STO = val1.SalesOrd_STO, ItemNO = val1.ItemNO, DOM_Domestic_Dest = val1.DOM_Domestic_Dest, FOB_Customer_Name = val1.FOB_Customer_Name, DOM_Route = val1.DOM_Route, Ship_To_Country = val1.Ship_To_Country, ShipTo_Name = val1.ShipTo_Name, Delivery_Number = val1.Delivery_Number, OTD_Reason_Code = grp == null ? "" : grp.OTD_Reason_Code, Delay_Details = grp == null ? "" : grp.Delay_Details, FOB_First_Date = val1.FOB_First_Date, FOB_Cancel_Date = val1.FOB_Cancel_Date, FOB_Carton_Volume = val1.FOB_Carton_Volume.ToString(), FOB_Customer_Description = val1.FOB_Customer_Description, FOB_Customer_Material_Number = val1.FOB_Customer_Material_Number, FOB_LOG = val1.FOB_LOG, FOB_MainBatt = val1.FOB_MainBatt, FOB_MainBattQty = val1.FOB_MainBattQty.ToString(), FOB_OverallCredStat = val1.FOB_OverallCredStat, FOB_Proforma_Invoice = val1.FOB_Proforma_Invoice, FOB_Receiving_Point = val1.FOB_Receiving_Point, FOB_Total_NetWeight = val1.FOB_Total_NetWeight.ToString(), DOM_Delivery_Quantity = val1.DOM_Delivery_Quantity.ToString(), DOM_Finaloadingport = val1.DOM_Finaloadingport, DOM_Inbound = val1.DOM_Inbound, DOM_Invoice = val1.DOM_Inbound, DOM_Mfr_City = val1.DOM_Mfr_City, DOM_Qty_Delivered = val1.DOM_Qty_Delivered.ToString(), DOM_Shipment_Number = val1.DOM_Shipment_Number, DOM_Sloc = val1.DOM_Sloc, DOM_StatDelD = val1.DOM_StatDelD, DOM_STO_Delivery_Date = val1.DOM_STO_Delivery_Date, DOM_STO_MA_Date = val1.DOM_STO_MA_Date, DOM_To_Be_Del = val1.DOM_To_Be_Del.ToString(), DOM_Vendor = val1.DOM_Vendor, Carton_Depth_W = val1.Carton_Depth_W.ToString(), Carton_GrossWeight = val1.Carton_GrossWeight.ToString(), Carton_Height = val1.Carton_Height.ToString(), Carton_NetWeight = val1.Carton_NetWeight.ToString(), Carton_PCS = val1.Carton_PCS.ToString(), Carton_Width_L = val1.Carton_Width_L.ToString(), Comments = val1.Comments, Mfr_Country = val1.Mfr_Country, Mfr_Name1 = val1.Mfr_Name1, Total_GrossWeight = val1.Total_GrossWeight.ToString(), Total_Volume = val1.Total_Volume, Vendor_Name = val1.Vendor_Name, Dischaging_Port = grp == null ? null : grp.Dischaging_Port, Arrive_terminal_Date = grp == null ? null : grp.Arrive_terminal_Date, Delivery_CBM = grp == null ? null : grp.Delivery_CBM, Arrive_WHS_Date = grp == null ? null : grp.Arrive_WHS_Date, Booking_Date = grp == null ? val1.FOB_Booking_Date : grp.Booking_Date, Carton_delivered = grp == null ? null : grp.Carton_delivered, Container_NO = grp == null ? null : grp.Container_NO, CY_Closing_Date = grp == null ? null : grp.CY_Closing_Date, ETA = grp == null ? null : grp.ETA, Loading_Port = grp == null ? null : grp.Loading_Port, Seal_NO = grp == null ? null : grp.Seal_NO, SI_Cut_Time = grp == null ? null : grp.SI_Cut_Time, Vehicle_Type = grp == null ? "" : grp.Vehicle_Type, Vessel = grp == null ? "" : grp.Vessel, Voyage = grp == null ? "" : grp.Voyage, CustomerType = val1.PO_List_Type, Mohth = val1.FOB_First_Date == null ? val1.DOM_STO_MA_Date.Value.Month.ToString() : val1.FOB_First_Date.Value.Month.ToString(), Weekly = val1.FOB_First_Date == null ? getWeekNumInMonth((DateTime)val1.DOM_STO_MA_Date).ToString() : getWeekNumInMonth((DateTime)val1.FOB_First_Date).ToString(), ShipMode = grp == null ? null : grp.FinalPoList.FOB_Ship_MODE, SO_Release_Date = grp == null ? null : grp.SO_Release_Date }).ToList();
+
+                foreach (var item in loadplanstwo)
+                {
+
+                    var loadplanstwoadd = loadplans.Where(a => a.Purch_Doc == item.Purch_Doc && a.Item == item.Item).ToList();
+                    if (loadplanstwoadd.Count <= 0)
+                    {
+                        loadplans.Add(item);
+                    }
+                }
+                //var result = from val1 in polist join val2 in vendorinputlist on val1.ID equals val2.PID into val2Grp from grp in val2Grp.DefaultIfEmpty() select new { Purch_Doc = val1.Purch_Doc, Item = val1.Item, PO_Line = grp == null ? "" : grp.PO_Line, Created_By = grp == null ? "" : grp.Created_By, Matl_Group = val1.Matl_Group, Matl_Group_Sales = grp == null ? "" : grp.Matl_Group_Sales, Material = val1.Material, Brand = val1.Brand, Short_text = val1.Short_text, PO_quantity = val1.PO_quantity, Total_Carton = val1.Total_Carton, Matrix = grp == null ? "" : grp.Matrix, Deliv_Date = val1.Deliv_Date, Slip_Sheet = grp == null ? "" : grp.Slip_Sheet, Packing_Status = grp == null ? "" : grp.Packing_Status, Inspection_End_Date = grp == null ? null : grp.Inspection_End_Date, Inspection_Result = grp == null ? "" : grp.Inspection_Result, Booking_No = grp == null ? "" : grp.Booking_No, Loading_Date = grp == null ? null : grp.Loading_Date, Closing_Date = grp == null ? null : grp.Closing_Date, ETD = grp == null ? null : grp.ETD, Shipment_Status = grp == null ? "" : grp.Shipment_Status, FOB_Local_Charges_Settlement = grp == null ? "" : grp.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = grp == null ? null : grp.FCR_Bill_Return_Date, Certificate_Application_Date = grp == null ? null : grp.Certificate_Application_Date, Certificate_Return_TO_SMDate = grp == null ? null : grp.Certificate_Return_TO_SMDate, Qty_Delivered = grp == null ? 0 : grp.Qty_Delivered, To_be_del = grp == null ? "" : grp.To_be_del, Sales_Material = val1.Sales_Material, FOB_Customer_PO = val1.FOB_Customer_PO, SalesOrd_STO = val1.SalesOrd_STO, ItemNO = val1.ItemNO, DOM_Domestic_Dest = val1.DOM_Domestic_Dest, FOB_Customer_Name = val1.FOB_Customer_Name, DOM_Route = val1.DOM_Route, Ship_To_Country = val1.Ship_To_Country, ShipTo_Name = val1.ShipTo_Name, Delivery_Number = val1.Delivery_Number, OTD_Reason_Code = grp == null ? "" : grp.OTD_Reason_Code, Delay_Details = grp == null ? "" : grp.Delay_Details, FOB_First_Date = val1.FOB_First_Date, FOB_Cancel_Date = val1.FOB_Cancel_Date };
+
+
+
+                //var result = from val1 in polist join val2 in vendorinputlist on val1.ID equals val2.PID into val2Grp from grp in val2Grp.DefaultIfEmpty() select new R_LoadPlan_DailyReport { Purch_Doc = val1.Purch_Doc, Item = val1.Item, PO_Line = grp.PO_Line, Created_By = grp.Created_By, Matl_Group = val1.Matl_Group, Matl_Group_Sales = grp.Matl_Group_Sales, Material = val1.Material, Brand = val1.Brand, Short_text = val1.Short_text, PO_quantity = val1.PO_quantity, Total_Carton = val1.Total_Carton, Matrix = grp.Matrix, Deliv_Date = val1.Deliv_Date, Slip_Sheet = grp.Slip_Sheet, Packing_Status = grp.Packing_Status, Inspection_End_Date = grp.Inspection_End_Date, Inspection_Result = grp.Inspection_Result, Booking_No = grp.Booking_No, Loading_Date = grp.Loading_Date, Closing_Date = grp.Closing_Date, ETD = grp.ETD, Shipment_Status = grp.Shipment_Status, FOB_Local_Charges_Settlement = grp.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = grp.FCR_Bill_Return_Date, Certificate_Application_Date = grp.Certificate_Application_Date, Certificate_Return_TO_SMDate = grp.Certificate_Return_TO_SMDate, Qty_Delivered = grp.Qty_Delivered, To_be_del = grp.To_be_del, Sales_Material = val1.Sales_Material, FOB_Customer_PO = val1.FOB_Customer_PO, SalesOrd_STO = val1.SalesOrd_STO, ItemNO = val1.ItemNO, DOM_Domestic_Dest = val1.DOM_Domestic_Dest, FOB_Customer_Name = val1.FOB_Customer_Name, DOM_Route = val1.DOM_Route, Ship_To_Country = val1.Ship_To_Country, ShipTo_Name = val1.ShipTo_Name, Delivery_Number = val1.Delivery_Number, OTD_Reason_Code = grp.OTD_Reason_Code, Delay_Details = grp.Delay_Details, FOB_First_Date = val1.FOB_First_Date, FOB_Cancel_Date = val1.FOB_Cancel_Date };
+
+
+
+                //loadplans = oc.BllSession.IFinalVendorInputBLL.GetListBy(aa => aa.FinalPoList.FOB_Customer_Name.Contains(Customer_name) && aa.FinalPoList.Mfr_Name1.Contains(Vendor_Name) && aa.FinalPoList.SalesOrd_STO.Contains(Sales_order) && aa.FinalPoList.FOB_First_Date >= operDateStart && aa.FinalPoList.FOB_First_Date <= operDateEnd).Select(dd => new R_LoadPlan_DailyReport { Purch_Doc = dd.FinalPoList.Purch_Doc, Item = dd.FinalPoList.Item, PO_Line = dd.PO_Line, Created_By = dd.Created_By, Matl_Group = dd.FinalPoList.Matl_Group, Matl_Group_Sales = dd.Matl_Group_Sales, Material = dd.FinalPoList.Material, Brand = dd.FinalPoList.Brand, Short_text = dd.FinalPoList.Short_text, PO_quantity = (int)dd.FinalPoList.PO_quantity, Total_Carton = (int)dd.FinalPoList.Total_Carton, Matrix = dd.Matrix, Deliv_Date = dd.FinalPoList.Deliv_Date, Slip_Sheet = dd.Slip_Sheet, Packing_Status = dd.Packing_Status, Inspection_End_Date = dd.Inspection_End_Date, Inspection_Result = dd.Inspection_Result, Booking_No = dd.Booking_No, Loading_Date = dd.Loading_Date, Closing_Date = dd.Closing_Date, ETD = dd.ETD, Shipment_Status = dd.Shipment_Status, FOB_Local_Charges_Settlement = dd.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = dd.FCR_Bill_Return_Date, Certificate_Application_Date = dd.Certificate_Application_Date, Certificate_Return_TO_SMDate = dd.Certificate_Return_TO_SMDate, Qty_Delivered = dd.Qty_Delivered, To_be_del = dd.To_be_del, Sales_Material = dd.FinalPoList.Sales_Material, FOB_Customer_PO = dd.FinalPoList.FOB_Customer_PO, SalesOrd_STO = dd.FinalPoList.SalesOrd_STO, ItemNO = dd.FinalPoList.ItemNO, DOM_Domestic_Dest = dd.FinalPoList.DOM_Domestic_Dest, FOB_Customer_Name = dd.FinalPoList.FOB_Customer_Name, DOM_Route = dd.FinalPoList.DOM_Route, Ship_To_Country = dd.FinalPoList.Ship_To_Country, ShipTo_Name = dd.FinalPoList.ShipTo_Name, Delivery_Number = dd.FinalPoList.Delivery_Number, OTD_Reason_Code = dd.OTD_Reason_Code, Delay_Details = dd.Delay_Details, FOB_First_Date = dd.FinalPoList.FOB_First_Date, FOB_Cancel_Date = dd.FinalPoList.FOB_Cancel_Date }).ToList();
+
+            }
+
+            else if (DateType.Trim() == "Closing Date")
+            {
+                loadplans = oc.BllSession.IFinalVendorInputBLL.GetListBy(aa => aa.FinalPoList.Mfr_Name1.Contains(Vendor_Name) && aa.FinalPoList.Purch_Doc.Contains(Purch_Doc) && aa.FinalPoList.Item.Contains(Item) && aa.CFS_Closing_Date >= operDateStart && aa.CFS_Closing_Date <= operDateEnd).Select(dd => AddRLoadPlan(dd)).ToList();
+
+            }
+
+            else if (DateType.Trim() == "STO MA Date")
+            {
+
+                var polist = oc.BllSession.IFinalPoListBLL.GetListBy(a => a.FOB_Customer_Name.Contains(Customer_name) && a.Mfr_Name1.Contains(Vendor_Name) && a.Purch_Doc.Contains(Purch_Doc) && a.Item.Contains(Item) && a.DOM_STO_MA_Date >= operDateStart && a.DOM_STO_MA_Date <= operDateEnd);
+
+                var pidlist = polist.Select(a => a.ID).ToList();
+
+                var vendorinputlist = oc.BllSession.IFinalVendorInputBLL.GetListBy(b => pidlist.Contains(b.PID));
+
+
+                var vendoridinputlist = vendorinputlist.Select(a => a.VID).ToList();
+
+
+                var VendorInputTruckinglist = oc.BllSession.IFinalVendorInputTruckingBLL.GetListBy(b => vendoridinputlist.Contains(b.vID));
+
+                /////left join 查询
+                loadplans = (from val1 in polist join val2 in vendorinputlist on val1.ID equals val2.PID join val3 in VendorInputTruckinglist on val2.VID equals val3.vID into val2Grp from grp in val2Grp.DefaultIfEmpty() select new R_LoadPlan_DailyReport { Purch_Doc = val1.Purch_Doc, Item = val1.Item, PO_Line = val2 == null ? "" : val2.PO_Line, Created_By = val2 == null ? "" : val2.Created_By, Matl_Group = val1.Matl_Group, Matl_Group_Sales = val2 == null ? "" : val2.Matl_Group_Sales, Material = val1.Material, Brand = val1.Brand, Short_text = val1.Short_text, PO_quantity = val1.PO_quantity, Total_Carton = val1.Total_Carton, Matrix = val2 == null ? "" : val2.Matrix, Deliv_Date = val1.Deliv_Date, Slip_Sheet = val2 == null ? "" : val2.Slip_Sheet, Packing_Status = val2 == null ? "" : val2.Packing_Status, Inspection_End_Date = val2 == null ? null : val2.Inspection_End_Date, Inspection_Result = val2 == null ? "" : val2.Inspection_Result, Booking_No = val2 == null ? "" : val2.Booking_No, Loading_Date = val2 == null ? null : val2.Loading_Date, Closing_Date = val2 == null ? null : val2.CFS_Closing_Date, ETD = val2 == null ? null : val2.ETD, Shipment_Status = val2 == null ? "" : val2.Shipment_Status, FOB_Local_Charges_Settlement = val2 == null ? "" : val2.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = val2 == null ? null : val2.FCR_Bill_Return_Date, Certificate_Application_Date = val2 == null ? null : val2.Certificate_Application_Date, Certificate_Return_TO_SMDate = val2 == null ? null : val2.Certificate_Return_TO_SMDate, Qty_Delivered = val2 == null ? 0 : val2.Qty_Delivered, To_be_del = val2 == null ? "" : val2.To_be_del, Sales_Material = val1.Sales_Material, FOB_Customer_PO = val1.FOB_Customer_PO, SalesOrd_STO = val1.SalesOrd_STO, ItemNO = val1.ItemNO, DOM_Domestic_Dest = val1.DOM_Domestic_Dest, FOB_Customer_Name = val1.FOB_Customer_Name, DOM_Route = val1.DOM_Route, Ship_To_Country = val1.Ship_To_Country, ShipTo_Name = val1.ShipTo_Name, Delivery_Number = val1.Delivery_Number, OTD_Reason_Code = val2 == null ? "" : val2.OTD_Reason_Code, Delay_Details = val2 == null ? "" : val2.Delay_Details, FOB_First_Date = val1.FOB_First_Date, FOB_Cancel_Date = val1.FOB_Cancel_Date, FOB_Carton_Volume = val1.FOB_Carton_Volume.ToString(), FOB_Customer_Description = val1.FOB_Customer_Description, FOB_Customer_Material_Number = val1.FOB_Customer_Material_Number, FOB_LOG = val1.FOB_LOG, FOB_MainBatt = val1.FOB_MainBatt, FOB_MainBattQty = val1.FOB_MainBattQty.ToString(), FOB_OverallCredStat = val1.FOB_OverallCredStat, FOB_Proforma_Invoice = val1.FOB_Proforma_Invoice, FOB_Receiving_Point = val1.FOB_Receiving_Point, FOB_Total_NetWeight = val1.FOB_Total_NetWeight.ToString(), DOM_Delivery_Quantity = val1.DOM_Delivery_Quantity.ToString(), DOM_Finaloadingport = val1.DOM_Finaloadingport, DOM_Inbound = val1.DOM_Inbound, DOM_Invoice = val1.DOM_Inbound, DOM_Mfr_City = val1.DOM_Mfr_City, DOM_Qty_Delivered = val1.DOM_Qty_Delivered.ToString(), DOM_Shipment_Number = val1.DOM_Shipment_Number, DOM_Sloc = val1.DOM_Sloc, DOM_StatDelD = val1.DOM_StatDelD, DOM_STO_Delivery_Date = val1.DOM_STO_Delivery_Date, DOM_STO_MA_Date = val1.DOM_STO_MA_Date, DOM_To_Be_Del = val1.DOM_To_Be_Del.ToString(), DOM_Vendor = val1.DOM_Vendor, Carton_Depth_W = val1.Carton_Depth_W.ToString(), Carton_GrossWeight = val1.Carton_GrossWeight.ToString(), Carton_Height = val1.Carton_Height.ToString(), Carton_NetWeight = val1.Carton_NetWeight.ToString(), Carton_PCS = val1.Carton_PCS.ToString(), Carton_Width_L = val1.Carton_Width_L.ToString(), Comments = val1.Comments, Mfr_Country = val1.Mfr_Country, Mfr_Name1 = val1.Mfr_Name1, Total_GrossWeight = val1.Total_GrossWeight.ToString(), Total_Volume = val1.Total_Volume, Vendor_Name = val1.Vendor_Name, Dischaging_Port = val2 == null ? null : val2.Dischaging_Port, Arrive_terminal_Date = val2 == null ? null : val2.Arrive_terminal_Date, Delivery_CBM = val2 == null ? null : val2.Delivery_CBM, Arrive_WHS_Date = val2 == null ? null : val2.Arrive_WHS_Date, Booking_Date = val2 == null ? val1.FOB_Booking_Date : val2.Booking_Date, Carton_delivered = val2 == null ? null : val2.Carton_delivered, Container_NO = grp == null ? null : grp.Container_NO, CY_Closing_Date = val2 == null ? null : val2.CY_Closing_Date, ETA = val2 == null ? null : val2.ETA, Loading_Port = val2 == null ? null : val2.Loading_Port, Seal_NO = grp == null ? null : grp.Seal_NO, SI_Cut_Time = val2 == null ? null : val2.SI_Cut_Time, Vehicle_Type = grp == null ? "" : grp.Vehicle_Type, Vessel = val2 == null ? "" : val2.Vessel, Voyage = val2 == null ? "" : val2.Voyage, CustomerType = val1.PO_List_Type, Mohth = val1.FOB_First_Date == null ? val1.DOM_STO_MA_Date.Value.Month.ToString() : val1.FOB_First_Date.Value.Month.ToString(), Weekly = val1.FOB_First_Date == null ? getWeekNumInMonth((DateTime)val1.DOM_STO_MA_Date).ToString() : getWeekNumInMonth((DateTime)val1.FOB_First_Date).ToString(), TruckingNo = grp == null ? null : grp.Trucking_NO, CTN = grp == null ? null : grp.CTN, ShipMode = val2.FinalPoList.FOB_Ship_MODE, OpenDate = val2.CY_Open_date, CBM = grp == null ? null : grp.CBM, Qty = grp == null ? null : grp.Qty, Trucking_Arrive_terminal_Date = grp == null ? null : grp.Trucking_Arrive_terminal_Date, Trucking_Arrive_WHS_Date = grp == null ? null : grp.Trucking_Arrive_WHS_Date, SO_Release_Date = val2.SO_Release_Date }).ToList();
+
+
+
+
+                loadplanstwo = (from val1 in polist join val2 in vendorinputlist on val1.ID equals val2.PID into val2Grp from grp in val2Grp.DefaultIfEmpty() select new R_LoadPlan_DailyReport { Purch_Doc = val1.Purch_Doc, Item = val1.Item, PO_Line = grp == null ? "" : grp.PO_Line, Created_By = grp == null ? "" : grp.Created_By, Matl_Group = val1.Matl_Group, Matl_Group_Sales = grp == null ? "" : grp.Matl_Group_Sales, Material = val1.Material, Brand = val1.Brand, Short_text = val1.Short_text, PO_quantity = val1.PO_quantity, Total_Carton = val1.Total_Carton, Matrix = grp == null ? "" : grp.Matrix, Deliv_Date = val1.Deliv_Date, Slip_Sheet = grp == null ? "" : grp.Slip_Sheet, Packing_Status = grp == null ? "" : grp.Packing_Status, Inspection_End_Date = grp == null ? null : grp.Inspection_End_Date, Inspection_Result = grp == null ? "" : grp.Inspection_Result, Booking_No = grp == null ? "" : grp.Booking_No, Loading_Date = grp == null ? null : grp.Loading_Date, Closing_Date = grp == null ? null : grp.CFS_Closing_Date, ETD = grp == null ? null : grp.ETD, Shipment_Status = grp == null ? "" : grp.Shipment_Status, FOB_Local_Charges_Settlement = grp == null ? "" : grp.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = grp == null ? null : grp.FCR_Bill_Return_Date, Certificate_Application_Date = grp == null ? null : grp.Certificate_Application_Date, Certificate_Return_TO_SMDate = grp == null ? null : grp.Certificate_Return_TO_SMDate, Qty_Delivered = grp == null ? 0 : grp.Qty_Delivered, To_be_del = grp == null ? "" : grp.To_be_del, Sales_Material = val1.Sales_Material, FOB_Customer_PO = val1.FOB_Customer_PO, SalesOrd_STO = val1.SalesOrd_STO, ItemNO = val1.ItemNO, DOM_Domestic_Dest = val1.DOM_Domestic_Dest, FOB_Customer_Name = val1.FOB_Customer_Name, DOM_Route = val1.DOM_Route, Ship_To_Country = val1.Ship_To_Country, ShipTo_Name = val1.ShipTo_Name, Delivery_Number = val1.Delivery_Number, OTD_Reason_Code = grp == null ? "" : grp.OTD_Reason_Code, Delay_Details = grp == null ? "" : grp.Delay_Details, FOB_First_Date = val1.FOB_First_Date, FOB_Cancel_Date = val1.FOB_Cancel_Date, FOB_Carton_Volume = val1.FOB_Carton_Volume.ToString(), FOB_Customer_Description = val1.FOB_Customer_Description, FOB_Customer_Material_Number = val1.FOB_Customer_Material_Number, FOB_LOG = val1.FOB_LOG, FOB_MainBatt = val1.FOB_MainBatt, FOB_MainBattQty = val1.FOB_MainBattQty.ToString(), FOB_OverallCredStat = val1.FOB_OverallCredStat, FOB_Proforma_Invoice = val1.FOB_Proforma_Invoice, FOB_Receiving_Point = val1.FOB_Receiving_Point, FOB_Total_NetWeight = val1.FOB_Total_NetWeight.ToString(), DOM_Delivery_Quantity = val1.DOM_Delivery_Quantity.ToString(), DOM_Finaloadingport = val1.DOM_Finaloadingport, DOM_Inbound = val1.DOM_Inbound, DOM_Invoice = val1.DOM_Inbound, DOM_Mfr_City = val1.DOM_Mfr_City, DOM_Qty_Delivered = val1.DOM_Qty_Delivered.ToString(), DOM_Shipment_Number = val1.DOM_Shipment_Number, DOM_Sloc = val1.DOM_Sloc, DOM_StatDelD = val1.DOM_StatDelD, DOM_STO_Delivery_Date = val1.DOM_STO_Delivery_Date, DOM_STO_MA_Date = val1.DOM_STO_MA_Date, DOM_To_Be_Del = val1.DOM_To_Be_Del.ToString(), DOM_Vendor = val1.DOM_Vendor, Carton_Depth_W = val1.Carton_Depth_W.ToString(), Carton_GrossWeight = val1.Carton_GrossWeight.ToString(), Carton_Height = val1.Carton_Height.ToString(), Carton_NetWeight = val1.Carton_NetWeight.ToString(), Carton_PCS = val1.Carton_PCS.ToString(), Carton_Width_L = val1.Carton_Width_L.ToString(), Comments = val1.Comments, Mfr_Country = val1.Mfr_Country, Mfr_Name1 = val1.Mfr_Name1, Total_GrossWeight = val1.Total_GrossWeight.ToString(), Total_Volume = val1.Total_Volume, Vendor_Name = val1.Vendor_Name, Dischaging_Port = grp == null ? null : grp.Dischaging_Port, Arrive_terminal_Date = grp == null ? null : grp.Arrive_terminal_Date, Delivery_CBM = grp == null ? null : grp.Delivery_CBM, Arrive_WHS_Date = grp == null ? null : grp.Arrive_WHS_Date, Booking_Date = grp == null ? val1.FOB_Booking_Date : grp.Booking_Date, Carton_delivered = grp == null ? null : grp.Carton_delivered, Container_NO = grp == null ? null : grp.Container_NO, CY_Closing_Date = grp == null ? null : grp.CY_Closing_Date, ETA = grp == null ? null : grp.ETA, Loading_Port = grp == null ? null : grp.Loading_Port, Seal_NO = grp == null ? null : grp.Seal_NO, SI_Cut_Time = grp == null ? null : grp.SI_Cut_Time, Vehicle_Type = grp == null ? "" : grp.Vehicle_Type, Vessel = grp == null ? "" : grp.Vessel, Voyage = grp == null ? "" : grp.Voyage, CustomerType = val1.PO_List_Type, Mohth = val1.FOB_First_Date == null ? val1.DOM_STO_MA_Date.Value.Month.ToString() : val1.FOB_First_Date.Value.Month.ToString(), Weekly = val1.FOB_First_Date == null ? getWeekNumInMonth((DateTime)val1.DOM_STO_MA_Date).ToString() : getWeekNumInMonth((DateTime)val1.FOB_First_Date).ToString(), ShipMode = grp == null ? null : grp.Ship_Mode, SO_Release_Date = grp == null ? null : grp.SO_Release_Date }).ToList();
+
+                foreach (var item in loadplanstwo)
+                {
+
+                    var loadplanstwoadd = loadplans.Where(a => a.Purch_Doc == item.Purch_Doc && a.Item == item.Item).ToList();
+                    if (loadplanstwoadd.Count <= 0)
+                    {
+                        loadplans.Add(item);
+                    }
+                }
+
+
+            }
+
+            else if (DateType.Trim() == "Cancel Date")
+            {
+                loadplans = oc.BllSession.IFinalVendorInputBLL.GetListBy(aa => aa.FinalPoList.Mfr_Name1.Contains(Vendor_Name) && aa.FinalPoList.Purch_Doc.Contains(Purch_Doc) && aa.FinalPoList.Item.Contains(Item) && aa.FinalPoList.FOB_Cancel_Date >= operDateStart && aa.FinalPoList.FOB_Cancel_Date <= operDateEnd).Select(dd => AddRLoadPlan(dd)).ToList();
+
+            }
+
+            else
+            {
+                loadplans = oc.BllSession.IFinalVendorInputBLL.GetListBy(aa => aa.FinalPoList.Mfr_Name1.Contains(Vendor_Name) && aa.FinalPoList.Purch_Doc.Contains(Purch_Doc) && aa.FinalPoList.Item.Contains(Item) && aa.Loading_Date >= operDateStart && aa.Loading_Date <= operDateEnd).Select(dd => AddRLoadPlan(dd)).ToList();
+
+            }
+
+
+            List<R_LoadPlan_DailyReport> noBookingnoList = loadplans.Where(a => a.Booking_No == "" || a.Booking_No == null).ToList();
+
+            foreach (var s in noBookingnoList)
+            {
+                var lsBooking = oc.BllSession.IFinalLoadingPlanBLL.GetListBy(aa => aa.SalesOrd_STO == s.SalesOrd_STO && aa.ItemNO == s.ItemNO);
+                if (lsBooking.Count > 0 && !string.IsNullOrEmpty(lsBooking[0].BookingNo))
+                {
+                    s.Booking_No = lsBooking[0].BookingNo;
+                    s.Loading_Date = lsBooking[0].Loading_Date;
+                    s.Closing_Date = lsBooking[0].CY_closing;
+                    s.ETD = lsBooking[0].ETD;
+
+                }
+            }
+
+
+            GetConls(loadplans);
+              DateTime update = DateTime.Now.AddDays(-Convert.ToInt32(DateTime.Now.Date.Day - 1)).AddMonths(-1);
+            DateTime firstDateNow = DateTime.Now.AddDays(1 - DateTime.Now.Day).Date;
+            DateTime nextlastDateNow = DateTime.Now.AddDays(1 - DateTime.Now.Day).Date.AddMonths(2).AddSeconds(-1);
+            DateTime lastDateNow = DateTime.Now.AddDays(1 - DateTime.Now.Day).Date.AddMonths(1).AddSeconds(-1);
+            List<FinalLoadPlanHoliday> holidaylist = oc.BllSession.IFinalLoadPlanHolidayBLL.Entities.ToList();
+            foreach (var item in loadplans)
+            {  //Shipped
+                if (item.Trucking_Arrive_terminal_Date != null || item.Trucking_Arrive_WHS_Date != null)//PO item已经完成Actual arrive date in WHS/terminal 记录的
+                {
+
+                    item.Status = "Shipped";
+                    continue;
+                }
+
+                if (item.FOB_First_Date != null)
+                {
+
+                    if (item.FOB_First_Date.Value >= firstDateNow && item.FOB_First_Date.Value <= lastDateNow)
+                    {
+                        if (item.FOB_First_Date.Value.AddDays(-getHoliday(14, holidaylist, item.FOB_First_Date.Value)) < DateTime.Now)//根据First day前14个工作日（不包含 First day当天），此PO ITEM 还没有提供booking NO.记录的
+                        {
+                            if (item.Booking_No == "")
+                            {
+                                item.Status = "Exception";
+                                continue;
+                            }
+                        }
+                    }
+                    if (item.Booking_Date != null)
+                    {
+                        if (DateTime.Now > item.Booking_Date.Value.AddDays(getHoliday(2, holidaylist, item.Booking_Date.Value)))//根据Booking Date.录入当天后2个工作日，OTTP没有SO release date记录的
+                        {
+                            if (item.SO_Release_Date == null)
+                            {
+                                item.Status = "Exception";
+                                continue;
+                            }
+                        }
+                    }
+                    int? Carton = 0;
+                    decimal? cbm = 0;
+                    int? Qty = 0;
+                    decimal? Total_Volume = 0;
+                    foreach (var TItem in loadplans.Where(a => a.Purch_Doc == item.Purch_Doc && a.Item == item.Item))
+                    {
+                        Carton += TItem.Carton_delivered;
+                        cbm += item.Delivery_CBM;
+                        Qty += item.Qty_Delivered;
+                    }
+
+                    if (Carton != 0 || cbm != 0 || Qty != 0)
+                    {
+                        if (item.Total_Volume != null)
+                        {
+                            Total_Volume = item.Total_Volume;
+                        }
+                        if (item.PO_quantity < Qty - Qty * 0.05m || item.PO_quantity > Qty + Qty * 0.05m || item.Total_Carton < Carton - Carton * 0.05m || item.Total_Carton > Carton + Carton * 0.05m || Total_Volume < cbm - cbm * 0.05m || Total_Volume > cbm + cbm * 0.05m)//PO Quantity ，Carton，CBM（允许+/—5% 差异后） 与原PO list数据不一致的
+                        {
+
+                            item.Status = "Exception";
+                            continue;
+                        }
+
+                    }
+
+                  
+
+                    item.Status = "Open Order";
+
+                }
+            }
+            //}
+            return loadplans.OrderBy(a => a.FOB_First_Date).ToList();
+       
+
+        }
+
+        public static dynamic GetMIGOReportByCondition(string Customer_name, string DateType, DateTime operDateStart, DateTime operDateEnd, int page, int rows,
+            string Purch_Doc = "", string Vendor_Name = "", string Item = "", string sort = null, string order = null)
+        {
+            int total = 0;
+            var roles = GeAllMIGOReportForIQueryable(Customer_name, DateType, operDateStart, operDateEnd, out total, page, rows,
+               Purch_Doc, Vendor_Name, Item, sort, order);
+
+            return new DataGrid
+            {
+                total = total,
+                rows = roles,
+                footer = null
+            };
+        }
+
+        public static List<R_LoadPlan_MIGOReport> GeAllMIGOReportForIQueryable(string Customer_name, string DateType, DateTime operDateStart, DateTime operDateEnd, out int total, int page, int rows,
+           string Purch_Doc = "", string Vendor_Name = "", string Item = "", string sort = null, string order = null)
+        {
+
+
+            total = 0;
+            PropertySortCondition<R_LoadPlan_MIGOReport> psc = null;
+            if (sort == null)
+            {
+                if (DateType.Trim() == "First Day")
+                {
+                    psc = new PropertySortCondition<R_LoadPlan_MIGOReport>(r => r.FOB_First_Date);
+                }
+                else if (DateType.Trim() == "Closing Date")
+                {
+                    psc = new PropertySortCondition<R_LoadPlan_MIGOReport>(r => r.Closing_Date);
+
+                }
+                else if (DateType.Trim() == "Booking Day")
+                {
+                    psc = new PropertySortCondition<R_LoadPlan_MIGOReport>(r => r.FOB_Cancel_Date);
+                }
+                else if (DateType.Trim() == "Update GR time")
+                {
+                    psc = new PropertySortCondition<R_LoadPlan_MIGOReport>(r => r.Booking_Date);
+
+                }
+
+                else
+                {
+                    psc = new PropertySortCondition<R_LoadPlan_MIGOReport>(r => r.Loading_Date);
+                }
+            }
+            else
+            {
+                psc = new PropertySortCondition<R_LoadPlan_MIGOReport>(sort, order.Equals("asc") ? ListSortDirection.Ascending : ListSortDirection.Descending);
+            }
+
+            List<R_LoadPlan_MIGOReport> loadplans;
+            List<R_LoadPlan_MIGOReport> pageresult;
+            if (DateType.Trim() == "First Day")
+            {
+                //loadplans = oc.BllSession.IFinalPoListBLL.Entities.Where(r => r.FOB_Customer_Name.Contains(Customer_name)).Select(aa=>aa.FinalVendorInputs.)  .IFinalLoadingPlanBLL.Entities.Where(r => r.Customer_Name.Contains(Customer_name) && r.SalesOrd_STO.Contains(Sales_order) && r.Vendor_Name.Contains(Vendor_Name) && r.First_Date >= operDateStart && r.First_Date <= operDateEnd, page, rows, out total, psc).ToList();
+
+
+                //var truckbookinghead = oc.BllSession.ITruck_Booking_HeadBLL.Entities.Where(r => r.Vdr_Pickup_date >= operDateStart && r.Vdr_Pickup_date < operDateEnd).Join(oc.BllSession.ITruck_VendorBLL.Entities.Where(b => b.Client == "SpinMaster"), e => e.VendorCode, o => o.Vendor_Code, (e, o) => e).ToList();
+
+                //var lTKNo = truckbookinghead.Select(a => a.Booking_Number);
+
+                //var truckbookingDetail = oc.BllSession.ITruck_Booking_DetailBLL.Entities.Where(aa => lTKNo.Contains(aa.Booking_Number) && aa.SO_No.Contains(consol_No) && aa.hfe.Contains(Sales_order));
+
+                //var truckings = (from a in truckbookinghead join b in truckbookingDetail on a.Booking_Number equals b.Booking_Number select new { Consol_no = b.SO_No, Customer_Name = b.Customer_Name, hfe = b.hfe, ItemNO = b.Line, TotalCarton = b.Ctn, TotalGrossWeight = b.GrossWeight, TotalVolume = b.CBM, Leave_factory_time = a.Leave_factory_time, Cont_Date = a.Terminal_Time, Ship_Date = a.Arrive_Whs_time, Arrive_WHS_Date = a.Receipt_Upload_time, Shipment_Type = a.Delivery_Type, Cont_No = a.Cont_NO, Vendor_Name = a.VendorName }).ToList();
+
+
+
+                var polist = oc.BllSession.IFinalPoListBLL.GetListBy(a => a.FOB_Customer_Name.Contains(Customer_name) && a.Mfr_Name1.Contains(Vendor_Name) && a.Purch_Doc.Contains(Purch_Doc) &&a.Item.Contains(Item)&& a.FOB_First_Date >= operDateStart && a.FOB_First_Date <= operDateEnd);
+
+                var pidlist = polist.Select(a => a.ID).ToList();
+
+                var vendorinputlist = oc.BllSession.IFinalVendorInputBLL.GetListBy(b => pidlist.Contains(b.PID));
+
+
+                /////left join 查询 
+                loadplans = (from val1 in polist join val2 in vendorinputlist on val1.ID equals val2.PID into val2Grp from grp in val2Grp.DefaultIfEmpty() select new R_LoadPlan_MIGOReport { Purch_Doc = val1.Purch_Doc, Item = val1.Item, PO_Line = grp == null ? "" : grp.PO_Line, Created_By = grp == null ? "" : grp.Created_By, Matl_Group = val1.Matl_Group, Matl_Group_Sales = grp == null ? "" : grp.Matl_Group_Sales, Material = val1.Material, Brand = val1.Brand, Short_text = val1.Short_text, PO_quantity = val1.PO_quantity, Total_Carton = val1.Total_Carton, Matrix = grp == null ? "" : grp.Matrix, Deliv_Date = val1.Deliv_Date, Slip_Sheet = grp == null ? "" : grp.Slip_Sheet, Packing_Status = grp == null ? "" : grp.Packing_Status, Inspection_End_Date = grp == null ? null : grp.Inspection_End_Date, Inspection_Result = grp == null ? "" : grp.Inspection_Result, Booking_No = grp == null ? "" : grp.Booking_No, Loading_Date = grp == null ? null : grp.Loading_Date, Closing_Date = grp == null ? null : grp.CFS_Closing_Date, ETD = grp == null ? null : grp.ETD, Shipment_Status = grp == null ? "" : grp.Shipment_Status, FOB_Local_Charges_Settlement = grp == null ? "" : grp.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = grp == null ? null : grp.FCR_Bill_Return_Date, Certificate_Application_Date = grp == null ? null : grp.Certificate_Application_Date, Certificate_Return_TO_SMDate = grp == null ? null : grp.Certificate_Return_TO_SMDate, Qty_Delivered = grp == null ? 0 : grp.Qty_Delivered, To_be_del = grp == null ? "" : grp.To_be_del, Sales_Material = val1.Sales_Material, FOB_Customer_PO = val1.FOB_Customer_PO, SalesOrd_STO = val1.SalesOrd_STO, ItemNO = val1.ItemNO, DOM_Domestic_Dest = val1.DOM_Domestic_Dest, FOB_Customer_Name = val1.FOB_Customer_Name, DOM_Route = val1.DOM_Route, Ship_To_Country = val1.Ship_To_Country, ShipTo_Name = val1.ShipTo_Name, Delivery_Number = val1.Delivery_Number, OTD_Reason_Code = grp == null ? "" : grp.OTD_Reason_Code, Delay_Details = grp == null ? "" : grp.Delay_Details, FOB_First_Date = val1.FOB_First_Date, FOB_Cancel_Date = val1.FOB_Cancel_Date, FOB_Carton_Volume = val1.FOB_Carton_Volume.ToString(), FOB_Customer_Description = val1.FOB_Customer_Description, FOB_Customer_Material_Number = val1.FOB_Customer_Material_Number, FOB_LOG = val1.FOB_LOG, FOB_MainBatt = val1.FOB_MainBatt, FOB_MainBattQty = val1.FOB_MainBattQty.ToString(), FOB_OverallCredStat = val1.FOB_OverallCredStat, FOB_Proforma_Invoice = val1.FOB_Proforma_Invoice, FOB_Receiving_Point = val1.FOB_Receiving_Point, FOB_Total_NetWeight = val1.FOB_Total_NetWeight.ToString(), DOM_Delivery_Quantity = val1.DOM_Delivery_Quantity.ToString(), DOM_Finaloadingport = val1.DOM_Finaloadingport, DOM_Inbound = val1.DOM_Inbound, DOM_Invoice = val1.DOM_Inbound, DOM_Mfr_City = val1.DOM_Mfr_City, DOM_Qty_Delivered = val1.DOM_Qty_Delivered.ToString(), DOM_Shipment_Number = val1.DOM_Shipment_Number, DOM_Sloc = val1.DOM_Sloc, DOM_StatDelD = val1.DOM_StatDelD, DOM_STO_Delivery_Date = val1.DOM_STO_Delivery_Date, DOM_STO_MA_Date = val1.DOM_STO_MA_Date, DOM_To_Be_Del = val1.DOM_To_Be_Del.ToString(), DOM_Vendor = val1.DOM_Vendor, Carton_Depth_W = val1.Carton_Depth_W.ToString(), Carton_GrossWeight = val1.Carton_GrossWeight.ToString(), Carton_Height = val1.Carton_Height.ToString(), Carton_NetWeight = val1.Carton_NetWeight.ToString(), Carton_PCS = val1.Carton_PCS.ToString(), Carton_Width_L = val1.Carton_Width_L.ToString(), Comments = val1.Comments, Mfr_Country = val1.Mfr_Country, Mfr_Name1 = val1.Mfr_Name1, Total_GrossWeight = val1.Total_GrossWeight.ToString(), Total_Volume = val1.Total_Volume, Vendor_Name = val1.Vendor_Name, Dischaging_Port = grp == null ? null : grp.Dischaging_Port, Arrive_terminal_Date = grp == null ? null : grp.Arrive_terminal_Date, Delivery_CBM = grp == null ? null : grp.Delivery_CBM, Arrive_WHS_Date = grp == null ? null : grp.Arrive_WHS_Date, Booking_Date = grp == null ? null : grp.Booking_Date, Carton_delivered = grp == null ? null : grp.Carton_delivered, Container_NO = grp == null ? null : grp.Container_NO, CY_Closing_Date = grp == null ? null : grp.CY_Closing_Date, ETA = grp == null ? null : grp.ETA, Loading_Port = grp == null ? null : grp.Loading_Port, Seal_NO = grp == null ? null : grp.Seal_NO, SI_Cut_Time = grp == null ? null : grp.SI_Cut_Time, Vehicle_Type = grp == null ? "" : grp.Vehicle_Type, Vessel = grp == null ? "" : grp.Vessel, Voyage = grp == null ? "" : grp.Voyage, DeliveryNo = val1.Delivery_Number, Booking_date = grp == null ? null : grp.Booking_Date, BookingNo = grp == null ? "" : grp.Booking_No, Cancel_Date = grp == null ? null : grp.FinalPoList.FOB_Cancel_Date, Customer_Name = grp == null ? "" : grp.FinalPoList.FOB_Customer_Name }).ToList();
+
+                //var result = from val1 in polist join val2 in vendorinputlist on val1.ID equals val2.PID into val2Grp from grp in val2Grp.DefaultIfEmpty() select new { Purch_Doc = val1.Purch_Doc, Item = val1.Item, PO_Line = grp == null ? "" : grp.PO_Line, Created_By = grp == null ? "" : grp.Created_By, Matl_Group = val1.Matl_Group, Matl_Group_Sales = grp == null ? "" : grp.Matl_Group_Sales, Material = val1.Material, Brand = val1.Brand, Short_text = val1.Short_text, PO_quantity = val1.PO_quantity, Total_Carton = val1.Total_Carton, Matrix = grp == null ? "" : grp.Matrix, Deliv_Date = val1.Deliv_Date, Slip_Sheet = grp == null ? "" : grp.Slip_Sheet, Packing_Status = grp == null ? "" : grp.Packing_Status, Inspection_End_Date = grp == null ? null : grp.Inspection_End_Date, Inspection_Result = grp == null ? "" : grp.Inspection_Result, Booking_No = grp == null ? "" : grp.Booking_No, Loading_Date = grp == null ? null : grp.Loading_Date, Closing_Date = grp == null ? null : grp.Closing_Date, ETD = grp == null ? null : grp.ETD, Shipment_Status = grp == null ? "" : grp.Shipment_Status, FOB_Local_Charges_Settlement = grp == null ? "" : grp.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = grp == null ? null : grp.FCR_Bill_Return_Date, Certificate_Application_Date = grp == null ? null : grp.Certificate_Application_Date, Certificate_Return_TO_SMDate = grp == null ? null : grp.Certificate_Return_TO_SMDate, Qty_Delivered = grp == null ? 0 : grp.Qty_Delivered, To_be_del = grp == null ? "" : grp.To_be_del, Sales_Material = val1.Sales_Material, FOB_Customer_PO = val1.FOB_Customer_PO, SalesOrd_STO = val1.SalesOrd_STO, ItemNO = val1.ItemNO, DOM_Domestic_Dest = val1.DOM_Domestic_Dest, FOB_Customer_Name = val1.FOB_Customer_Name, DOM_Route = val1.DOM_Route, Ship_To_Country = val1.Ship_To_Country, ShipTo_Name = val1.ShipTo_Name, Delivery_Number = val1.Delivery_Number, OTD_Reason_Code = grp == null ? "" : grp.OTD_Reason_Code, Delay_Details = grp == null ? "" : grp.Delay_Details, FOB_First_Date = val1.FOB_First_Date, FOB_Cancel_Date = val1.FOB_Cancel_Date };
+
+
+
+                //var result = from val1 in polist join val2 in vendorinputlist on val1.ID equals val2.PID into val2Grp from grp in val2Grp.DefaultIfEmpty() select new R_LoadPlan_DailyReport { Purch_Doc = val1.Purch_Doc, Item = val1.Item, PO_Line = grp.PO_Line, Created_By = grp.Created_By, Matl_Group = val1.Matl_Group, Matl_Group_Sales = grp.Matl_Group_Sales, Material = val1.Material, Brand = val1.Brand, Short_text = val1.Short_text, PO_quantity = val1.PO_quantity, Total_Carton = val1.Total_Carton, Matrix = grp.Matrix, Deliv_Date = val1.Deliv_Date, Slip_Sheet = grp.Slip_Sheet, Packing_Status = grp.Packing_Status, Inspection_End_Date = grp.Inspection_End_Date, Inspection_Result = grp.Inspection_Result, Booking_No = grp.Booking_No, Loading_Date = grp.Loading_Date, Closing_Date = grp.Closing_Date, ETD = grp.ETD, Shipment_Status = grp.Shipment_Status, FOB_Local_Charges_Settlement = grp.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = grp.FCR_Bill_Return_Date, Certificate_Application_Date = grp.Certificate_Application_Date, Certificate_Return_TO_SMDate = grp.Certificate_Return_TO_SMDate, Qty_Delivered = grp.Qty_Delivered, To_be_del = grp.To_be_del, Sales_Material = val1.Sales_Material, FOB_Customer_PO = val1.FOB_Customer_PO, SalesOrd_STO = val1.SalesOrd_STO, ItemNO = val1.ItemNO, DOM_Domestic_Dest = val1.DOM_Domestic_Dest, FOB_Customer_Name = val1.FOB_Customer_Name, DOM_Route = val1.DOM_Route, Ship_To_Country = val1.Ship_To_Country, ShipTo_Name = val1.ShipTo_Name, Delivery_Number = val1.Delivery_Number, OTD_Reason_Code = grp.OTD_Reason_Code, Delay_Details = grp.Delay_Details, FOB_First_Date = val1.FOB_First_Date, FOB_Cancel_Date = val1.FOB_Cancel_Date };
+
+
+
+                //loadplans = oc.BllSession.IFinalVendorInputBLL.GetListBy(aa => aa.FinalPoList.FOB_Customer_Name.Contains(Customer_name) && aa.FinalPoList.Mfr_Name1.Contains(Vendor_Name) && aa.FinalPoList.SalesOrd_STO.Contains(Sales_order) && aa.FinalPoList.FOB_First_Date >= operDateStart && aa.FinalPoList.FOB_First_Date <= operDateEnd).Select(dd => new R_LoadPlan_DailyReport { Purch_Doc = dd.FinalPoList.Purch_Doc, Item = dd.FinalPoList.Item, PO_Line = dd.PO_Line, Created_By = dd.Created_By, Matl_Group = dd.FinalPoList.Matl_Group, Matl_Group_Sales = dd.Matl_Group_Sales, Material = dd.FinalPoList.Material, Brand = dd.FinalPoList.Brand, Short_text = dd.FinalPoList.Short_text, PO_quantity = (int)dd.FinalPoList.PO_quantity, Total_Carton = (int)dd.FinalPoList.Total_Carton, Matrix = dd.Matrix, Deliv_Date = dd.FinalPoList.Deliv_Date, Slip_Sheet = dd.Slip_Sheet, Packing_Status = dd.Packing_Status, Inspection_End_Date = dd.Inspection_End_Date, Inspection_Result = dd.Inspection_Result, Booking_No = dd.Booking_No, Loading_Date = dd.Loading_Date, Closing_Date = dd.Closing_Date, ETD = dd.ETD, Shipment_Status = dd.Shipment_Status, FOB_Local_Charges_Settlement = dd.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = dd.FCR_Bill_Return_Date, Certificate_Application_Date = dd.Certificate_Application_Date, Certificate_Return_TO_SMDate = dd.Certificate_Return_TO_SMDate, Qty_Delivered = dd.Qty_Delivered, To_be_del = dd.To_be_del, Sales_Material = dd.FinalPoList.Sales_Material, FOB_Customer_PO = dd.FinalPoList.FOB_Customer_PO, SalesOrd_STO = dd.FinalPoList.SalesOrd_STO, ItemNO = dd.FinalPoList.ItemNO, DOM_Domestic_Dest = dd.FinalPoList.DOM_Domestic_Dest, FOB_Customer_Name = dd.FinalPoList.FOB_Customer_Name, DOM_Route = dd.FinalPoList.DOM_Route, Ship_To_Country = dd.FinalPoList.Ship_To_Country, ShipTo_Name = dd.FinalPoList.ShipTo_Name, Delivery_Number = dd.FinalPoList.Delivery_Number, OTD_Reason_Code = dd.OTD_Reason_Code, Delay_Details = dd.Delay_Details, FOB_First_Date = dd.FinalPoList.FOB_First_Date, FOB_Cancel_Date = dd.FinalPoList.FOB_Cancel_Date }).ToList();
+
+                total = loadplans.Count();
+                pageresult = loadplans.Skip((page - 1) * rows).Take(rows).ToList();
+            }
+
+            else if (DateType.Trim() == "Closing Date")
+            {
+                loadplans = oc.BllSession.IFinalVendorInputBLL.GetListBy(aa => aa.FinalPoList.Mfr_Name1.Contains(Vendor_Name) && aa.FinalPoList.Purch_Doc.Contains(Purch_Doc) && aa.FinalPoList.Item.Contains(Item) && aa.CFS_Closing_Date >= operDateStart && aa.CFS_Closing_Date <= operDateEnd).Select(dd => new R_LoadPlan_MIGOReport() { Purch_Doc = dd.FinalPoList.Purch_Doc, SalesOrd_STO = dd.FinalPoList.SalesOrd_STO, ItemNO = dd.FinalPoList.ItemNO, Item = dd.FinalPoList.Item, CY_Closing_Date = dd.CY_Closing_Date, PO_quantity = dd.FinalPoList.PO_quantity, DeliveryNo = dd.FinalPoList.Delivery_Number }).ToList();
+
+                total = loadplans.Count;
+                pageresult = loadplans.Skip((page - 1) * rows).Take(rows).ToList();
+
+            }
+            else if (DateType.Trim() == "Booking Day")
+            {
+                loadplans = oc.BllSession.IFinalVendorInputBLL.GetListBy(aa => aa.FinalPoList.Mfr_Name1.Contains(Vendor_Name) && aa.FinalPoList.Purch_Doc.Contains(Purch_Doc) && aa.FinalPoList.Item.Contains(Item) && aa.Booking_Date >= operDateStart && aa.Booking_Date <= operDateEnd).Select(dd => new R_LoadPlan_MIGOReport() { Purch_Doc = dd.FinalPoList.Purch_Doc, SalesOrd_STO = dd.FinalPoList.SalesOrd_STO, ItemNO = dd.FinalPoList.ItemNO, Item = dd.FinalPoList.Item, CY_Closing_Date = dd.CY_Closing_Date, PO_quantity = dd.FinalPoList.PO_quantity, DeliveryNo = dd.FinalPoList.Delivery_Number }).ToList();
+
+                total = loadplans.Count;
+                pageresult = loadplans.Skip((page - 1) * rows).Take(rows).ToList();
+            }
+            else if (DateType.Trim() == "Update GR time")
+            {
+
+
+                operDateEnd = operDateEnd.AddDays(1);
+                var loadingPlan = oc.BllSession.IFinalLoadingPlanBLL.GetListBy(a => a.Update_GR_time >= operDateStart && a.Update_GR_time < operDateEnd && a.Consol_no.Contains("LS"));//a.Consol_no.Contains("LS") &&
+                var polist = new List<R_LoadPlan_MIGOReport>();
+
+                foreach (var item in loadingPlan)
+                {
+                    polist.AddRange(oc.BllSession.IFinalPoListBLL.GetListBy(a => a.SalesOrd_STO == item.SalesOrd_STO && a.ItemNO == item.ItemNO).Select(dd => new R_LoadPlan_MIGOReport { Purch_Doc = dd.Purch_Doc, Item = dd.Item, Matl_Group = dd.Matl_Group, Material = dd.Material, Brand = dd.Brand, Short_text = dd.Short_text, PO_quantity = dd.PO_quantity, Total_Carton = dd.Total_Carton, Deliv_Date = dd.Deliv_Date, Sales_Material = dd.Sales_Material, FOB_Customer_PO = dd.FOB_Customer_PO, SalesOrd_STO = dd.SalesOrd_STO, ItemNO = dd.ItemNO, DOM_Domestic_Dest = dd.DOM_Domestic_Dest, FOB_Customer_Name = dd.FOB_Customer_Name, DOM_Route = dd.DOM_Route, Ship_To_Country = dd.Ship_To_Country, ShipTo_Name = dd.ShipTo_Name, Delivery_Number = dd.Delivery_Number, FOB_First_Date = dd.FOB_First_Date, FOB_Cancel_Date = dd.FOB_Cancel_Date, FOB_Carton_Volume = dd.FOB_Carton_Volume.ToString(), FOB_Customer_Description = dd.FOB_Customer_Description, FOB_Customer_Material_Number = dd.FOB_Customer_Material_Number, FOB_LOG = dd.FOB_LOG, FOB_MainBatt = dd.FOB_MainBatt, FOB_MainBattQty = dd.FOB_MainBattQty.ToString(), FOB_OverallCredStat = dd.FOB_OverallCredStat, FOB_Proforma_Invoice = dd.FOB_Proforma_Invoice, FOB_Receiving_Point = dd.FOB_Receiving_Point, FOB_Total_NetWeight = dd.FOB_Total_NetWeight.ToString(), DOM_Delivery_Quantity = dd.DOM_Delivery_Quantity.ToString(), DOM_Finaloadingport = dd.DOM_Finaloadingport, DOM_Inbound = dd.DOM_Inbound, DOM_Invoice = dd.DOM_Inbound, DOM_Mfr_City = dd.DOM_Mfr_City, DOM_Qty_Delivered = dd.DOM_Qty_Delivered.ToString(), DOM_Shipment_Number = dd.DOM_Shipment_Number, DOM_Sloc = dd.DOM_Sloc, DOM_StatDelD = dd.DOM_StatDelD, DOM_STO_Delivery_Date = dd.DOM_STO_Delivery_Date, DOM_STO_MA_Date = dd.DOM_STO_MA_Date, DOM_To_Be_Del = dd.DOM_To_Be_Del.ToString(), DOM_Vendor = dd.DOM_Vendor, Carton_Depth_W = dd.Carton_Depth_W.ToString(), Carton_GrossWeight = dd.Carton_GrossWeight.ToString(), Carton_Height = dd.Carton_Height.ToString(), Carton_NetWeight = dd.Carton_NetWeight.ToString(), Carton_PCS = dd.Carton_PCS.ToString(), Carton_Width_L = dd.Carton_Width_L.ToString(), Comments = dd.Comments, Mfr_Country = dd.Mfr_Country, Mfr_Name1 = dd.Mfr_Name1, Total_GrossWeight = dd.Total_GrossWeight.ToString(), Total_Volume = dd.Total_Volume, Vendor_Name = dd.Vendor_Name, CustomerPO = dd.FOB_Customer_PO, CustomerMaterialNumber = dd.FOB_Customer_Material_Number, SalesMaterial = dd.Sales_Material, TotalCarton = dd.Total_Carton, TotalGrossWeight = dd.Total_GrossWeight, TotalVolume = dd.Total_Volume, Ship_mode = dd.FOB_Ship_MODE, DeliveryNo = dd.Delivery_Number, Customer_Name = dd.FOB_Customer_Name, Cancel_Date = dd.FOB_Cancel_Date, Booking_Date = dd.FOB_Booking_Date }).ToList());
+
+                }
+                var vendorinputlist = oc.BllSession.IFinalVendorInputBLL.GetListBy(a => a.FinalPoList.Mfr_Name1.Contains(Vendor_Name) && a.FinalPoList.Purch_Doc.Contains(Purch_Doc) && a.FinalPoList.Item.Contains(Item) && a.Update_GR_time >= operDateStart && a.Update_GR_time < operDateEnd);
+
+                var vendorinputlists = vendorinputlist.Select(a => a.VID).ToList();
+
+
+                var VendorInputTruckinglist = oc.BllSession.IFinalVendorInputTruckingBLL.GetListBy(b => vendorinputlists.Contains(b.vID));
+
+                loadplans = (from val1 in vendorinputlist join val2 in VendorInputTruckinglist on val1.VID equals val2.vID into val2Grp from grp in val2Grp.DefaultIfEmpty() select new R_LoadPlan_MIGOReport { Purch_Doc = val1.FinalPoList.Purch_Doc, Item = val1.FinalPoList.Item, PO_Line = val1 == null ? "" : val1.PO_Line, Created_By = val1 == null ? "" : val1.Created_By, Matl_Group = val1.FinalPoList.Matl_Group, Matl_Group_Sales = val1 == null ? "" : val1.Matl_Group_Sales, Material = val1.FinalPoList.Material, Brand = val1.FinalPoList.Brand, Short_text = val1.FinalPoList.Short_text, PO_quantity = val1.FinalPoList.PO_quantity, Total_Carton = val1.FinalPoList.Total_Carton, Matrix = val1 == null ? "" : val1.Matrix, Deliv_Date = val1.FinalPoList.Deliv_Date, Slip_Sheet = val1 == null ? "" : val1.Slip_Sheet, Packing_Status = val1 == null ? "" : val1.Packing_Status, Inspection_End_Date = val1 == null ? null : val1.Inspection_End_Date, Inspection_Result = val1 == null ? "" : val1.Inspection_Result, Booking_No = val1 == null ? "" : val1.Booking_No, Loading_Date = val1 == null ? null : val1.Loading_Date, Closing_Date = val1 == null ? null : val1.CFS_Closing_Date, ETD = val1 == null ? null : val1.ETD, Shipment_Status = val1 == null ? "" : val1.Shipment_Status, FOB_Local_Charges_Settlement = val1 == null ? "" : val1.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = val1 == null ? null : val1.FCR_Bill_Return_Date, Certificate_Application_Date = val1 == null ? null : val1.Certificate_Application_Date, Certificate_Return_TO_SMDate = val1 == null ? null : val1.Certificate_Return_TO_SMDate, Qty_Delivered = val1 == null ? 0 : val1.Qty_Delivered, To_be_del = val1 == null ? "" : val1.To_be_del, Sales_Material = val1.FinalPoList.Sales_Material, FOB_Customer_PO = val1.FinalPoList.FOB_Customer_PO, SalesOrd_STO = val1.FinalPoList.SalesOrd_STO, ItemNO = val1.FinalPoList.ItemNO, DOM_Domestic_Dest = val1.FinalPoList.DOM_Domestic_Dest, FOB_Customer_Name = val1.FinalPoList.FOB_Customer_Name, DOM_Route = val1.FinalPoList.DOM_Route, Ship_To_Country = val1.FinalPoList.Ship_To_Country, ShipTo_Name = val1.FinalPoList.ShipTo_Name, Delivery_Number = val1.FinalPoList.Delivery_Number, OTD_Reason_Code = val1 == null ? "" : val1.OTD_Reason_Code, Delay_Details = val1 == null ? "" : val1.Delay_Details, FOB_First_Date = val1.FinalPoList.FOB_First_Date, FOB_Cancel_Date = val1.FinalPoList.FOB_Cancel_Date, FOB_Carton_Volume = val1.FinalPoList.FOB_Carton_Volume.ToString(), FOB_Customer_Description = val1.FinalPoList.FOB_Customer_Description, FOB_Customer_Material_Number = val1.FinalPoList.FOB_Customer_Material_Number, FOB_LOG = val1.FinalPoList.FOB_LOG, FOB_MainBatt = val1.FinalPoList.FOB_MainBatt, FOB_MainBattQty = val1.FinalPoList.FOB_MainBattQty.ToString(), FOB_OverallCredStat = val1.FinalPoList.FOB_OverallCredStat, FOB_Proforma_Invoice = val1.FinalPoList.FOB_Proforma_Invoice, FOB_Receiving_Point = val1.FinalPoList.FOB_Receiving_Point, FOB_Total_NetWeight = val1.FinalPoList.FOB_Total_NetWeight.ToString(), DOM_Delivery_Quantity = val1.FinalPoList.DOM_Delivery_Quantity.ToString(), DOM_Finaloadingport = val1.FinalPoList.DOM_Finaloadingport, DOM_Inbound = val1.FinalPoList.DOM_Inbound, DOM_Invoice = val1.FinalPoList.DOM_Inbound, DOM_Mfr_City = val1.FinalPoList.DOM_Mfr_City, DOM_Qty_Delivered = val1.FinalPoList.DOM_Qty_Delivered.ToString(), DOM_Shipment_Number = val1.FinalPoList.DOM_Shipment_Number, DOM_Sloc = val1.FinalPoList.DOM_Sloc, DOM_StatDelD = val1.FinalPoList.DOM_StatDelD, DOM_STO_Delivery_Date = val1.FinalPoList.DOM_STO_Delivery_Date, DOM_STO_MA_Date = val1.FinalPoList.DOM_STO_MA_Date, DOM_To_Be_Del = val1.FinalPoList.DOM_To_Be_Del.ToString(), DOM_Vendor = val1.FinalPoList.DOM_Vendor, Carton_Depth_W = val1.FinalPoList.Carton_Depth_W.ToString(), Carton_GrossWeight = val1.FinalPoList.Carton_GrossWeight.ToString(), Carton_Height = val1.FinalPoList.Carton_Height.ToString(), Carton_NetWeight = val1.FinalPoList.Carton_NetWeight.ToString(), Carton_PCS = val1.FinalPoList.Carton_PCS.ToString(), Carton_Width_L = val1.FinalPoList.Carton_Width_L.ToString(), Comments = val1.FinalPoList.Comments, Mfr_Country = val1.FinalPoList.Mfr_Country, Mfr_Name1 = val1.FinalPoList.Mfr_Name1, Total_GrossWeight = val1.FinalPoList.Total_GrossWeight.ToString(), Total_Volume = val1.FinalPoList.Total_Volume, Vendor_Name = val1.FinalPoList.Vendor_Name, Dischaging_Port = val1 == null ? null : val1.Dischaging_Port, Arrive_terminal_Date = grp == null ? null : grp.Trucking_Arrive_terminal_Date, Delivery_CBM = grp == null ? null : grp.Qty, Arrive_WHS_Date = grp == null ? null : grp.Trucking_Arrive_WHS_Date, Booking_Date = val1 == null ? null : val1.Booking_Date, Carton_delivered = grp == null ? null : grp.Qty, Container_NO = grp == null ? null : grp.Container_NO, ETA = val1 == null ? null : val1.ETA, Loading_Port = val1 == null ? null : val1.Loading_Port, Seal_NO = val1 == null ? null : val1.Seal_NO, SI_Cut_Time = val1 == null ? null : val1.SI_Cut_Time, Vehicle_Type = val1 == null ? "" : val1.Vehicle_Type, Vessel = val1 == null ? "" : val1.Vessel, Voyage = val1 == null ? "" : val1.Voyage, DeliveryNo = val1.FinalPoList.Delivery_Number, Booking_date = val1 == null ? null : val1.Booking_Date, BookingNo = val1 == null ? "" : val1.Booking_No, Cancel_Date = val1 == null ? null : val1.FinalPoList.FOB_Cancel_Date, Customer_Name = val1 == null ? "" : val1.FinalPoList.FOB_Customer_Name, OpenDate = val1.CY_Open_date, CY_Closing_Date = val1.CY_Closing_Date, Trucking_Arrive_WHS_Date = grp == null ? null : grp.Trucking_Arrive_WHS_Date, Trucking_Arrive_terminal_Date = grp == null ? null : grp.Trucking_Arrive_terminal_Date, CTN = grp == null ? null : grp.CTN, CustomerPO = val1.FinalPoList.FOB_Customer_PO, CustomerMaterialNumber = val1.FinalPoList.FOB_Customer_Material_Number, SalesMaterial = val1.FinalPoList.Sales_Material, TotalCarton = val1.FinalPoList.Total_Carton, TotalGrossWeight = val1.FinalPoList.Total_GrossWeight, TotalVolume = val1.FinalPoList.Total_Volume, Ship_mode = val1.FinalPoList.FOB_Ship_MODE, CY_open = val1.CY_Open_date, CY_closing = val1.CY_Closing_Date, Unloading_Port = val1.Dischaging_Port }).ToList();//
+                foreach (var item in polist)
+                {
+                    if (loadplans.Where(a => a.SalesOrd_STO == item.SalesOrd_STO && a.ItemNO == item.ItemNO).ToList().Count <= 0)
+                    {
+                        loadplans.Add(item);
+                    }
+
+                }
+                /////left join 查询
+
+                total = loadplans.Count;
+                pageresult = loadplans.Skip((page - 1) * rows).Take(rows).ToList();
+
+            }
+            //else if (DateType.Trim() == "Closing Date")
+            //{
+            //    loadplans = oc.BllSession.IFinalVendorInputBLL.GetListBy(aa => aa.FinalPoList.Mfr_Name1.Contains(Vendor_Name) && aa.FinalPoList.SalesOrd_STO.Contains(Sales_order) && aa.CFS_Closing_Date >= operDateStart && aa.CFS_Closing_Date <= operDateEnd).Select(dd => AddRLoadPlan(dd)).ToList();
+
+            //    total = loadplans.Count;
+            //    pageresult = loadplans.Skip((page - 1) * rows).Take(rows).ToList();
+            //}
+
+            //else if (DateType.Trim() == "STO MA Date")
+            //{
+            //    loadplans = oc.BllSession.IFinalVendorInputBLL.GetListBy(aa => aa.FinalPoList.Mfr_Name1.Contains(Vendor_Name) && aa.FinalPoList.SalesOrd_STO.Contains(Sales_order) && aa.FinalPoList.DOM_STO_MA_Date >= operDateStart && aa.FinalPoList.DOM_STO_MA_Date <= operDateEnd).Select(dd => AddRLoadPlan(dd)).ToList();
+
+            //    total = loadplans.Count;
+            //    pageresult = loadplans.Skip((page - 1) * rows).Take(rows).ToList();
+            //}
+
+            //else if (DateType.Trim() == "Cancel Day")
+            //{
+            //    loadplans = oc.BllSession.IFinalVendorInputBLL.GetListBy(aa => aa.FinalPoList.Mfr_Name1.Contains(Vendor_Name) && aa.FinalPoList.SalesOrd_STO.Contains(Sales_order) && aa.FinalPoList.FOB_Cancel_Date >= operDateStart && aa.FinalPoList.FOB_Cancel_Date <= operDateEnd).Select(dd => AddRLoadPlan(dd)).ToList();
+
+            //    total = loadplans.Count;
+            //    pageresult = loadplans.Skip((page - 1) * rows).Take(rows).ToList();
+            //}
+
+            else
+            {
+                loadplans = oc.BllSession.IFinalVendorInputBLL.GetListBy(aa => aa.FinalPoList.Mfr_Name1.Contains(Vendor_Name) && aa.FinalPoList.Purch_Doc.Contains(Purch_Doc) && aa.Loading_Date >= operDateStart && aa.Loading_Date <= operDateEnd).Select(dd => new R_LoadPlan_MIGOReport() { Purch_Doc = dd.FinalPoList.Purch_Doc, SalesOrd_STO = dd.FinalPoList.SalesOrd_STO, ItemNO = dd.FinalPoList.ItemNO, Item = dd.FinalPoList.Item, CY_Closing_Date = dd.CY_Closing_Date, PO_quantity = dd.FinalPoList.PO_quantity, DeliveryNo = dd.FinalPoList.Delivery_Number }).ToList();
+
+                total = loadplans.Count;
+                pageresult = loadplans.Skip((page - 1) * rows).Take(rows).ToList();
+            }
+
+            List<R_LoadPlan_MIGOReport> noBookingnoList = pageresult.Where(a => a.Booking_No == "" || a.Booking_No == null).ToList();
+
+            foreach (var s in noBookingnoList)
+            {
+                var lsBooking = oc.BllSession.IFinalLoadingPlanBLL.GetListBy(aa => aa.SalesOrd_STO == s.SalesOrd_STO && aa.ItemNO == s.ItemNO);
+                if (lsBooking.Count > 0 && !string.IsNullOrEmpty(lsBooking[0].BookingNo))
+                {
+                    s.Booking_No = lsBooking[0].BookingNo;
+                    s.Loading_Date = lsBooking[0].Loading_Date;
+                    s.Closing_Date = lsBooking[0].CY_closing;
+                    s.ETD = lsBooking[0].ETD;
+
+                }
+            }
+            
+
+            return pageresult;
+       
+
+
+        }
+
+
+        public static List<R_LoadPlan_MIGOReport> GeAllMIGOReportForIQueryable(string Customer_name, string DateType, DateTime operDateStart, DateTime operDateEnd,
+           string Purch_Doc = "", string Vendor_Name = "", string Item = "")
+        {
+
+
+
+            List<R_LoadPlan_MIGOReport> loadplans;
+            List<R_LoadPlan_MIGOReport> Removelplans=new List<R_LoadPlan_MIGOReport>();
+            if (DateType.Trim() == "First Day") 
+            {
+                //loadplans = oc.BllSession.IFinalPoListBLL.Entities.Where(r => r.FOB_Customer_Name.Contains(Customer_name)).Select(aa=>aa.FinalVendorInputs.)  .IFinalLoadingPlanBLL.Entities.Where(r => r.Customer_Name.Contains(Customer_name) && r.SalesOrd_STO.Contains(Sales_order) && r.Vendor_Name.Contains(Vendor_Name) && r.First_Date >= operDateStart && r.First_Date <= operDateEnd, page, rows, out total, psc).ToList();
+
+
+                //var truckbookinghead = oc.BllSession.ITruck_Booking_HeadBLL.Entities.Where(r => r.Vdr_Pickup_date >= operDateStart && r.Vdr_Pickup_date < operDateEnd).Join(oc.BllSession.ITruck_VendorBLL.Entities.Where(b => b.Client == "SpinMaster"), e => e.VendorCode, o => o.Vendor_Code, (e, o) => e).ToList();
+
+                //var lTKNo = truckbookinghead.Select(a => a.Booking_Number);
+
+                //var truckbookingDetail = oc.BllSession.ITruck_Booking_DetailBLL.Entities.Where(aa => lTKNo.Contains(aa.Booking_Number) && aa.SO_No.Contains(consol_No) && aa.hfe.Contains(Sales_order));
+
+                //var truckings = (from a in truckbookinghead join b in truckbookingDetail on a.Booking_Number equals b.Booking_Number select new { Consol_no = b.SO_No, Customer_Name = b.Customer_Name, hfe = b.hfe, ItemNO = b.Line, TotalCarton = b.Ctn, TotalGrossWeight = b.GrossWeight, TotalVolume = b.CBM, Leave_factory_time = a.Leave_factory_time, Cont_Date = a.Terminal_Time, Ship_Date = a.Arrive_Whs_time, Arrive_WHS_Date = a.Receipt_Upload_time, Shipment_Type = a.Delivery_Type, Cont_No = a.Cont_NO, Vendor_Name = a.VendorName }).ToList();
+
+
+
+
+
+                var polist = oc.BllSession.IFinalPoListBLL.GetListBy(a => a.FOB_Customer_Name.Contains(Customer_name) && a.Mfr_Name1.Contains(Vendor_Name) && a.Purch_Doc.Contains(Purch_Doc) && a.Item.Contains(Item) && a.FOB_First_Date >= operDateStart && a.FOB_First_Date < operDateEnd);
+
+                var pidlist = polist.Select(a => a.ID).ToList();
+
+                var vendorinputlist = oc.BllSession.IFinalVendorInputBLL.GetListBy(b => pidlist.Contains(b.PID));
+                /////left join 查询 
+                loadplans = (from val1 in polist join val2 in vendorinputlist on val1.ID equals val2.PID into val2Grp from grp in val2Grp.DefaultIfEmpty() select new R_LoadPlan_MIGOReport { Purch_Doc = val1.Purch_Doc, Item = val1.Item, PO_Line = grp == null ? "" : grp.PO_Line, Created_By = grp == null ? "" : grp.Created_By, Matl_Group = val1.Matl_Group, Matl_Group_Sales = grp == null ? "" : grp.Matl_Group_Sales, Material = val1.Material, Brand = val1.Brand, Short_text = val1.Short_text, PO_quantity = val1.PO_quantity, Total_Carton = val1.Total_Carton, Matrix = grp == null ? "" : grp.Matrix, Deliv_Date = val1.Deliv_Date, Slip_Sheet = grp == null ? "" : grp.Slip_Sheet, Packing_Status = grp == null ? "" : grp.Packing_Status, Inspection_End_Date = grp == null ? null : grp.Inspection_End_Date, Inspection_Result = grp == null ? "" : grp.Inspection_Result, Booking_No = grp == null ? "" : grp.Booking_No, Loading_Date = grp == null ? null : grp.Loading_Date, Closing_Date = grp == null ? null : grp.CFS_Closing_Date, ETD = grp == null ? null : grp.ETD, Shipment_Status = grp == null ? "" : grp.Shipment_Status, FOB_Local_Charges_Settlement = grp == null ? "" : grp.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = grp == null ? null : grp.FCR_Bill_Return_Date, Certificate_Application_Date = grp == null ? null : grp.Certificate_Application_Date, Certificate_Return_TO_SMDate = grp == null ? null : grp.Certificate_Return_TO_SMDate, Qty_Delivered = grp == null ? 0 : grp.Qty_Delivered, To_be_del = grp == null ? "" : grp.To_be_del, Sales_Material = val1.Sales_Material, FOB_Customer_PO = val1.FOB_Customer_PO, SalesOrd_STO = val1.SalesOrd_STO, ItemNO = val1.ItemNO, DOM_Domestic_Dest = val1.DOM_Domestic_Dest, FOB_Customer_Name = val1.FOB_Customer_Name, DOM_Route = val1.DOM_Route, Ship_To_Country = val1.Ship_To_Country, ShipTo_Name = val1.ShipTo_Name, Delivery_Number = val1.Delivery_Number, OTD_Reason_Code = grp == null ? "" : grp.OTD_Reason_Code, Delay_Details = grp == null ? "" : grp.Delay_Details, FOB_First_Date = val1.FOB_First_Date, FOB_Cancel_Date = val1.FOB_Cancel_Date, FOB_Carton_Volume = val1.FOB_Carton_Volume.ToString(), FOB_Customer_Description = val1.FOB_Customer_Description, FOB_Customer_Material_Number = val1.FOB_Customer_Material_Number, FOB_LOG = val1.FOB_LOG, FOB_MainBatt = val1.FOB_MainBatt, FOB_MainBattQty = val1.FOB_MainBattQty.ToString(), FOB_OverallCredStat = val1.FOB_OverallCredStat, FOB_Proforma_Invoice = val1.FOB_Proforma_Invoice, FOB_Receiving_Point = val1.FOB_Receiving_Point, FOB_Total_NetWeight = val1.FOB_Total_NetWeight.ToString(), DOM_Delivery_Quantity = val1.DOM_Delivery_Quantity.ToString(), DOM_Finaloadingport = val1.DOM_Finaloadingport, DOM_Inbound = val1.DOM_Inbound, DOM_Invoice = val1.DOM_Inbound, DOM_Mfr_City = val1.DOM_Mfr_City, DOM_Qty_Delivered = val1.DOM_Qty_Delivered.ToString(), DOM_Shipment_Number = val1.DOM_Shipment_Number, DOM_Sloc = val1.DOM_Sloc, DOM_StatDelD = val1.DOM_StatDelD, DOM_STO_Delivery_Date = val1.DOM_STO_Delivery_Date, DOM_STO_MA_Date = val1.DOM_STO_MA_Date, DOM_To_Be_Del = val1.DOM_To_Be_Del.ToString(), DOM_Vendor = val1.DOM_Vendor, Carton_Depth_W = val1.Carton_Depth_W.ToString(), Carton_GrossWeight = val1.Carton_GrossWeight.ToString(), Carton_Height = val1.Carton_Height.ToString(), Carton_NetWeight = val1.Carton_NetWeight.ToString(), Carton_PCS = val1.Carton_PCS.ToString(), Carton_Width_L = val1.Carton_Width_L.ToString(), Comments = val1.Comments, Mfr_Country = val1.Mfr_Country, Mfr_Name1 = val1.Mfr_Name1, Total_GrossWeight = val1.Total_GrossWeight.ToString(), Total_Volume = val1.Total_Volume, Vendor_Name = val1.Vendor_Name, Dischaging_Port = grp == null ? null : grp.Dischaging_Port, Arrive_terminal_Date = grp == null ? null : grp.Arrive_terminal_Date, Delivery_CBM = grp == null ? null : grp.Delivery_CBM, Arrive_WHS_Date = grp == null ? null : grp.Arrive_WHS_Date, Booking_Date = grp == null ? null : grp.Booking_Date, Carton_delivered = grp == null ? null : grp.Carton_delivered, Container_NO = grp == null ? null : grp.Container_NO, CY_Closing_Date = grp == null ? null : grp.CY_Closing_Date, ETA = grp == null ? null : grp.ETA, Loading_Port = grp == null ? null : grp.Loading_Port, Seal_NO = grp == null ? null : grp.Seal_NO, SI_Cut_Time = grp == null ? null : grp.SI_Cut_Time, Vehicle_Type = grp == null ? "" : grp.Vehicle_Type, Vessel = grp == null ? "" : grp.Vessel, Voyage = grp == null ? "" : grp.Voyage, DeliveryNo = val1.Delivery_Number, Booking_date = grp == null ? null : grp.Booking_Date, BookingNo = grp == null ? "" : grp.Booking_No, Cancel_Date = grp == null ? null : grp.FinalPoList.FOB_Cancel_Date, Customer_Name = grp == null ? "" : grp.FinalPoList.FOB_Customer_Name, TotalVolume = val1.Total_Volume, TotalCarton = val1.Total_Carton, TotalGrossWeight = val1.Total_GrossWeight, CustomerPO = val1.FOB_Customer_PO, First_Date = val1.FOB_First_Date, CustomerMaterialNumber = val1.FOB_Customer_Material_Number, SalesMaterial = val1.Sales_Material, Ship_mode = val1.FOB_Ship_MODE, SO_release_date = grp == null ? null : grp.SO_Release_Date, Cust_SI = grp == null ? null : grp.SI_Cut_Time, CY_open = grp == null ? null : grp.CY_Open_date, CY_closing = grp == null ? null : grp.CY_Closing_Date, Unloading_Port = grp == null ? null : grp.Dischaging_Port, Destination = grp == null ? null : grp.FinalPoList.FOB_Customer_Description, FCR_Date = grp == null ? null : grp.FCR_Bill_Return_Date, Courier_tracking_no = grp == null ? null : grp.Courier_tracking_no, Ship_Date = grp == null ? null : grp.Arrive_WHS_Date, Cont_Date = grp == null ? null : grp.Arrive_terminal_Date }).ToList();
+                foreach (var item in loadplans)
+                {
+
+                    foreach (var item2 in oc.BllSession.IFinalLoadingPlanBLL.GetListBy(a => a.ItemNO == item.ItemNO && a.SalesOrd_STO == item.SalesOrd_STO && a.Mfr_Name1 == Vendor_Name))
+                    { 
+                        if (item2.Consol_no.StartsWith("LS"))
+                        {
+                            item.Consol_no = item2.Consol_no;
+                        }
+                    }
+                }
+
+            }
+
+            else if (DateType.Trim() == "Closing Date")
+            {
+                loadplans = oc.BllSession.IFinalVendorInputBLL.GetListBy(aa => aa.FinalPoList.Mfr_Name1.Contains(Vendor_Name) && aa.FinalPoList.Purch_Doc.Contains(Purch_Doc) && aa.FinalPoList.Item.Contains(Item) && aa.CFS_Closing_Date >= operDateStart && aa.CFS_Closing_Date <= operDateEnd).Select(dd => new R_LoadPlan_MIGOReport() { Purch_Doc = dd.FinalPoList.Purch_Doc, SalesOrd_STO = dd.FinalPoList.SalesOrd_STO, ItemNO = dd.FinalPoList.ItemNO, Item = dd.FinalPoList.Item, CY_Closing_Date = dd.CY_Closing_Date, PO_quantity = dd.FinalPoList.PO_quantity, DeliveryNo = dd.FinalPoList.Delivery_Number, PO_Line = dd.PO_Line, Created_By = dd.Created_By, Matl_Group = dd.FinalPoList.Matl_Group, Matl_Group_Sales = dd.Matl_Group_Sales, Material = dd.FinalPoList.Material, Brand = dd.FinalPoList.Brand, Short_text = dd.FinalPoList.Short_text, Total_Carton = (int)dd.FinalPoList.Total_Carton, Matrix = dd.Matrix, Deliv_Date = dd.FinalPoList.Deliv_Date, Slip_Sheet = dd.Slip_Sheet, Packing_Status = dd.Packing_Status, Inspection_End_Date = dd.Inspection_End_Date, Inspection_Result = dd.Inspection_Result, Booking_No = dd.Booking_No, Loading_Date = dd.Loading_Date, Closing_Date = dd.CFS_Closing_Date, ETD = dd.ETD, Shipment_Status = dd.Shipment_Status, FOB_Local_Charges_Settlement = dd.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = dd.FCR_Bill_Return_Date, Certificate_Application_Date = dd.Certificate_Application_Date, Certificate_Return_TO_SMDate = dd.Certificate_Return_TO_SMDate, Qty_Delivered = dd.Qty_Delivered, To_be_del = dd.To_be_del, Sales_Material = dd.FinalPoList.Sales_Material, FOB_Customer_PO = dd.FinalPoList.FOB_Customer_PO, DOM_Domestic_Dest = dd.FinalPoList.DOM_Domestic_Dest, FOB_Customer_Name = dd.FinalPoList.FOB_Customer_Name, DOM_Route = dd.FinalPoList.DOM_Route, Ship_To_Country = dd.FinalPoList.Ship_To_Country, ShipTo_Name = dd.FinalPoList.ShipTo_Name, Delivery_Number = dd.FinalPoList.Delivery_Number, OTD_Reason_Code = dd.OTD_Reason_Code, Delay_Details = dd.Delay_Details, FOB_First_Date = dd.FinalPoList.FOB_First_Date, FOB_Cancel_Date = dd.FinalPoList.FOB_Cancel_Date, FOB_Carton_Volume = dd.FinalPoList.FOB_Carton_Volume.ToString(), FOB_Customer_Description = dd.FinalPoList.FOB_Customer_Description, FOB_Customer_Material_Number = dd.FinalPoList.FOB_Customer_Material_Number, FOB_LOG = dd.FinalPoList.FOB_LOG, FOB_MainBatt = dd.FinalPoList.FOB_MainBatt, FOB_MainBattQty = dd.FinalPoList.FOB_MainBattQty.ToString(), FOB_OverallCredStat = dd.FinalPoList.FOB_OverallCredStat, FOB_Proforma_Invoice = dd.FinalPoList.FOB_Proforma_Invoice, FOB_Receiving_Point = dd.FinalPoList.FOB_Receiving_Point, FOB_Total_NetWeight = dd.FinalPoList.FOB_Total_NetWeight.ToString(), DOM_Delivery_Quantity = dd.FinalPoList.DOM_Delivery_Quantity.ToString(), DOM_Finaloadingport = dd.FinalPoList.DOM_Finaloadingport, DOM_Inbound = dd.FinalPoList.DOM_Inbound, DOM_Invoice = dd.FinalPoList.DOM_Inbound, DOM_Mfr_City = dd.FinalPoList.DOM_Mfr_City, DOM_Qty_Delivered = dd.FinalPoList.DOM_Qty_Delivered.ToString(), DOM_Shipment_Number = dd.FinalPoList.DOM_Shipment_Number, DOM_Sloc = dd.FinalPoList.DOM_Sloc, DOM_StatDelD = dd.FinalPoList.DOM_StatDelD, DOM_STO_Delivery_Date = dd.FinalPoList.DOM_STO_Delivery_Date, DOM_STO_MA_Date = dd.FinalPoList.DOM_STO_MA_Date, DOM_To_Be_Del = dd.FinalPoList.DOM_To_Be_Del.ToString(), DOM_Vendor = dd.FinalPoList.DOM_Vendor, Carton_Depth_W = dd.FinalPoList.Carton_Depth_W.ToString(), Carton_GrossWeight = dd.FinalPoList.Carton_GrossWeight.ToString(), Carton_Height = dd.FinalPoList.Carton_Height.ToString(), Carton_NetWeight = dd.FinalPoList.Carton_NetWeight.ToString(), Carton_PCS = dd.FinalPoList.Carton_PCS.ToString(), Carton_Width_L = dd.FinalPoList.Carton_Width_L.ToString(), Comments = dd.FinalPoList.Comments, Mfr_Country = dd.FinalPoList.Mfr_Country, Mfr_Name1 = dd.FinalPoList.Mfr_Name1, Total_GrossWeight = dd.FinalPoList.Total_GrossWeight.ToString(), Total_Volume = dd.FinalPoList.Total_Volume, Vendor_Name = dd.FinalPoList.Vendor_Name, Dischaging_Port = dd.Dischaging_Port, Arrive_terminal_Date = dd.Arrive_terminal_Date, Delivery_CBM = dd.Delivery_CBM, Arrive_WHS_Date = dd.Arrive_WHS_Date, Booking_Date = dd.Booking_Date, Carton_delivered = dd.Carton_delivered, Container_NO = dd.Container_NO, ETA = dd.ETA, Loading_Port = dd.Loading_Port, Seal_NO = dd.Seal_NO, SI_Cut_Time = dd.SI_Cut_Time, Vehicle_Type = dd.Vehicle_Type, Vessel = dd.Vessel, Voyage = dd.Voyage, TotalGrossWeight = dd.FinalPoList.Total_GrossWeight, TotalCarton = dd.FinalPoList.Total_Carton, TotalVolume = dd.FinalPoList.Total_Volume, CustomerMaterialNumber = dd.FinalPoList.FOB_Customer_Material_Number, SalesMaterial = dd.FinalPoList.Sales_Material, Ship_mode = dd.FinalPoList.FOB_Ship_MODE, BookingNo = dd.Booking_No, Booking_date = dd.Booking_Date, CY_open = dd.CY_Open_date, CY_closing = dd.CY_Closing_Date, Unloading_Port = dd.Dischaging_Port, Destination = dd.Dischaging_Port, SO_release_date = dd.SO_Release_Date, Cont_Date = dd.Arrive_terminal_Date, Cust_SI = dd.SI_Cut_Time, Courier_tracking_no = dd.Courier_tracking_no }).ToList();
+                foreach (var item in loadplans)
+                {
+
+                    foreach (var item2 in oc.BllSession.IFinalLoadingPlanBLL.GetListBy(a => a.ItemNO == item.ItemNO && a.SalesOrd_STO == item.SalesOrd_STO && a.Mfr_Name1 == Vendor_Name))
+                    {
+                        if (item2.Consol_no.StartsWith("LS"))
+                        {
+                            item.Consol_no = item2.Consol_no;
+                        }
+                    }
+                }
+
+            }
+            else if (DateType.Trim() == "Booking Day")
+            {
+
+                loadplans = oc.BllSession.IFinalVendorInputBLL.GetListBy(aa => aa.FinalPoList.Mfr_Name1.Contains(Vendor_Name) && aa.FinalPoList.Purch_Doc.Contains(Purch_Doc) && aa.FinalPoList.Item.Contains(Item) && aa.Booking_Date >= operDateStart && aa.Booking_Date <= operDateEnd).Select(dd => new R_LoadPlan_MIGOReport() { Purch_Doc = dd.FinalPoList.Purch_Doc, SalesOrd_STO = dd.FinalPoList.SalesOrd_STO, ItemNO = dd.FinalPoList.ItemNO, Item = dd.FinalPoList.Item, CY_Closing_Date = dd.CY_Closing_Date, PO_quantity = dd.FinalPoList.PO_quantity, DeliveryNo = dd.FinalPoList.Delivery_Number, PO_Line = dd.PO_Line, Created_By = dd.Created_By, Matl_Group = dd.FinalPoList.Matl_Group, Matl_Group_Sales = dd.Matl_Group_Sales, Material = dd.FinalPoList.Material, Brand = dd.FinalPoList.Brand, Short_text = dd.FinalPoList.Short_text, Total_Carton = (int)dd.FinalPoList.Total_Carton, Matrix = dd.Matrix, Deliv_Date = dd.FinalPoList.Deliv_Date, Slip_Sheet = dd.Slip_Sheet, Packing_Status = dd.Packing_Status, Inspection_End_Date = dd.Inspection_End_Date, Inspection_Result = dd.Inspection_Result, Booking_No = dd.Booking_No, Loading_Date = dd.Loading_Date, Closing_Date = dd.CFS_Closing_Date, ETD = dd.ETD, Shipment_Status = dd.Shipment_Status, FOB_Local_Charges_Settlement = dd.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = dd.FCR_Bill_Return_Date, Certificate_Application_Date = dd.Certificate_Application_Date, Certificate_Return_TO_SMDate = dd.Certificate_Return_TO_SMDate, Qty_Delivered = dd.Qty_Delivered, To_be_del = dd.To_be_del, Sales_Material = dd.FinalPoList.Sales_Material, FOB_Customer_PO = dd.FinalPoList.FOB_Customer_PO, DOM_Domestic_Dest = dd.FinalPoList.DOM_Domestic_Dest, FOB_Customer_Name = dd.FinalPoList.FOB_Customer_Name, DOM_Route = dd.FinalPoList.DOM_Route, Ship_To_Country = dd.FinalPoList.Ship_To_Country, ShipTo_Name = dd.FinalPoList.ShipTo_Name, Delivery_Number = dd.FinalPoList.Delivery_Number, OTD_Reason_Code = dd.OTD_Reason_Code, Delay_Details = dd.Delay_Details, FOB_First_Date = dd.FinalPoList.FOB_First_Date, FOB_Cancel_Date = dd.FinalPoList.FOB_Cancel_Date, FOB_Carton_Volume = dd.FinalPoList.FOB_Carton_Volume.ToString(), FOB_Customer_Description = dd.FinalPoList.FOB_Customer_Description, FOB_Customer_Material_Number = dd.FinalPoList.FOB_Customer_Material_Number, FOB_LOG = dd.FinalPoList.FOB_LOG, FOB_MainBatt = dd.FinalPoList.FOB_MainBatt, FOB_MainBattQty = dd.FinalPoList.FOB_MainBattQty.ToString(), FOB_OverallCredStat = dd.FinalPoList.FOB_OverallCredStat, FOB_Proforma_Invoice = dd.FinalPoList.FOB_Proforma_Invoice, FOB_Receiving_Point = dd.FinalPoList.FOB_Receiving_Point, FOB_Total_NetWeight = dd.FinalPoList.FOB_Total_NetWeight.ToString(), DOM_Delivery_Quantity = dd.FinalPoList.DOM_Delivery_Quantity.ToString(), DOM_Finaloadingport = dd.FinalPoList.DOM_Finaloadingport, DOM_Inbound = dd.FinalPoList.DOM_Inbound, DOM_Invoice = dd.FinalPoList.DOM_Inbound, DOM_Mfr_City = dd.FinalPoList.DOM_Mfr_City, DOM_Qty_Delivered = dd.FinalPoList.DOM_Qty_Delivered.ToString(), DOM_Shipment_Number = dd.FinalPoList.DOM_Shipment_Number, DOM_Sloc = dd.FinalPoList.DOM_Sloc, DOM_StatDelD = dd.FinalPoList.DOM_StatDelD, DOM_STO_Delivery_Date = dd.FinalPoList.DOM_STO_Delivery_Date, DOM_STO_MA_Date = dd.FinalPoList.DOM_STO_MA_Date, DOM_To_Be_Del = dd.FinalPoList.DOM_To_Be_Del.ToString(), DOM_Vendor = dd.FinalPoList.DOM_Vendor, Carton_Depth_W = dd.FinalPoList.Carton_Depth_W.ToString(), Carton_GrossWeight = dd.FinalPoList.Carton_GrossWeight.ToString(), Carton_Height = dd.FinalPoList.Carton_Height.ToString(), Carton_NetWeight = dd.FinalPoList.Carton_NetWeight.ToString(), Carton_PCS = dd.FinalPoList.Carton_PCS.ToString(), Carton_Width_L = dd.FinalPoList.Carton_Width_L.ToString(), Comments = dd.FinalPoList.Comments, Mfr_Country = dd.FinalPoList.Mfr_Country, Mfr_Name1 = dd.FinalPoList.Mfr_Name1, Total_GrossWeight = dd.FinalPoList.Total_GrossWeight.ToString(), Total_Volume = dd.FinalPoList.Total_Volume, Vendor_Name = dd.FinalPoList.Vendor_Name, Dischaging_Port = dd.Dischaging_Port, Arrive_terminal_Date = dd.Arrive_terminal_Date, Delivery_CBM = dd.Delivery_CBM, Arrive_WHS_Date = dd.Arrive_WHS_Date, Booking_Date = dd.Booking_Date, Carton_delivered = dd.Carton_delivered, Container_NO = dd.Container_NO, ETA = dd.ETA, Loading_Port = dd.Loading_Port, Seal_NO = dd.Seal_NO, SI_Cut_Time = dd.SI_Cut_Time, Vehicle_Type = dd.Vehicle_Type, Vessel = dd.Vessel, Voyage = dd.Voyage, TotalGrossWeight = dd.FinalPoList.Total_GrossWeight, TotalCarton = dd.FinalPoList.Total_Carton, TotalVolume = dd.FinalPoList.Total_Volume, CustomerMaterialNumber = dd.FinalPoList.FOB_Customer_Material_Number, SalesMaterial = dd.FinalPoList.Sales_Material, Ship_mode = dd.FinalPoList.FOB_Ship_MODE, BookingNo = dd.Booking_No, Booking_date = dd.Booking_Date, CY_open = dd.CY_Open_date, CY_closing = dd.CY_Closing_Date, Unloading_Port = dd.Dischaging_Port, Destination = dd.Dischaging_Port, SO_release_date = dd.SO_Release_Date, Cont_Date = dd.Arrive_terminal_Date, Cust_SI = dd.SI_Cut_Time, Courier_tracking_no = dd.Courier_tracking_no }).ToList();
+                foreach (var item in loadplans)
+                {
+
+                    foreach (var item2 in oc.BllSession.IFinalLoadingPlanBLL.GetListBy(a => a.ItemNO == item.ItemNO && a.SalesOrd_STO == item.SalesOrd_STO && a.Mfr_Name1 == Vendor_Name))
+                    {
+                        if (item2.Consol_no.StartsWith("LS"))
+                        {
+                            item.Consol_no = item2.Consol_no;
+                        }
+                    }
+                }
+            }
+            else if (DateType.Trim() == "Update GR time")
+            {
+                //loadplans = oc.BllSession.IFinalVendorInputBLL.GetListBy(aa => aa.FinalPoList.Mfr_Name1.Contains(Vendor_Name) && aa.FinalPoList.SalesOrd_STO.Contains(Sales_order) && aa.FinalPoList.Booking_Date >= operDateStart && aa.Booking_Date <= operDateEnd).Select(dd => new R_LoadPlan_MIGOReport() { Purch_Doc = dd.FinalPoList.Purch_Doc, SalesOrd_STO = dd.FinalPoList.SalesOrd_STO, ItemNO = dd.FinalPoList.ItemNO, Item = dd.FinalPoList.Item, CY_Closing_Date = dd.CY_Closing_Date, PO_quantity = dd.FinalPoList.PO_quantity, DeliveryNo = dd.FinalPoList.Delivery_Number }).ToList();
+
+                operDateEnd = operDateEnd.AddDays(1);
+                var loadingPlan = oc.BllSession.IFinalLoadingPlanBLL.GetListBy(a => a.Update_GR_time >= operDateStart && a.Update_GR_time < operDateEnd && a.Consol_no.Contains("LS"));//a.Consol_no.Contains("LS") && // consl 单子
+                var polist = new List<R_LoadPlan_MIGOReport>();
+                var loadplansADD = new List<R_LoadPlan_MIGOReport>();
+                foreach (var item in loadingPlan)
+                {
+                    polist.AddRange(oc.BllSession.IFinalPoListBLL.GetListBy(a => a.SalesOrd_STO == item.SalesOrd_STO && a.ItemNO == item.ItemNO&&a.Purch_Doc.Contains(Purch_Doc)&&a.Item.Contains(Item)).Select(dd => new R_LoadPlan_MIGOReport { Purch_Doc = dd.Purch_Doc, Item = dd.Item, Matl_Group = dd.Matl_Group, Material = dd.Material, Brand = dd.Brand, Short_text = dd.Short_text, PO_quantity = dd.PO_quantity, Total_Carton = dd.Total_Carton, Deliv_Date = dd.Deliv_Date, Sales_Material = dd.Sales_Material, FOB_Customer_PO = dd.FOB_Customer_PO, SalesOrd_STO = dd.SalesOrd_STO, ItemNO = dd.ItemNO, DOM_Domestic_Dest = dd.DOM_Domestic_Dest, FOB_Customer_Name = dd.FOB_Customer_Name, DOM_Route = dd.DOM_Route, Ship_To_Country = dd.Ship_To_Country, ShipTo_Name = dd.ShipTo_Name, Delivery_Number = dd.Delivery_Number, FOB_First_Date = dd.FOB_First_Date, FOB_Cancel_Date = dd.FOB_Cancel_Date, FOB_Carton_Volume = dd.FOB_Carton_Volume.ToString(), FOB_Customer_Description = dd.FOB_Customer_Description, FOB_Customer_Material_Number = dd.FOB_Customer_Material_Number, FOB_LOG = dd.FOB_LOG, FOB_MainBatt = dd.FOB_MainBatt, FOB_MainBattQty = dd.FOB_MainBattQty.ToString(), FOB_OverallCredStat = dd.FOB_OverallCredStat, FOB_Proforma_Invoice = dd.FOB_Proforma_Invoice, FOB_Receiving_Point = dd.FOB_Receiving_Point, FOB_Total_NetWeight = dd.FOB_Total_NetWeight.ToString(), DOM_Delivery_Quantity = dd.DOM_Delivery_Quantity.ToString(), DOM_Finaloadingport = dd.DOM_Finaloadingport, DOM_Inbound = dd.DOM_Inbound, DOM_Invoice = dd.DOM_Inbound, DOM_Mfr_City = dd.DOM_Mfr_City, DOM_Qty_Delivered = dd.DOM_Qty_Delivered.ToString(), DOM_Shipment_Number = dd.DOM_Shipment_Number, DOM_Sloc = dd.DOM_Sloc, DOM_StatDelD = dd.DOM_StatDelD, DOM_STO_Delivery_Date = dd.DOM_STO_Delivery_Date, DOM_STO_MA_Date = dd.DOM_STO_MA_Date, DOM_To_Be_Del = dd.DOM_To_Be_Del.ToString(), DOM_Vendor = dd.DOM_Vendor, Carton_Depth_W = dd.Carton_Depth_W.ToString(), Carton_GrossWeight = dd.Carton_GrossWeight.ToString(), Carton_Height = dd.Carton_Height.ToString(), Carton_NetWeight = dd.Carton_NetWeight.ToString(), Carton_PCS = dd.Carton_PCS.ToString(), Carton_Width_L = dd.Carton_Width_L.ToString(), Comments = dd.Comments, Mfr_Country = dd.Mfr_Country, Mfr_Name1 = dd.Mfr_Name1, Total_GrossWeight = dd.Total_GrossWeight.ToString(), Total_Volume = dd.Total_Volume, Vendor_Name = dd.Vendor_Name, CustomerPO = dd.FOB_Customer_PO, CustomerMaterialNumber = dd.FOB_Customer_Material_Number, SalesMaterial = dd.Sales_Material, TotalCarton = dd.Total_Carton, TotalGrossWeight = dd.Total_GrossWeight, TotalVolume = dd.Total_Volume, Ship_mode = dd.FOB_Ship_MODE, DeliveryNo = dd.Delivery_Number, Customer_Name = dd.FOB_Customer_Name, Cancel_Date = dd.FOB_Cancel_Date, Booking_Date = dd.FOB_Booking_Date, Gr_Time = item.Update_GR_time, Consol_no = item.Consol_no }).ToList());
+
+                }
+
+
+                //工厂录入单
+                var VendorInputTruckinglist = oc.BllSession.IFinalVendorInputTruckingBLL.GetListBy(b => b.FinalVendorInput.FinalPoList.Mfr_Name1.Contains(Vendor_Name) && b.FinalVendorInput.FinalPoList.Purch_Doc.Contains(Purch_Doc) && b.FinalVendorInput.FinalPoList.Item.Contains(Item) && b.Update_GR_time >= operDateStart && b.Update_GR_time < operDateEnd);
+
+                var vendorinputlists = VendorInputTruckinglist.Select(a => a.vID).ToList();
+
+                var vendorinputlist = oc.BllSession.IFinalVendorInputBLL.GetListBy(a => vendorinputlists.Contains(a.VID));
+
+
+
+
+                loadplans = (from val1 in vendorinputlist join val2 in VendorInputTruckinglist on val1.VID equals val2.vID into val2Grp from grp in val2Grp.DefaultIfEmpty() select new R_LoadPlan_MIGOReport { Purch_Doc = val1.FinalPoList.Purch_Doc, Item = val1.FinalPoList.Item, PO_Line = val1 == null ? "" : val1.PO_Line, Created_By = val1 == null ? "" : val1.Created_By, Matl_Group = val1.FinalPoList.Matl_Group, Matl_Group_Sales = val1 == null ? "" : val1.Matl_Group_Sales, Material = val1.FinalPoList.Material, Brand = val1.FinalPoList.Brand, Short_text = val1.FinalPoList.Short_text, PO_quantity = val1.FinalPoList.PO_quantity, Total_Carton = val1.FinalPoList.Total_Carton, Matrix = val1 == null ? "" : val1.Matrix, Deliv_Date = val1.FinalPoList.Deliv_Date, Slip_Sheet = val1 == null ? "" : val1.Slip_Sheet, Packing_Status = val1 == null ? "" : val1.Packing_Status, Inspection_End_Date = val1 == null ? null : val1.Inspection_End_Date, Inspection_Result = val1 == null ? "" : val1.Inspection_Result, Booking_No = val1 == null ? "" : val1.Booking_No, Loading_Date = val1 == null ? null : val1.Loading_Date, Closing_Date = val1 == null ? null : val1.CFS_Closing_Date, ETD = val1 == null ? null : val1.ETD, Shipment_Status = val1 == null ? "" : val1.Shipment_Status, FOB_Local_Charges_Settlement = val1 == null ? "" : val1.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = val1 == null ? null : val1.FCR_Bill_Return_Date, Certificate_Application_Date = val1 == null ? null : val1.Certificate_Application_Date, Certificate_Return_TO_SMDate = val1 == null ? null : val1.Certificate_Return_TO_SMDate, Qty_Delivered = val1 == null ? 0 : val1.Qty_Delivered, To_be_del = val1 == null ? "" : val1.To_be_del, Sales_Material = val1.FinalPoList.Sales_Material, FOB_Customer_PO = val1.FinalPoList.FOB_Customer_PO, SalesOrd_STO = val1.FinalPoList.SalesOrd_STO, ItemNO = val1.FinalPoList.ItemNO, DOM_Domestic_Dest = val1.FinalPoList.DOM_Domestic_Dest, FOB_Customer_Name = val1.FinalPoList.FOB_Customer_Name, DOM_Route = val1.FinalPoList.DOM_Route, Ship_To_Country = val1.FinalPoList.Ship_To_Country, ShipTo_Name = val1.FinalPoList.ShipTo_Name, Delivery_Number = val1.FinalPoList.Delivery_Number, OTD_Reason_Code = val1 == null ? "" : val1.OTD_Reason_Code, Delay_Details = val1 == null ? "" : val1.Delay_Details, FOB_First_Date = val1.FinalPoList.FOB_First_Date, FOB_Cancel_Date = val1.FinalPoList.FOB_Cancel_Date, FOB_Carton_Volume = val1.FinalPoList.FOB_Carton_Volume.ToString(), FOB_Customer_Description = val1.FinalPoList.FOB_Customer_Description, FOB_Customer_Material_Number = val1.FinalPoList.FOB_Customer_Material_Number, FOB_LOG = val1.FinalPoList.FOB_LOG, FOB_MainBatt = val1.FinalPoList.FOB_MainBatt, FOB_MainBattQty = val1.FinalPoList.FOB_MainBattQty.ToString(), FOB_OverallCredStat = val1.FinalPoList.FOB_OverallCredStat, FOB_Proforma_Invoice = val1.FinalPoList.FOB_Proforma_Invoice, FOB_Receiving_Point = val1.FinalPoList.FOB_Receiving_Point, FOB_Total_NetWeight = val1.FinalPoList.FOB_Total_NetWeight.ToString(), DOM_Delivery_Quantity = val1.FinalPoList.DOM_Delivery_Quantity.ToString(), DOM_Finaloadingport = val1.FinalPoList.DOM_Finaloadingport, DOM_Inbound = val1.FinalPoList.DOM_Inbound, DOM_Invoice = val1.FinalPoList.DOM_Inbound, DOM_Mfr_City = val1.FinalPoList.DOM_Mfr_City, DOM_Qty_Delivered = val1.FinalPoList.DOM_Qty_Delivered.ToString(), DOM_Shipment_Number = val1.FinalPoList.DOM_Shipment_Number, DOM_Sloc = val1.FinalPoList.DOM_Sloc, DOM_StatDelD = val1.FinalPoList.DOM_StatDelD, DOM_STO_Delivery_Date = val1.FinalPoList.DOM_STO_Delivery_Date, DOM_STO_MA_Date = val1.FinalPoList.DOM_STO_MA_Date, DOM_To_Be_Del = val1.FinalPoList.DOM_To_Be_Del.ToString(), DOM_Vendor = val1.FinalPoList.DOM_Vendor, Carton_Depth_W = val1.FinalPoList.Carton_Depth_W.ToString(), Carton_GrossWeight = val1.FinalPoList.Carton_GrossWeight.ToString(), Carton_Height = val1.FinalPoList.Carton_Height.ToString(), Carton_NetWeight = val1.FinalPoList.Carton_NetWeight.ToString(), Carton_PCS = val1.FinalPoList.Carton_PCS.ToString(), Carton_Width_L = val1.FinalPoList.Carton_Width_L.ToString(), Comments = val1.FinalPoList.Comments, Mfr_Country = val1.FinalPoList.Mfr_Country, Mfr_Name1 = val1.FinalPoList.Mfr_Name1, Total_GrossWeight = val1.FinalPoList.Total_GrossWeight.ToString(), Total_Volume = val1.FinalPoList.Total_Volume, Vendor_Name = val1.FinalPoList.Vendor_Name, Dischaging_Port = val1 == null ? null : val1.Dischaging_Port, Arrive_terminal_Date = grp == null ? null : grp.Trucking_Arrive_terminal_Date, Delivery_CBM = grp == null ? null : grp.Qty, Arrive_WHS_Date = grp == null ? null : grp.Trucking_Arrive_WHS_Date, Booking_Date = val1 == null ? null : val1.Booking_Date, Carton_delivered = grp == null ? null : grp.Qty, Container_NO = grp == null ? null : grp.Container_NO, ETA = val1 == null ? null : val1.ETA, Loading_Port = val1 == null ? null : val1.Loading_Port, Seal_NO = val1 == null ? null : val1.Seal_NO, SI_Cut_Time = val1 == null ? null : val1.SI_Cut_Time, Vehicle_Type = val1 == null ? "" : val1.Vehicle_Type, Vessel = val1 == null ? "" : val1.Vessel, Voyage = val1 == null ? "" : val1.Voyage, DeliveryNo = val1.FinalPoList.Delivery_Number, Booking_date = val1 == null ? null : val1.Booking_Date, BookingNo = val1 == null ? "" : val1.Booking_No, Cancel_Date = val1 == null ? null : val1.FinalPoList.FOB_Cancel_Date, Customer_Name = val1 == null ? "" : val1.FinalPoList.FOB_Customer_Name, OpenDate = val1.CY_Open_date, CY_Closing_Date = val1.CY_Closing_Date, Trucking_Arrive_WHS_Date = grp == null ? null : grp.Trucking_Arrive_WHS_Date, Trucking_Arrive_terminal_Date = grp == null ? null : grp.Trucking_Arrive_terminal_Date, CTN = grp == null ? null : grp.CTN, CustomerPO = val1.FinalPoList.FOB_Customer_PO, CustomerMaterialNumber = val1.FinalPoList.FOB_Customer_Material_Number, SalesMaterial = val1.FinalPoList.Sales_Material, TotalCarton = val1.FinalPoList.Total_Carton, TotalGrossWeight = val1.FinalPoList.Total_GrossWeight, TotalVolume = val1.FinalPoList.Total_Volume, Ship_mode = val1.FinalPoList.FOB_Ship_MODE, CY_open = val1.CY_Open_date, CY_closing = val1.CY_Closing_Date, Unloading_Port = val1.Dischaging_Port, Ship_Date = grp == null ? null : grp.Trucking_Arrive_WHS_Date, Cont_Date = grp == null ? null : grp.Trucking_Arrive_terminal_Date, SO_Release_Date = val1.SO_Release_Date, Qty = grp == null ? null : grp.Qty }).ToList();//
+
+
+                var trkinglist = oc.BllSession.ITruck_Booking_HeadBLL.Entities.AsEnumerable().Where(a => (a.Arrive_Whs_time != null && (a.Arrive_Whs_time.Value.AddDays(1) >= operDateStart && a.Arrive_Whs_time.Value.AddDays(1) < operDateEnd)) || (a.Terminal_Time != null && (a.Terminal_Time.Value.AddDays(1) >= operDateStart && a.Terminal_Time.Value.AddDays(1) < operDateEnd)));
+
+                var bookingNo = trkinglist.Select(a => a.Booking_Number).ToList();
+
+                var bookinglist = oc.BllSession.ITruck_Booking_DetailBLL.GetListBy(a => bookingNo.Contains(a.Booking_Number) && a.hfe != null && a.Line != null && a.hfe.Contains(Purch_Doc) && a.Line.Contains(Item));
+                var groupbookingno = bookinglist.GroupBy(x => new { x.hfe, x.Line, x.Booking_Number })
+                .Select(g => new { g.Key, Count = g.Count() });
+                foreach (var item in groupbookingno)//拖车单
+                {
+                    //item.Key.;
+                    loadplans.AddRange(oc.BllSession.IFinalPoListBLL.GetListBy(a => a.Purch_Doc == item.Key.hfe && a.Item == item.Key.Line).Select(dd => new R_LoadPlan_MIGOReport { Purch_Doc = dd.Purch_Doc, Item = dd.Item, Matl_Group = dd.Matl_Group, Material = dd.Material, Brand = dd.Brand, Short_text = dd.Short_text, PO_quantity = dd.PO_quantity, Total_Carton = dd.Total_Carton, Deliv_Date = dd.Deliv_Date, Sales_Material = dd.Sales_Material, FOB_Customer_PO = dd.FOB_Customer_PO, SalesOrd_STO = dd.SalesOrd_STO, ItemNO = dd.ItemNO, DOM_Domestic_Dest = dd.DOM_Domestic_Dest, FOB_Customer_Name = dd.FOB_Customer_Name, DOM_Route = dd.DOM_Route, Ship_To_Country = dd.Ship_To_Country, ShipTo_Name = dd.ShipTo_Name, Delivery_Number = dd.Delivery_Number, FOB_First_Date = dd.FOB_First_Date, FOB_Cancel_Date = dd.FOB_Cancel_Date, FOB_Carton_Volume = dd.FOB_Carton_Volume.ToString(), FOB_Customer_Description = dd.FOB_Customer_Description, FOB_Customer_Material_Number = dd.FOB_Customer_Material_Number, FOB_LOG = dd.FOB_LOG, FOB_MainBatt = dd.FOB_MainBatt, FOB_MainBattQty = dd.FOB_MainBattQty.ToString(), FOB_OverallCredStat = dd.FOB_OverallCredStat, FOB_Proforma_Invoice = dd.FOB_Proforma_Invoice, FOB_Receiving_Point = dd.FOB_Receiving_Point, FOB_Total_NetWeight = dd.FOB_Total_NetWeight.ToString(), DOM_Delivery_Quantity = dd.DOM_Delivery_Quantity.ToString(), DOM_Finaloadingport = dd.DOM_Finaloadingport, DOM_Inbound = dd.DOM_Inbound, DOM_Invoice = dd.DOM_Inbound, DOM_Mfr_City = dd.DOM_Mfr_City, DOM_Qty_Delivered = dd.DOM_Qty_Delivered.ToString(), DOM_Shipment_Number = dd.DOM_Shipment_Number, DOM_Sloc = dd.DOM_Sloc, DOM_StatDelD = dd.DOM_StatDelD, DOM_STO_Delivery_Date = dd.DOM_STO_Delivery_Date, DOM_STO_MA_Date = dd.DOM_STO_MA_Date, DOM_To_Be_Del = dd.DOM_To_Be_Del.ToString(), DOM_Vendor = dd.DOM_Vendor, Carton_Depth_W = dd.Carton_Depth_W.ToString(), Carton_GrossWeight = dd.Carton_GrossWeight.ToString(), Carton_Height = dd.Carton_Height.ToString(), Carton_NetWeight = dd.Carton_NetWeight.ToString(), Carton_PCS = dd.Carton_PCS.ToString(), Carton_Width_L = dd.Carton_Width_L.ToString(), Comments = dd.Comments, Mfr_Country = dd.Mfr_Country, Mfr_Name1 = dd.Mfr_Name1, Total_GrossWeight = dd.Total_GrossWeight.ToString(), Total_Volume = dd.Total_Volume, Vendor_Name = dd.Vendor_Name, CustomerPO = dd.FOB_Customer_PO, CustomerMaterialNumber = dd.FOB_Customer_Material_Number, SalesMaterial = dd.Sales_Material, TotalCarton = dd.Total_Carton, TotalGrossWeight = dd.Total_GrossWeight, TotalVolume = dd.Total_Volume, Ship_mode = dd.FOB_Ship_MODE, DeliveryNo = dd.Delivery_Number, Customer_Name = dd.FOB_Customer_Name, Cancel_Date = dd.FOB_Cancel_Date, Booking_Date = dd.FOB_Booking_Date, Booking_No = item.Key.Booking_Number }).ToList());
+
+                }
+
+                foreach (var item in polist)
+                {
+
+                    if (loadplans.Where(a => a.SalesOrd_STO == item.SalesOrd_STO && a.ItemNO == item.ItemNO).ToList().Count <= 0)
+                    {
+                        loadplans.Add(item);
+                    }
+                    //if (item.Consol_no!=null&&item.Consol_no.ToUpper().StartsWith("LS"))
+                    //{
+                    //    if (!(item.Gr_Time >= operDateStart && item.Gr_Time < operDateEnd))
+                    //    {     
+                    //        loadplans.RemoveAll(a => { return a.SalesOrd_STO == item.SalesOrd_STO && a.ItemNO == item.ItemNO; });
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //}
+
+                }
+
+                var loadid = loadplans.Select(a => a.Purch_Doc).Distinct().ToList();
+                var loadSales = loadplans.Select(a => a.SalesOrd_STO).Distinct().ToList();
+                var purchDocs = loadplans.Select(a => a.Purch_Doc).ToList();
+                var bookings = oc.BllSession.ITruck_Booking_DetailBLL.GetListBy(a => purchDocs.Contains(a.hfe));
+                var bookingNumbers = bookings.Select(a => a.Booking_Number).ToList();
+                var bookinghead = oc.BllSession.ITruck_Booking_HeadBLL.GetListBy(a => bookingNumbers.Contains(a.Booking_Number));
+                var bookingHeadDetail = from s in bookings join a in bookinghead on s.Booking_Number equals a.Booking_Number into un from a1 in un.DefaultIfEmpty() select new { Bookingno = s.Booking_Number, Bookingno2 = a1 == null ? "" : s.Booking_Number, Date = a1.Arrive_Whs_time == null ? a1.Terminal_Time : a1.Arrive_Whs_time, po = s.hfe, item = s.Line, CTN = s.Ctn };
+
+                var loadlist = oc.BllSession.IFinalLoadingPlanBLL.GetListBy(a => loadSales.Contains(a.SalesOrd_STO)).ToList();
+                foreach ( var item  in loadplans)
+                {
+                    if(item.Trucking_Arrive_WHS_Date==null){
+                        item.Trucking_Arrive_WHS_Date = item.Trucking_Arrive_terminal_Date;
+                    }
+                  
+                    foreach (var item2 in loadlist.Where(a => a.ItemNO == item.ItemNO && a.SalesOrd_STO == item.SalesOrd_STO&&a.Consol_no==item.Consol_no).ToList())
+                    {
+                        if (item2.Consol_no==null) { break; }
+                        if (item2.Consol_no.ToUpper().StartsWith("LS"))
+                        {
+                            item.Consol_no = item2.Consol_no;
+                            
+                            if (item2.SO_release_date != null)
+                            {
+                                item.SO_Release_Date = item2.SO_release_date;
+                            }
+                            if (item2.BookingNo != null)
+                            {
+                                item.Booking_No = item2.BookingNo;
+                            }
+                            if (item2.Booking_date != null)
+                            {
+                                item.Booking_Date = item2.Booking_date;
+                            }
+                            if (item2.Cust_SI != null)
+                            {
+                                item.Cust_SI = item2.Cust_SI;
+                            }
+
+                            if (item2.Vessel != null)
+                            {
+                                item.Vessel = item2.Vessel;
+                            }
+                            if (item2.Loading_Port != null)
+                            {
+                                item.Loading_Port = item2.Loading_Port;
+                            }
+                            if (item2.Loading_Port_2 != null)
+                            {
+                                item.Loading_Port = item2.Loading_Port_2;
+                            }
+                            if (item2.ETD != null)
+                            {
+                                item.ETD = item2.ETD;
+                            }
+                            if (item2.ETD_2 != null)
+                            {
+                                item.ETD = item2.ETD_2;
+                            }
+
+
+                            if (item2.Voyage != null)
+                            {
+                                item.Voyage = item2.Voyage;
+                            }
+                            item.Destination = item2.Destination;
+
+                            if (item2.Consol_no.ToUpper().StartsWith("LS"))
+                            {
+                                if (item2.NST != null)
+                                {
+                                    item.CY_open = item2.NST;
+                                }
+                                if (item2.NLT != null)
+                                {
+                                    item.CY_closing = item2.NLT;
+                                }
+                            }
+                            else
+                            {
+                                if (item2.CY_open != null)
+                                {
+                                    item.CY_open = item2.CY_open;
+                                }
+                                if (item2.CY_closing != null)
+                                {
+                                    item.CY_closing = item2.CY_closing;
+                                }
+                            }
+
+                            if (item2.CY_closing != null)
+                            {
+                                item.CY_Closing_Date = item2.CY_closing;
+                            }
+
+                            if (item2.Unloading_Port != null)
+                            {
+                                item.Unloading_Port = item2.Unloading_Port;
+                            }
+                            if (item2.Cont_Date != null)
+                            {
+                                item.Cont_Date = item2.Cont_Date;
+                            }
+                            if (item2.Ship_Date != null)
+                            {
+                                item.Ship_Date = item2.Ship_Date;
+                            }
+                            if (item2.Ship_Date != null)
+                            {
+                                item.Trucking_Arrive_WHS_Date = item2.Ship_Date;
+                            }
+                            if (item2.Cont_Date != null)
+                            {
+                                item.Trucking_Arrive_WHS_Date = item2.Cont_Date;
+                            }
+
+                            if (item2.Courier_tracking_no != null || item2.Courier_tracking_no != "")
+                            {
+                                item.Courier_tracking_no = item2.Courier_tracking_no;
+                            }
+                            if (!(item.Gr_Time >= operDateStart && item.Gr_Time < operDateEnd))
+                            {
+                                Removelplans.Add(item);
+                            }
+                            //}
+                            if (item.Ship_Date == null && item.Cont_Date == null)
+                            {
+                                Removelplans.Add(item);
+                            }
+                        }
+                    }
+                    if (item.Consol_no != null && item.Consol_no.ToUpper().StartsWith("LS"))
+                    {
+                        var InItemlist = oc.BllSession.Iin_itemBLL.GetListBy(a => a.po.Trim() == item.Purch_Doc && a.sku.Trim() == item.Item && a.so_no.Trim() == item.Consol_no).ToList();
+                        int? pcs = 0;
+                        int? qty = 0;
+                        int? ctn = 0;
+                        decimal? cbm = 0;
+                        foreach (var inItemitem in InItemlist)
+                        {
+                            if (inItemitem.rec_date != null)
+                            {
+                                item.Trucking_Arrive_WHS_Date = inItemitem.rec_date;
+                            }
+                            item.Ship_Date = inItemitem.rec_date;
+                            pcs += decimal.ToInt32((decimal)inItemitem.pcs);
+                            qty += decimal.ToInt32((decimal)inItemitem.qty);
+                            cbm += inItemitem.cbm;
+                            ctn += inItemitem.ctn;
+                        }
+                        if (pcs != 0)
+                        {
+                            item.Qty = pcs;
+                        }
+                        if (ctn != 0)
+                        {
+                            item.CTN = ctn;
+                        }
+                        if (cbm != 0)
+                        {
+                            item.CBM = cbm;
+                        }
+                    }
+                    var booking = new List<Truck_Booking_Detail>();
+                    if (item.Consol_no != null && item.Consol_no.ToUpper().StartsWith("LS"))
+                    {
+                        booking = bookings.Where(a => a.hfe == item.Purch_Doc && a.Line == item.Item && a.SO_No.Contains("LS")).ToList();
+                    }
+                    else
+                    {
+                        booking = bookings.Where(a => a.hfe == item.Purch_Doc && a.Line == item.Item &&a.Booking_Number==item.Booking_No).ToList();
+                    }
+                    if (booking.Count > 0)
+                    {
+                        int? a = item.PO_quantity / item.Total_Carton;
+                        int? sum = 0;
+                        for (int i = 0; i < booking.Count; i++)
+                        {
+                            var trking = bookinghead.Where(b => b.Booking_Number == booking[i].Booking_Number);
+                            foreach (var trkingitem in trking)
+                            {
+                                if (item.Consol_no!=null&&item.Consol_no.ToUpper().StartsWith("LS"))
+                                {
+                                    if (trkingitem.Vehicletype != null || trkingitem.Vehicletype != "")
+                                    {
+                                        item.Vehicle_Type = trkingitem.Vehicletype;
+                                    }
+                                    if (item.CTN == null)
+                                    {
+                                        item.CTN = trkingitem.CTN;
+                                    }
+                                    if (item.CBM == null)
+                                    {
+                                        item.CBM = trkingitem.CBM;
+                                    }
+                                    if (trkingitem.Booking_Number != null || trkingitem.Booking_Number != "")
+                                    {
+
+                                        item.TruckingNo = trkingitem.Booking_Number;
+                                    }
+                                }
+                                else
+                                {
+                                    if (trkingitem.Vehicletype != null || trkingitem.Vehicletype != "")
+                                    {
+                                        item.Vehicle_Type = trkingitem.Vehicletype;
+                                    }
+                                    if (trkingitem.Vehicle_number != null || trkingitem.Vehicle_number != "")
+                                    {
+
+                                        item.TruckingNo = trkingitem.Vehicle_number;
+                                    }
+                                    if (trkingitem.Arrive_Whs_time != null)
+                                    {
+                                        item.Trucking_Arrive_WHS_Date = trkingitem.Arrive_Whs_time;
+                                    }
+                                    if (item.Trucking_Arrive_WHS_Date == null)
+                                    {
+                                        item.Trucking_Arrive_WHS_Date = trkingitem.Terminal_Time;
+                                    }
+
+                                    if (trkingitem.Terminal_Time != null)
+                                    {
+
+                                        item.Trucking_Arrive_terminal_Date = trkingitem.Terminal_Time;
+                                    }
+
+                                }
+
+
+                            }
+                            if (booking.Count > 1)
+                            {
+                                //R_LoadPlan_MIGOReport addload = new R_LoadPlan_MIGOReport();
+                                //addload = TransReflection<R_LoadPlan_MIGOReport, R_LoadPlan_MIGOReport>(item);
+                                item.CTN = booking[i].Ctn;
+                                item.CBM = booking[i].CBM;
+                                var detaillist = bookingHeadDetail.Where(b => b.po == item.Purch_Doc && b.item == item.Item).OrderByDescending(b => b.Date).ToList();
+
+                                if (detaillist.Count > 0)
+                                {
+                                    if (detaillist[0].Bookingno == item.Booking_No)//最后一次出货
+                                    {
+                                        foreach (var detail in detaillist)
+                                        {
+                                            if (detail.Bookingno == item.Booking_No)
+                                            {
+                                                continue;
+                                            }
+                                            sum += detail.CTN * a;
+                                        }
+                                        item.Qty = item.PO_quantity - sum;
+                                        continue;
+                                    }
+                                    item.Qty= booking[i].Ctn * a;
+                                }
+                            }
+                            else
+                            {
+                                if (booking[i].Ctn != null)
+                                {
+                                    item.CTN = booking[i].Ctn;
+                                }
+                                if (booking[i].CBM != null)
+                                {
+                                    item.CBM = booking[i].CBM;
+                                }
+                                var detaillist = bookingHeadDetail.Where(b => b.po == item.Purch_Doc && b.item == item.Item).OrderByDescending(b => b.Date).ToList();
+
+                                if (detaillist.Count > 0)
+                                {
+                                    if (detaillist[0].Bookingno == item.Booking_No)//最后一次出货
+                                    {
+                                        foreach (var detail in detaillist)
+                                        {
+                                            if (detail.Bookingno == item.Booking_No)
+                                            {
+                                                continue;
+                                            }
+                                            sum += detail.CTN * a;
+                                        }
+                                        item.Qty = item.PO_quantity - sum;
+                                        continue;
+                                    }
+                                    item.Qty = booking[i].Ctn * a;
+                                }
+                            }
+
+
+                        }
+
+                    }
+                }
+                foreach (var item in Removelplans)
+                {
+                    loadplans.Remove(item);
+                }
+                //loadplans.AddRange(loadplansADD);
+            }
+            else
+            {
+                loadplans = oc.BllSession.IFinalVendorInputBLL.GetListBy(aa => aa.FinalPoList.Mfr_Name1.Contains(Vendor_Name) && aa.FinalPoList.Purch_Doc.Contains(Purch_Doc) && aa.Loading_Date >= operDateStart && aa.Loading_Date <= operDateEnd).Select(dd => new R_LoadPlan_MIGOReport() { Purch_Doc = dd.FinalPoList.Purch_Doc, SalesOrd_STO = dd.FinalPoList.SalesOrd_STO, ItemNO = dd.FinalPoList.ItemNO, Item = dd.FinalPoList.Item, CY_Closing_Date = dd.CY_Closing_Date, PO_quantity = dd.FinalPoList.PO_quantity, DeliveryNo = dd.FinalPoList.Delivery_Number, PO_Line = dd.PO_Line, Created_By = dd.Created_By, Matl_Group = dd.FinalPoList.Matl_Group, Matl_Group_Sales = dd.Matl_Group_Sales, Material = dd.FinalPoList.Material, Brand = dd.FinalPoList.Brand, Short_text = dd.FinalPoList.Short_text, Total_Carton = (int)dd.FinalPoList.Total_Carton, Matrix = dd.Matrix, Deliv_Date = dd.FinalPoList.Deliv_Date, Slip_Sheet = dd.Slip_Sheet, Packing_Status = dd.Packing_Status, Inspection_End_Date = dd.Inspection_End_Date, Inspection_Result = dd.Inspection_Result, Booking_No = dd.Booking_No, Loading_Date = dd.Loading_Date, Closing_Date = dd.CFS_Closing_Date, ETD = dd.ETD, Shipment_Status = dd.Shipment_Status, FOB_Local_Charges_Settlement = dd.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = dd.FCR_Bill_Return_Date, Certificate_Application_Date = dd.Certificate_Application_Date, Certificate_Return_TO_SMDate = dd.Certificate_Return_TO_SMDate, Qty_Delivered = dd.Qty_Delivered, To_be_del = dd.To_be_del, Sales_Material = dd.FinalPoList.Sales_Material, FOB_Customer_PO = dd.FinalPoList.FOB_Customer_PO, DOM_Domestic_Dest = dd.FinalPoList.DOM_Domestic_Dest, FOB_Customer_Name = dd.FinalPoList.FOB_Customer_Name, DOM_Route = dd.FinalPoList.DOM_Route, Ship_To_Country = dd.FinalPoList.Ship_To_Country, ShipTo_Name = dd.FinalPoList.ShipTo_Name, Delivery_Number = dd.FinalPoList.Delivery_Number, OTD_Reason_Code = dd.OTD_Reason_Code, Delay_Details = dd.Delay_Details, FOB_First_Date = dd.FinalPoList.FOB_First_Date, FOB_Cancel_Date = dd.FinalPoList.FOB_Cancel_Date, FOB_Carton_Volume = dd.FinalPoList.FOB_Carton_Volume.ToString(), FOB_Customer_Description = dd.FinalPoList.FOB_Customer_Description, FOB_Customer_Material_Number = dd.FinalPoList.FOB_Customer_Material_Number, FOB_LOG = dd.FinalPoList.FOB_LOG, FOB_MainBatt = dd.FinalPoList.FOB_MainBatt, FOB_MainBattQty = dd.FinalPoList.FOB_MainBattQty.ToString(), FOB_OverallCredStat = dd.FinalPoList.FOB_OverallCredStat, FOB_Proforma_Invoice = dd.FinalPoList.FOB_Proforma_Invoice, FOB_Receiving_Point = dd.FinalPoList.FOB_Receiving_Point, FOB_Total_NetWeight = dd.FinalPoList.FOB_Total_NetWeight.ToString(), DOM_Delivery_Quantity = dd.FinalPoList.DOM_Delivery_Quantity.ToString(), DOM_Finaloadingport = dd.FinalPoList.DOM_Finaloadingport, DOM_Inbound = dd.FinalPoList.DOM_Inbound, DOM_Invoice = dd.FinalPoList.DOM_Inbound, DOM_Mfr_City = dd.FinalPoList.DOM_Mfr_City, DOM_Qty_Delivered = dd.FinalPoList.DOM_Qty_Delivered.ToString(), DOM_Shipment_Number = dd.FinalPoList.DOM_Shipment_Number, DOM_Sloc = dd.FinalPoList.DOM_Sloc, DOM_StatDelD = dd.FinalPoList.DOM_StatDelD, DOM_STO_Delivery_Date = dd.FinalPoList.DOM_STO_Delivery_Date, DOM_STO_MA_Date = dd.FinalPoList.DOM_STO_MA_Date, DOM_To_Be_Del = dd.FinalPoList.DOM_To_Be_Del.ToString(), DOM_Vendor = dd.FinalPoList.DOM_Vendor, Carton_Depth_W = dd.FinalPoList.Carton_Depth_W.ToString(), Carton_GrossWeight = dd.FinalPoList.Carton_GrossWeight.ToString(), Carton_Height = dd.FinalPoList.Carton_Height.ToString(), Carton_NetWeight = dd.FinalPoList.Carton_NetWeight.ToString(), Carton_PCS = dd.FinalPoList.Carton_PCS.ToString(), Carton_Width_L = dd.FinalPoList.Carton_Width_L.ToString(), Comments = dd.FinalPoList.Comments, Mfr_Country = dd.FinalPoList.Mfr_Country, Mfr_Name1 = dd.FinalPoList.Mfr_Name1, Total_GrossWeight = dd.FinalPoList.Total_GrossWeight.ToString(), Total_Volume = dd.FinalPoList.Total_Volume, Vendor_Name = dd.FinalPoList.Vendor_Name, Dischaging_Port = dd.Dischaging_Port, Arrive_terminal_Date = dd.Arrive_terminal_Date, Delivery_CBM = dd.Delivery_CBM, Arrive_WHS_Date = dd.Arrive_WHS_Date, Booking_Date = dd.Booking_Date, Carton_delivered = dd.Carton_delivered, Container_NO = dd.Container_NO, ETA = dd.ETA, Loading_Port = dd.Loading_Port, Seal_NO = dd.Seal_NO, SI_Cut_Time = dd.SI_Cut_Time, Vehicle_Type = dd.Vehicle_Type, Vessel = dd.Vessel, Voyage = dd.Voyage, TotalGrossWeight = dd.FinalPoList.Total_GrossWeight, TotalCarton = dd.FinalPoList.Total_Carton, TotalVolume = dd.FinalPoList.Total_Volume, CustomerMaterialNumber = dd.FinalPoList.FOB_Customer_Material_Number, SalesMaterial = dd.FinalPoList.Sales_Material, Ship_mode = dd.FinalPoList.FOB_Ship_MODE, BookingNo = dd.Booking_No, Booking_date = dd.Booking_Date, CY_open = dd.CY_Open_date, CY_closing = dd.CY_Closing_Date, Unloading_Port = dd.Dischaging_Port, Destination = dd.Dischaging_Port, SO_release_date = dd.SO_Release_Date, Cont_Date = dd.Arrive_terminal_Date, Cust_SI = dd.SI_Cut_Time, Courier_tracking_no = dd.Courier_tracking_no }).ToList();
+                foreach (var item in loadplans)
+                {
+
+                    foreach (var item2 in oc.BllSession.IFinalLoadingPlanBLL.GetListBy(a => a.ItemNO == item.ItemNO && a.SalesOrd_STO == item.SalesOrd_STO && a.Mfr_Name1 == Vendor_Name))
+                    {
+                        if (item2.Consol_no.StartsWith("LS"))
+                        {
+                            item.Consol_no = item2.Consol_no;
+                        }
+                    } 
+                }
+            }
+            
+
+            List<R_LoadPlan_MIGOReport> noBookingnoList = loadplans.Where(a => a.Booking_No == "" || a.Booking_No == null).ToList();
+
+            foreach (var s in noBookingnoList)
+            {
+                var lsBooking = oc.BllSession.IFinalLoadingPlanBLL.GetListBy(aa => aa.SalesOrd_STO == s.SalesOrd_STO && aa.ItemNO == s.ItemNO);
+                if (lsBooking.Count > 0 && !string.IsNullOrEmpty(lsBooking[0].BookingNo))
+                {
+                    s.Booking_No = lsBooking[0].BookingNo;
+                    s.Loading_Date = lsBooking[0].Loading_Date;
+                    s.Closing_Date = lsBooking[0].CY_closing;
+                    s.ETD = lsBooking[0].ETD;
+
+                }
+            }
+
+
+            return loadplans.OrderBy(a => a.FOB_First_Date).ToList();
+
+
+        }
+
+
+
+        public static List<R_Polist_Dashboard> getPolistReport(string key)
+        {
+            DateTime update = DateTime.Now.AddDays(-Convert.ToInt32(DateTime.Now.Date.Day-1)).AddMonths(-1).Date;
+            DateTime firstDateNow = DateTime.Now.AddDays(1 - DateTime.Now.Day).Date;
+            DateTime nextlastDateNow = DateTime.Now.AddDays(1 - DateTime.Now.Day).Date.AddMonths(2).AddSeconds(-1).Date;
+            DateTime lastDateNow = DateTime.Now.AddDays(1 - DateTime.Now.Day).Date.AddMonths(1).AddSeconds(-1).Date;
+            var polist = new List<FinalPoList>();
+            if (oc.CurrentVendorName != "")
+            {
+                polist = oc.BllSession.IFinalPoListBLL.GetListBy(a => a.FOB_First_Date >= update && a.FOB_First_Date <= nextlastDateNow && a.Mfr_Name1 == oc.CurrentVendorName);
+
+            }
+            else
+            {
+                polist = oc.BllSession.IFinalPoListBLL.GetListBy(a => a.FOB_First_Date >= update && a.FOB_First_Date <= nextlastDateNow);
+            }
+
+            var pidlist = polist.Select(a => a.ID).ToList();
+
+            var pruid = polist.Select(a => a.Purch_Doc).ToList();
+
+
+
+            var vendorinputlist = oc.BllSession.IFinalVendorInputBLL.GetListBy(b => pidlist.Contains(b.PID));
+
+
+            var vendoridinputlist = vendorinputlist.Select(a => a.VID).ToList();
+
+
+            var VendorInputTruckinglist = oc.BllSession.IFinalVendorInputTruckingBLL.GetListBy(b => vendoridinputlist.Contains(b.vID));
+
+            List<R_LoadPlan_DailyReport> loadplans;
+            List<R_LoadPlan_DailyReport> loadplanstwo;
+ 
+            /////left join 查询
+            loadplans = (from val1 in polist join val2 in vendorinputlist on val1.ID equals val2.PID join val3 in VendorInputTruckinglist on val2.VID equals val3.vID into val2Grp from grp in val2Grp.DefaultIfEmpty() select new R_LoadPlan_DailyReport { Purch_Doc = val1.Purch_Doc, Item = val1.Item, PO_Line = val2 == null ? "" : val2.PO_Line, Created_By = val2 == null ? "" : val2.Created_By, Matl_Group = val1.Matl_Group, Matl_Group_Sales = val2 == null ? "" : val2.Matl_Group_Sales, Material = val1.Material, Brand = val1.Brand, Short_text = val1.Short_text, PO_quantity = val1.PO_quantity, Total_Carton = val1.Total_Carton, Matrix = val2 == null ? "" : val2.Matrix, Deliv_Date = val1.Deliv_Date, Slip_Sheet = val2 == null ? "" : val2.Slip_Sheet, Packing_Status = val2 == null ? "" : val2.Packing_Status, Inspection_End_Date = val2 == null ? null : val2.Inspection_End_Date, Inspection_Result = val2 == null ? "" : val2.Inspection_Result, Booking_No = val2 == null ? "" : val2.Booking_No, Loading_Date = val2 == null ? null : val2.Loading_Date, Closing_Date = val2 == null ? null : val2.CFS_Closing_Date, ETD = val2 == null ? null : val2.ETD, Shipment_Status = val2 == null ? "" : val2.Shipment_Status, FOB_Local_Charges_Settlement = val2 == null ? "" : val2.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = val2 == null ? null : val2.FCR_Bill_Return_Date, Certificate_Application_Date = val2 == null ? null : val2.Certificate_Application_Date, Certificate_Return_TO_SMDate = val2 == null ? null : val2.Certificate_Return_TO_SMDate, Qty_Delivered = val2 == null ? 0 : val2.Qty_Delivered, To_be_del = val2 == null ? "" : val2.To_be_del, Sales_Material = val1.Sales_Material, FOB_Customer_PO = val1.FOB_Customer_PO, SalesOrd_STO = val1.SalesOrd_STO, ItemNO = val1.ItemNO, DOM_Domestic_Dest = val1.DOM_Domestic_Dest, FOB_Customer_Name = val1.FOB_Customer_Name, DOM_Route = val1.DOM_Route, Ship_To_Country = val1.Ship_To_Country, ShipTo_Name = val1.ShipTo_Name, Delivery_Number = val1.Delivery_Number, OTD_Reason_Code = val2 == null ? "" : val2.OTD_Reason_Code, Delay_Details = val2 == null ? "" : val2.Delay_Details, FOB_First_Date = val1.FOB_First_Date, FOB_Cancel_Date = val1.FOB_Cancel_Date, FOB_Carton_Volume = val1.FOB_Carton_Volume.ToString(), FOB_Customer_Description = val1.FOB_Customer_Description, FOB_Customer_Material_Number = val1.FOB_Customer_Material_Number, FOB_LOG = val1.FOB_LOG, FOB_MainBatt = val1.FOB_MainBatt, FOB_MainBattQty = val1.FOB_MainBattQty.ToString(), FOB_OverallCredStat = val1.FOB_OverallCredStat, FOB_Proforma_Invoice = val1.FOB_Proforma_Invoice, FOB_Receiving_Point = val1.FOB_Receiving_Point, FOB_Total_NetWeight = val1.FOB_Total_NetWeight.ToString(), DOM_Delivery_Quantity = val1.DOM_Delivery_Quantity.ToString(), DOM_Finaloadingport = val1.DOM_Finaloadingport, DOM_Inbound = val1.DOM_Inbound, DOM_Invoice = val1.DOM_Inbound, DOM_Mfr_City = val1.DOM_Mfr_City, DOM_Qty_Delivered = val1.DOM_Qty_Delivered.ToString(), DOM_Shipment_Number = val1.DOM_Shipment_Number, DOM_Sloc = val1.DOM_Sloc, DOM_StatDelD = val1.DOM_StatDelD, DOM_STO_Delivery_Date = val1.DOM_STO_Delivery_Date, DOM_STO_MA_Date = val1.DOM_STO_MA_Date, DOM_To_Be_Del = val1.DOM_To_Be_Del.ToString(), DOM_Vendor = val1.DOM_Vendor, Carton_Depth_W = val1.Carton_Depth_W.ToString(), Carton_GrossWeight = val1.Carton_GrossWeight.ToString(), Carton_Height = val1.Carton_Height.ToString(), Carton_NetWeight = val1.Carton_NetWeight.ToString(), Carton_PCS = val1.Carton_PCS.ToString(), Carton_Width_L = val1.Carton_Width_L.ToString(), Comments = val1.Comments, Mfr_Country = val1.Mfr_Country, Mfr_Name1 = val1.Mfr_Name1, Total_GrossWeight = val1.Total_GrossWeight.ToString(), Total_Volume = val1.Total_Volume, Vendor_Name = val1.Vendor_Name, Dischaging_Port = val2 == null ? null : val2.Dischaging_Port, Arrive_terminal_Date = val2 == null ? null : val2.Arrive_terminal_Date, Delivery_CBM = val2 == null ? null : val2.Delivery_CBM, Arrive_WHS_Date = val2 == null ? null : val2.Arrive_WHS_Date, Booking_Date = val2 == null ? null : val2.Booking_Date, Carton_delivered = val1 == null ? null : val2.Carton_delivered, Container_NO = grp == null ? null : grp.Container_NO, CY_Closing_Date = val2 == null ? null : val2.CY_Closing_Date, ETA = val2 == null ? null : val2.ETA, Loading_Port = val2 == null ? null : val2.Loading_Port, Seal_NO = grp == null ? null : grp.Seal_NO, SI_Cut_Time = val2 == null ? null : val2.SI_Cut_Time, Vehicle_Type = grp == null ? "" : grp.Vehicle_Type, Vessel = val2 == null ? "" : val2.Vessel, Voyage = val2 == null ? "" : val2.Voyage, CustomerType = val1.PO_List_Type, Mohth = val1.FOB_First_Date == null ? val1.DOM_STO_MA_Date.Value.Month.ToString() : val1.FOB_First_Date.Value.Month.ToString(), Weekly = val1.FOB_First_Date == null ? getWeekNumInMonth((DateTime)val1.DOM_STO_MA_Date).ToString() : getWeekNumInMonth((DateTime)val1.FOB_First_Date).ToString(), TruckingNo = grp == null ? null : grp.Trucking_NO, CTN = grp == null ? null : grp.CTN, ShipMode = val2.FinalPoList.FOB_Ship_MODE, OpenDate = val2.CY_Open_date, CBM = grp == null ? null : grp.CBM, Qty = grp == null ? null : grp.Qty, Trucking_Arrive_terminal_Date = grp == null ? null : grp.Trucking_Arrive_terminal_Date, Trucking_Arrive_WHS_Date = grp == null ? null : grp.Trucking_Arrive_WHS_Date, SO_Release_Date = val2.SO_Release_Date }).ToList();
+
+
+            loadplanstwo = (from val1 in polist join val2 in vendorinputlist on val1.ID equals val2.PID into val2Grp from grp in val2Grp.DefaultIfEmpty() select new R_LoadPlan_DailyReport { Purch_Doc = val1.Purch_Doc, Item = val1.Item, PO_Line = grp == null ? "" : grp.PO_Line, Created_By = grp == null ? "" : grp.Created_By, Matl_Group = val1.Matl_Group, Matl_Group_Sales = grp == null ? "" : grp.Matl_Group_Sales, Material = val1.Material, Brand = val1.Brand, Short_text = val1.Short_text, PO_quantity = val1.PO_quantity, Total_Carton = val1.Total_Carton, Matrix = grp == null ? "" : grp.Matrix, Deliv_Date = val1.Deliv_Date, Slip_Sheet = grp == null ? "" : grp.Slip_Sheet, Packing_Status = grp == null ? "" : grp.Packing_Status, Inspection_End_Date = grp == null ? null : grp.Inspection_End_Date, Inspection_Result = grp == null ? "" : grp.Inspection_Result, Booking_No = grp == null ? "" : grp.Booking_No, Loading_Date = grp == null ? null : grp.Loading_Date, Closing_Date = grp == null ? null : grp.CFS_Closing_Date, ETD = grp == null ? null : grp.ETD, Shipment_Status = grp == null ? "" : grp.Shipment_Status, FOB_Local_Charges_Settlement = grp == null ? "" : grp.FOB_Local_Charges_Settlement, FCR_Bill_Return_Date = grp == null ? null : grp.FCR_Bill_Return_Date, Certificate_Application_Date = grp == null ? null : grp.Certificate_Application_Date, Certificate_Return_TO_SMDate = grp == null ? null : grp.Certificate_Return_TO_SMDate, Qty_Delivered = grp == null ? 0 : grp.Qty_Delivered, To_be_del = grp == null ? "" : grp.To_be_del, Sales_Material = val1.Sales_Material, FOB_Customer_PO = val1.FOB_Customer_PO, SalesOrd_STO = val1.SalesOrd_STO, ItemNO = val1.ItemNO, DOM_Domestic_Dest = val1.DOM_Domestic_Dest, FOB_Customer_Name = val1.FOB_Customer_Name, DOM_Route = val1.DOM_Route, Ship_To_Country = val1.Ship_To_Country, ShipTo_Name = val1.ShipTo_Name, Delivery_Number = val1.Delivery_Number, OTD_Reason_Code = grp == null ? "" : grp.OTD_Reason_Code, Delay_Details = grp == null ? "" : grp.Delay_Details, FOB_First_Date = val1.FOB_First_Date, FOB_Cancel_Date = val1.FOB_Cancel_Date, FOB_Carton_Volume = val1.FOB_Carton_Volume.ToString(), FOB_Customer_Description = val1.FOB_Customer_Description, FOB_Customer_Material_Number = val1.FOB_Customer_Material_Number, FOB_LOG = val1.FOB_LOG, FOB_MainBatt = val1.FOB_MainBatt, FOB_MainBattQty = val1.FOB_MainBattQty.ToString(), FOB_OverallCredStat = val1.FOB_OverallCredStat, FOB_Proforma_Invoice = val1.FOB_Proforma_Invoice, FOB_Receiving_Point = val1.FOB_Receiving_Point, FOB_Total_NetWeight = val1.FOB_Total_NetWeight.ToString(), DOM_Delivery_Quantity = val1.DOM_Delivery_Quantity.ToString(), DOM_Finaloadingport = val1.DOM_Finaloadingport, DOM_Inbound = val1.DOM_Inbound, DOM_Invoice = val1.DOM_Inbound, DOM_Mfr_City = val1.DOM_Mfr_City, DOM_Qty_Delivered = val1.DOM_Qty_Delivered.ToString(), DOM_Shipment_Number = val1.DOM_Shipment_Number, DOM_Sloc = val1.DOM_Sloc, DOM_StatDelD = val1.DOM_StatDelD, DOM_STO_Delivery_Date = val1.DOM_STO_Delivery_Date, DOM_STO_MA_Date = val1.DOM_STO_MA_Date, DOM_To_Be_Del = val1.DOM_To_Be_Del.ToString(), DOM_Vendor = val1.DOM_Vendor, Carton_Depth_W = val1.Carton_Depth_W.ToString(), Carton_GrossWeight = val1.Carton_GrossWeight.ToString(), Carton_Height = val1.Carton_Height.ToString(), Carton_NetWeight = val1.Carton_NetWeight.ToString(), Carton_PCS = val1.Carton_PCS.ToString(), Carton_Width_L = val1.Carton_Width_L.ToString(), Comments = val1.Comments, Mfr_Country = val1.Mfr_Country, Mfr_Name1 = val1.Mfr_Name1, Total_GrossWeight = val1.Total_GrossWeight.ToString(), Total_Volume = val1.Total_Volume, Vendor_Name = val1.Vendor_Name, Dischaging_Port = grp == null ? null : grp.Dischaging_Port, Arrive_terminal_Date = grp == null ? null : grp.Arrive_terminal_Date, Delivery_CBM = grp == null ? null : grp.Delivery_CBM, Arrive_WHS_Date = grp == null ? null : grp.Arrive_WHS_Date, Booking_Date = grp == null ? null : grp.Booking_Date, Carton_delivered = grp == null ? null : grp.Carton_delivered, Container_NO = grp == null ? null : grp.Container_NO, CY_Closing_Date = grp == null ? null : grp.CY_Closing_Date, ETA = grp == null ? null : grp.ETA, Loading_Port = grp == null ? null : grp.Loading_Port, Seal_NO = grp == null ? null : grp.Seal_NO, SI_Cut_Time = grp == null ? null : grp.SI_Cut_Time, Vehicle_Type = grp == null ? "" : grp.Vehicle_Type, Vessel = grp == null ? "" : grp.Vessel, Voyage = grp == null ? "" : grp.Voyage, CustomerType = val1.PO_List_Type, Mohth = val1.FOB_First_Date == null ? val1.DOM_STO_MA_Date.Value.Month.ToString() : val1.FOB_First_Date.Value.Month.ToString(), Weekly = val1.FOB_First_Date == null ? getWeekNumInMonth((DateTime)val1.DOM_STO_MA_Date).ToString() : getWeekNumInMonth((DateTime)val1.FOB_First_Date).ToString(), ShipMode = grp == null ? null : grp.FinalPoList.FOB_Ship_MODE, SO_Release_Date = grp == null ? null : grp.SO_Release_Date }).ToList();
+
+            foreach (var item in loadplanstwo)
+            {
+
+                var loadplanstwoadd = loadplans.Where(a => a.Purch_Doc == item.Purch_Doc && a.Item == item.Item).ToList();
+                if (loadplanstwoadd.Count <= 0)
+                {
+                    loadplans.Add(item);
+                }
+            }
+            GetConls(loadplans);
+
+
+            List<R_LoadPlan_DailyReport> Abnormalloadplan = new List<R_LoadPlan_DailyReport>();
+            List<R_LoadPlan_DailyReport> NobookingAbnormalloadplan = new List<R_LoadPlan_DailyReport>();
+            List<R_LoadPlan_DailyReport> NoSoDateAbnormalloadplan = new List<R_LoadPlan_DailyReport>();
+            List<R_LoadPlan_DailyReport> VarianceAbnormalloadplan = new List<R_LoadPlan_DailyReport>();
+            List<R_LoadPlan_DailyReport> NOActualAbnormalloadplan = new List<R_LoadPlan_DailyReport>();
+            List<R_LoadPlan_DailyReport> NOCertificateAbnormalloadplan = new List<R_LoadPlan_DailyReport>();
+            List<R_LoadPlan_DailyReport> Shippedloadplan = new List<R_LoadPlan_DailyReport>();
+            List<R_LoadPlan_DailyReport> Ontrackloadplan = new List<R_LoadPlan_DailyReport>();
+
+            List<R_LoadPlan_DailyReport> OverallPOloadplan = new List<R_LoadPlan_DailyReport>();
+            List<R_LoadPlan_DailyReport> NextPOloadplan = new List<R_LoadPlan_DailyReport>();
+            List<FinalLoadPlanHoliday> holidaylist = oc.BllSession.IFinalLoadPlanHolidayBLL.Entities.ToList();
+            decimal? totcbm = 0;
+            foreach (var item in loadplans)
+            {
+
+                if (item.FOB_First_Date != null)
+                {
+                    //if (item.FOB_First_Date.Value >= firstDateNow && item.FOB_First_Date.Value <= lastDateNow)
+                    //{
+                    //    if (OverallPOloadplan.Where(a => a.Purch_Doc == item.Purch_Doc && a.Item == item.Item).ToList().Count <= 0)
+                    //    {
+                    //        var loads = loadplans.Where(a => a.Purch_Doc == item.Purch_Doc && a.Item == item.Item).ToList();
+                    //        item.TotalNoofPOitem = loads.Count;
+
+                    //        foreach (var load in loads)
+                    //        {
+                    //            if (item.Total_Volume != null)
+                    //            {
+                    //                item.Total_CBM += item.Total_Volume;
+                    //            }
+                    //            if (load.Trucking_Arrive_terminal_Date != null || load.Trucking_Arrive_WHS_Date != null)
+                    //            {
+                    //                item.ConfirmedPO += 1;
+                    //                if (item.CBM != "")
+                    //                {
+
+                    //                    item.ConfirmedCBM += item.Total_Volume;
+                    //                }
+                    //            }
+                    //        }
+                    //        item.Completed = decimal.Floor(decimal.Round((decimal)((decimal)item.ConfirmedPO / (decimal)item.TotalNoofPOitem), 2) * 100).ToString();
+                    //        OverallPOloadplan.Add(item);
+                    //    }
+
+                    //}
+                    //else
+                    //{
+                    //    if (NextPOloadplan.Where(a => a.Purch_Doc == item.Purch_Doc && a.Item == item.Item).ToList().Count <= 0)
+                    //    {
+                    //        var loads = loadplans.Where(a => a.Purch_Doc == item.Purch_Doc && a.Item == item.Item).ToList();
+                    //        item.TotalNoofPOitem = loads.Count;
+
+                    //        foreach (var load in loads)
+                    //        {
+                    //            if (item.Total_Volume != null)
+                    //            {
+                    //                item.Total_CBM += item.Total_Volume;
+                    //            }
+                    //            if (load.Trucking_Arrive_terminal_Date != null || load.Trucking_Arrive_WHS_Date != null)
+                    //            {
+                    //                item.ConfirmedPO += 1;
+                    //                if (item.CBM != "")
+                    //                {
+
+                    //                    item.ConfirmedCBM +=item.Total_Volume;
+                    //                }
+                    //            }
+                    //        }
+                    //        item.Completed = decimal.Floor(decimal.Round((decimal)((decimal)item.ConfirmedPO / (decimal)item.TotalNoofPOitem), 2) * 100).ToString();
+                    //        NextPOloadplan.Add(item);
+                    //    }
+                    //}
+
+                    //Shipped
+                    if (item.Trucking_Arrive_terminal_Date != null || item.Trucking_Arrive_WHS_Date != null)//PO item已经完成Actual arrive date in WHS/terminal 记录的
+                    {
+                        if (Shippedloadplan.Where(a => a.Purch_Doc == item.Purch_Doc && a.Item == item.Item).ToList().Count <= 0)
+                        {
+                            if (item.Total_Volume != null && item.Total_Volume != null)
+                            {
+                                totcbm += item.Total_Volume;
+                            }
+                        }
+                        Shippedloadplan.Add(item);
+
+                        continue;
+                    }
+
+                    if (item.FOB_First_Date.Value >= update && item.FOB_First_Date.Value <= nextlastDateNow)
+                    {
+                        if (item.FOB_First_Date.Value.AddDays(-getHoliday(14, holidaylist, item.FOB_First_Date.Value)) < DateTime.Now)//根据First day前14个工作日（不包含 First day当天），此PO ITEM 还没有提供booking NO.记录的
+                        {
+                            if (item.Booking_No == "")
+                            {
+                                if (NobookingAbnormalloadplan.Where(a => a.Purch_Doc == item.Purch_Doc && a.Item == item.Item).ToList().Count <= 0)
+                                {
+                                    if (item.Total_Volume != null && item.Total_Volume != null)
+                                    {
+                                        totcbm += item.Total_Volume;
+                                    }
+                                    Abnormalloadplan.Add(item);
+                                }
+                                NobookingAbnormalloadplan.Add(item);
+                                continue;
+                            }
+                        }
+                    }
+                    if (item.Booking_Date != null)
+                    {
+                        if (DateTime.Now > item.Booking_Date.Value.AddDays(getHoliday(2, holidaylist, item.Booking_Date.Value)))//根据Booking Date.录入当天后2个工作日，OTTP没有SO release date记录的
+                        {
+                            if (item.SO_Release_Date == null)
+                            {
+                                if (NoSoDateAbnormalloadplan.Where(a => a.Purch_Doc == item.Purch_Doc && a.Item == item.Item).ToList().Count <= 0)
+                                {
+                                    if (item.Total_Volume != null && item.Total_Volume != null)
+                                    {
+                                        totcbm += item.Total_Volume;
+                                    }
+                                    Abnormalloadplan.Add(item);
+                                }
+                                NoSoDateAbnormalloadplan.Add(item);
+                                continue;
+                            }
+                        }
+                    }
+                    int? Carton = 0;
+                    decimal? cbm = 0;
+                    int? Qty = 0;
+                    decimal? Total_Volume = 0;
+                    string bookingno = "";
+                    foreach (var TItem in loadplans.Where(a => a.Purch_Doc == item.Purch_Doc && a.Item == item.Item))
+                    {
+                        if (bookingno==TItem.Booking_No)
+                        {
+                            continue;
+                        }
+                        bookingno = TItem.Booking_No;
+                        Carton += TItem.Carton_delivered;
+                        cbm += item.Delivery_CBM;
+                        Qty += item.Qty_Delivered;
+                    }
+
+                    if ((Carton != null && Carton != 0) || (cbm != null && cbm != 0) || (Qty != null && Qty != 0))
+                    {
+                        if (item.Total_Volume != null)
+                        {
+                            Total_Volume = item.Total_Volume;
+                        }
+                        if (item.PO_quantity < Qty - Qty * 0.05m || item.PO_quantity > Qty + Qty * 0.05m || item.Total_Carton < Carton - Carton * 0.05m || item.Total_Carton > Carton + Carton * 0.05m || Total_Volume < cbm - cbm * 0.05m || Total_Volume > cbm + cbm * 0.05m)//PO Quantity ，Carton，CBM（允许+/—5% 差异后） 与原PO list数据不一致的
+                        {
+                            if (VarianceAbnormalloadplan.Where(a => a.Purch_Doc == item.Purch_Doc && a.Item == item.Item).ToList().Count <= 0)
+                            {
+                                if (item.Total_Volume != null && item.Total_Volume != null)
+                                {
+                                    totcbm += item.Total_Volume;
+                                }
+                                Abnormalloadplan.Add(item);
+                            }
+                            item.Quantiryvariance = item.PO_quantity-Qty  ;
+                            item.Cartonvariance = item.Total_Carton- Carton  ;
+                            item.Cbmvariance = Total_Volume - cbm;
+                            VarianceAbnormalloadplan.Add(item);
+                            continue;
+                        }
+
+                    }
+
+
+                    //if (item.CY_Closing_Date != null)//根据实际查看对应PO ITEM的 CFS/CY Closing date后1个工作日还没有Actual arrive date in WHS/terminal 记录的
+                    //{
+                    //    if (DateTime.Now > item.CY_Closing_Date.Value.AddDays(getHoliday(1, holidaylist, item.CY_Closing_Date.Value)))
+                    //    {
+                    //        if (item.Trucking_Arrive_terminal_Date == null && item.Trucking_Arrive_WHS_Date == null)
+                    //        {
+                    //            if (NOActualAbnormalloadplan.Where(a => a.Purch_Doc == item.Purch_Doc && a.Item == item.Item).ToList().Count <= 0)
+                    //            {
+                    //                if (item.Total_Volume != "" && item.Total_Volume != null)
+                    //                {
+                    //                    totcbm += decimal.Parse(item.Total_Volume);
+                    //                }
+                    //                Abnormalloadplan.Add(item);
+                    //            }
+                    //            NOActualAbnormalloadplan.Add(item);
+                    //            continue;
+                    //        }
+                    //    }
+                    //}
+                    //PO item已经完成Actual arrive date in WHS/terminal 记录的，但是ETD 7个工作日 OTTP没有数据Certificate return to SM Date 或者 FCR/Bill of Loading return to SM Date 的记录
+
+                    //if (item.Trucking_Arrive_terminal_Date != null || item.Trucking_Arrive_WHS_Date != null)
+                    //{
+                    //    if (item.ETD != null)
+                    //    {
+                    //        if (DateTime.Now > item.ETD.Value.AddDays(getHoliday(7, holidaylist, item.ETD.Value)))
+                    //        {
+                    //            if (item.Certificate_Return_TO_SMDate == null || item.FCR_Bill_Return_Date == null)
+                    //            {
+                    //                if (NOCertificateAbnormalloadplan.Where(a => a.Purch_Doc == item.Purch_Doc && a.Item == item.Item).ToList().Count <= 0)
+                    //                {
+                    //                    if (item.Total_Volume != "" && item.Total_Volume != null)
+                    //                    {
+                    //                        totcbm += decimal.Parse(item.Total_Volume);
+                    //                    }
+                    //                    Abnormalloadplan.Add(item);
+                    //                }
+                    //                NOCertificateAbnormalloadplan.Add(item);
+                    //                continue;
+                    //            }
+                    //        }
+                    //    }
+                    //}
+                    //On track
+
+                    //if (Ontrackloadplan.Where(a => a.Purch_Doc == item.Purch_Doc && a.Item == item.Item).ToList().Count <= 0)
+                    //{
+                    if (Ontrackloadplan.Where(a => a.Purch_Doc == item.Purch_Doc && a.Item == item.Item).ToList().Count <= 0)
+                    {
+                        if (item.Total_Volume != null && item.Total_Volume != null)
+                        {
+                            totcbm += item.Total_Volume;
+                        }
+                    }
+                    Ontrackloadplan.Add(item);
+                }
+                //}
+
+
+
+            }
+            decimal s = 0;
+            List<R_Polist_Dashboard> daslist = new List<R_Polist_Dashboard>();
+            R_Polist_Dashboard AbnormalDas = new R_Polist_Dashboard();
+            AbnormalDas.Management = "Exception";
+            AbnormalDas.SepItem = Abnormalloadplan.Where(a => a.FOB_First_Date >= update && a.FOB_First_Date < firstDateNow).ToList().Count.ToString();
+            AbnormalDas.OctItem = Abnormalloadplan.Where(a => a.FOB_First_Date >= firstDateNow && a.FOB_First_Date <= lastDateNow).ToList().Count.ToString();
+            AbnormalDas.NovItem = Abnormalloadplan.Where(a => a.FOB_First_Date > lastDateNow && a.FOB_First_Date <= nextlastDateNow).ToList().Count.ToString();
+
+            AbnormalDas.SepCBM = Abnormalloadplan.Where(a => a.FOB_First_Date >= update && a.FOB_First_Date < firstDateNow).ToList().Sum(a => a.Total_Volume);
+            AbnormalDas.OctCBM = Abnormalloadplan.Where(a => a.FOB_First_Date >= firstDateNow && a.FOB_First_Date <= lastDateNow).ToList().Sum(a => a.Total_Volume);
+            AbnormalDas.NovCBM = Abnormalloadplan.Where(a => a.FOB_First_Date > lastDateNow && a.FOB_First_Date <= nextlastDateNow).ToList().Sum(a => a.Total_Volume);
+            AbnormalDas.PoItem = Abnormalloadplan.Count.ToString();
+            s = decimal.Floor(decimal.Round((decimal)((decimal)int.Parse(AbnormalDas.PoItem) / (decimal)polist.Count), 2) * 100);
+            AbnormalDas.percentage = Convert.ToInt32(s.ToString()).ToString();
+            AbnormalDas.CBM = decimal.Round((decimal)Abnormalloadplan.Sum(a => a.Total_Volume), 2);
+            s = decimal.Floor(decimal.Round((decimal)((decimal)AbnormalDas.OctCBM / (decimal)totcbm), 2) * 100);
+            AbnormalDas.CBMpercentage = s.ToString();
+            if (key == "Abnormal")
+            {
+                //AbnormalDas.AbnormalloadplanList = Abnormalloadplan;
+                AbnormalDas.NobookingAbnormalloadplanList = NobookingAbnormalloadplan.OrderBy(a => a.FOB_First_Date).ToList();
+                AbnormalDas.NOActualAbnormalloadplanList = NOActualAbnormalloadplan.OrderBy(a => a.FOB_First_Date).ToList();
+                // AbnormalDas.NOCertificateAbnormalloadplanList = NOCertificateAbnormalloadplan;
+                AbnormalDas.NoSoDateAbnormalloadplanList = NoSoDateAbnormalloadplan.OrderBy(a => a.FOB_First_Date).ToList();
+                AbnormalDas.VarianceAbnormalloadplanList = VarianceAbnormalloadplan.OrderBy(a => a.FOB_First_Date).ToList();
+            }
+            daslist.Add(AbnormalDas);
+
+            R_Polist_Dashboard ShippedDas = new R_Polist_Dashboard();
+            ShippedDas.Management = "Shipped";
+            ShippedDas.SepItem = Shippedloadplan.Where(a => a.FOB_First_Date >= update && a.FOB_First_Date < firstDateNow).ToList().Count.ToString();
+            ShippedDas.OctItem = Shippedloadplan.Where(a => a.FOB_First_Date >= firstDateNow && a.FOB_First_Date <= lastDateNow).ToList().Count.ToString();
+            ShippedDas.NovItem = Shippedloadplan.Where(a => a.FOB_First_Date > lastDateNow && a.FOB_First_Date <= nextlastDateNow).ToList().Count.ToString();
+
+            ShippedDas.SepCBM = Shippedloadplan.Where(a => a.FOB_First_Date >= update && a.FOB_First_Date < firstDateNow).ToList().Sum(a => a.Total_Volume);
+            ShippedDas.OctCBM = Shippedloadplan.Where(a => a.FOB_First_Date >= firstDateNow && a.FOB_First_Date <= lastDateNow).ToList().Sum(a => a.Total_Volume);
+            ShippedDas.NovCBM = Shippedloadplan.Where(a => a.FOB_First_Date > lastDateNow && a.FOB_First_Date <= nextlastDateNow).ToList().Sum(a => a.Total_Volume);
+            ShippedDas.PoItem = Shippedloadplan.Count.ToString();
+            s = decimal.Floor(decimal.Round((decimal)((decimal)int.Parse(ShippedDas.PoItem) / (decimal)polist.Count), 2) * 100);
+            ShippedDas.percentage = Convert.ToInt32(s.ToString()).ToString();
+           // ShippedDas.Item = Shippedloadplan.Count.ToString();
+
+            ShippedDas.CBM = decimal.Round((decimal)Shippedloadplan.Sum(a => a.Total_Volume), 2);
+
+
+            s = decimal.Floor(decimal.Round((decimal)((decimal)ShippedDas.OctCBM / (decimal)totcbm), 2) * 100);
+            ShippedDas.CBMpercentage = Convert.ToInt32(s.ToString()).ToString();
+
+            if (key == "Shipped")
+            {
+                ShippedDas.ShippedloadplanList = Shippedloadplan.OrderBy(a => a.FOB_First_Date).ToList();
+            }
+            daslist.Add(ShippedDas);
+
+
+            R_Polist_Dashboard OntrackDas = new R_Polist_Dashboard();
+            OntrackDas.Management = "Open Order";
+            OntrackDas.SepItem = Ontrackloadplan.Where(a => a.FOB_First_Date >= update && a.FOB_First_Date < firstDateNow).ToList().Count.ToString();
+            OntrackDas.OctItem = Ontrackloadplan.Where(a => a.FOB_First_Date >= firstDateNow && a.FOB_First_Date <= lastDateNow).ToList().Count.ToString();
+            OntrackDas.NovItem = Ontrackloadplan.Where(a => a.FOB_First_Date > lastDateNow && a.FOB_First_Date <= nextlastDateNow).ToList().Count.ToString();
+
+            OntrackDas.SepCBM = Ontrackloadplan.Where(a => a.FOB_First_Date >= update && a.FOB_First_Date < firstDateNow).ToList().Sum(a => a.Total_Volume);
+            OntrackDas.OctCBM = Ontrackloadplan.Where(a => a.FOB_First_Date >= firstDateNow && a.FOB_First_Date <= lastDateNow).ToList().Sum(a => a.Total_Volume);
+            OntrackDas.NovCBM = Ontrackloadplan.Where(a => a.FOB_First_Date > lastDateNow && a.FOB_First_Date <= nextlastDateNow).ToList().Sum(a => a.Total_Volume);
+            OntrackDas.PoItem = Ontrackloadplan.Count.ToString();
+            s = decimal.Floor(decimal.Round((decimal)((decimal)int.Parse(OntrackDas.PoItem) / (decimal)polist.Count), 2) * 100);
+            OntrackDas.percentage = Convert.ToInt32(s.ToString()).ToString();
+            // OntrackDas.Item = Ontrackloadplan.Count.ToString();
+            //OntrackDas.POpercentage = s * 100;
+            OntrackDas.CBM = decimal.Round((decimal)Ontrackloadplan.Sum(a => a.Total_Volume), 2);
+
+            s = decimal.Floor(decimal.Round((decimal)((decimal)OntrackDas.OctCBM / (decimal)totcbm), 2) * 100);
+            OntrackDas.CBMpercentage = Convert.ToInt32(s.ToString()).ToString();
+
+            if (key == "On track")
+            {
+                OntrackDas.OntrackloadplanList = Ontrackloadplan.OrderBy(a => a.FOB_First_Date).ToList();
+            }
+            daslist.Add(OntrackDas);
+
+
+
+            R_Polist_Dashboard Total = new R_Polist_Dashboard();
+            Total.Management = "Total";
+            //Overall.Item = OverallPOloadplan.Count.ToString();
+            Total.SepItem = loadplans.Where(a => a.FOB_First_Date >= update && a.FOB_First_Date < firstDateNow).ToList().Count.ToString();
+            Total.OctItem = loadplans.Where(a => a.FOB_First_Date >= firstDateNow && a.FOB_First_Date <= lastDateNow).ToList().Count.ToString();
+            Total.NovItem = loadplans.Where(a => a.FOB_First_Date > lastDateNow && a.FOB_First_Date <= nextlastDateNow).ToList().Count.ToString();
+
+            Total.SepCBM = loadplans.Where(a => a.FOB_First_Date >= update && a.FOB_First_Date < firstDateNow).ToList().Sum(a => a.Total_Volume);
+            Total.OctCBM = loadplans.Where(a => a.FOB_First_Date >= firstDateNow && a.FOB_First_Date <= lastDateNow).ToList().Sum(a => a.Total_Volume);
+            Total.NovCBM = loadplans.Where(a => a.FOB_First_Date > lastDateNow && a.FOB_First_Date <= nextlastDateNow).ToList().Sum(a => a.Total_Volume);
+            Total.PoItem = loadplans.Count.ToString();
+            //OntrackDas.POpercentage = s * 100;
+            Total.CBM = decimal.Round((decimal)polist.Sum(a => a.Total_Volume), 2);
+            s = decimal.Floor(decimal.Round((decimal)((decimal)Total.CBM / (decimal)totcbm), 2) * 100);
+            Total.CBMpercentage = Convert.ToInt32(s.ToString()).ToString();
+            if (key == "Total")
+            {
+
+                var uplist = loadplans.Where(a => a.FOB_First_Date >= update && a.FOB_First_Date < firstDateNow).ToList();
+                Total.uploadplanList = new List<R_LoadPlan_Overall>();
+                foreach (var item in uplist)
+                {
+                    var li = Total.uploadplanList.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name).ToList();
+                    if (li.Count <= 0)
+                    {
+                        R_LoadPlan_Overall over = new R_LoadPlan_Overall();
+                        over.Mfr_Name1 = item.Mfr_Name1;
+                        over.FOB_Customer_Name = item.FOB_Customer_Name;
+                        over.TotalNoofPOitem = uplist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name).ToList().Count;
+                        over.TotalQty = uplist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name).Sum(a => a.PO_quantity);
+                        over.Total_CBM = uplist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name).ToList().Sum(a => a.Total_Volume);
+                        over.ConfirmedPO = uplist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name && (a.Arrive_terminal_Date != null || a.Arrive_WHS_Date != null)).ToList().Count;
+                        over.ConfirmedQty = uplist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name && (a.Arrive_terminal_Date != null || a.Arrive_WHS_Date != null)).ToList().Sum(a => a.Qty);
+                        over.ConfirmedCBM = uplist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name && (a.Arrive_terminal_Date != null || a.Arrive_WHS_Date != null)).ToList().Sum(a => a.CBM);
+                        if (over.ConfirmedPO != 0)
+                        {
+                            over.Completed = decimal.Floor(decimal.Round((decimal)((decimal)over.ConfirmedPO / (decimal)over.TotalNoofPOitem), 2) * 100).ToString();
+
+                        }
+                        else
+                        {
+                            over.Completed = "0";
+                        }
+                        over.NoConfirmeItem = uplist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name && a.Arrive_terminal_Date == null && a.Arrive_WHS_Date == null).ToList().Count;
+                        over.NoConfirmedQty = uplist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name && a.Arrive_terminal_Date == null && a.Arrive_WHS_Date == null).ToList().Sum(a => a.Qty);
+                        over.NoConfirmedCBM = uplist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name && a.Arrive_terminal_Date == null && a.Arrive_WHS_Date == null).ToList().Sum(a => a.CBM);
+                        Total.uploadplanList.Add(over);
+
+                    }
+
+                }
+
+
+
+                var overlist = loadplans.Where(a => a.FOB_First_Date >= firstDateNow && a.FOB_First_Date < lastDateNow).ToList();
+                Total.OverallloadplanList = new List<R_LoadPlan_Overall>();
+                foreach (var item in overlist)
+                {
+                    var li=Total.OverallloadplanList.Where(a=>a.Mfr_Name1==item.Mfr_Name1&&a.FOB_Customer_Name==item.FOB_Customer_Name).ToList();
+                    if (li.Count <= 0)
+                    {
+                        R_LoadPlan_Overall over = new R_LoadPlan_Overall();
+                        over.Mfr_Name1 = item.Mfr_Name1;
+                        over.FOB_Customer_Name = item.FOB_Customer_Name;
+                        over.TotalNoofPOitem = overlist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name).ToList().Count;
+                        over.TotalQty = overlist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name).Sum(a => a.PO_quantity);
+                        over.Total_CBM = overlist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name).ToList().Sum(a => a.Total_Volume);
+                        over.ConfirmedPO = overlist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name && (a.Arrive_terminal_Date != null || a.Arrive_WHS_Date != null)).ToList().Count;
+                        over.ConfirmedQty = overlist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name && (a.Arrive_terminal_Date != null || a.Arrive_WHS_Date != null)).ToList().Sum(a => a.Qty);
+                        over.ConfirmedCBM = overlist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name && (a.Arrive_terminal_Date != null || a.Arrive_WHS_Date != null)).ToList().Sum(a => a.CBM);
+                        if (over.ConfirmedPO != 0)
+                        {
+                            over.Completed = decimal.Floor(decimal.Round((decimal)((decimal)over.ConfirmedPO / (decimal)over.TotalNoofPOitem), 2) * 100).ToString();
+
+                        }
+                        else
+                        {
+                            over.Completed = "0";
+                        }
+                        over.NoConfirmeItem = overlist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name && a.Arrive_terminal_Date == null && a.Arrive_WHS_Date == null).ToList().Count;
+                        over.NoConfirmedQty = overlist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name && a.Arrive_terminal_Date == null && a.Arrive_WHS_Date == null).ToList().Sum(a => a.Qty);
+                        over.NoConfirmedCBM = overlist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name && a.Arrive_terminal_Date == null && a.Arrive_WHS_Date == null).ToList().Sum(a => a.CBM);
+                        Total.OverallloadplanList.Add(over);
+                        
+                    }
+                    
+                }
+
+                var nextlist = loadplans.Where(a => a.FOB_First_Date >= lastDateNow && a.FOB_First_Date < nextlastDateNow).ToList();
+                Total.NextloadplanList = new List<R_LoadPlan_Overall>();
+                foreach (var item in nextlist)
+                {
+                    var li = Total.NextloadplanList.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name).ToList();
+                    if (li.Count <= 0)
+                    {
+                        R_LoadPlan_Overall over = new R_LoadPlan_Overall();
+                        over.Mfr_Name1 = item.Mfr_Name1;
+                        over.FOB_Customer_Name = item.FOB_Customer_Name;
+                        over.TotalNoofPOitem = overlist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name).ToList().Count;
+                        over.TotalQty = overlist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name).Sum(a => a.PO_quantity);
+                        over.Total_CBM = overlist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name).ToList().Sum(a => a.Total_Volume);
+                        over.ConfirmedPO = overlist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name && (a.Arrive_terminal_Date != null || a.Arrive_WHS_Date != null)).ToList().Count;
+                        over.ConfirmedQty = overlist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name && (a.Arrive_terminal_Date != null || a.Arrive_WHS_Date != null)).ToList().Sum(a => a.Qty);
+                        over.ConfirmedCBM = overlist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name && (a.Arrive_terminal_Date != null || a.Arrive_WHS_Date != null)).ToList().Sum(a => a.CBM);
+                        if (over.ConfirmedPO!=0)
+                        {
+                            over.Completed = decimal.Floor(decimal.Round((decimal)((decimal)over.ConfirmedPO / (decimal)over.TotalNoofPOitem), 2) * 100).ToString();
+
+                        }
+                        else
+                        {
+                            over.Completed = "0";
+                        }
+                        over.NoConfirmeItem = overlist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name && a.Arrive_terminal_Date == null && a.Arrive_WHS_Date == null).ToList().Count;
+                        over.NoConfirmedQty = overlist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name && a.Arrive_terminal_Date == null && a.Arrive_WHS_Date == null).ToList().Sum(a => a.Qty);
+                        over.NoConfirmedCBM = overlist.Where(a => a.Mfr_Name1 == item.Mfr_Name1 && a.FOB_Customer_Name == item.FOB_Customer_Name && a.Arrive_terminal_Date == null && a.Arrive_WHS_Date == null).ToList().Sum(a => a.CBM);
+                        Total.NextloadplanList.Add(over);
+
+                    }
+
+                }
+            }
+
+            if (AbnormalDas.OctItem != "0")
+            {
+                s = decimal.Floor(decimal.Round((decimal)((decimal)int.Parse(AbnormalDas.OctItem) / (decimal)int.Parse(Total.OctItem)), 2) * 100);
+                AbnormalDas.POpercentage = s.ToString();
+            }
+
+            if (ShippedDas.OctItem != "0")
+            {
+                s = decimal.Floor(decimal.Round((decimal)((decimal)int.Parse(ShippedDas.OctItem) / (decimal)int.Parse(Total.OctItem)), 2) * 100);
+                ShippedDas.POpercentage = Convert.ToInt32(s.ToString()).ToString();
+            }
+
+            if (OntrackDas.OctItem != "0")
+            {
+                s = decimal.Floor(decimal.Round((decimal)((decimal)int.Parse(OntrackDas.OctItem) / (decimal)int.Parse(Total.OctItem)), 2) * 100);
+                OntrackDas.POpercentage = Convert.ToInt32(s.ToString()).ToString();
+            }
+            //s = decimal.Floor(decimal.Round((decimal)((decimal)polist.Count / (decimal)int.Parse(Total.OctItem)), 2) * 100);
+            Total.POpercentage = "100";
+            Total.percentage = "100";
+
+            daslist.Add(Total);
+
+            
+            //cbms = 0;
+            //R_Polist_Dashboard Overall = new R_Polist_Dashboard();
+            //Overall.Management = "Sep";
+            ////Overall.Item = OverallPOloadplan.Count.ToString();
+            //Overall.SepItem = OverallPOloadplan.Where(a => a.FOB_First_Date >= update && a.FOB_First_Date < firstDateNow).ToList().Count.ToString();
+            //Overall.OctItem = OverallPOloadplan.Where(a => a.FOB_First_Date >= firstDateNow && a.FOB_First_Date < lastDateNow).ToList().Count.ToString();
+            //Overall.NovItem = OverallPOloadplan.Where(a => a.FOB_First_Date >= lastDateNow && a.FOB_First_Date < nextlastDateNow).ToList().Count.ToString();
+            //s = decimal.Floor(decimal.Round((decimal)((decimal)OverallPOloadplan.Count / (decimal)polist.Count), 2) * 100);
+            //Overall.POpercentage = Convert.ToInt32(s.ToString()).ToString();
+            ////OntrackDas.POpercentage = s * 100;
+            //foreach (var item in OverallPOloadplan)
+            //{
+            //    if (item.Total_Volume != "")
+            //    {
+            //        cbms += decimal.Parse(item.Total_Volume);
+            //    }
+            //}
+            //Overall.CBM = cbms;
+            //s = decimal.Floor(decimal.Round((decimal)((decimal)Overall.CBM / (decimal)totcbm), 2) * 100);
+            //Overall.CBMpercentage = Convert.ToInt32(s.ToString()).ToString();
+            //if (key == "Sep")
+            //{
+            //    Overall.OverallloadplanList = OverallPOloadplan;
+            //}
+            //daslist.Add(Overall);
+
+
+            //cbms = 0;
+            //R_Polist_Dashboard Next = new R_Polist_Dashboard();
+            //Next.Management = "Oct";
+            //Next.SepItem = NextPOloadplan.Where(a => a.FOB_First_Date >= update && a.FOB_First_Date < firstDateNow).ToList().Count.ToString();
+            //Next.OctItem = NextPOloadplan.Where(a => a.FOB_First_Date >= firstDateNow && a.FOB_First_Date < lastDateNow).ToList().Count.ToString();
+            //Next.NovItem = NextPOloadplan.Where(a => a.FOB_First_Date >= lastDateNow && a.FOB_First_Date < nextlastDateNow).ToList().Count.ToString();
+            //// Next.Item = NextPOloadplan.Count.ToString();
+            //s = decimal.Floor(decimal.Round((decimal)((decimal)NextPOloadplan.Count / (decimal)polist.Count), 2) * 100);
+            //Next.POpercentage = Convert.ToInt32(s.ToString()).ToString();
+            ////OntrackDas.POpercentage = s * 100;
+            //foreach (var item in NextPOloadplan)
+            //{
+            //    if (item.Total_Volume != "")
+            //    {
+            //        cbms += decimal.Parse(item.Total_Volume);
+            //    }
+            //}
+            //Next.CBM = cbms;
+            //s = decimal.Floor(decimal.Round((decimal)((decimal)Next.CBM / (decimal)totcbm), 2) * 100);
+            //Next.CBMpercentage = Convert.ToInt32(s.ToString()).ToString();
+            //if (key == "Oct")
+            //{
+            //    Next.NextloadplanList = NextPOloadplan;
+            //}
+            //daslist.Add(Next);
+
+
+
+            return daslist;
+
+        }
+
+
+        public static int getHoliday(int day,List<FinalLoadPlanHoliday> holiday,DateTime date)
+        {
+            int reday = day;
+            for (int i = 0; i < day; i++)
+            {
+                foreach (var item in holiday)
+                {
+                    if (date.AddDays(-i).ToString("yyyy-MM-dd") == item.holiday.Value.ToString("yyyy-MM-dd"))
+                    {
+                        reday = reday + 1;
+                    }
+                }
+            }
+            return reday;
+
+        }
+
+
+        public static int getWeekNumInMonth(DateTime daytime)
+        {
+            //int dayInMonth = daytime.Day;
+            ////本月第一天
+            //DateTime firstDay = daytime.AddDays(1 - daytime.Day);
+            ////本月第一天是周几
+            //int weekday = (int)firstDay.DayOfWeek == 0 ? 7 : (int)firstDay.DayOfWeek;
+            ////本月第一周有几天
+            //int firstWeekEndDay = 7 - (weekday - 1);
+            ////当前日期和第一周之差
+            //int diffday = dayInMonth - firstWeekEndDay;
+            //diffday = diffday > 0 ? diffday : 1;
+            ////当前是第几周,如果整除7就减一天
+            //int WeekNumInMonth = ((diffday % 7) == 0
+            // ? (diffday / 7 - 1)
+            // : (diffday / 7)) + 1 + (dayInMonth > firstWeekEndDay ? 1 : 0);
+            int WeekNumInMonth = daytime.DayOfYear / 7 + 1;
+            return WeekNumInMonth;
+        }
+
+        public static void UploadVendorInput(FinalVendorInput vendorInfo)
+        {
+            oc.BllSession.IFinalVendorInputBLL.Add(vendorInfo);
+        }
+
+        public static void UploadVendorInputTrucking(FinalVendorInputTrucking trucking)
+        {
+            oc.BllSession.IFinalVendorInputTruckingBLL.Add(trucking);
+        }
+
+        public static void UpdateUploadVendorInput(List<FinalVendorInput> vendorInfoList)
+        {
+            foreach (var item in vendorInfoList)
+            {
+                item.ToPOCO();
+            }
+            Expression<Func<FinalVendorInput, object>>[] ignoreProperties;
+
+            ignoreProperties = new Expression<Func<FinalVendorInput, object>>[] { p => p.VID, p => p.FinalPoList, p => p.FinalVendorInputTrucking };
+            foreach (FinalVendorInput item in vendorInfoList)
+            {
+                oc.BllSession.IFinalVendorInputBLL.Modify(item, ignoreProperties);
+            }
+        }
+
+        public static void UpdateUploadVendorInputTrucking(List<FinalVendorInputTrucking> trucking)
+        {
+            foreach (var item in trucking)
+            {
+                item.ToPOCO();
+            }
+            Expression<Func<FinalVendorInputTrucking, object>>[] ignoreProperties;
+
+            ignoreProperties = new Expression<Func<FinalVendorInputTrucking, object>>[] { p=>p.tID,p=>p.FinalVendorInput};
+
+            foreach (FinalVendorInputTrucking item in trucking)
+            {
+                oc.BllSession.IFinalVendorInputTruckingBLL.Modify(item, ignoreProperties);
+            }
+        }
+
+        public static bool CheckDate(string Purch, string Item)
+        {
+            List<FinalPoList> vendorlist = oc.BllSession.IFinalPoListBLL.GetListBy(a => a.Purch_Doc == Purch && a.Item == Item && a.Mfr_Name1 == oc.CurrentVendorName);
+           if (vendorlist.Count>0)
+           {
+               int id = vendorlist[0].ID;
+               if (oc.BllSession.IFinalVendorInputBLL.GetListBy(a => a.PID == id).Count > 0)
+               {
+                   return true;
+               }
+            }
+           return false;
+        }
+
+        public static string CancelPolist(List<FinalPoList> fin)
+        {
+
+            List<FinalPo_Cancel_Record> cancellist = new List<FinalPo_Cancel_Record>();//取消的单
+            List<FinalPo_Cancel_Record> tocancellist = new List<FinalPo_Cancel_Record>();//重新取消的单
+            List<FinalPo_Cancel_Record> lockllist = new List<FinalPo_Cancel_Record>();//需要解锁的单
+            List<FinalPoList> lockpolist = new List<FinalPoList>();
+            var purchlist = fin.Select(a => a.Purch_Doc);
+
+            var polist = oc.BllSession.IFinalPoListBLL.GetListBy(a => purchlist.Contains(a.Purch_Doc));
+
+            var polistid = polist.Select(a => a.ID);
+
+            var canellist = oc.BllSession.IFinalPo_Cancel_RecordBLL.GetListBy(a => polistid.Contains(a.pID));
+            foreach (var item in fin)
+            {
+                var po = polist.Where(a => a.Purch_Doc == item.Purch_Doc && a.Item == item.Item).ToList();//&& a.Mfr_Name1 == oc.CurrentVendorName
+                if (po.Count > 0)
+                {
+                    var canel = canellist.Where(a => a.pID == po[0].ID).ToList();
+                    if (canel.Count > 0 && canel[0].release == 0)
+                    {
+                        lockpolist.Add(item);
+                        lockllist.Add(canel[0]);
+                        //需要解锁的单
+                    }
+                    else if (canel.Count > 0 && canel[0].release == 1)
+                    {
+                        canel[0].release = 0;
+                        tocancellist.Add(canel[0]);
+                    }
+                    else
+                    {
+                        FinalPo_Cancel_Record cancel = new FinalPo_Cancel_Record();
+                        cancel.pID = po[0].ID;
+                        cancel.cancel_user = oc.CurrentLoginName;
+                        cancel.cancel_time = DateTime.Now;
+                        cancel.release = 0;
+                        cancel.release_user = oc.CurrentLoginName;
+                        cancellist.Add(cancel);
+                    }
+                }
+
+            }
+            StringBuilder str = new StringBuilder();
+            if(lockllist.Count>0){
+                str.Append("Need to unlock to cancel again");
+                foreach (var item in lockpolist)
+                {
+                    str.Append("\n" + "Purch:" + item.Purch_Doc + "  Item:" + item.Item);
+                }
+
+            }
+            else
+            {
+                foreach (var item in cancellist)
+                {
+                    oc.BllSession.IFinalPo_Cancel_RecordBLL.Add(item);//新增加取消订单
+                }
+                //oc.BllSession.IFinalPo_Cancel_RecordBLL.Modifys(tocancellist);//重新取消的订单
+                foreach (var item in tocancellist)
+                {
+                    oc.BllSession.IFinalPo_Cancel_RecordBLL.DelBy(a => a.cID == item.cID);
+                    oc.BllSession.IFinalPo_Cancel_RecordBLL.Add(item);
+                }
+                str.Append("Cancel the success");
+            }
+
+
+            return str.ToString();
+
+        }
+    }
+}

@@ -1,0 +1,402 @@
+﻿@{
+    Layout = null;
+}
+@using Models;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>组织机构管理首页</title>  
+    <!--jQuery库-->
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <!--jQuery Easy库-->
+    <link id="easyuiTheme" href="~/jquery-easyui-1.3.1/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/jquery-easyui-1.3.1/themes/icon.css" rel="stylesheet" />
+    <script src="~/jquery-easyui-1.3.1/jquery.easyui.min.js"></script>
+    <script src="~/jquery-easyui-1.3.1/locale/easyui-lang-zh_CN.js"></script>
+    <!--自定义库-->
+    <script src="~/Scripts/processingajaxmsg.js"></script>
+    <script src="~/Scripts/xzUtil.js"></script>
+    <!--自定义的图标样式-->
+    <link href="~/Content/exticon.css" rel="stylesheet" />
+    <script type="text/javascript">
+        //显示组织机构信息的treeGrid
+        var tgDept;
+        var iconData;
+        var isDelData;
+        $(document).ready(function () {
+            isDelData = [            
+                {
+                    value: true,
+                    text: '禁用'
+                },
+                {
+                    value: false,
+                    text: '启用'
+                }];
+
+            iconData = [{
+                value: 'icon-d1',
+                text: 'icon-d1'
+            }, {
+                value: 'icon-d2',
+                text: 'icon-d2'
+            }, {
+                value: 'icon-d3',
+                text: 'icon-d3'
+            }, {
+                value: 'icon-d4',
+                text: 'icon-d4'
+            }, {
+                value: 'icon-d5',
+                text: 'icon-d5'
+            }, {
+                value: 'icon-d6',
+                text: 'icon-d6'
+            }, {
+                value: 'icon-d7',
+                text: 'icon-d7'
+            }, {
+                value: 'icon-d8',
+                text: 'icon-d8'
+            }, {
+                value: 'icon-d9',
+                text: 'icon-d9'
+            }, {
+                value: 'icon-d10',
+                text: 'icon-d10'
+            }, {
+                value: 'icon-d11',
+                text: 'icon-d11'
+            }];
+
+            tgDept = $("#tgDept").treegrid({
+                fit: true,
+                fitColumns: true,
+                rownumbers: true,
+                nowrap: false,
+                animate: false,
+                border: false,
+                idField: 'depId',
+                treeField: 'depName',
+                url: '/Admin_Areas/Sys_Department/GetDeptInfoByCondition',
+                toolbar: [{
+                    text: '展开',
+                    iconCls: 'icon-redo',
+                    handler: function () {
+                        var node = tgDept.treegrid('getSelected');
+                        if (node) {
+                            tgDept.treegrid('expand', node.depId);
+                        } else {
+                            tgDept.treegrid('expandAll');
+                        }
+                    }
+                }, '-', {
+                    text: '折叠',
+                    iconCls: 'icon-undo',
+                    handler: function () {
+                        var node = tgDept.treegrid('getSelected');
+                        if (node) {
+                            tgDept.treegrid('collapse', node.depId);
+                        } else {
+                            tgDept.treegrid('collapseAll');
+                        }
+                    }
+                },
+                '-', {
+                    text: '刷新',
+                    iconCls: 'icon-reload',
+                    handler: function () {
+                        tgDept.treegrid('reload');
+                    }
+                }
+                ,
+                '-', {
+                    text: '增加',
+                    iconCls: 'icon-add',
+                    handler: showAppendView
+                }
+                ,
+                '-', {
+                    text: '编辑',
+                    iconCls: 'icon-edit',
+                    handler: showEditView
+                }
+                ,
+                '-', {
+                    text: '删除',
+                    iconCls: 'icon-remove',
+                    handler: function () {
+                        removeDept();
+                    }
+                },
+                '-', {
+                    text: '取消选中',
+                    iconCls: 'icon-undo',
+                    handler: function () {
+                        tgDept.treegrid('unselectAll');
+                    }
+                }
+                ],
+                frozenColumns: [[
+                   {
+                       title: '部门编号',
+                       field: 'depId',
+                       width: 80
+                   },
+                     {
+                         title: '部门名称',
+                         field: 'depName',
+                         width: 180,
+                         formatter: function (value, row, index) {
+                             if (value) {
+                                 return xz.fs('<span title="{0}">{1}</span>', value, value);
+                             }
+                         }
+                     }
+                ]],
+                columns: [[                   
+                     {
+                         title: '部门图标',
+                         field: 'depIconCls',
+                         width: 80,
+                         formatter: function (value) {
+                             if (!value) {
+                                 return '';
+                             } else {
+                                 return xz.fs('<span class="{0}" style="display:inline-block;vertical-align:middle;width:16px;height:16px;"></span>', value);
+                             }
+                         }
+
+                     },
+                     {
+                         title: '部门说明',
+                         field: 'depRemark',
+                         width: 180
+                     }
+                     ,
+                     {
+                         title: '操作日期',
+                         field: 'depAddTime',
+                         width: 180,
+                         formatter: function (value) {
+                             if (!value) {
+                                 return '';
+                             } else {
+                                 return eval("new " + value.substr(1, value.length - 2)).toLocaleDateString();
+                             }
+                         }
+
+                     },
+                     {
+                         title: '是否禁用',
+                         field: 'depIsDel',
+                         width: 80,
+                         formatter:xz.formatterEnable
+                     }
+                     ,
+                     {
+                         title: '上级部门名称',
+                         field: 'pDepName',
+                         width: 180
+                     },
+                     {
+                         title: '排序',
+                         field: 'depOrder',
+                         width: 50
+                     }
+                ]],
+                onExpand: function (row) {
+                    tgDept.treegrid('unselectAll');
+                },
+                onCollapse: function (row) {
+                    tgDept.treegrid('unselectAll');
+                },
+                onContextMenu: function (e, row) {
+                    e.preventDefault();
+                    $(this).treegrid('unselectAll');
+                    $(this).treegrid('select', row.depId);
+                    $('#menu').menu('show', {
+                        left: e.pageX,
+                        top:e.pageY
+                    });
+                }
+            });
+
+        });
+
+        /*打开添加组织机构的页面*/
+        function showAppendView()
+        {
+            $.validateUrl('/Admin_Areas/Sys_Department/ShowDeptEditView', append, xz.dealWith, 'Get');
+        }
+        /*打开编辑组织机构的页面*/
+        function showEditView() {
+            $.validateUrl('/Admin_Areas/Sys_Department/ShowDeptEditView', edit, xz.dealWith, 'Get');
+        }
+        /*添加组织机构*/
+        function append() {
+            var pAdd = xz.dialog({
+                title: '新增组织机构',
+                width: 500,
+                height: 320,
+                iconCls: 'icon-add',
+                href: '/Admin_Areas/Sys_Department/ShowDeptEditView',
+                buttons: [{
+                    text: '新增',
+                    iconCls: 'icon-add',
+                    handler: function () {
+                        var f = pAdd.find('form');
+                        f.form('submit',{
+                            url: '/Admin_Areas/Sys_Department/AddDept',
+                            success: function (jsonData) {
+                                jsonData = $.parseJSON(jsonData);
+                                $.procAjaxMsg(jsonData, function () {
+                                    tgDept.treegrid('reload');
+                                    pAdd.dialog('close');
+                                    $.alertMsg(jsonData.Msg, '操作提示', null);
+                                }, function () {
+                                    $.alertMsg(jsonData.Msg, '操作提示', null);
+                                });
+                            }
+                        });
+                    }
+
+                }],
+                onLoad: function () {
+                    var f = pAdd.find('form');
+                    var depPid = f.find('input[name=depPid]');
+                    var depIconCls = f.find('input[name=depIconCls]');
+                    var depName = f.find('input[name=depName]');
+                    var depIsDel = f.find('input[name=depIsDel]');
+                    window.setTimeout(function () {
+                        depName.focus();
+                    },100);
+                    depPid.combotree({
+                        url: '/Admin_Areas/Sys_Department/GetTreeDepInfo',
+                        lines:true,
+                        required: true
+                    });
+                    depIsDel.combobox({
+                        data: isDelData
+                    });
+                    depIconCls.combobox({
+                        data: iconData,
+                        required: true,
+                        formatter: function (row) {
+                            return xz.fs('<span class="{0}" style="display:inline-block;vertical-align:middle;width:16px;height:16px;"></span>{1}', row.value,row.text);
+                        }
+                    });
+                }
+            });
+        }
+        /*修改组织机构*/
+        function edit() {
+            var node = tgDept.treegrid('getSelected');
+            if (node) {
+                var pAdd = xz.dialog({
+                    title: '修改组织机构',
+                    width: 500,
+                    height: 320,
+                    iconCls: 'icon-edit',
+                    href: '/Admin_Areas/Sys_Department/ShowDeptEditView',
+                    buttons: [{
+                        text: '编辑',
+                        iconCls: 'icon-edit',
+                        handler: function () {
+                            var f = pAdd.find('form');
+                            f.form('submit', {
+                                url: '/Admin_Areas/Sys_Department/EditDept',
+                                success: function (jsonData) {
+                                    jsonData = $.parseJSON(jsonData);
+                                    $.procAjaxMsg(jsonData, function () {
+                                        tgDept.treegrid('reload');
+                                        pAdd.dialog('close');
+                                        $.alertMsg(jsonData.Msg, '操作提示', null);
+                                    }, function () {
+                                        $.alertMsg(jsonData.Msg, '操作提示', null);
+                                    });
+                                }
+                            });
+                        }
+
+                    }],
+                    onLoad: function () {
+                        var f = pAdd.find('form');
+                        var depPid = f.find('input[name=depPid]');
+                        var depIconCls = f.find('input[name=depIconCls]');
+                        var depName = f.find('input[name=depName]');
+                        var depIsDel = f.find('input[name=depIsDel]');
+                        window.setTimeout(function () {
+                            depName.focus();
+                        }, 100);
+                        depPid.combotree({
+                            url: '/Admin_Areas/Sys_Department/GetTreeDepInfo',
+                            lines: true,
+                            required: true
+                        });
+                        depIsDel.combobox({
+                            data: isDelData                                            
+                        });
+                        depIconCls.combobox({
+                            data: iconData,
+                            required: true,
+                            formatter: function (row) {
+                                return xz.fs('<span class="{0}" style="display:inline-block;vertical-align:middle;width:16px;height:16px;"></span>{1}', row.value, row.text);
+                            }
+                        });
+                        /*把选中的组织机构信息绑定到对应的表单上面*/
+                        f.form('load',node);
+                    }
+
+                });
+            } else {
+                xz.messagerAlert('提示', '请选择要修改的组织机构！', 'error');
+            }
+
+        }
+
+        /*删除组织机构*/
+        function removeDept() {           
+            /*选中要删除的结点*/
+            var node = tgDept.treegrid('getSelected');
+            if (node) {
+                xz.messagerConfirm('询问', '您确定要删除【' + node.depName + '】？', function (b) {
+                    if (b) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/Admin_Areas/Sys_Department/DelDept',
+                            data: {
+                                depId:node.depId
+                            },
+                            cache: false,
+                            dataType: 'JSON',
+                            success: function (jsonData) {                               
+                                $.procAjaxMsg(jsonData, function () {
+                                    tgDept.treegrid('reload');                                 
+                                    $.alertMsg(jsonData.Msg, '操作提示', null);
+                                }, function () {
+                                    $.alertMsg(jsonData.Msg, '操作提示', null);
+                                });
+                            }
+                        });
+                    }
+                });
+            } else {
+                xz.messagerAlert('提示', '请选择要删除的组织机构！', 'error');
+            }
+        }
+    </script> 
+</head>
+<body class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'center',border:false" style="overflow:hidden;">
+        <table id="tgDept"></table>
+    </div>
+    <div id="menu" class="easyui-menu" style="width:120px;display:none;">
+        <div onclick="showAppendView();" data-options="iconCls:'icon-add'">增加</div>
+        <div onclick="removeDept();" data-options="iconCls:'icon-remove'">删除</div>
+        <div onclick="showEditView();" data-options="iconCls:'icon-edit'">编辑</div>
+    </div>
+
+</body>
+</html>

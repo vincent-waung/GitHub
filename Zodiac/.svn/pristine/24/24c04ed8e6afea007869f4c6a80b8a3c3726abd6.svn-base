@@ -1,0 +1,441 @@
+﻿@{
+    Layout = null;
+}
+@using Models;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+ 
+    <title>Lead Sail OTTP</title>
+    <link rel="shortcut icon" type="image/ico" href="~/Content/exticons/qxSystem.png">
+    <link href="~/Content/css/index.css" rel="stylesheet" />
+    <!--jQuery库-->
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <!--jQuery Easy库-->
+    <link id="easyuiTheme" href="~/jquery-easyui-1.3.1/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/jquery-easyui-1.3.1/themes/icon.css" rel="stylesheet" />
+    <script src="~/jquery-easyui-1.3.1/jquery.easyui.min.js"></script>
+    @*<script src="~/jquery-easyui-1.3.1/locale/easyui-lang-zh_CN.js"></script>*@
+    <!--jQuery Cookie-->
+    <script src="~/Scripts/jquery.cookie.js"></script>
+    <!--jquery-easyui-portal-->
+    <link href="~/jquery-easyui-portal/portal.css" rel="stylesheet" />
+    <script src="~/jquery-easyui-portal/jquery.portal.js"></script>
+    <!--自定义库-->
+    <script src="~/Scripts/processingajaxmsg.js"></script>
+    <script src="~/Scripts/xzUtil.js"></script>
+    <script src="~/Scripts/layout-center.js"></script>
+    <script src="~/Scripts/layout-west.js"></script>
+    @*<script src="~/Scripts/layout-portal.js"></script>*@
+    <!--HignCharts-->
+    <script src="~/Scripts/Highcharts/highcharts.js"></script>
+    <script src="~/Scripts/Highcharts/modules/exporting.js"></script>
+    <script src="~/Scripts/Highcharts/themes/grid.js"></script>
+    <script src="~/Scripts/Highcharts/highcharts-more.js"></script>
+    <script src="~/Scripts/Highcharts/highcharts-3d.js"></script>
+    @*<script src="~/Highcharts-8.2.0/code/highcharts.js"></script>*@
+    <script type="text/javascript">
+        /*从Cookie中读取保存的主题信息*/
+        function initTheme() {
+            var cookie_skin = $.cookie("easyuiThemeName");
+            if (cookie_skin) {
+                var $easyuiTheme = $("#easyuiTheme");
+                $easyuiTheme.attr('href', cookie_skin);
+            }
+        }
+        $(document).ready(function () {
+            
+
+            initTheme();
+            // tongjiPerCountByDept();
+            xz.loadHighChart('chartOne', 'column', '各部门人员比例', '/Admin_Areas/Sys_UserInfo/GetUserCountByDepName', '各组织机构人员比例');
+            xz.loadHighChart('chartTwo', 'pie', '男女人员比例', '/Admin_Areas/Sys_UserInfo/GetPerCountByGender', '男女人员比例');
+            /*给我们Layout中间的区域加上修改密码和退出两个图标*/
+            $('#center').panel({
+                tools: [{
+                    iconCls: 'icon-pwd',
+                    handler: function () {
+                        $.validateUrl('/Admin_Areas/AdminIndex/View_ModifyPwd', showMPwdView, dealWith);
+                    }
+                }, {
+                    iconCls: 'icon-exit',
+                    handler: function () {
+                        myExit();
+                    }
+                }]
+            });
+
+
+            loadCalendar();
+            $("#ctrlTree").tree({
+                onLoadSuccess: function (node, data) {
+                    if (data.length > 0) {
+                        //找到第一个元素
+                        var n = $('#ctrlTree').tree('find', data[0].id);
+                        //调用选中事件
+                        $('#ctrlTree').tree('select', n.target);
+                        n.target.click();
+                       
+                    }
+                }
+            });
+            $("#centerTabs").tabs('select', 0);
+        });
+
+        /*hignCharts图表示例*/
+        function tongjiPerCountByDept() {
+            var xAxis = [];
+            var series = [];
+            /*从后台读取各部门人数*/
+            $.getJSON(
+                '/Admin_Areas/Sys_UserInfo/GetUserCountByDepName'
+                , function (jsonData) {
+                    /*把相关的数据放入对应的数组*/
+                    for (var key in jsonData) {
+                        if (jsonData[key].Name) {
+                            xAxis.push(jsonData[key].Name);
+                            series.push(jsonData[key].Count);
+                        }
+                    }
+
+                    $('#chartOne').highcharts({                   //图表展示容器，与div的id保持一致
+                        chart: {
+                            type: 'column'                         //指定图表的类型，默认是折线图（line）
+                        },
+                        title: {
+                            text: '各部门人数'      //指定图表标题
+                        },
+                        xAxis: {
+                            categories: xAxis  //指定x轴分组
+                        },
+                        yAxis: {
+                            title: {
+                                text: '人数(个)'                  //指定y轴的标题
+                            }
+                        },
+                        series: [{                                 //指定数据列
+                            name: '各部门人数',                          //数据列名
+                            data: series                       //数据
+                        }]
+                    });
+
+                }
+             );
+
+
+        }
+        /*退出当前系统*/
+        function myExit() {
+            $.messager.confirm("Please confirm", "Are you sure to log out?", function (r) {
+                if (r) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Login/LoginOut',
+                        success: dealWithLoginOut
+                    });
+                }
+
+            });
+
+        }
+        /*利用封装的方法把修改的密码的对话框显示出来*/
+        function showMPwdView() {
+            var p = xz.dialog({
+                title: 'Modify Password',
+                width: 350,
+                height: 250,
+                href: '/Admin_Areas/AdminIndex/View_ModifyPwd',
+                iconCls: 'icon-pwd',
+                buttons: [{
+                    iconCls: 'icon-ok',
+                    text: 'Confirm',
+                    handler: function () {
+                        var f = p.find('form');
+                        f.form('submit', {
+                            url: '/Admin_Areas/Sys_UserInfo/EditUserPwd',
+                            success: function (jsonData) {
+                                jsonData = $.parseJSON(jsonData);
+                                $.procAjaxMsg(jsonData, function () {
+                                    p.dialog('close');
+                                    $.alertMsg(jsonData.Msg, 'Alert', null);
+                                }, function () {
+                                    $.alertMsg(jsonData.Msg, 'Alert', null);
+                                });
+                            }
+                        });
+
+                    }
+                }, {
+                    iconCls: 'icon-cancel',
+                    text: 'Cancel',
+                    handler: function () {
+                        p.dialog('close');
+                    }
+                }],
+                onLoad: function () {
+                    var f = p.find('form');
+                    f.form("load", {
+                        uId: '@ViewBag.uId',
+                        cloginName: '@ViewBag.uLoginName'
+                    });
+                }
+
+            });
+
+        }
+        /*ajax提交成功以后调用的方法*/
+        function dealWithLoginOut(jsonData) {
+            $.procAjaxMsg(jsonData, function () {
+                window.location.href = jsonData.BackUrl;
+            }, function () {
+                $.alertMsg(jsonData.Msg, '退出失败', null);
+            })
+        }
+
+
+
+        /*加载日历信息*/
+        function loadCalendar() {
+            $('#calendar').calendar({
+                fit: true,
+                current: new Date(),
+                border: false,
+                onSelect: function (date) {
+                    $(this).calendar('moveTo', new Date());
+                }
+            });
+        }
+        /*改变导航方式*/
+        function changeNav(nav) {
+            $.ajax({
+                type: 'POST',
+                url: '/Admin_Areas/Sys_UserSetting/EditUserSetting',
+                data: {
+                    SettingCode: 'navigation',
+                    SettingValue: nav
+                },
+                dataType: 'json',
+                success: function (jsonData) {
+                    $.procAjaxMsg(jsonData, function () {
+                        $.alertMsg(jsonData.Msg, "成功修改", function () {
+                            window.location.reload();
+                        })
+                    }, function () {
+                        $.alertMsg(jsonData.Msg, "修改失败", null)
+                    });
+                }
+            });
+        }
+
+        /*打印用户信息*/
+        function printUserInfo() {
+            $.ajax({
+                type: "POST",
+                url: '/Admin_Areas/Sys_UserInfo/PintUserReport',
+                data: {},
+                cache: false,
+                dataType: 'JSON',
+                success: function (jsonData) {
+                    $.procAjaxMsg(jsonData, function () {
+                        $.alertMsg(jsonData.Msg, "操作提示", null);
+                    }, function () {
+                        $.alertMsg(jsonData.Msg, "操作提示", null);
+                    });
+                }
+            });
+        }
+    </script>
+    <link href="~/Content/exticon.css" rel="stylesheet" />
+    <style type="text/css">
+        body {
+            font-size: 12px;
+            font-family: Verdana, Geneva, sans-serif;
+            line-height: 25px;
+            margin: 0;
+            padding: 0;
+            color: #3b6e81;
+        }
+
+        #divRepeat {
+            background-image: url(../../Content/images/AdminIndex/index_top_bg.jpg);
+            background-repeat: repeat-x;
+            width: 100%;
+            height: 80px;
+            overflow: hidden;
+        }
+
+        #banner {
+            background-image: url(../../Content/images/banner.jpg);
+            background-repeat: no-repeat;
+            width: 681px;
+            height: 79px;
+            float: right;
+            overflow: hidden;
+        }
+
+        #logo {
+            background-image: url(../../Content/images/AdminIndex/index_top_small.jpg);
+            background-repeat: no-repeat;
+            width: 800px;
+            height: 80px;
+            float: left;
+            overflow: hidden;
+        }
+
+        #product {
+            width: 350px;
+            height: 64px;
+            margin: 10px;
+            font-size: 40px;
+            font-weight: bolder;
+            font-family: 'Microsoft YaHei' !important;
+            float: left;
+            color: white;
+            overflow: hidden;
+        }
+
+        .fontBig {
+            line-height: 25px;
+            color: #15428B;
+        }
+
+        .fl {
+            float: left;
+        }
+
+        .fr {
+            float: right;
+        }
+
+        #logoright {
+            float: right;
+            margin-top: 55px;
+            margin-right: 10px;
+        }
+
+            #logoright a {
+                font-size: 12px;
+                font-family: Verdana, Geneva, sans-serif;
+                color: white;
+                text-decoration: none;
+            }
+    </style>
+</head>
+<body class="easyui-layout">
+    <div data-options="region:'north'" style="height:82px;">
+        <div id="divRepeat">
+            <div id="logo">
+            </div>
+            <div id="logoright">
+
+                @*<a href="javascript:void(0);" class="easyui-menubutton" data-options="menu:'#pfMenu',iconCls:'icon-pf'">【更换皮肤】</a>*@
+
+                <a href="javascript:void(0);" onclick="showMPwdView();"><img src="~/Content/exticons/pwd.png" />【Modify Password】</a>
+
+                <a href="javascript:void(0);" onclick="myExit();"><img src="~/Content/exticons/exit.png" />【Logout】</a>
+            </div>
+        </div>
+    </div>
+    <div data-options="region:'south'" style="height: 30px; background: #D2E0F2; ">
+        <div id="userInfo" class="fl fontBig">
+            @if (ViewData["cUser"] != null)
+            {
+                Sys_UserInfo cUser = ViewData["cUser"] as Sys_UserInfo;
+                <span class="fontBig">
+                    <img src="~/Content/images/AdminIndex/Person.png" />
+                    Current User:【@cUser.uLoginName】&nbsp;
+                    <img src="~/Content/images/AdminIndex/DepartMent.png" />
+                    Department:【@cUser.Sys_Department.depName】
+                </span>
+            }
+        </div>
+        <div id="comInfo" class="fl" style="margin-left:20px;">
+            <img src="~/Content/exticons/xz.png" />
+            <span class="fontBig"> &copy; </span>
+        </div>
+        <div class="fr">
+            <a href="javascript:void(0);" class="easyui-menubutton" title="更换导航方式" data-options="menu:'#navMenu',iconCls:'icon-c5'"></a>
+            <a href="javascript:void(0);" class="easyui-menubutton" title="更换界面皮肤" data-options="menu:'#pfMenu',iconCls:'icon-pf'"></a>
+            <img src="~/Content/exticons/beifeng.png" />
+            <span class="fontBig"> &copy;Lead Sail</span>
+        </div>
+    </div>
+    <div data-options="region:'west',title:''" style="width:200px;overflow:hidden;">
+        <!--树型导航菜单-->
+        <div id="actree" class="easyui-accordion" data-options="fit:true,border:false">
+            <div title="System Menu" data-options="iconCls:'icon-d11',tools:[
+                 {
+                    iconCls:'icon-reload',
+                    handler:function(){
+                        ctrlTree.tree('reload');
+                   }
+                 },
+                  {
+                    iconCls:'icon-redo',
+                    handler:function(){
+                       var node = ctrlTree.tree('getSelected');
+                        if(node){
+                           ctrlTree.tree('expand',node.target);
+                        }else{
+                           ctrlTree.tree('expandAll');
+                        }
+                   }
+                 }
+                 ,
+                  {
+                    iconCls:'icon-undo',
+                    handler:function(){
+                       var node = ctrlTree.tree('getSelected');
+                        if(node){
+                           ctrlTree.tree('collapse',node.target);
+                        }else{
+                           ctrlTree.tree('collapseAll');
+                        }
+                   }
+                 }
+                 ]">
+                <ul id="ctrlTree" style="margin-top:-15px;"></ul>
+            </div>
+        </div>
+        <!--手风琴导航菜单-->
+        <div id="wnav"></div>
+    </div>
+    <div id="center" data-options="region:'center',title:'',iconCls:'icon-d9'," style="padding:5px;background:#eee;">
+        <div id="centerTabs">
+            @*<div title="My Desk" style="overflow:hidden;">
+                <div id="portal" style="position:relative">
+                    <div></div>
+                    <div></div>
+                </div>
+               <img src="~/Content/images/AdminIndex/nav.jpg" />
+            </div>*@
+        </div>
+        <div id="tabsMenu" style="width: 120px; display: none; background: #D2E0F2;">
+            <div title="refresh" class="icon-reload">Refresh</div>
+            <div class="menu-sep"></div>
+            <div title="close" class="icon-remove">Close</div>
+            <div class="menu-sep"></div>
+            <div title="closeOther" class="icon-cut">Close Others</div>
+            <div class="menu-sep"></div>
+            <div title="closeAll" class="icon-no">Close All</div>
+        </div>
+    </div>
+    <!--换肤html-->
+    @*<div id="pfMenu" style="width: 120px; display: none; background: #D2E0F2;">
+        <div onclick="xz.changeTheme('default');">默认</div>
+        <div onclick="xz.changeTheme('cupertino');">库比蒂诺</div>
+        <div onclick="xz.changeTheme('dark-hive');">黑海</div>
+        <div onclick="xz.changeTheme('gray');">灰色</div>
+        <div onclick="xz.changeTheme('metro');">metro</div>
+        <div onclick="xz.changeTheme('pepper-grinder');">胡椒粉</div>
+        <div onclick="xz.changeTheme('sunny');">夏日</div>
+    </div>*@
+    <!--导航html-->
+    @*<div id="navMenu" style="width: 120px; display: none; background: #D2E0F2;">
+        <div onclick="changeNav('accordion');">默认</div>
+        <div onclick="changeNav('accordion');">手风琴</div>
+        <div onclick="changeNav('tree');">树型结构</div>
+    </div>*@
+</body>
+</html>

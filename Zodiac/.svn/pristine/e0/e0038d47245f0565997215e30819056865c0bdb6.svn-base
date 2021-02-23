@@ -1,0 +1,57 @@
+﻿<link href="~/Content/css/editview.css" rel="stylesheet" />
+<div id="div_EidtBanner">
+    <div style="float:left;">
+        <img src="~/Content/images/b.jpg" />
+    </div>
+    <span class="titleFont">通权系统--编辑组织机构</span>
+</div>
+<div id="div_EditView">
+    <form method="post">
+        <table>
+            <tr style="height:0px;">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input name="depId" type="hidden" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>部门名称:</td>
+                <td>
+                    <input name="depName" class="easyui-validatebox" style="width:150px;" data-options="required:true,missingMessage:'必填部门名称!'" />
+                </td>
+                <td>排&nbsp;&nbsp;&nbsp;&nbsp;序:</td>
+                <td><input name="depOrder" class="easyui-numberspinner" style="width:150px;"
+       data-options="min:0,max:11111,editable:false,required:true,missingMessage:'必填部门排序!'" value="10" />
+</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>上级部门:</td>
+                <td>
+                    <input name="depPid" class="easyui-validatebox" style="width:150px;" data-options="missingMessage:'必填上级部门名称!'" />
+                </td>
+                <td>图&nbsp;&nbsp;&nbsp;&nbsp;标:</td>
+                <td>
+                    <input name="depIconCls" class="easyui-validatebox" style="width:150px;" data-options="missingMessage:'必填部门图标!'" />
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>是否禁用:</td>
+                <td>
+                    <input name="depIsDel" class="easyui-validatebox" style="width:150px;" />
+                </td>
+                <td>说&nbsp;&nbsp;&nbsp;&nbsp;明:</td>
+                <td>
+                    <input name="depRemark" class="easyui-validatebox" style="width:150px;" />
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </form>
+</div>

@@ -1,0 +1,119 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>十二生肖首页</title>
+    <!--jQuery库-->
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <!--jQuery Easy库-->
+    <link href="~/jquery-easyui-1.3.1/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/jquery-easyui-1.3.1/themes/icon.css" rel="stylesheet" />
+    <script src="~/jquery-easyui-1.3.1/jquery.easyui.min.js"></script>
+    <script src="~/jquery-easyui-1.3.1/locale/easyui-lang-zh_CN.js"></script>
+    <!--自定义库-->
+    <script src="~/Scripts/processingajaxmsg.js"></script>
+    <style type="text/css">
+        #divRepeat {
+            background-image: url(../../Content/images/repeat.jpg);
+            background-repeat: repeat-x;
+            width: 100%;
+            height: 79px;
+            overflow: hidden;
+        }
+
+        #banner {
+            background-image: url(../../Content/images/banner.jpg);
+            background-repeat: no-repeat;
+            width: 681px;
+            height: 79px;
+            float: right;
+            overflow: hidden;
+        }
+
+        #logo {
+            background-image: url(../../Content/images/logo.png);
+            background-repeat: no-repeat;
+            width: 180px;
+            height: 60px;
+            margin: 10px 0px 0px 0px;
+            float: left;
+            overflow: hidden;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //加载树型菜单
+            $("#menuTree").tree({
+                url: '/Zodiac_Areas/ZodiacIndex/GetAllPers',
+                lines: true,
+                animate: true,
+                onClick: function (node) {
+                    if (node.attributes.url) {
+                        newTab(node);
+                    }
+                }
+            });
+
+            //tabs首页
+            $("#tabs").tabs("add", {
+                title: "首页",
+                content: newIframe("/Zodiac_Areas/ZodiacIndex/TabIndex"),
+                closable: false,
+                fit: true
+            });
+
+            //页面的frame
+            function newIframe(url) {
+                var ifrStr = "<iframe src='" + url + "' style='width:100%;height:100%;border:0px solid #000;' ></iframe>";
+                return ifrStr;
+            }
+            //打开菜单对应的页面
+            function newTab(treeNode) {
+                var $tabs = $("#tabs");
+                if ($tabs.tabs("exists", treeNode.text)) {
+                    var currTab = $tabs.tabs("getSelected");
+                    var currTitle = currTab.panel("options").title;
+                    if (currTitle == treeNode.text) {
+                        $tabs.tabs("update", {
+                            tab: currTab,
+                            options: {
+                                content: newIframe(treeNode.attributes.url)
+                            }
+                        });
+                    }
+
+                    $tabs.tabs("select", treeNode.text);
+                }
+                else {
+                    $("#tabs").tabs("add", {
+                        title: treeNode.text,
+                        content: newIframe(treeNode.attributes.url),
+                        closable: true,
+                        fit: true
+                    });
+                }
+            }
+        });
+    </script>
+</head>
+<body class="easyui-layout">
+    <div data-options="region:'north'" style="height:82px; background-color:#E0ECFF">
+        <div id="divRepeat">
+            <div id="logo"></div>
+            <div id="banner"></div>
+        </div>
+    </div>
+    <div data-options="region:'west',title:'菜单导航',split:true" style="width:180px;">
+        <ul id="menuTree"></ul>
+    </div>
+    <div data-options="region:'center'," style="padding:0px;background:#eee;">
+        <div id="tabs" class="easyui-tabs" data-options="fit:true,border:false">
+        </div>
+    </div>
+</body>
+</html>

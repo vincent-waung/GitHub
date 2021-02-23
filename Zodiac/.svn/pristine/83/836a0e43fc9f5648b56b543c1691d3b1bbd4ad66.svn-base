@@ -1,0 +1,393 @@
+﻿@{
+    Layout = null;
+}
+@using Models;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>角色管理首页</title>
+    <!--jQuery库-->
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <!--jQuery Easy库-->
+    <link id="easyuiTheme" href="~/jquery-easyui-1.3.1/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/jquery-easyui-1.3.1/themes/icon.css" rel="stylesheet" />
+    <script src="~/jquery-easyui-1.3.1/jquery.easyui.min.js"></script>
+    <script src="~/jquery-easyui-1.3.1/locale/easyui-lang-zh_CN.js"></script>
+    <!--自定义库-->
+    <script src="~/Scripts/processingajaxmsg.js"></script>
+    <script src="~/Scripts/xzUtil.js"></script>
+    <!--自定义的图标样式-->
+    <link href="~/Content/exticon.css" rel="stylesheet" />
+    <script type="text/javascript">
+        /*显示角色的表格*/
+        var dgRole;
+        /*当前的编辑行*/
+        var editRow=undefined;
+        var searchForm;
+        var isDelData;
+        var isShowData;
+        $(function () {
+            searchForm = $('#searchForm');
+            isShowData = [
+             {
+                 value: true,
+                 text: '可见'
+             },
+             {
+                 value: false,
+                 text: '不可见'
+             }];
+            isDelData = [
+              {
+                  value: true,
+                  text: '禁用'
+              },
+              {
+                  value: false,
+                  text: '启用'
+              }];
+            dgRole = $("#dgRole").datagrid({
+                iconCls: 'icon-save',
+                fit: true,
+                fitColumns: true,
+                rownumbers: true,
+                nowrap: false,
+                animate: false,
+                border: false,
+                singleSelect:true,
+                idField: 'rId',
+                pagination: true,
+                pageSize: 5,
+                pageList: [5, 10, 15, 20, 25],
+                url: '/Admin_Areas/Sys_Role/GetRoleInfoByCondition',
+                toolbar: [{
+                    text: '刷新',
+                    iconCls: 'icon-reload',
+                    handler: function () {
+                        dgRole.datagrid('load');
+                    }
+                }
+                ,
+                '-', {
+                    text: '增加',
+                    iconCls: 'icon-add',
+                    handler: function () {
+                        appendRole();
+                    }
+                }
+                ,
+                '-', {
+                    text: '编辑',
+                    iconCls: 'icon-edit',
+                    handler: function () {
+                        editRole();
+                    }
+                }
+                ,
+                '-', {
+                    text: '删除',
+                    iconCls: 'icon-remove',
+                    handler: function () {
+                        removeRole();
+                    }
+                }, '-', {
+                    text: '保存',
+                    iconCls: 'icon-save',
+                    handler: function () {
+                        if (editRow != undefined) {
+                            dgRole.datagrid('endEdit', editRow);
+                        }
+
+                    }
+                }, '-', {
+                    text: '取消编辑',
+                    iconCls: 'icon-undo',
+                    handler: function () {
+                        dgRole.datagrid('unselectAll');
+                        dgRole.datagrid('rejectChanges');
+                        editRow = undefined;
+                    }
+                },
+                '-', {
+                    text: '取消选中',
+                    iconCls: 'icon-undo',
+                    handler: function () {
+                        dgRole.datagrid('unselectAll');
+                    }
+                }
+                ],
+                frozenColumns: [[
+                   {
+                       title: '角色编号',
+                       field: 'rId',
+                       sortable: true,
+                       align:'center',
+                       width: 80
+                   },
+                     {
+                         title: '角色名称',
+                         field: 'rName',
+                         width: 100,
+                         sortable: true,
+                         align: 'center',
+                         editor: {
+                             type: 'validatebox',
+                             options: {
+                                 required:true
+                             }
+                         },
+                         formatter: function (value, row, index) {
+                             if (value) {
+                                 return xz.fs('<span title="{0}">{1}</span>', value, value);
+                             }
+                         }
+                     }
+                ]],
+                columns: [[
+                     {
+                         title: '所属部门',
+                         field: 'rDepId',
+                         width: 200,
+                         editor: {
+                             type: 'combotree',
+                             options: {
+                                 url: '/Admin_Areas/Sys_Department/GetTreeDepInfo',
+                                 lines: true,
+                                 required: true
+                             }
+                         },
+                         formatter: function (value, row, index) {
+                             if (row.depName) {
+                                 return row.depName;
+                             } else {
+                                 return value;
+                             }
+                         }
+
+
+                     },
+                     {
+                         title: '是否可见',
+                         field: 'rIsShow',
+                         width: 80,
+                         align: 'center',
+                         editor: {
+                             type: 'combobox',
+                             options: {
+                                 data: isShowData
+                             }
+                         },
+                         formatter: xz.formatterEnable
+                     }
+                     ,
+                     {
+                         title: '是否禁用',
+                         field: 'rIsDel',
+                         align: 'center',
+                         width: 80,
+                         editor: {
+                             type: 'combobox',
+                             options: {
+                                 data: isDelData
+                             }
+                         },
+                         formatter: xz.formatterEnable
+                     }
+                     ,
+                     {
+                         title: '角色说明',
+                         field: 'rRemark',
+                         align: 'center',
+                         editor: {
+                             type: 'text'                           
+                         },
+                         width: 180
+                     }
+                     ,
+                     {
+                         title: '操作日期',
+                         field: 'rAddTime',
+                         align: 'center',
+                         width: 180,
+                         formatter: function (value) {
+                             if (value) {
+
+                                 return eval("new " + value.substr(1, value.length - 2)).toLocaleDateString();
+                             }
+                         }
+
+                     }
+                ]],
+                onDblClickRow: function (rowIndex, rowData) {
+                    if (editRow != undefined) {
+                        dgRole.datagrid('endEdit', editRow);
+                    } else {
+                        dgRole.datagrid('beginEdit', rowIndex);
+                        editRow = rowIndex;
+                        dgRole.datagrid('selectRow', editRow);
+                    }
+                },
+                onAfterEdit: function (rowIndex, rowData, changes) {
+                    var inserted = dgRole.datagrid('getChanges', 'inserted');
+                    var updated = dgRole.datagrid('getChanges', 'updated');
+                    if (inserted.length < 1 && updated.length < 1) {
+                        editRow = undefined;
+                        dgRole.datagrid('unselectAll');
+                        return;
+                    }
+                    var url = '';
+                    if (inserted.length > 0) {
+                        url = '/Admin_Areas/Sys_Role/AddRole';
+                    } else {
+                        url = '/Admin_Areas/Sys_Role/EditRole';
+                    }
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        data: rowData,
+                        dataType: 'json',
+                        success: function (jsonData) {
+                            $.procAjaxMsg(jsonData, function () {
+                                dgRole.datagrid('acceptChanges');
+                                editRow = undefined;
+                                dgRole.datagrid('reload');
+                                dgRole.datagrid('unselectAll');
+                                $.alertMsg(jsonData.Msg, '操作提示', null);
+                            }, function () {
+                                dgRole.datagrid('selectRow', editRow);
+                                dgRole.datagrid('beginEdit', editRow);
+                                $.alertMsg(jsonData.Msg, '操作提示', null);
+                            });
+                        }
+                    });
+                },
+                onRowContextMenu: function (e, rowIndex, rowData) {
+                    e.preventDefault();
+                    $(this).datagrid('unselectAll');
+                    $(this).datagrid('selectRow', rowIndex);
+                    $('#menu').menu('show', {
+                        left: e.pageX,
+                        top: e.pageY
+                    });
+                }
+            });
+        });
+
+        /*过滤角色信息*/
+        function searchRole() {
+            dgRole.datagrid('load',xz.serializeObject(searchForm));
+        }
+
+        /*清空过滤表单*/
+        function clearSearch() {
+            dgRole.datagrid('load', {});
+            searchForm.find('input').val('');
+        }
+        /**
+        *增加角色信息
+        */
+        function appendRole() {
+            if (editRow != undefined) {
+                dgRole.datagrid('endEdit', editRow);
+            } else {
+                dgRole.datagrid('unselectAll');
+                var newRow = {
+                    rIsShow:true,
+                    rIsDel:false
+                };
+                dgRole.datagrid('appendRow', newRow);
+                editRow = dgRole.datagrid('getRows').length - 1;
+                dgRole.datagrid('selectRow', editRow);
+                dgRole.datagrid('beginEdit', editRow);
+            }
+        }
+
+        /**
+        *编辑角色信息
+        */
+        function editRole() {
+            var row = dgRole.datagrid('getSelected');
+            if (row) {
+                if (editRow != undefined) {
+                    dgRole.datagrid('endEdit', editRow);
+                } else {
+                    editRow = dgRole.datagrid('getRowIndex', row);
+                    dgRole.datagrid('selectRow', editRow);
+                    dgRole.datagrid('beginEdit', editRow);
+                }
+            }
+            else {
+                xz.messagerAlert('提示', '请选择要编辑的角色！', 'error');
+            }
+
+        }
+
+        /*删除角色*/
+        function removeRole() {
+            /*选中要删除的结点*/
+            var node = dgRole.datagrid('getSelected');
+            if (node) {
+                xz.messagerConfirm('询问', '您确定要删除【' + node.rName + '】？', function (b) {
+                    if (b) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/Admin_Areas/Sys_Role/DelRole',
+                            data: {
+                                rId: node.rId
+                            },
+                            cache: false,
+                            dataType: 'JSON',
+                            success: function (jsonData) {
+                                $.procAjaxMsg(jsonData, function () {
+                                    dgRole.datagrid('reload');                                 
+                                    $.alertMsg(jsonData.Msg, '操作提示', null);
+                                }, function () {
+                                    $.alertMsg(jsonData.Msg, '操作提示', null);
+                                });
+                            }
+                        });
+                    }
+                });
+            } else {
+                xz.messagerAlert('提示', '请选择要删除的组织机构！', 'error');
+            }
+        }
+    </script>
+</head>
+<body class="easyui-layout" data-options="fit:true">
+    <!--条件检索-->
+    <div data-options="region:'north',title:'过滤条件',split:true,border:false,collapsed:true" style="height:90px;overflow:hidden;">
+        <form id="searchForm">
+            <table class="tableForm datagrid-toolbar" style="width:100%;height:100%;">
+                <tr>
+                    <th>角色名称</th>
+                    <td><input name="rName" style="width:317px;" /></td>
+                </tr>
+                <tr>
+                    <th>最后的修改日期</th>
+                    <td>
+                        <input class="easyui-datetimebox" name="operDateStart"
+       data-options="editable:false"  style="width:155px">
+                    至
+                        <input class="easyui-datetimebox" name="operDateEnd"
+                               data-options="editable:false" style="width:155px">
+                        <a  href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="searchRole();">过滤</a>
+                        <a  href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-undo'" onclick="clearSearch();">清空</a>
+                   </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <!--角色信息-->
+    <div data-options="region:'center',border:false" style="overflow:hidden;">
+        <table id="dgRole"></table>
+    </div>
+    <div id="menu" class="easyui-menu" style="width:120px;display:none;">
+        <div onclick="appendRole();" data-options="iconCls:'icon-add'">增加</div>
+        <div onclick="removeRole();" data-options="iconCls:'icon-remove'">删除</div>
+        <div onclick="editRole();" data-options="iconCls:'icon-edit'">编辑</div>
+    </div>
+    
+</body>
+</html>

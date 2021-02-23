@@ -1,0 +1,61 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>CustomTooltipStyle</title>
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>    
+</head>
+<body>
+ <h2>定制提示信息风格</h2>
+<div class="demo-info">
+	        <div class="demo-tip icon-tip"></div>
+	        <div>这个示例教我们如何定制提示信息的风格.</div>
+	    </div>
+	    <div style="margin:10px 0;"></div>
+	    <div style="padding:10px 200px">
+	        <div id="pp1" class="easyui-panel" style="width:100px;padding:5px">搞我啊！</div>
+	    </div>
+	    <div style="padding:10px 200px">
+	        <div id="pp2" class="easyui-panel" style="width:100px;padding:5px">搞我呀！</div>
+	    </div>
+	    <script>
+	        $(function () {
+	            $('#pp1').tooltip({
+	                position: 'right',
+	                content: '<span style="color:#fff">这是一种风格的提示信息.</span>',
+	                onShow: function () {
+	                    $(this).tooltip('tip').css({
+	                        backgroundColor: '#666',
+	                        borderColor: '#666'
+	                    });
+	                }
+	            });
+	            $('#pp2').tooltip({
+	                position: 'bottom',
+	                content: '<div style="padding:5px;background:#eee;color:#000">这又是一种风格的提示信息.</div>',
+	                onShow: function () {
+	                    $(this).tooltip('tip').css({
+	                        backgroundColor: '#fff000',
+	                        borderColor: '#ff0000',
+	                        boxShadow: '1px 1px 3px #292929'
+	                    });
+	                },
+	                onPosition: function () {
+	                    $(this).tooltip('tip').css('left', $(this).offset().left);
+	                    $(this).tooltip('arrow').css('left', 20);
+	                }
+	            });
+	        });
+	    </script>
+</body>
+</html>

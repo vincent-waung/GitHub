@@ -1,0 +1,45 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Interactive</title>
+     <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+   <h2>交互式消息组件</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>点击每个按钮显示不同的交互式消息框.</div>
+    </div>
+    <div style="margin:10px 0;">
+        <a href="#" class="easyui-linkbutton" onclick="confirm1();">确认消息框</a>
+        <a href="#" class="easyui-linkbutton" onclick="prompt1()">提示消息框</a>
+    </div>
+    <script>
+        function confirm1() {
+            $.messager.confirm('我的标题', '确认吗?', function (r) {
+                if (r) {
+                    alert('确认: ' + r);
+                }
+            });
+        }
+        function prompt1() {
+            $.messager.prompt('我的标题', '请输些东西', function (r) {
+                if (r) {
+                    alert('你输入的是: ' + r);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

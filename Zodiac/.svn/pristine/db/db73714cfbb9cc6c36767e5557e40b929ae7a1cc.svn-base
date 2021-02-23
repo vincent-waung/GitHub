@@ -1,0 +1,80 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ChangeItemsOrder</title>
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+   <h2>改变托动物顺序</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>拖动托动物改变顺序.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <ul style="margin:0;padding:0;margin-left:10px;">
+        <li class="drag-item">托动物 1</li>
+        <li class="drag-item">托动物2</li>
+        <li class="drag-item">托动物3</li>
+        <li class="drag-item">托动物4</li>
+        <li class="drag-item">托动物5</li>
+        <li class="drag-item">托动物6</li>
+    </ul>
+
+    <style type="text/css">
+        .drag-item{
+            list-style-type:none;
+            display:block;
+            padding:5px;
+            border:1px solid #ccc;
+            margin:2px;
+            width:300px;
+            background:#fafafa;
+            color:#444;
+        }
+        .indicator{
+            position:absolute;
+            font-size:9px;
+            width:10px;
+            height:10px;
+            display:none;
+            color:red;
+        }
+    </style>
+    <script>
+        $(function () {
+            var indicator = $('<div class="indicator">>></div>').appendTo('body');
+            //拖动元素不能设置proxy:clone
+            $('.drag-item').draggable({
+                revert: true,
+                deltaX: 0,
+                deltaY: 0
+            }).droppable({
+                onDragOver: function (e, source) {
+                    indicator.css({
+                        display: 'block',
+                        left: $(this).offset().left - 10,
+                        top: $(this).offset().top + $(this).outerHeight() - 5
+                    });
+                },
+                onDragLeave: function (e, source) {
+                    indicator.hide();
+                },
+                onDrop: function (e, source) {
+                    //放置的技巧
+                    $(source).insertAfter(this);
+                    indicator.hide();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

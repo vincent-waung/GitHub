@@ -1,0 +1,49 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Basic</title>
+   <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#add").linkbutton({
+                iconCls: 'icon-add'
+            });
+          
+            $("#add").linkbutton("disable");
+          
+            $('#add').bind('click', function () {
+                $("#add").linkbutton("options").iconAlign = "right";
+                console.info($(this).linkbutton("options").text);
+             
+            });
+
+        });
+    </script>
+</head>
+<body>
+     <h2>基本链接按钮</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>按钮能够通过 &lt;a/&gt; 标签创建.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div style="padding:5px;">
+        <a id="add" href="#" >添加</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove'">删除</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cut',disabled:true">剪切</a>
+        <a href="#" class="easyui-linkbutton">文本按钮</a>
+    </div>
+</body>
+</html>

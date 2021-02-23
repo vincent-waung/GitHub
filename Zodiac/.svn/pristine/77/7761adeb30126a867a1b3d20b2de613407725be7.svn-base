@@ -1,0 +1,557 @@
+﻿@{
+    Layout = null;
+}
+@using Models;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>用户管理首页</title>
+    <!--jQuery库-->
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <!--jQuery Easy库-->
+    <link id="easyuiTheme" href="~/jquery-easyui-1.3.1/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/jquery-easyui-1.3.1/themes/icon.css" rel="stylesheet" />
+    <script src="~/jquery-easyui-1.3.1/jquery.easyui.min.js"></script>
+    <script src="~/jquery-easyui-1.3.1/locale/easyui-lang-zh_CN.js"></script>
+    <!--自定义库-->
+    <script src="~/Scripts/processingajaxmsg.js"></script>
+    <script src="~/Scripts/xzUtil.js"></script>
+    <!--自定义的图标样式-->
+    <link href="~/Content/exticon.css" rel="stylesheet" />
+    <script type="text/javascript">
+        /*显示用户的表格*/
+        var dgUser;     
+        var searchForm;       
+        var genderData;
+        var isDelData;
+        var deptTree;
+        var depId = -1;
+        $(function () {
+            searchForm = $('#searchForm');
+
+            genderData = [
+             {
+                 value: true,
+                 text: '男性'
+             },
+             {
+                 value: false,
+                 text: '女性'
+             }];
+            isDelData = [
+                 {
+                     value: true,
+                     text: '禁用'
+                 },
+                 {
+                     value: false,
+                     text: '启用'
+                 }];
+
+                deptTree = $('#deptTree').tree({
+                    url: '/Admin_Areas/Sys_Department/GetTreeDepInfo',
+                    lines: true,
+                    onLoadSuccess: function (node, data) {
+                        if (data.Msg) {
+                            xz.dealWith(data);
+                        }
+                    },
+                    onClick: function (node) {
+                        dgUser.datagrid('load',
+                         { depId: node.id });
+                    },
+                    onDblClick: function (node) {
+                        if (node.state = 'closed') {
+                            $(this).tree('expand', node.target);
+                        } else {
+                            $(this).tree('collapse', node.target);
+                        }
+                    }
+                }
+                );
+
+                $.validateUrl('/Admin_Areas/Sys_UserInfo/GetUserInfoByCondition', loadGrid, xz.dealWith, 'POST');
+              
+        });
+
+        /**
+        *加载用户列表
+        */
+        function loadGrid(){
+
+            dgUser = $("#dgUser").datagrid({
+                iconCls: 'icon-save',
+                fit: true,
+                fitColumns: true,
+                rownumbers: true,
+                nowrap: false,
+                animate: false,
+                border: false,
+                singleSelect: true,
+                idField: 'rId',
+                pagination: true,
+                pageSize: 5,
+                pageList: [5, 10, 15, 20, 25],
+                url: '/Admin_Areas/Sys_UserInfo/GetUserInfoByCondition',
+                toolbar: [{
+                    text: '刷新',
+                    iconCls: 'icon-reload',
+                    handler: function () {
+                        dgUser.datagrid('load');
+                    }
+                }
+                ,
+                '-', {
+                    text: '增加',
+                    iconCls: 'icon-add',
+                    handler: function () {
+                        showAppendView();
+                    }
+                }
+                ,
+                '-', {
+                    text: '编辑',
+                    iconCls: 'icon-edit',
+                    handler: function () {
+                        showEditView();
+                    }
+                }
+                ,
+                '-', {
+                    text: '删除',
+                    iconCls: 'icon-remove',
+                    handler: function () {
+                        removeUser();
+                    }
+                },
+                '-', {
+                    text: '导出Excel',
+                    iconCls: 'icon-excel',
+                    handler: function () {
+                        exportUserExcel();
+                    }
+                },
+                '-', {
+                    text: '取消选中',
+                    iconCls: 'icon-undo',
+                    handler: function () {
+                        dgUser.datagrid('unselectAll');
+                    }
+                }
+                ],
+                frozenColumns: [[                   
+                     {
+                         title: '用户头像',
+                         field: 'uImgUrl',
+                         width: 80,
+                         sortable: true,
+                         align: 'center',                       
+                         formatter: function (value, row, index) {
+                             if (value) {
+                                 return xz.fs('<img src="{0}" style="width:80px;height:80px;" />', value);
+                             }
+                         }
+                     },
+                   {
+                       title: '用户编号',
+                       field: 'uId',
+                       sortable: true,
+                       align: 'center',
+                       width: 50,
+                       hidden:true
+                   },
+                     {
+                         title: '用户名称',
+                         field: 'uLoginName',
+                         width: 80,
+                         sortable: true,
+                         align: 'center',                       
+                         formatter: function (value, row, index) {
+                             if (value) {
+                                 return xz.fs('<span title="{0}">{1}</span>', value, value);
+                             }
+                         }
+                     }
+                ]],
+                columns: [[
+                     {
+                         title: '所属部门',
+                         field: 'uDepId',
+                         width: 120,
+                         editor: {
+                             type: 'combotree',
+                             options: {
+                                 url: '/Admin_Areas/Sys_Department/GetTreeDepInfo',
+                                 lines: true,
+                                 required: true
+                             }
+                         },
+                         formatter: function (value, row, index) {
+                             if (row.depName) {
+                                 return row.depName;
+                             } else {
+                                 return value;
+                             }
+                         }
+
+
+                     }, {
+                         title: '性别',
+                         field: 'uGender',
+                         width: 80,
+                         formatter: function (value) {
+                             if (value) {
+                                 return xz.fs('<span class="icon-boy" style="display:inline-block;vertical-align:middle;width:16px;height:16px;"></span>{0}', '男');
+                             } else {
+                                 return xz.fs('<span class="icon-girl" style="display:inline-block;vertical-align:middle;width:16px;height:16px;"></span>{0}', '女');
+                             }
+                         }
+
+                     }
+                     ,                     
+                     {
+                         title: '密码',
+                         field: 'uPwd',
+                         align: 'center',
+                         width: 70,
+                         formatter: function (value) {
+                             if (value) {
+                                 return '******';
+                             }
+                         }
+
+                     }
+                     ,                   
+                     {
+                         title: '是否禁用',
+                         align: 'center',
+                         field: 'uIsDel',
+                         width: 80,
+                         formatter:xz.formatterEnable
+                     },
+                                         
+                     {
+                         title: '联系电话',
+                         field: 'uPost',
+                         align: 'center',                     
+                         width: 100
+                     },
+                     {
+                         title: '说明',
+                         field: 'uRemark',
+                         align: 'center',
+                         width: 100
+                     },
+                     {
+                         title: '操作日期',
+                         field: 'uAddTime',
+                         align: 'center',
+                         width: 130,
+                         formatter: function (value) {
+                             if (value) {
+                                 return eval("new " + value.substr(1, value.length - 2)).toLocaleDateString();
+                             }
+                         }
+
+                     },
+                     {
+                         title: '二维码',
+                         field: 'Oper',
+                         align: 'center',
+                         width: 100,
+                         formatter: function (value, row) {
+                             var html = '<a href="#" onclick=\'showTdcView()\'><span class="icon-d1" style="display:inline-block;vertical-align:middle;width:16px;height:16px;">&nbsp;</span>[二维码]</a>';
+                             return html;
+                         }
+
+                     }
+                ]],          
+                onRowContextMenu: function (e, rowIndex, rowData) {
+                    e.preventDefault();
+                    $(this).datagrid('unselectAll');
+                    $(this).datagrid('selectRow', rowIndex);
+                    $('#menu').menu('show', {
+                        left: e.pageX,
+                        top: e.pageY
+                    });
+                }
+            });
+        }
+
+    
+        /*打开查看二维码的页面*/
+        function showTdcView() {
+            var node = dgUser.datagrid('getSelected');
+            if (node) {
+                var pAdd = xz.dialog({
+                    title: '查看二维码',
+                    width: 480,
+                    height: 480,
+                    iconCls: 'icon-add',
+                    href: '/Admin_Areas/Sys_UserInfo/ShowTdcView?uId='+node.uId,
+                    buttons: [{
+                        text: '关闭',
+                        iconCls: 'icon-cancel',
+                        handler: function () {
+                            pAdd.dialog('close');
+                        }
+                    }],
+                    onLoad: function () {
+                        var f = pAdd.find('form');  
+                        f.form('load', node);
+                    }
+                });
+            } else {
+                xz.messagerAlert('提示', '请选择要查看二维码的用户！', 'error');
+            }
+        }
+        /*过滤用户信息*/
+        function searchUser() {
+            dgUser.datagrid('load', xz.serializeObject(searchForm));
+        }
+
+        /*清空过滤表单*/
+        function clearSearch() {
+            dgUser.datagrid('load', {});
+            searchForm.find('input').val('');
+        }
+
+        /*打开添加组织机构的页面*/
+        function showAppendView() {
+            $.validateUrl('/Admin_Areas/Sys_UserInfo/ShowUserInfoEditView', appendUser, xz.dealWith, 'Get');
+        }
+        /*打开编辑组织机构的页面*/
+        function showEditView() {
+            $.validateUrl('/Admin_Areas/Sys_UserInfo/ShowUserInfoEditView', editUser, xz.dealWith, 'Get');
+        }
+        
+        /**
+        *增加用户信息
+        */
+        function appendUser() {
+            var pAdd = xz.dialog({
+                title: '新增用户',
+                width: 550,
+                height: 375,
+                iconCls: 'icon-add',
+                href: '/Admin_Areas/Sys_UserInfo/ShowUserInfoEditView',
+                buttons: [{
+                    text: '新增',
+                    iconCls: 'icon-add',
+                    handler: function () {                     
+                        var f = pAdd.find('form');
+                        f.form('submit', {
+                            url: '/Admin_Areas/Sys_UserInfo/AddUser',
+                            success: function (jsonData) {
+                                jsonData = $.parseJSON(jsonData);
+                                $.procAjaxMsg(jsonData, function () {
+                                    dgUser.datagrid('reload');
+                                    pAdd.dialog('close');
+                                    $.alertMsg(jsonData.Msg, '操作提示', null);
+                                }, function () {
+                                    $.alertMsg(jsonData.Msg, '操作提示', null);
+                                });
+                            }
+                        });
+                    }
+
+                }],
+                onLoad: function () {
+                    var f = pAdd.find('form');
+                    var uDepId = f.find('input[name=uDepId]');
+                    var uGender = f.find('input[name=uGender]');
+                    var uLoginName = f.find('input[name=uLoginName]');
+                    var uIsDel = f.find('input[name=uIsDel]');
+                    window.setTimeout(function () {
+                        uLoginName.focus();
+                    }, 100);
+                    uDepId.combotree({
+                        url: '/Admin_Areas/Sys_Department/GetTreeDepInfo',
+                        lines: true,
+                        required: true
+                    });
+                    uIsDel.combobox({
+                        data: isDelData
+                    });
+                    uGender.combobox({
+                        data: genderData,
+                        required: true,
+                        formatter: function (row) {
+                            if (row.value) {
+                                return xz.fs('<span class="icon-boy" style="display:inline-block;vertical-align:middle;width:16px;height:16px;"></span>{0}', '男');
+                            } else {
+                                return xz.fs('<span class="icon-girl" style="display:inline-block;vertical-align:middle;width:16px;height:16px;"></span>{0}', '女');
+                            }                           
+                        }
+                    });
+                }
+            });
+        }
+
+        /**
+        *编辑用户信息
+        */
+        function editUser() {
+            var node = dgUser.datagrid('getSelected');
+            if (node) {
+                var pAdd = xz.dialog({
+                    title: '修改用户信息',
+                    width: 550,
+                    height: 375,
+                    iconCls: 'icon-edit',
+                    href: '/Admin_Areas/Sys_UserInfo/ShowUserInfoEditView',
+                    buttons: [{
+                        text: '编辑',
+                        iconCls: 'icon-edit',
+                        handler: function () {
+                            var f = pAdd.find('form');
+                            f.form('submit', {
+                                url: '/Admin_Areas/Sys_UserInfo/EditUser',
+                                success: function (jsonData) {
+                                    jsonData = $.parseJSON(jsonData);
+                                    $.procAjaxMsg(jsonData, function () {
+                                        dgUser.datagrid('reload');
+                                        pAdd.dialog('close');
+                                        $.alertMsg(jsonData.Msg, '操作提示', null);
+                                    }, function () {
+                                        $.alertMsg(jsonData.Msg, '操作提示', null);
+                                    });
+                                }
+                            });
+                        }
+
+                    }],
+                    onLoad: function () {
+                        var f = pAdd.find('form');
+                        var uDepId = f.find('input[name=uDepId]');
+                        var uGender = f.find('input[name=uGender]');
+                        var uLoginName = f.find('input[name=uLoginName]');
+                        var uIsDel = f.find('input[name=uIsDel]');
+                        var uImgUrl = f.find('#uImgUrl');
+                        window.setTimeout(function () {
+                            uLoginName.focus();
+                            uImgUrl.attr("src", node.uImgUrl);
+                        }, 100);
+                        uDepId.combotree({
+                            url: '/Admin_Areas/Sys_Department/GetTreeDepInfo',
+                            lines: true,
+                            required: true
+                        });
+                        uIsDel.combobox({
+                            data: isDelData
+                        });
+                        uGender.combobox({
+                            data: genderData,
+                            required: true,
+                            formatter: function (row) {
+                                if (row.value) {
+                                    return xz.fs('<span class="icon-boy" style="display:inline-block;vertical-align:middle;width:16px;height:16px;"></span>{0}', '男');
+                                } else {
+                                    return xz.fs('<span class="icon-girl" style="display:inline-block;vertical-align:middle;width:16px;height:16px;"></span>{0}', '女');
+                                }
+                            }
+                        });
+                        /*把选中的组织机构信息绑定到对应的表单上面*/
+                        f.form('load', node);
+                    }
+
+                });
+            } else {
+                xz.messagerAlert('提示', '请选择要修改的组织机构！', 'error');
+            }
+
+
+        }
+
+        /*删除用户*/
+        function removeUser() {
+            /*选中要删除的结点*/
+            var node = dgUser.datagrid('getSelected');
+            if (node) {
+                xz.messagerConfirm('询问', '您确定要删除【' + node.uLoginName + '】？', function (b) {
+                    if (b) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/Admin_Areas/Sys_UserInfo/DelUser',
+                            data: {
+                                uId: node.uId
+                            },
+                            cache: false,
+                            dataType: 'JSON',
+                            success: function (jsonData) {
+                                $.procAjaxMsg(jsonData, function () {
+                                    dgUser.datagrid('reload');
+                                    $.alertMsg(jsonData.Msg, '操作提示', null);
+                                }, function () {
+                                    $.alertMsg(jsonData.Msg, '操作提示', null);
+                                });
+                            }
+                        });
+                    }
+                });
+            } else {
+                xz.messagerAlert('提示', '请选择要删除的组织机构！', 'error');
+            }
+        }
+
+        /*导出Excel*/
+        function exportUserExcel() {
+            $.ajax({
+                type: "POST",
+                url: '/Admin_Areas/Sys_UserInfo/ExportExcel',
+                data: {},
+                cache: false,
+                dataType: 'JSON',
+                success: function (jsonData) {
+                    $.procAjaxMsg(jsonData, function () {
+                        $.alertMsg(jsonData.Msg, "操作提示", null);
+                    }, function () {
+                        $.alertMsg(jsonData.Msg, "操作提示", null);
+                    });
+                }
+            });
+        }
+    </script>
+</head>
+<body class="easyui-layout" data-options="fit:true">
+    <!--条件检索-->
+    <div data-options="region:'north',title:'过滤条件',split:true,border:false,collapsed:true" style="height:90px;overflow:hidden;">
+        <form id="searchForm">
+            <table class="tableForm datagrid-toolbar" style="width:100%;height:100%;">
+                <tr>
+                    <th>用户名称</th>
+                    <td><input name="uLoginName" style="width:317px;" /></td>
+                </tr>
+                <tr>
+                    <th>最后的修改日期</th>
+                    <td>
+                        <input class="easyui-datetimebox" name="operDateStart"
+                               data-options="editable:false" style="width:155px">
+                        至
+                        <input class="easyui-datetimebox" name="operDateEnd"
+                               data-options="editable:false" style="width:155px">
+                        <a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="searchUser();">过滤</a>
+                        <a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-undo'" onclick="clearSearch();">清空</a>
+                        <a href="/Admin_Areas/Sys_UserInfo/DownLoadFileExcel" class="easyui-linkbutton" data-options="iconCls:'icon-excel'">导出Excel</a>
+                        <a href="/Admin_Areas/Sys_UserInfo/ExportDepUserExcel" class="easyui-linkbutton" data-options="iconCls:'icon-d8'">导出部门人数</a>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <!--部门信息-->
+    <div data-options="region:'west',border:true" style="overflow:hidden;width:180px;">
+        <ul id="deptTree" style="margin-top:5px;"></ul>
+    </div>
+    <!--用户信息-->
+    <div data-options="region:'center',border:false" style="overflow:hidden;">
+        <table id="dgUser"></table>
+    </div>
+    <div id="menu" class="easyui-menu" style="width:120px;display:none;">
+        <div onclick="showAppendView();" data-options="iconCls:'icon-add'">增加</div>
+        <div onclick="removeUser();" data-options="iconCls:'icon-remove'">删除</div>
+        <div onclick="showEditView()();" data-options="iconCls:'icon-edit'">编辑</div>
+    </div>    
+</body>
+</html>

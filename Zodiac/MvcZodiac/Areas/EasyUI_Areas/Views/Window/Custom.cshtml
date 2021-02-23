@@ -1,0 +1,54 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Custom</title>
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+      <script type="text/javascript">
+          $(document).ready(function () {
+              $("#w").window({
+                  tools: [
+                      {
+                          iconCls: 'icon-add',
+                          handler: function () { alert('add') }
+                      },
+                      {
+                          iconCls: 'icon-edit',
+                          handler: function () { alert('edit') }
+                      }
+                  ]
+              });
+          });
+    </script>
+</head>
+<body>
+    <h2>定制窗体工具</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>点击窗体右上角按钮执行相关操作.</div>
+    </div>
+    <div style="margin:10px 0;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="$('#w').window('open')">打开</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="$('#w').window('close')">关闭</a>
+    </div>
+    <div id="w" class="easyui-window" title="Custom Window Tools" data-options="iconCls:'icon-save',minimizable:false" style="width:500px;height:200px;padding:10px;">
+        窗体内容
+    </div>
+    <div id="tt">
+        <a href="javascript:void(0)" class="icon-add" onclick="javascript:alert('add')"></a>
+        <a href="javascript:void(0)" class="icon-edit" onclick="javascript:alert('edit')"></a>
+        <a href="javascript:void(0)" class="icon-cut" onclick="javascript:alert('cut')"></a>
+        <a href="javascript:void(0)" class="icon-help" onclick="javascript:alert('help')"></a>
+    </div>
+</body>
+</html>

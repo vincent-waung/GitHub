@@ -1,0 +1,56 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AjaxForm</title>
+       <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+      <h2>AJAX表单提交</h2> 
+    <div class="demo-info" style="margin-bottom:10px"> 
+        <div class="demo-tip icon-tip">&nbsp;</div> 
+        <div>填写表单,然后提交.</div> 
+    </div>
+    <div class="easyui-panel" title="Ajax表单" style="width:230px;padding:10px;"> 
+        <form id="ff" action="form" method="post"> 
+            <table> 
+                <tr> 
+                    <td>姓名:</td> 
+                    <td><input name="name" type="text"></input></td> 
+                </tr> 
+                <tr> 
+                    <td>Email:</td> 
+                    <td><input name="email" type="text"></input></td> 
+                </tr> 
+                <tr> 
+                    <td>电话</td> 
+                    <td><input name="phone" type="text"></input></td> 
+                </tr> 
+                <tr> 
+                    <td></td> 
+                    <td><input type="submit" value="提交"></input></td> 
+                </tr> 
+            </table> 
+        </form> 
+    </div> 
+    <script type="text/javascript"> 
+        $(function(){ 
+            $('#ff').form({ 
+                success:function(data){ 
+                    $.messager.alert('系统提示', data, 'info'); 
+                } 
+            }); 
+        }); 
+    </script> 
+</body>
+</html>

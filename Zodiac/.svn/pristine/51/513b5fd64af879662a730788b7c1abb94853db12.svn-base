@@ -1,0 +1,56 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ReportsusingTreeGrid</title>
+     <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+    <h2>树形表格报表</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>使用树形表格显示复杂报表.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <table title="树形表格报表" class="easyui-treegrid" style="width:600px;height:250px"
+           data-options="
+                url: '/EasyUI_Areas/AdminIndex/GetAllDeptsTwo',
+                rownumbers: true,
+                showFooter: true,
+                fitColumns: true,
+                idField: 'id',
+                treeField: 'text'
+
+
+            ">
+        <thead frozen="true">
+            <tr>
+                <th field="text">部门名称</th>
+            </tr>
+        </thead>
+        <thead>
+            <tr>
+                <th colspan="4">基本信息</th>
+                <th>其他</th>
+            </tr>
+            <tr>
+                <th data-options="field:'id'">部门编号</th>
+                <th data-options="field:'text'">部门名称</th>
+                <th data-options="field:'depRemark'">说明</th>
+                <th data-options="field:'depAddTime'">操作日期</th>
+                <th data-options="field:'progress'">人气比</th>
+            </tr>
+        </thead>
+    </table>
+</body>
+</html>

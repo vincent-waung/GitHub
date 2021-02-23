@@ -1,0 +1,1782 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{63B884F1-F43A-402D-AE3E-DCBCBC7739E7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Models</RootNamespace>
+    <AssemblyName>Models</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\MvcZodiac\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Account.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AccountContInfo.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AdditionalOut.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Basic_Return_Address.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Bn_Zodiac.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BookingDetailEdi.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="bookingDtl.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="bookingForward.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="bookingHead.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BookingHeadEdi.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="bookingUser.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="bookingVendor.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CarrierInfo.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="carrier_booking.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="category.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ChargeDEBITNOTE.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ChargeName.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Client.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="clp_chargeList.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="collectlist.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="consignee.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ContTransFee.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="cont_address.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Cont_Size.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="con_size.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Curr_Rate.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="custin.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="custinno.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="customer.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="customer1.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Customer_Order.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Customer_Order_Plan.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="customs.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CustomsType.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="customs_head.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="customs_item.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="customs_out.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="custoutno.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="cus_cont.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="cus_hchg.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DailyCustomsDocu.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DailyDataforCustoms.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DailyTurnover.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DebitNoteNo.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="decl_no.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dest.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="destination.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DestInfo2.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DestOfBRSI.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="dobitNoteLog.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="dtproperties.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EasyUIModel\DataGrid.cs" />
+    <Compile Include="EasyUIModel\EITreeGrid_Department.cs" />
+    <Compile Include="EasyUIModel\EITreeGrid_Permission.cs" />
+    <Compile Include="EasyUIModel\EITree_Department.cs" />
+    <Compile Include="EasyUIModel\FormDemo.cs" />
+    <Compile Include="EasyUIModel\PropertyGridRow.cs" />
+    <Compile Include="EasyUIModel\Sys_DepartmentTreeNode.cs" />
+    <Compile Include="EasyUIModel\Sys_DepartmentTreeNodeFootTwo.cs" />
+    <Compile Include="EasyUIModel\Sys_DepartmentTreeNodeTwo.cs" />
+    <Compile Include="EasyUIModel\Sys_UserInfoFootModel.cs" />
+    <Compile Include="EasyUIModel\Tree.cs" />
+    <Compile Include="EasyUIModel\TreeNode.cs" />
+    <Compile Include="EDIExcptnReg.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Employees.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Exchange_Rate.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ExclusionCustoms.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ExtensionModel\Booking_Head.cs" />
+    <Compile Include="ExtensionModel\FinalLoadingPlan.cs" />
+    <Compile Include="ExtensionModel\POCO_FinalLoadingPlan.cs" />
+    <Compile Include="ExtensionModel\POCO_Sys_Role.cs" />
+    <Compile Include="ExtensionModel\POCO_Sys_UserInfo.cs" />
+    <Compile Include="ExtensionModel\Sys_Department.cs" />
+    <Compile Include="ExtensionModel\Sys_EasyUI.cs" />
+    <Compile Include="ExtensionModel\Sys_Permission.cs" />
+    <Compile Include="ExtensionModel\YW_DepartPerson.cs" />
+    <Compile Include="FcrSMBaseCharge.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FCR_Detail.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FCR_Discharging_Port.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FCR_Factory.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FCR_Head.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FCR_Supplier.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FinalLoadingPlan.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FinalLoadingPlan_Payment.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FinalLoadPlanAmazonVendor.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FinalLoadPlanHoliday.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FinalLoadPlanJobRecord.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FinalLoadPlanRPALog.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FinalPoList.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FinalPo_Cancel_Record.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FinalVendorInput.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FinalVendorInputTrucking.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="financeCharge.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FormatModel\AjaxMsgModel.cs" />
+    <Compile Include="forwarder_code.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="In2So.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="InDocContainer.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="InDocVehicle.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Inhead.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="InList.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="invoice.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="invoiceExchange.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="in_head.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="in_item.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="latecome.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Loading.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LoadPlanUpdateRecord.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Load_Fee.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LPCont_Info.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LPStatus.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MaxId.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="newpacking.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="newpacklist.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OutDocContainer.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OutDocVehicle.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Outhead.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OutList.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OutListItems.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="out_head.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="out_head_cy.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="out_item.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="out_item_cy.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="pick_return_charge.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Account.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\AccountContInfo.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\AdditionalOut.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Basic_Return_Address.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Bn_Zodiac.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\BookingDetailEdi.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\bookingDtl.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\bookingForward.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\bookingHead.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\BookingHeadEdi.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\bookingUser.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\bookingVendor.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\CarrierInfo.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\carrier_booking.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\category.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\ChargeDEBITNOTE.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\ChargeName.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Client.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\clp_chargeList.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\collectlist.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\consignee.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\ContTransFee.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\cont_address.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Cont_Size.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\con_size.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Curr_Rate.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\custin.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\custinno.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\customer.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\customer1.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Customer_Order.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Customer_Order_Plan.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\customs.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\CustomsType.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\customs_head.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\customs_item.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\customs_out.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\custoutno.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\cus_cont.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\cus_hchg.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\DailyCustomsDocu.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\DailyDataforCustoms.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\DailyTurnover.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\DebitNoteNo.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\decl_no.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Dest.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\destination.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\DestInfo2.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\DestOfBRSI.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\dobitNoteLog.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\dtproperties.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\EDIExcptnReg.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Employees.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\EntityToPoco.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="PocoModel\Exchange_Rate.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\ExclusionCustoms.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\ExtensionModels.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\FcrSMBaseCharge.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\FCR_Detail.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\FCR_Discharging_Port.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\FCR_Factory.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\FCR_Head.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\FCR_Supplier.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\FinalLoadingPlan.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\FinalLoadingPlan_Payment.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\FinalLoadPlanAmazonVendor.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\FinalLoadPlanHoliday.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\FinalLoadPlanJobRecord.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\FinalLoadPlanRPALog.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\FinalPoList.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\FinalPo_Cancel_Record.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\FinalVendorInput.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\FinalVendorInputTrucking.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\financeCharge.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\forwarder_code.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\In2So.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\InDocContainer.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\InDocVehicle.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Inhead.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\InList.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\invoice.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\invoiceExchange.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\in_head.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\in_item.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\latecome.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Loading.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\LoadPlanUpdateRecord.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Load_Fee.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\LPCont_Info.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\LPStatus.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\MaxId.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\newpacking.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\newpacklist.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\OutDocContainer.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\OutDocVehicle.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Outhead.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\OutList.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\OutListItems.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\out_head.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\out_head_cy.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\out_item.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\out_item_cy.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\pick_return_charge.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Account.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_AccountContInfo.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_AdditionalOut.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Basic_Return_Address.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Bn_Zodiac.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_BookingDetailEdi.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_bookingDtl.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_bookingForward.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_bookingHead.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_BookingHeadEdi.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_bookingUser.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_bookingVendor.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_CarrierInfo.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_carrier_booking.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_category.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_ChargeDEBITNOTE.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_ChargeName.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Client.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_clp_chargeList.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_collectlist.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_consignee.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_ContTransFee.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_cont_address.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Cont_Size.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_con_size.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Curr_Rate.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_custin.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_custinno.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_customer.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_customer1.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Customer_Order.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Customer_Order_Plan.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_customs.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_CustomsType.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_customs_head.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_customs_item.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_customs_out.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_custoutno.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_cus_cont.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_cus_hchg.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_DailyCustomsDocu.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_DailyDataforCustoms.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_DailyTurnover.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_DebitNoteNo.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_decl_no.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Dest.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_destination.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_DestInfo2.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_DestOfBRSI.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_dobitNoteLog.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_dtproperties.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_EDIExcptnReg.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Employees.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Exchange_Rate.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_ExclusionCustoms.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_FcrSMBaseCharge.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_FCR_Detail.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_FCR_Discharging_Port.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_FCR_Factory.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_FCR_Head.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_FCR_Supplier.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_FinalLoadingPlan.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_FinalLoadingPlan_Payment.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_FinalLoadPlanAmazonVendor.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_FinalLoadPlanHoliday.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_FinalLoadPlanJobRecord.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_FinalLoadPlanRPALog.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_FinalPoList.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_FinalPo_Cancel_Record.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_FinalVendorInput.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_FinalVendorInputTrucking.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_financeCharge.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_forwarder_code.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_In2So.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_InDocContainer.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_InDocVehicle.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Inhead.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_InList.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_invoice.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_invoiceExchange.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_in_head.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_in_item.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_latecome.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Loading.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_LoadPlanUpdateRecord.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Load_Fee.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_LPCont_Info.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_LPStatus.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_MaxId.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_newpacking.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_newpacklist.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_OutDocContainer.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_OutDocVehicle.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Outhead.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_OutList.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_OutListItems.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_out_head.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_out_head_cy.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_out_item.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_out_item_cy.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_pick_return_charge.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Port.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_ProdesOfVIFA.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_recdtl.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_rechead.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_RecRegistrationHead.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_RecRegistrationItems.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_RecRegVehicle.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_rec_amount.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_repertory.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_service.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_shipcorp.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_ShipperNameList.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_ShipTo.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_SMFOBDebitNoteRateAutomaticgrowth.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_special.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_special_item.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_spe_opertype.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_SpsOperate.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_sysdiagrams.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Sys_Department.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Sys_EasyUI.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Sys_Log.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Sys_Permission.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Sys_Role.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Sys_RolePermission.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Sys_UserInfo.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Sys_UserRole.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Sys_UserSetting.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Sys_UserVipPermission.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_TruckUnLoadTime.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Truck_Account.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Truck_Booking_Charge.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Truck_Booking_ClientCharge.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Truck_Booking_Detail.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Truck_Booking_File.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Truck_Booking_Head.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Truck_Booking_Reg.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Truck_CBM_Weight.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Truck_ChargeName.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Truck_Client.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Truck_Company.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Truck_Delivery_Address.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Truck_Exchange_Rate.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Truck_Invoice.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Truck_Invoice_Code.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Truck_Invoice_Info.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Truck_Invoice_Info_Add.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Truck_Loading_Address.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Truck_PackingList.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Truck_PO.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Truck_Storage_Yard.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Truck_Vendor.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Truck_Vendor_Client.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Truck_Warehouse.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_turnover.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_unit.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Unloading.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_userlog.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_User_Password.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\POCO_Vehicle.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_vendor.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_VendorInfo.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_vessel.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_whs.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\POCO_ypmfuser.cs">
+      <DependentUpon>EntityToPoco.tt</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PocoModel\Port.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\ProdesOfVIFA.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\recdtl.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\rechead.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\RecRegistrationHead.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\RecRegistrationItems.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\RecRegVehicle.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\rec_amount.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\repertory.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\service.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\shipcorp.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\ShipperNameList.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\ShipTo.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\SMFOBDebitNoteRateAutomaticgrowth.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\special.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\special_item.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\spe_opertype.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\SpsOperate.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\sysdiagrams.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Sys_Department.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Sys_EasyUI.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Sys_Log.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Sys_Permission.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Sys_Role.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Sys_RolePermission.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Sys_UserInfo.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Sys_UserRole.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Sys_UserSetting.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Sys_UserVipPermission.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\TruckUnLoadTime.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Truck_Account.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Truck_Booking_Charge.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Truck_Booking_ClientCharge.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Truck_Booking_Detail.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Truck_Booking_File.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Truck_Booking_Head.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Truck_Booking_Reg.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Truck_CBM_Weight.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Truck_ChargeName.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Truck_Client.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Truck_Company.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Truck_Delivery_Address.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Truck_Exchange_Rate.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Truck_Invoice.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Truck_Invoice_Code.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Truck_Invoice_Info.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Truck_Invoice_Info_Add.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Truck_Loading_Address.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Truck_PackingList.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Truck_PO.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Truck_Storage_Yard.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Truck_Vendor.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Truck_Vendor_Client.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Truck_Warehouse.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\turnover.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\unit.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Unloading.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\userlog.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\User_Password.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\Vehicle.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\vendor.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\VendorInfo.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\vessel.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\whs.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PocoModel\ypmfuser.cs">
+      <DependentUpon>ExtensionModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Port.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProdesOfVIFA.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="recdtl.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="rechead.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RecRegistrationHead.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RecRegistrationItems.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RecRegVehicle.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="rec_amount.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="repertory.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReportModel\R_LoadPlan_DailyReport.cs" />
+    <Compile Include="ReportModel\R_LoadPlan_MIGOReport.cs" />
+    <Compile Include="ReportModel\R_LoadPlan_Overall.cs" />
+    <Compile Include="ReportModel\R_Polist_CancelReport.cs" />
+    <Compile Include="ReportModel\R_Polist_Dashboard.cs" />
+    <Compile Include="ReportModel\R_Sys_UserInfo.cs" />
+    <Compile Include="service.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="shipcorp.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ShipperNameList.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ShipTo.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SMFOBDebitNoteRateAutomaticgrowth.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="special.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="special_item.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spe_opertype.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SpsOperate.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagrams.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sys_Department.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sys_EasyUI.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sys_Log.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sys_Permission.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sys_Role.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sys_RolePermission.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sys_UserInfo.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sys_UserRole.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sys_UserSetting.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sys_UserVipPermission.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TruckUnLoadTime.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Truck_Account.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Truck_Booking_Charge.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Truck_Booking_ClientCharge.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Truck_Booking_Detail.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Truck_Booking_File.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Truck_Booking_Head.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Truck_Booking_Reg.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Truck_CBM_Weight.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Truck_ChargeName.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Truck_Client.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Truck_Company.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Truck_Delivery_Address.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Truck_Exchange_Rate.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Truck_Invoice.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Truck_Invoice_Code.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Truck_Invoice_Info.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Truck_Invoice_Info_Add.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Truck_Loading_Address.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Truck_PackingList.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Truck_PO.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Truck_Storage_Yard.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Truck_Vendor.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Truck_Vendor_Client.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Truck_Warehouse.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="turnover.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="unit.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Unloading.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="userlog.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="User_Password.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Vehicle.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vendor.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VendorInfo.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vessel.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="whs.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ypmfuser.cs">
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Zodiac.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Zodiac.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Zodiac.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Zodiac.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Zodiac.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Zodiac.edmx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="PocoModel\EntityToPoco.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EntityToPoco.cs</LastGenOutput>
+    </None>
+    <None Include="PocoModel\ExtensionModels.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ExtensionModels.cs</LastGenOutput>
+    </None>
+    <EntityDeploy Include="Zodiac.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Zodiac.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Zodiac.edmx.diagram">
+      <DependentUpon>Zodiac.edmx</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{a32d78dd-3be8-4ae0-8230-9f5d4419f7c8}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Zodiac.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Zodiac.edmx</DependentUpon>
+      <LastGenOutput>Zodiac.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Zodiac.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Zodiac.edmx</DependentUpon>
+      <LastGenOutput>Zodiac.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

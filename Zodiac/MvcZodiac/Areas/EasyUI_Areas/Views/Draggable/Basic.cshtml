@@ -1,0 +1,38 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Basic Draggable - jQuery EasyUI Demo</title>
+     <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#divDrag").draggable();
+        })
+    </script>
+</head>
+<body>
+    <h2>基本拖拽组件</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>点击鼠标拖动组件.</div>
+    </div>
+    <div style="margin: 10px 0;"></div>
+    <div id="divDrag"  style="width: 200px; height: 150px; background: #fafafa; border: 1px solid #ccc"></div>
+
+
+    <div class="easyui-draggable" data-options="handle:'#title'" style="width: 200px; height: 150px; background: #fafafa; border: 1px solid #ccc; margin-top: 10px">
+        <div id="title" style="padding: 5px; background: #ccc; color: #fff">标题</div>
+    </div>
+
+</body>
+</html>

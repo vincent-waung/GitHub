@@ -1,0 +1,41 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace MvcZodiac.Areas.TMS_Areas.Controllers
+{
+    public class TruckingCompanyController : Controller
+    {
+        //
+        // GET: /TMS_Areas/TruckingCompany/
+
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        public ActionResult TruckingConfirmIndex()
+        {
+            return View();
+        }
+
+        public ActionResult TruckingOrderMngIndex()
+        {
+            return View();
+        }
+
+
+        public ActionResult TruckingOrderSearchIndex()
+        {
+            return View();
+        }
+
+        public ActionResult TruckingReportIndex()
+        {
+            return View();
+        } 
+
+    }
+}

@@ -1,0 +1,33 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ToggleButton</title>
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+     <h2>开关按钮</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>点击下面按钮来切换它的选中选中状态.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div style="padding:5px;">
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',toggle:true">添加</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',toggle:true">删除</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save',toggle:true">保存</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cut',toggle:true,disabled:true">剪切</a>
+        <a href="#" class="easyui-linkbutton" data-options="toggle:true">文本按钮</a>
+    </div>
+</body>
+</html>

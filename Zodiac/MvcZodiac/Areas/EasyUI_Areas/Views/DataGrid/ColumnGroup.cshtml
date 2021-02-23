@@ -1,0 +1,43 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ColumnGroup</title>
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+   <h2>列组合</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>列头部单元可以合并,能够有效地把一些列归类.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <table class="easyui-datagrid" title="列组合" style="width:705px;height:250px"
+           data-options="rownumbers:true,singleSelect:true,url:'/EasyUI_Areas/AdminSys/GetUserInfo'">
+        <thead>
+            <tr>
+                <th data-options="field:'uId',width:80" rowspan="2">用户编号</th>
+                <th data-options="field:'uLoginName',width:100" rowspan="2">登录名</th>
+                <th colspan="3">其他信息</th>
+            </tr>
+            <tr>
+
+                <th data-options="field:'uGender',width:80,align:'right'">性别</th>
+                <th data-options="field:'uPost',width:80,align:'right'">邮编</th>
+                <th data-options="field:'uRemark',width:240">描述</th>
+
+            </tr>
+        </thead>
+    </table>
+</body>
+</html>

@@ -1,0 +1,40 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>CustomFormatinComboBox</title>
+      <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+  <h2>下拉框自定义格式</h2>
+    <div class="demo-info" style="margin-bottom:10px">
+        <div class="demo-tip icon-tip"></div>
+        <div>如何在下拉框中自定义格式.</div>
+    </div>
+    <input class="easyui-combobox" name="language" data-options="
+                url: '/EasyUI_Areas/AdminIndex/GetAllDeptsFirst',
+                valueField: 'id',
+                textField: 'text',
+                panelWidth: 350,
+                panelHeight: 'auto',
+                formatter: formatItem
+            ">
+    <script type="text/javascript">
+        function formatItem(row) {
+            var s = '<span style="font-weight:bold">' + row.text + '</span><br/>' +
+                    '<span style="color:#888">' + row.depAddTime + '</span>';
+            return s;
+        }
+    </script>
+</body>
+</html>

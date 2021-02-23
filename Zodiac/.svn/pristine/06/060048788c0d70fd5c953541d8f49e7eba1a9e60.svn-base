@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ypmfdataModelStoreContainer" CdmEntityContainer="ypmfdataEntities2">
+    <EntitySetMapping Name="in_MF">
+      <EntityTypeMapping TypeName="ypmfdataModel.in_MF">
+        <MappingFragment StoreEntitySet="in_MF">
+          <ScalarProperty Name="Receive_Date" ColumnName="Receive_Date" />
+          <ScalarProperty Name="In_House_No" ColumnName="In_House_No" />
+          <ScalarProperty Name="Item_No" ColumnName="Item_No" />
+          <ScalarProperty Name="PKGS" ColumnName="PKGS" />
+          <ScalarProperty Name="INNER_PKGS" ColumnName="INNER_PKGS" />
+          <ScalarProperty Name="KGS" ColumnName="KGS" />
+          <ScalarProperty Name="CBM" ColumnName="CBM" />
+          <ScalarProperty Name="L" ColumnName="L" />
+          <ScalarProperty Name="W" ColumnName="W" />
+          <ScalarProperty Name="H" ColumnName="H" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

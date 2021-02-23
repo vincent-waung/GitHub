@@ -1,0 +1,605 @@
+﻿@{
+    Layout = null;
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>TruckingOrderSearchIndex</title>
+    <script src="~/Areas/Scripts/easyui/jquery.min.js"></script>
+    <script src="~/Areas/Scripts/easyui/jquery.easyui.min.js"></script>
+    <script src="~/Areas/Scripts/ToolKit.js"></script>
+
+    <link href="~/Areas/Content/Site.css" rel="stylesheet" />
+    <link href="~/Areas/Content/easyui/icon.css" rel="stylesheet" />
+    <link href="~/Areas/Content/easyui/bootstrap/easyui.css" rel="stylesheet" />
+
+
+    <script type="text/javascript">
+            $(function () {
+                $('#dg').datagrid({
+
+                    fitColumns: false,
+                    pagination: false,
+                    singleSelect: false,
+                    dblclickToEdit: true,
+                    onClickCell: onClickCell,
+                    url: '',
+                    columns: [[
+                        {
+                            field: 'ck', checkbox: true,
+                            formatter: function (value, rec, rowIndex) {
+                                return rowIndex;
+                            }
+                        },
+                        {
+                            field: 'plid', title: 'plid', width: 100, hidden: 'hidden',
+                            formatter: function (value, row) {
+                                return row.plid; 
+                            }
+                        }
+                        ,
+                        {
+                            field: 'VendorCode', title: 'Vendor Code', width: 200, 
+                            formatter: function (value, row) {
+                                return row.VendorCode;
+                            }
+                        },
+                        {
+                            field: 'so_no', title: 'SO No.', width: 100,
+                            formatter: function (value, row) {
+                                return row.so_no;
+                            }
+                        },
+                        {
+                            field: 'Customer_PO', title: 'Customer PO', width: 150,
+                            formatter: function (value, row) {
+                                return row.Customer_PO;
+                            }
+                        },
+                        {
+                            field: 'pick_date', title: 'Pick Date', width: 100,
+                            formatter: function (value, row) {
+                                return FormatJsonDate(row.pick_date);
+                            }
+                        },
+                        {
+                            field: 'pcs', title: 'Po Quantity', width: 100,
+                            formatter: function (value, row) {
+                                return row.pcs;
+                            }
+                        },
+                        {
+                            field: 'Material', title: 'Material', width: 100,
+                            formatter: function (value, row) {
+                                return row.Material;
+                            }
+                        },
+                        {
+                            field: 'Item', title: 'ItemNO', width: 150,
+                            formatter: function (value, row) {
+                                return row.Item;
+                            }
+                        },
+                        {
+                            field: 'Line', title: 'Line', width: 150,
+                            formatter: function (value, row) {
+                                return row.Line;
+                            }
+                        },
+                        {
+                            field: 'Ctn', title: 'Total Carton', width: 150,
+                            formatter: function (value, row) {
+                                return row.Ctn;
+                            }
+                        },
+                        {
+                            field: 'availablectn', title: 'Available Ctn', width: 150,
+                            formatter: function (value, row) {
+                                return row.availablectn;
+                            }
+                        }
+                        ,
+                        {
+                            field: 'availableCBM', title: 'Available CBM', width: 150,
+                            formatter: function (value, row) {
+                                return row.availableCBM;
+                            }
+                        }
+                        ,
+                        {
+                            field: 'availableweight', title: 'Available Weight', width: 150,
+                            formatter: function (value, row) {
+                                return row.availableweight;
+                            }
+                        }
+                        ,
+                        {
+                            field: 'Booking_Ctn', title: 'Booking Ctn', width: 150, editor: { type: 'numberbox', options: { precision: 0 } },
+                            formatter: function (value, row) {
+                                row.Booking_Ctn = row.availablectn;
+                                return row.Booking_Ctn;
+                            }
+                        }
+                        ,
+                        {
+                            field: 'GrossWeight', title: 'Total Gross Weight', width: 150,
+                            formatter: function (value, row) {
+                                return row.GrossWeight;
+                            }
+                        }
+                        ,
+                        {
+                            field: 'CBM', title: 'Total Volume', width: 150,
+                            formatter: function (value, row) {
+                                return row.CBM;
+                            }
+                        }
+                        ,
+                        {
+                            field: 'delivery_type', title: 'Delivery Type', width: 150,
+                            formatter: function (value, row) {
+                                return row.delivery_type;
+                            }
+                        },
+                        {
+                            field: 'remarks', title: 'Remark', width: 150,
+                            formatter: function (value, row) {
+                                return row.remarks;
+                            }
+                        },
+                        {
+                            field: 'pick_address', title: 'pick address', width: 150,
+                            formatter: function (value, row) {
+                                return row.pick_address;
+                            }
+                        }
+
+                        ,
+                        {
+                            field: 'hfe', title: 'HFE', width: 150,
+                            formatter: function (value, row) {
+                                return row.hfe;
+                            }
+                        }
+
+
+                    ]],
+
+                    toolbar: "#tb"
+                });
+                $('#BookingList').datagrid({
+
+                    fitColumns: false,
+                    pagination: false,
+                    singleSelect: true,
+                    url: '',
+                    columns: [[
+                        {
+                            field: 'a', title: 'delete', width: 60,
+                            formatter: function (value, row, index) {
+
+                                return '<a href="#" style="color:blue" onclick="Delete(' + row.plid + ')">delete</a>';
+                            }
+                        },
+                        {
+                            field: 'b', title: 'download', width: 60,
+                            formatter: function (value, row, index) {
+
+                                return '<a href="#" style="color:blue" onclick="Download(' + row.plid + ')">download</a>';
+                            }
+                        },
+                        {
+                            field: 'plid', title: 'plid', width: 100, hidden: 'hidden',
+                            formatter: function (value, row) {
+                                return row.plid;
+                            }
+                        }
+                        ,
+                        {
+                            field: 'SO_No', title: 'SO_No', width: 150,
+                            formatter: function (value, row) {
+                                return row.so_no;
+                            }
+                        },
+                        {
+                            field: 'Customer_PO', title: 'Customer PO', width: 100,
+                            formatter: function (value, row) {
+                                return row.Customer_PO;
+                            }
+                        },
+                        {
+                            field: 'Material', title: 'Material', width: 150,
+                            formatter: function (value, row) {
+                                return row.Material;
+                            }
+                        },
+                        {
+                            field: 'Item', title: 'Item', width: 100,
+                            formatter: function (value, row) {
+                                return row.Item;
+                            }
+                        },
+                        {
+                            field: 'Line', title: 'Line', width: 100,
+                            formatter: function (value, row) {
+                                return row.Line;
+                            }
+                        },
+                        {
+                            field: 'Vdr_Pickup_date', title: 'pick_date', width: 100,
+                            formatter: function (value, row) {
+                                return FormatJsonDate(row.Vdr_Pickup_date);
+                            }
+                        },
+                        {
+                            field: 'Booking_Ctn', title: 'Ctn', width: 150,
+                            formatter: function (value, row) {
+                                return row.Booking_Ctn;
+                            }
+                        },
+                        {
+                            field: 'GrossWeight', title: 'Total GrossWeight', width: 150,
+                            formatter: function (value, row) {
+                                return row.GrossWeight;
+                            }
+                        },
+                        {
+                            field: 'CBM', title: 'Total Volume', width: 100,
+                            formatter: function (value, row) {
+                                return row.CBM;
+                            }
+                        },
+                        {
+                            field: 'delivery_type', title: 'Delivery Type', width: 100,
+                            formatter: function (value, row) {
+                                return row.delivery_type;
+                            }
+                        }
+                        ,
+                        {
+                            field: 'remarks', title: 'Remark', width: 150,
+                            formatter: function (value, row) {
+                                return row.remarks;
+                            }
+                        }
+                        ,
+                        {
+                            field: 'pick_address', title: 'Pick addresss', width: 250,
+                            formatter: function (value, row) {
+                                return row.pick_address;
+                            }
+                        }
+
+
+
+
+
+
+                    ]],
+
+                });
+
+                $.extend($.fn.datagrid.methods, {
+                    editCell: function (jq, param) {
+                        return jq.each(function () {
+                            var opts = $(this).datagrid('options');
+                            var fields = $(this).datagrid('getColumnFields', true).concat(
+                                $(this).datagrid('getColumnFields'));
+                            for (var i = 0; i < fields.length; i++) {
+                                var col = $(this).datagrid('getColumnOption', fields[i]);
+                                col.editor1 = col.editor;
+                                if (fields[i] != param.field) {
+                                    col.editor = null;
+                                }
+                            }
+                            $(this).datagrid('beginEdit', param.index);
+                            for (var i = 0; i < fields.length; i++) {
+                                var col = $(this).datagrid('getColumnOption', fields[i]);
+                                col.editor = col.editor1;
+                            }
+                        });
+                    }
+                });
+                //查询
+                $(".Search").click(function () {
+                    var options = $('#dg').datagrid('options');
+                    options.url = '/TMS_Areas/TruckingCompany/GetPackingList';
+                    options.queryParams = { data1: $('#ddDate1').datebox('getValue'), data2: $('#ddDate2').datebox('getValue'), so: $('#ttSO').textbox('getValue')};
+                    $('#dg').datagrid(options);
+                });
+
+                $(".Save").click(function () {
+
+               
+                    var Vehicle_type = $("#ccVehicleType").combobox('getValue');
+                    var Vehicle_number = $("#ttLicensePlate").textbox('getValue');
+                    var Driver_name = $("#ttDriver").textbox('getValue');
+                    var Driver_telno = $("#ttTelephone").textbox('getValue');
+                    var Cont_no = $("#ttContainerNo").textbox('getValue');
+                    var Seal_no = $("#ttSealNo").textbox('getValue');
+                    var Remark = $("#ttRemark").textbox('getValue');
+                    $.ajax({
+                        url: '/TMS_Areas/TruckingCompany/SaveTruckingConfirm',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: { Vehicle_type: Vehicle_type, Vehicle_number: Vehicle_number, Driver_name: Driver_name, Driver_telno: Driver_telno, Cont_no: Cont_no, Seal_no: Seal_no, Remark: Remark, },
+                        success:
+                            function (json) {
+                                var json = eval(json);
+                                if (json.msg == "0") {
+                                  //  window.parent.$.messager.alert('温馨提示', 'Save successful!', 'info');
+                                    ClearData();
+                                    GetConfirmList();
+                                    var js = "/TMS_Areas/TruckingCompany/TrkBookingResult?id=" + json.err;
+                                    $('#dd').dialog({
+
+                                        title: 'Result',
+                                        width: 1000,
+                                        height: 450,
+                                        minimizable: true,
+                                        maximizable: true,
+                                        content: '<iframe scrolling="auto" frameborder="0"  src="' + js + '" style="width:100%;height:90%;"></iframe>',
+                                        modal: true
+
+                                    });
+                                   // window.open(js, 'Report', 'height=550,width=800,top=150,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,status=no')
+
+                                }
+                                if (json.msg == "1") {
+                                    ClearData();
+                                    GetConfirmList();
+                                    window.parent.$.messager.alert('reminder', 'Save failed,' + json.err, 'info');
+                                }
+
+                            }
+                    })
+                });
+
+                $(".Add").click(function () {
+
+                   // var rows = $('#dg').datagrid('getSelected');
+                    var recieverArr = [];
+                    var recieverMsg = {};
+                    var rows = $('#dg').datagrid('getChecked');
+                    
+                    for (var i = 0; i < rows.length; i++) {
+                        if (rows[i].Booking_Ctn > rows[i].availablectn) {
+                            window.parent.$.messager.alert('reminder', 'Exceeds the maximum ctn allowed.(SO:' + rows[i].so_no + ')', 'info');
+                            return;
+                        }
+                        if (rows[i].availablectn==0) {
+                            window.parent.$.messager.alert('reminder', 'Exceeds the maximum ctn allowed.(SO:' + rows[i].so_no + ')', 'info');
+                            return;
+                        }
+                        if (rows[i].Booking_Ctn == null) {
+                            window.parent.$.messager.alert('reminder', 'Please enter Booking Ctn.(SO:' + rows[i].so_no + ')', 'info');
+                            return;
+                        }
+                  
+                        var recieverObj = {
+                            plid: rows[i].plid,
+                            SO_No: rows[i].so_no,
+                            Customer_PO: rows[i].Customer_PO,
+                            Material: rows[i].Material,
+                            Item: rows[i].Item,
+                            Line: rows[i].Line,
+                            pick_date: rows[i].pick_date,
+                            pcs: rows[i].pcs,
+                            Ctn: rows[i].Ctn,
+                            availablectn: rows[i].availablectn,
+                            availableCBM: rows[i].availableCBM,
+                            availableweight: rows[i].availableweight,
+                            Booking_Ctn: rows[i].Booking_Ctn,
+                            GrossWeight: rows[i].GrossWeight,
+                            CBM: rows[i].CBM,
+                            delivery_type: rows[i].delivery_type,
+                            remarks: rows[i].remarks,
+                            pick_address: rows[i].pick_address,
+                            hfe: rows[i].hfe,
+                        };
+                        recieverArr.push(recieverObj);
+                        var index = $('#dg').datagrid('getRowIndex', rows[i])
+                        $('#dg').datagrid('updateRow', {
+                            index: index,
+                            row: {
+                                availablectn: rows[i].availablectn - rows[i].Booking_Ctn
+
+                            }
+                        });
+                    };
+                    recieverMsg = JSON.stringify(recieverArr)
+              
+                    $.ajax({
+                        url: '/TMS_Areas/TruckingCompany/AddTruckingConfirm',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: { 'booking': recieverMsg },
+                        success:
+                            function (json) {
+                                var item = eval(json);
+                                if (item.msg =="0") {
+                                    $("#ttCTN").textbox('setValue', item.ctn);
+                                    $("#ttCBM").textbox('setValue', item.cbm);
+                                    $("#ttGrossWeight").textbox('setValue', item.weight);
+                                    $("#ccVehicleType").combobox('setValue', item.vehvalue);
+                                    $("#dg").datagrid('clearChecked');
+                                    $('input[type=checkbox]').removeAttr('checked');
+                                    GetConfirmList();
+                                }
+                                if (item.msg == "1")
+                                {
+                                    window.parent.$.messager.alert('reminder', 'Session timeout please log in again', 'info');
+                                }
+
+                            }
+                    })
+
+                });
+
+            });
+
+        var editIndex = undefined;
+        function endEditing() {
+            if (editIndex == undefined) {
+                return true
+            }
+            if ($('#dg').datagrid('validateRow', editIndex)) {
+                $('#dg').datagrid('endEdit', editIndex);
+                editIndex = undefined;
+                return true;
+            } else {
+                return false;
+            }
+        }
+        function onClickCell(index, field) {
+            if (endEditing()) {
+                $('#dg').datagrid('selectRow', index).datagrid('editCell', {
+                    index: index,
+                    field: field
+                });
+                editIndex = index;
+            }
+        }
+        function GetConfirmList() {
+            var options = $('#BookingList').datagrid('options');
+            options.url = '/TMS_Areas/TruckingCompany/GetConfirmList';
+            $('#BookingList').datagrid(options);
+
+        }
+        function Delete(id) {
+            $.ajax({
+                url: '/TMS_Areas/TruckingCompany/DelGetConfirmListById',
+                type: 'POST',
+                dataType: 'json',
+                data: { id: id },
+                success:
+                    function (json) {
+                        var item = eval(json);
+                        $("#ttCTN").textbox('setValue', item.ctn);
+                        $("#ttCBM").textbox('setValue', item.cbm);
+                        $("#ttGrossWeight").textbox('setValue', item.weight);
+                        GetConfirmList();
+                    }
+            })
+        }
+        function Download(id) {
+
+            $.ajax({
+                url: '/TMS_Areas/TruckingCompany/CheckDownloadTruckingConfrim?id='+id,
+                type: 'POST',
+                dataType: 'json',
+                data: { Vehicle_type: Vehicle_type, Vehicle_number: Vehicle_number, Driver_name: Driver_name, Driver_telno: Driver_telno, Cont_no: Cont_no, Seal_no: Seal_no, Remark: Remark, },
+                success:
+                    function (json) {
+                        var json = eval(json);
+                        if (json.msg == "0") {
+                            window.location = '/TMS_Areas/TruckingCompany/DownloadTruckingConfrim?id=' + id;
+                        }
+                        if (json.msg == "1") {
+                            window.parent.$.messager.alert('reminder', 'No file was found!', 'info');
+                        }
+
+                    }
+            })
+
+        }
+        function ClearData() {
+
+            $("#ttCTN").textbox('clear');
+            $("#ttCBM").textbox('clear');
+            $("#ttGrossWeight").textbox('clear');
+            $("#ccVehicleType").combobox('clear');
+            $("#ttLicensePlate").textbox('clear');
+            $("#ttDriver").textbox('clear');
+            $("#ttTelephone").textbox('clear');
+            $("#ttContainerNo").textbox('clear');
+            $('#ttSealNo').textbox('clear');
+            $("#ttRemark").textbox('clear');
+
+
+        }
+    </script>
+
+</head>
+<body>
+    <div>
+        <div id="tb" style="padding: 5px; height: auto">
+
+            <div>
+                Data:
+                <input id="ddDate1" type="text" class="easyui-datebox">
+                <input id="ddDate2" type="text" class="easyui-datebox">
+                SO:
+                <input id="ttSO" type="text" class="easyui-textbox">
+                <a href="javascript:void(0)" class="easyui-linkbutton Search" iconcls="icon-search">Search</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton Add" iconcls="icon-add">Add</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton Save" iconcls="icon-save">Save</a>
+
+
+            </div>
+        </div>
+        <table id="dg" style="height:250px"></table>
+
+        <table style="font-size:13px">
+            <tr>
+                <td>TotalCtn:</td>
+                <td><input id="ttCTN" class="easyui-textbox" readonly="readonly"></td>
+                <td>TotalCBM:</td>
+                <td><input id="ttCBM" class="easyui-textbox" readonly="readonly"></td>
+                <td> TotalWeight:</td>
+                <td><input id="ttGrossWeight" class="easyui-textbox" readonly="readonly"></td>
+            </tr>
+
+
+        </table>
+        <table id="BookingList" style="height:200px"></table>
+        <div id="tt" class="easyui-tabs" style="height:auto;">
+            <div title="Vehicle Information" style="padding:20px;background-color:#F2F2F2">
+
+                <table style="font-size:13px">
+                    <tr>
+                        <td>Vehicle type</td>
+                        <td>
+                            <select id="ccVehicleType" class="easyui-combobox" style="width:175px;">
+                                <option value="1.25T">1.25T</option>
+                                <option value="2.5T">2.5T</option>
+                                <option value="3.5T">3.5T</option>
+                                <option value="5T">5T</option>
+                                <option value="8T">8T</option>
+                                <option value="10T">10T</option>
+                                <option value="10T(spec.)">10T(spec.)</option>
+                                <option value="20GP">20GP</option>
+                                <option value="40GP">40GP</option>
+                                <option value="40HQ">40HQ</option>
+                                <option value="45HQ">45HQ</option>
+                                <option value="40REF">40REF</option>
+                                <option value="40NOR">40NOR</option>
+                            </select>
+                        </td>
+                        <td>License plate</td>
+                        <td><input id="ttLicensePlate" class="easyui-textbox"></td>
+                        <td>Driver</td>
+                        <td><input id="ttDriver" class="easyui-textbox"></td>
+                        <td>Telephone</td>
+                        <td><input id="ttTelephone" class="easyui-textbox"></td>
+                    </tr>
+                    <tr>
+                        <td>Container No</td>
+                        <td><input id="ttContainerNo" class="easyui-textbox"></td>
+                        <td>Seal No</td>
+                        <td><input id="ttSealNo" class="easyui-textbox"></td>
+                        <td>Remark</td>
+                        <td colspan="3"><input id="ttRemark" class="easyui-textbox" style="width:416px"></td>
+
+                    </tr>
+
+
+                </table>
+            </div>
+
+        </div>
+        <div id="dd"></div>
+    </div>
+</body>
+</html>

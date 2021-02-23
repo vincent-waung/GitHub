@@ -1,0 +1,53 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>TooltipDialog</title>
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>    
+</head>
+<body>
+   <h2>提示信息对话框</h2>
+	    <div class="demo-info">
+	        <div class="demo-tip icon-tip"></div>
+	        <div>这个示例教我们如何创建一个提示信息对话框.</div>
+	    </div>
+	    <div style="margin:10px 0;"></div>
+	    <div style="padding:10px 200px">
+	        <p><a id="dd" href="javascript:void(0)">点这里</a> 来显示一个提示信息对话框.
+	    </div>
+	    <script>
+	        $(function () {
+	            $('#dd').tooltip({
+	                content: $('<div></div>'),
+	                showEvent: 'click',
+	                onUpdate: function (content) {
+	                    content.panel({
+	                        width: 200,
+	                        border: false,
+	                        title: '登录',
+	                        href: '/Tooltip/_Dialog'
+	                    });
+	                },
+	                onShow: function () {
+	                    var t = $(this);
+	                    t.tooltip('tip').unbind().bind('mouseenter', function () {
+	                        t.tooltip('show');
+	                    }).bind('mouseleave', function () {
+	                        t.tooltip('hide');
+	                    });
+	                }
+	            });
+	        });
+	    </script>
+</body>
+</html>

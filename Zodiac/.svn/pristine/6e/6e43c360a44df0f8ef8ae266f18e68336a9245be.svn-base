@@ -1,0 +1,45 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ShowTdcView</title>    
+</head>
+<body>
+    <div id="div_EditView">
+        <form method="post">
+            <table>
+                <tr style="height:0px;">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><input name="uId" type="hidden" /></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>用户名:</td>
+                    <td>
+                        <input name="uLoginName" class="easyui-validatebox" style="width:150px;" data-options="required:true,missingMessage:'必填用户名称!'" />
+                    </td>
+                    <td>联系电话:</td>
+                    <td>
+                        <input name="uPost" class="easyui-validatebox" style="width:150px;" />
+                    </td>
+                    <td></td>
+                </tr>               
+                <tr>
+                    <td colspan="6" style="text-align:center">
+                        <img id="imgQRCode" alt="二维码未生成" src="@Url.Action("GenerateUserTdc", "Sys_UserInfo", new { uId = ViewBag.uId })" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>DisplaySeconds</title>
+     <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+      <h2>显示秒</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>用户能够决定是否显示秒部分.</div>
+    </div>
+    <div style="margin:10px 0;">
+        <span>显示秒: </span>
+        <input type="checkbox" checked onchange="$('#dt').datetimebox({showSeconds:$(this).is(':checked')})">
+    </div>
+    <input id="dt" class="easyui-datetimebox" style="width:150px">
+</body>
+</html>

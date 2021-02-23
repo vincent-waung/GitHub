@@ -1,0 +1,51 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>TooltipasToolbar</title>
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+    <h2>提示信息组件作为工具条</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>这个示例教大家如果创建一个提示信息风格的工具条.</div>
+    </div>
+    <div style="margin: 10px 0;"></div>
+    <div style="padding: 10px 200px">
+        <p>
+            <a id="dd" href="javascript:void(0)" class="easyui-tooltip" data-options="
+	                    hideEvent: 'none',
+	                    content: function(){
+	                        return $('#toolbar');
+	                    },
+	                    onShow: function(){
+	                        var t = $(this);
+	                        t.tooltip('tip').focus().unbind().bind('blur',function(){
+	                            t.tooltip('hide');
+	                        });
+	                    }
+	                ">到我这来</a> 搞出一个工具条.
+        </p>
+    </div>
+    <div style="display: none">
+        <div id="toolbar">
+            <a href="#" class="easyui-linkbutton easyui-tooltip" title="添加" data-options="iconCls:'icon-add',plain:true"></a>
+            <a href="#" class="easyui-linkbutton easyui-tooltip" title="剪切" data-options="iconCls:'icon-cut',plain:true"></a>
+            <a href="#" class="easyui-linkbutton easyui-tooltip" title="删除" data-options="iconCls:'icon-remove',plain:true"></a>
+            <a href="#" class="easyui-linkbutton easyui-tooltip" title="撤销" data-options="iconCls:'icon-undo',plain:true"></a>
+            <a href="#" class="easyui-linkbutton easyui-tooltip" title="恢复" data-options="iconCls:'icon-redo',plain:true"></a>
+        </div>
+    </div>
+</body>
+</html>

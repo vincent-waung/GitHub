@@ -1,0 +1,47 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" charset="utf-8" />
+    <title>Resizable</title>
+   <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#div1").resizable({
+                minWidth: 5,
+                minHeight: 5
+            });
+
+            $("#dd").draggable({
+                handle: '#mytitle'
+            }).resizable({
+                minWidth: 50,
+                minHeight: 50
+            }
+            );
+        });
+    </script>
+</head>
+<body>
+    <h2>基本可缩放组件</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>点击组件边缘调整组件大小.</div>
+    </div>
+    <div style="margin: 10px 0;"></div>
+    <div id="div1" style="width: 200px; height: 150px; border: 1px solid #ccc;">
+        <div style="padding: 20px">缩放我</div>
+    </div>
+    <div id="dd"  style="width: 200px; height: 150px; border: 1px solid #ccc">
+        <div id="mytitle" style="background: #ddd; padding: 5px;">标题</div>
+        <div style="padding: 20px">拖拽并缩放我</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "TruckingCancel";
+}
+<script src="~/Areas/Scripts/easyui/jquery.min.js"></script>
+<script src="~/Areas/Scripts/easyui/jquery.easyui.min.js"></script>
+<script src="~/Areas/Scripts/ToolKit.js"></script>
+
+<link href="~/Areas/Content/Site.css" rel="stylesheet" />
+<link href="~/Areas/Content/easyui/icon.css" rel="stylesheet" />
+<link href="~/Areas/Content/easyui/bootstrap/easyui.css" rel="stylesheet" />
+
+<script type="text/javascript">
+    $(function () {
+
+ 
+        $(".Save").click(function () {
+
+
+            var Reason = $('#ttPassNo').textbox('getValue');
+      
+
+            $.ajax({
+                url: '/TMS_Areas/TruckingCompany/TruckCancelBooking',
+                type: 'POST',
+                dataType: 'json',
+                data: { Reason: Reason },
+                success:
+                    function (json) {
+                        var json = eval(json);
+                        if (json.msg == "0") {
+                            window.parent.$.messager.alert('reminder', 'Submitted successfully', 'info');
+                        }
+                        if (json.msg == "1") {
+                            window.parent.$.messager.alert('reminder', json.err, 'info');
+                        }
+
+                    }
+            })
+        });
+
+
+
+    });
+
+
+</script>
+<div id="tb" style="padding: 5px; height: auto">
+
+    <div>
+
+        <a href="javascript:void(0)" class="easyui-linkbutton Save" iconcls="icon-save">Submit</a>
+
+
+    </div>
+</div>
+<div id="tt" class="easyui-tabs" style="height:auto;">
+    <div>
+        Reason:
+        <input id="ttPassNo" class="easyui-textbox" data-options="multiline:true" style="height:68px;width:400px">
+
+    </div>
+
+</div>

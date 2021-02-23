@@ -1,0 +1,938 @@
+﻿@{
+    Layout = null;
+}
+
+<form id="fData">
+    <div id="tt" class="easyui-tabs" style="width:980px;height:350px;">
+
+        <div title="Date List" style="overflow:hidden; height:320px">
+
+            <div style="overflow:hidden;height:300px;">
+                <table id="dg" title="List" height="310" width="980"></table>
+            </div>
+      </div>
+
+          
+        </div>
+    <input type="hidden" id="Total_Carton" value="" />
+    <input type="hidden" id="PO_quantity" value="" />
+    <input type="hidden" id="Total_Volume" value="0" />
+
+       
+
+    
+</form>
+ 
+    <script type="text/javascript">
+            var editRow = undefined;
+        var dgList;
+        var node = dgBooking.datagrid('getSelected')
+       
+        var pID = node.ID
+        var pUpdateGRtime = node.Update_GR_time
+
+        $("#POID").val(pID)
+
+        bindingDG();
+        var editRow = undefined;
+        function bindingDG() {
+            dgList = $("#dg").datagrid({
+                iconCls: 'icon-save',
+                fit: true,
+                fitColumns: false,
+                rownumbers: true,
+                nowrap: true, //如果为true，则在同一行中显示数据。设置为true可以提高加载性能。
+                animate: false,
+                border: false,
+                singleSelect: true,
+                loadMsg: 'Loading……',
+                // idField: 'rId',
+                //把表单元素序列化成对象
+                queryParams:
+                {
+                    pID: pID
+                },
+                pagination: false,
+                pageSize: 25,
+                pageList: [5, 10, 15, 20, 25],
+                url: '/OnlineBooking_Areas/LoadPlanQuery/GetVendorInputListByPID',
+                toolbar: [
+                //    {
+                //    text: '刷新',
+                //    iconCls: 'icon-reload',
+                //    handler: function () {
+                //        dgList.datagrid('load');
+                //    }
+                //},
+
+                 '-', {
+                     text: 'Add',
+                     iconCls: 'icon-add',
+                     handler: function () {
+                         showInsertNewDlg();
+                     }
+                 }
+                    ,
+                  '-', {
+                      text: 'Edit',
+                      iconCls: 'icon-edit',
+                      handler: function () {
+                          editPoInfo();
+                      }
+                  }
+                    ,
+                    //'-', {
+                    //    text: '取消编辑',
+                    //    iconCls: 'icon-undo',
+                    //    handler: function () {
+                    //        dgList.datagrid('unselectAll');
+                    //        dgList.datagrid('rejectChanges');
+                    //        editRow = undefined;
+                    //    }
+                    //},
+
+                    '-', {
+                        text: 'Delete',
+                        iconCls: 'icon-remove',
+                        handler: function () {
+                            deletePoInfo();
+                        }
+                    }
+                    //,
+                    //'-', {
+                    //    text: '保存',
+                    //    iconCls: 'icon-save',
+                    //    handler: function () {
+
+                    //        if (editRow != undefined) {
+                    //            dgList.datagrid('endEdit', editRow);
+                    //        }
+
+                    //    }
+                    //}
+
+                ],
+                columns: [[
+                    { field: 'VID', title: 'VID', width: 50, hidden: true },
+                    { field: 'PID', title: 'PID', width: 50, hidden: true },
+                    { field: 'PO_Line', title: 'PO/line', width: 100 },
+                    { field: 'Created_By', title: 'Created by', width: 100  },
+                    { field: 'Matl_Group_Sales', title: 'Matl Group Sales', width: 100 },
+                    { field: 'Matrix', title: 'Matrix', width: 100  },
+                    { field: 'Slip_Sheet', title: 'Slip sheet', width: 100  },
+                    { field: 'Packing_Status', title: 'Packing Status', width: 100  },
+                    {
+                        field: 'Inspection_End_Date', title: 'Inspection End Date', width: 100, formatter: function (value) {
+
+                            if (value) {
+                                if (eval("new " + value.substr(1, value.length - 2)).toLocaleDateString() == '1/1/1') {
+                                    return '';
+                                } else {
+
+                                    return eval("new " + value.substr(1, value.length - 2)).toLocaleDateString();
+
+                                }
+                                }
+                            }
+                    },
+                    { field: 'Inspection_Result', title: 'Inspection result', width: 100 },
+                    { field: 'FOB_Local_Charges_Settlement', title: 'FOB local charges settlement', width: 100  },
+                    {
+                        field: 'FCR_Bill_Return_Date', title: 'FCR bill return date', width: 100, formatter: function (value) {
+
+                            if (value) {
+                                if (eval("new " + value.substr(1, value.length - 2)).toLocaleDateString() == '1/1/1') {
+                                    return '';
+                                } else {
+
+                                    return eval("new " + value.substr(1, value.length - 2)).toLocaleDateString();
+
+
+                                }
+                            }
+                        }
+                    },
+                    {
+                        field: 'Certificate_Application_Date', title: 'Certificate application date', width: 100, formatter: function (value) {
+
+                            if (value) {
+                                if (eval("new " + value.substr(1, value.length - 2)).toLocaleDateString() == '1/1/1') {
+                                    return '';
+                                } else {
+
+                                    return eval("new " + value.substr(1, value.length - 2)).toLocaleDateString();
+
+
+                                }
+                            }
+                        }
+                    },
+                    {
+                        field: 'Certificate_Return_TO_SMDate', title: 'Certificate return tO SMDate', width: 100, formatter: function (value) {
+
+                            if (value) {
+                                if (eval("new " + value.substr(1, value.length - 2)).toLocaleDateString() == '1/1/1') {
+                                    return '';
+                                } else {
+
+                                    return eval("new " + value.substr(1, value.length - 2)).toLocaleDateString();
+
+
+                                }
+                            }
+                        }
+                    },
+                    { field: 'Carton_delivered', title: 'Carton delivered', width: 100 },
+                    { field: 'Qty_Delivered', title: 'Qty delivered', width: 100 },
+                    { field: 'To_be_del', title: 'To be del', width: 45 },
+                    { field: 'OTD_Reason_Code', title: 'OTD reason code', width: 100 },
+                     { field: 'Delay_Details', title: 'Delay details', width: 100 },
+                     { field: 'Booking_No', title: 'Booking No.', width: 100 },
+                     {
+                         field: 'Loading_Date', title: 'Loading date', width: 100, formatter: function (value) {
+
+                             if (value) {
+                                 if (eval("new " + value.substr(1, value.length - 2)).toLocaleDateString() == '1/1/1') {
+                                     return '';
+                                 } else {
+
+                                     return eval("new " + value.substr(1, value.length - 2)).toLocaleDateString();
+
+
+                                 }
+                             }
+                         }
+                     },
+                     {
+                         field: 'CFS_Closing_Date', title: 'CFS Closing date', width: 100, formatter: function (value) {
+
+                             if (value) {
+                                 if (eval("new " + value.substr(1, value.length - 2)).toLocaleDateString() == '1/1/1') {
+                                     return '';
+                                 } else {
+                                   
+                                     return eval("new " + value.substr(1, value.length - 2)).toLocaleDateString();
+
+
+                                 }
+                             }
+                         }
+                     }
+                          
+                      ,
+                     {
+                         field: 'ETD', title: 'ETD', width: 100, formatter: function (value) {
+
+                             if (value) {
+                                 if (eval("new " + value.substr(1, value.length - 2)).toLocaleDateString() == '1/1/1') {
+                                     return '';
+                                 } else {
+
+                                     return eval("new " + value.substr(1, value.length - 2)).toLocaleDateString();
+
+
+                                 }
+                             }
+                         }
+                     },
+                     { field: 'Shipment_Status', title: 'Shipment status', width: 100 }
+                     ,
+                     {
+                         field: 'Update_GR_time', title: 'Update GR time', width: 100, formatter: function (value) {
+
+                             if (value) {
+                                 if (eval("new " + value.substr(1, value.length - 2)).toLocaleDateString() == '1/1/1') {
+                                     return '';
+                                 } else {
+
+                                     return eval("new " + value.substr(1, value.length - 2)).toLocaleDateString();
+
+
+                                 }
+                             }
+                         }
+                     }
+
+                ]],
+
+                onRowContextMenu: function (e, rowIndex, rowData) {
+                    //e.preventDefault();
+                    //$(this).datagrid('unselectAll');
+                    //$(this).datagrid('selectRow', rowIndex);
+                    //$('#menu').menu('show', {
+                    //    left: e.pageX,
+                    //    top: e.pageY
+                    //});
+                },
+
+                onLoadSuccess: function (data) {
+                    //var rows = $("#dgBooking").datagrid('getRows').length;
+
+                    //if (rows >= 1) {
+                    //    $('#dgBooking').datagrid('selectRow', 0);
+
+                    //}
+
+
+                },
+                onAfterEdit: function (rowIndex, rowData, changes) {
+                    //var inserted = dgList.datagrid('getChanges', 'inserted');
+
+
+                    var updated = dgList.datagrid('getChanges', 'updated');
+
+                    if (updated.length < 1) {
+                        editRow = undefined;
+                        dgList.datagrid('unselectAll');
+                        return;
+                    }
+                    var url = '';
+                    //if (inserted.length > 0) {
+                    //    url = '/Admin_Areas/Sys_Role/AddRole';
+                    //} else {
+                    url = '/OnlineBooking_Areas/LoadPlanQuery/Vendor_UpdatePoInfo';
+                    //}
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        data: rowData,
+                        dataType: 'json',
+                        success: function (jsonData) {
+                            $.procAjaxMsg(jsonData, function () {
+                                dgList.datagrid('acceptChanges');
+                                editRow = undefined;
+                                dgList.datagrid('reload');
+                                dgList.datagrid('unselectAll');
+                                $.alertMsg(jsonData.Msg, 'Reminder', null);
+                            }, function () {
+                                dgList.datagrid('selectRow', editRow);
+                                dgList.datagrid('beginEdit', editRow);
+                                $.alertMsg(jsonData.Msg, 'Reminder', null);
+                            });
+                        }
+                    });
+                },
+
+                onBeforeLoad: function (data) {
+
+                }
+            });
+
+
+
+        }
+
+        function deletePoInfo() {
+
+            var node = dgList.datagrid('getSelected');
+            if (node) {
+
+                xz.messagerConfirm('Reminder', 'Are you sure to delete it？', function (b) {
+                    if (b) {
+                        $.post("/OnlineBooking_Areas/LoadPlanQuery/Vendor_DeletePoInfo/", { VID: node.VID  }, function (jsonObj, textStatus) {
+                            if (textStatus = "success") {
+                                //$.alertMsg(jsonObj.Msg);
+                                //pAdd.dialog('close');
+
+                                //dgBooking.datagrid('load');
+                                if (jsonObj.Statu) {
+                                  
+                                    dgList.datagrid('reload', { pID: pID });
+                                    //$.alertMsg(jsonObj.Msg);
+
+                                   
+                                } else {
+
+                                    $.alertMsg(jsonObj.Msg);
+                                }
+
+                            }
+                        }, "json")
+
+                    }
+                });
+
+
+
+            } else {
+                xz.messagerAlert('Reminder', 'Select the line you want to delete！', 'error');
+            }
+
+        }
+
+        function addPallet() {
+            //var f = $("#fData");
+            //var data2 = JSON.stringify(convertArray(f.serializeArray()));
+            //$.alertMsg(data2);
+
+
+
+
+            var Dimension = $('#cmbDimension').combobox('getText');
+
+            var PackageType = $('#cmbType').combobox('getValue');
+
+
+            var Ctn = $('#txtCtn').val();
+
+            var UnitWei = $('#txtUnitWei').combobox('getText');
+
+            var PalletID = $('#txtPalletID').val();
+
+            var Location = $('#txtLocation').val();
+
+            var Remark = $('#txtRemark').val();
+            var UID = document.getElementById("divUnloadingID").innerText;
+
+            var RegID = document.getElementById("divRegItemID").innerText;
+
+
+
+
+            $.post('/WMS_Areas/Unloading/GetPalletCountBYPalletID', { PPalletID: PalletID }, function (data, textStatus) {
+                if (textStatus = "success") {
+
+
+                    if (data.Statu == 2) {
+
+
+                        xz.messagerConfirm('Reminder', data.Msg, function (b) {
+                            if (b) {
+
+                                insertPallet();
+                            }
+                        });
+
+
+
+                    } else {
+
+                        insertPallet();
+                    }
+
+                }
+            }, "json")
+
+
+        }
+
+        function insertPoInfo() {
+
+
+            //var data = $("#fData").serialize();
+
+
+            $.post('/OnlineBooking_Areas/LoadPlanQuery/Vendor_InsertPoInfo', xz.serializeObject($('#fData')), function (data, textStatus) {
+                if (textStatus = "success") {
+ 
+
+                    if (data.Statu == 1) {
+
+                      
+                        $.alertMsg(data.Msg);
+                    } else {
+
+                        $.alertMsg(data.Msg);
+                    }
+                    
+                } 
+            }, "json")
+
+        }
+
+
+        function formatDateTime(dateTime,objDateTimebox) {
+
+            if (dateTime != null) {
+                var jsondate = dateTime;
+                jsondate = jsondate.replace("/Date(", "").replace(")/", "");
+
+                if (jsondate.indexOf("+") > 0) {
+                    jsondate = jsondate.substring(0, jsondate.indexOf("+"));
+                } else if (jsondate.indexOf("-") > 0) {
+                    jsondate = jsondate.substring(0, jsondate.indexOf("-"));
+                }
+                var date = new Date(parseInt(jsondate, 10));
+
+
+                var formatDate = DateUtil.formatDateTime(date, "MM/dd/yyyy HH:mm:ss")
+
+                objDateTimebox.datetimebox('setValue', formatDate);
+
+                //PClosing_Date.datebox('setValue', Closing_Date);
+            }
+
+        }
+
+        function editPoInfo() {
+            var row = dgList.datagrid('getSelected');
+            if (row) {
+                //var node = dgList.datagrid('getSelected');
+                var pEdit = xz.dialog({
+                    title: 'Edit',
+                    width: 1060,
+                    height: 400,
+                    cache: false,
+                    queryParams: {
+                        //uID: node.b_key, RegID: node.RegDID
+                    },
+                    iconCls: 'icon-edit',
+
+                    href: '/OnlineBooking_Areas/LoadPlanQuery/ShowVendorInputDataView',
+                    buttons: [{
+                        text: 'Submit',
+                        iconCls: 'icon-add',
+                        handler: function () {
+ 
+                            var f = pEdit.find('form');
+                            endEditing();
+                            var obj = xz.serializeObject(f);
+                            var row = $("#dgTrucking").datagrid("getRows");
+                            for (var i = 0; i < row.length; i++) {
+                                if (row[i]["Trucking_Arrive_WHS_Date"] == "") {
+                                    row[i]["Trucking_Arrive_WHS_Date"] = null;
+                                }
+                                if (row[i]["CTN"] == "") {
+                                    row[i]["CTN"] = null;
+                                }
+                                if (row[i]["Qty"] == "") {
+                                    row[i]["Qty"] = null;
+                                }
+                                if (row[i]["CBM"] == "") {
+                                    row[i]["CBM"] = null;
+                                }
+                                if (row[i]["Trucking_Arrive_terminal_Date"] == "") {
+                                    row[i]["Trucking_Arrive_terminal_Date"] = null;
+                                }
+                            }
+                            obj.dgTrucking = JSON.stringify($("#dgTrucking").datagrid("getRows"));
+                            
+ 
+                            $.post("/OnlineBooking_Areas/LoadPlanQuery/Vendor_UpdatePoInfo", obj, function (jsonObj, textStatus) {
+                                if (textStatus = "success") {
+                                    $.alertMsg(jsonObj.Msg);
+                                    if (jsonObj.Statu == 1) {
+                                        pEdit.dialog('close');
+
+                                        dgList.datagrid('load', { pID: pID });
+                                    }
+
+                                }
+                            }, "json")
+
+                            //$.alertMsg(pCBM_Dif + "-" + pCBMDif + ',' + pWeight_Dif + '-' + pWeightDif + ',' + nCTN + '-' + nCTN_Rec, '操作提示', null);
+
+
+                            //pEdit.dialog('destroy');
+
+                        }
+
+                    }],
+                    onLoad: function () {
+
+                        var f = pEdit.find('form');
+
+                        var Ppoid = f.find("#POID");
+                        var Pvid = f.find("#vID");
+                        var PBooking_No = f.find("#txtBookingNumber");
+
+                        var PpUpdateGRtime = f.find("#pUpdateGRtime");
+
+                        var PDischargingPort = f.find("#txtDischagingPort");
+                        var PVessel = f.find("#txtVessel");
+                        var PVoyage = f.find("#txtVoyage");
+                        var PLoadingPort = f.find("#LoadingPort");
+                        var Pbookingdate = f.find("#bookingdate");
+                        var Psicuttime = f.find("#sicuttime");
+                        var PCBM = f.find("#CBM");
+                        var PContainerNO = f.find("#ContainerNO");
+                        var PSeal = f.find("#Seal");
+                        var PVehicle = f.find("#Vehicle");
+
+                        var Pshipmode = f.find("#shipmode");
+                        
+                        var PLoading_Date = f.find("#loadingdate");
+                        var PClosing_Date = f.find("#closingdate");
+                        var PETD = f.find("#etd");
+                        var PShipment_Status = f.find("#ShipmentStatus");
+                        var PCarton_delivered = f.find("#Carton");
+                        var PQty_Delivered = f.find("#Qty");
+                        var PTo_be_del = f.find("#To_be_del");
+                        var PDelay_Details = f.find("#DelayDetails");
+                        var PPO_Line = f.find("#po_line");
+                        var PCreated_By = f.find("#createby");
+                        var PMatl_Group_Sales = f.find("#Matl_Group_Sales");
+                        var PPacking_Status = f.find("#Packing_Status");
+                        var PInspection_Result = f.find("#Inspection_result");
+                        var PFOB_Local_Charges_Settlement = f.find("#FOB_local_charges_settlement");
+                        var PInspection_End_Date = f.find("#Inspection_End_Date");
+                        var PFCR_Bill_Return_Date = f.find("#FCR_of_Loading_return_Date");
+                        var PCertificate_Application_Date = f.find("#Certificate_Application_Date");
+                        var PCertificate_Return_TO_SMDate = f.find("#Certificate_return_Date");
+                        var PSO_Release_Date = f.find("#SO_Release_Date");
+                        var PCY_Open_date = f.find("#CY_Open_date");
+                        var Pcourier_tracking_no = f.find("#courier_tracking_no");
+
+                        Pvid.textbox('setValue', row.VID);
+                        PQty_Delivered.textbox('textbox').bind('keyup', function (e) {
+                            PQty_Delivered.textbox('setValue', $(this).val().replace(/[^0-9.]/g, ''));
+                        });
+                        PCarton_delivered.textbox('textbox').bind('keyup', function (e) {
+                            PCarton_delivered.textbox('setValue', $(this).val().replace(/[^0-9.]/g, ''));
+                        });
+                        PCBM.textbox('textbox').bind('keyup', function (e) {
+                            PCBM.textbox('setValue', $(this).val().replace(/[^0-9.]/g, ''));
+                        });
+
+                        $('input', PQty_Delivered.next('span')).blur(function () {
+                            if (PQty_Delivered.textbox('getValue') != $("#PO_quantity").val()) {
+                                $.messager.confirm('Warning!', 'The contents you have entered does not match the original PO information.  Please confirm whether to continue to enter!', function (r) {
+                                    if (r) {
+                                    }
+                                });
+
+                            }
+                        });
+                        $('input', PCarton_delivered.next('span')).blur(function () {
+                            if (PCarton_delivered.textbox('getValue') != $("#Total_Carton").val()) {
+                                $.messager.confirm('Warning!', 'The contents you have entered does not match the original PO information.  Please confirm whether to continue to enter!', function (r) {
+                                    if (r) {
+                                    }
+                                });
+                            }
+                        });
+                        $('input',PCBM.next('span')).blur(function () {
+                            if (PCBM.textbox('getValue') != $("#Total_Volume").val()) {
+                                $.messager.confirm('Warning!', 'The contents you have entered does not match the original PO information.  Please confirm whether to continue to enter!', function (r) {
+                                    if (r) {
+                                    }
+                                });
+                            }
+                        });
+
+                        Ppoid.textbox('setValue', pID);
+
+
+                        //PBooking_No.textbox('setValue', row.Booking_No);
+
+                        //PLoading_Date.datebox('setValue', loaddates);
+
+                        //PClosing_Date.datebox('setValue', Closing_Date);
+                        //PETD.datebox('setValue', row.ETD);
+                        //PShipment_Status.combobox('select', row.Shipment_Status);
+                        //PCarton_delivered.textbox('setValue', row.Carton_delivered);
+                        //PQty_Delivered.textbox('setValue', row.Qty_Delivered);
+                        //PTo_be_del.textbox('setValue', row.To_be_del);
+                        //POTD_Reason_Code.textbox('setValue', row.OTD_Reason_Code);
+                        //PDelay_Details.textbox('setValue', row.Delay_Details);
+                        //PPO_Line.textbox('setValue', row.PO_Line);
+                        //PCreated_By.textbox('setValue', row.Created_By);
+                        //PMatl_Group_Sales.textbox('setValue', row.Matl_Group_Sales);
+                        //PMatrix.textbox('setValue', row.Matrix);
+                        //PSlip_Sheet.textbox('setValue', row.Slip_Sheet);
+                        //PPacking_Status.textbox('setValue', row.Packing_Status);
+                        //PInspection_Result.textbox('setValue', row.Inspection_Result);
+                        //PFOB_Local_Charges_Settlement.textbox('setValue', row.FOB_Local_Charges_Settlement);
+                        //PInspection_End_Date.datebox('setValue', row.Inspection_End_Date);
+                        //PFCR_Bill_Return_Date.datebox('setValue', row.FCR_Bill_Return_Date);
+                        //PCertificate_Application_Date.datebox('setValue', row.Certificate_Application_Date);
+                        //PCertificate_Return_TO_SMDate.datebox('setValue', row.Certificate_Return_TO_SMDate);
+
+                        $.post("/OnlineBooking_Areas/LoadPlanQuery/getVendorInputInfoByVID", { vID: row.VID }, function (jsonObj, textStatus) {
+
+                            if (textStatus = "success") {
+
+
+                              
+                              
+                                if (jsonObj.Data[0].Loading_Date != null){
+                                    var loaddates = ChangeDateFormat(jsonObj.Data[0].Loading_Date);
+                                    PLoading_Date.datebox('setValue', loaddates);
+                                }
+
+                                PpUpdateGRtime.textbox('setValue', jsonObj.Data[0].Update_GR_time);
+                                Pcourier_tracking_no.textbox('setValue', jsonObj.Data[0].Courier_tracking_no);
+                                
+
+                                if (jsonObj.Data[0].SI_Cut_Time != null) {
+                                    Psicuttime.datebox('setValue', ChangeDateFormat(jsonObj.Data[0].SI_Cut_Time));
+                                }
+                                if (jsonObj.Data[0].CY_Closing_Date != null) {
+                                    PClosing_Date.datebox('setValue', ChangeDateFormat(jsonObj.Data[0].CY_Closing_Date));
+                                }
+                                PBooking_No.textbox('setValue', jsonObj.Data[0].Booking_No);
+
+
+
+                                if (jsonObj.Data[0].ETD != null) {
+                                    PETD.datebox('setValue', ChangeDateFormat(jsonObj.Data[0].ETD));
+                                }
+
+                                PDischargingPort.textbox('setValue', jsonObj.Data[0].Dischaging_Port);
+                                PVessel.textbox('setValue', jsonObj.Data[0].Vessel);
+                                PVoyage.textbox('setValue', jsonObj.Data[0].Voyage);
+                                PLoadingPort.textbox('setValue', jsonObj.Data[0].Loading_Port);
+                                PCBM.textbox('setValue', jsonObj.Data[0].Delivery_CBM);
+                                PContainerNO.textbox('setValue', jsonObj.Data[0].Container_NO);
+                                PSeal.textbox('setValue', jsonObj.Data[0].Seal_NO);
+                                PVehicle.combobox('setValue', jsonObj.Data[0].Vehicle_Type);
+
+                                Pshipmode.combobox('setValue', jsonObj.Data[0].Ship_Mode);
+
+                                if (jsonObj.Data[0].Booking_Date != null) {
+                                    Pbookingdate.datebox('setValue', ChangeDateFormat(jsonObj.Data[0].Booking_Date));
+                                }
+                                if (jsonObj.Data[0].SO_Release_Date != null) {
+                                    PSO_Release_Date.datebox('setValue', ChangeDateFormat(jsonObj.Data[0].SO_Release_Date));
+                                }
+                                if (jsonObj.Data[0].CY_Open_date != null) {
+                                    PCY_Open_date.datebox('setValue', ChangeDateFormat(jsonObj.Data[0].CY_Open_date));
+                                }
+
+
+                                PShipment_Status.combobox('select', jsonObj.Data[0].Shipment_Status);
+                                PCarton_delivered.textbox('setValue', jsonObj.Data[0].Carton_delivered);
+                                PQty_Delivered.textbox('setValue', jsonObj.Data[0].Qty_Delivered);
+                                PTo_be_del.textbox('setValue', jsonObj.Data[0].To_be_del);
+                                PDelay_Details.combobox('setValue', jsonObj.Data[0].Delay_Details);
+                                PPO_Line.textbox('setValue', jsonObj.Data[0].PO_Line);
+                                PCreated_By.textbox('setValue', jsonObj.Data[0].Created_By);
+                                PMatl_Group_Sales.textbox('setValue', jsonObj.Data[0].Matl_Group_Sales);
+                                PPacking_Status.textbox('setValue', jsonObj.Data[0].Packing_Status);
+                                PInspection_Result.textbox('setValue', jsonObj.Data[0].Inspection_Result);
+                                PFOB_Local_Charges_Settlement.combobox('setValue', jsonObj.Data[0].FOB_Local_Charges_Settlement);
+                                if (jsonObj.Data[0].Inspection_End_Date != null) {
+                                    PInspection_End_Date.datebox('setValue', ChangeDateFormat(jsonObj.Data[0].Inspection_End_Date));
+                                }
+                                if (jsonObj.Data[0].FCR_Bill_Return_Date != null) {
+                                    PFCR_Bill_Return_Date.datebox('setValue', ChangeDateFormat(jsonObj.Data[0].FCR_Bill_Return_Date));
+                                }
+                                if (jsonObj.Data[0].Certificate_Application_Date != null) {
+                                    PCertificate_Application_Date.datebox('setValue', ChangeDateFormat(jsonObj.Data[0].Certificate_Application_Date));
+                                }
+
+                                if (jsonObj.Data[0].Certificate_Return_TO_SMDate != null) {
+                                    PCertificate_Return_TO_SMDate.datebox('setValue', ChangeDateFormat(jsonObj.Data[0].Certificate_Return_TO_SMDate));
+                                }
+
+                                $('#dgTrucking').datagrid({
+                                    url: '/OnlineBooking_Areas/LoadPlanQuery/getTruckingByVID',
+                                    queryParams: {
+                                        vID: row.VID
+                                    },
+                                    method: 'post',
+                                });
+                                
+
+
+
+
+                                //$.alertMsg(jsonObj.Msg);
+                                //pAdd.dialog('close');
+
+                                //dgBooking.datagrid('load');
+                            }
+                        }, "json")
+
+
+
+                    },
+
+                    onClose: function () {
+
+                        pEdit.dialog('destroy');//销毁
+                        //updateSelectedRow(node);
+                        //searchBooking();
+                    }
+                    //close: function () {
+                    //    aler("close dialog");
+                    //    pAdd.dialog('destroy')
+                    //}
+                    //onBeforeOpen: function () {
+
+                    //    //$("#vehicleType").combobox('select', vehicleType);
+
+                    //}
+                });
+            }
+            else {
+                xz.messagerAlert('Reminder', 'Please select the line to edit！', 'error');
+            }
+        }
+
+        function fomatFloat(src, pos) {
+            return Math.round(src * Math.pow(10, pos)) / Math.pow(10, pos);
+        }
+
+        function showInsertNewDlg() {
+
+            var node = dgList.datagrid('getSelected');
+                var pAdd = xz.dialog({
+                    title: 'New',
+                    width: 1060,
+                    height: 400,
+                    cache: false,
+                    queryParams: {
+                        //uID: node.b_key, RegID: node.RegDID
+                    },
+                    iconCls: 'icon-add',
+
+                    href: '/OnlineBooking_Areas/LoadPlanQuery/ShowVendorInputDataView',
+                    buttons: [{
+                        text: 'Submit',
+                        iconCls: 'icon-add',
+                        handler: function () {
+
+
+                            var f = pAdd.find('form');
+                           
+                            var data = f.serialize()
+
+                            endEditing();
+                            var obj = xz.serializeObject(f);
+                            var row = $("#dgTrucking").datagrid("getRows");
+                            for (var i = 0; i < row.length; i++) {
+                                if (row[i]["Trucking_Arrive_WHS_Date"] == "") {
+                                    row[i]["Trucking_Arrive_WHS_Date"] = null;
+                                }
+                                if (row[i]["CTN"] == "") {
+                                    row[i]["CTN"] = null;
+                                }
+                                if (row[i]["Qty"] == "") {
+                                    row[i]["Qty"] = null;
+                                }
+                                if (row[i]["CBM"] == "") {
+                                    row[i]["CBM"] = null;
+                                }
+                                if (row[i]["Trucking_Arrive_terminal_Date"] == "") {
+                                    row[i]["Trucking_Arrive_terminal_Date"] = null;
+                                }
+                            }
+                            obj.dgTrucking = JSON.stringify($("#dgTrucking").datagrid("getRows"));
+
+
+
+                            $.post("/OnlineBooking_Areas/LoadPlanQuery/Vendor_InsertPoInfo", obj, function (jsonObj, textStatus) {
+                                if (textStatus = "success") {
+                                    $.alertMsg(jsonObj.Msg);
+                                    if (jsonObj.Statu == 1) {
+                                       
+
+                                        dgList.datagrid('reload', { pID: pID });
+                                    }
+
+                                }
+                            }, "json")
+
+                            //$.alertMsg(pCBM_Dif + "-" + pCBMDif + ',' + pWeight_Dif + '-' + pWeightDif + ',' + nCTN + '-' + nCTN_Rec, '操作提示', null);
+ 
+
+                                pAdd.dialog('destroy');
+ 
+                        }
+
+                    }],
+                    onLoad: function () {
+                        var f = pAdd.find('form');
+
+                        var PCarton_delivered = f.find("#Carton");
+
+                        var PQty_Delivered = f.find("#Qty");
+                        var Ppoid = f.find("#POID");
+                        var PCBM = f.find("#CBM");
+
+                        var Pvid = f.find("#vID");
+
+                        $('input', PQty_Delivered.next('span')).blur(function () {
+                            if (PQty_Delivered.textbox('getValue') != $("#PO_quantity").val()) {
+                                $.messager.confirm('Warning!', 'The contents you have entered does not match the original PO information.  Please confirm whether to continue to enter!', function (r) {
+                                    if (r) {
+                                    }
+                                });
+
+                            }
+                        });
+                        $('input', PCarton_delivered.next('span')).blur(function () {
+                            if (PCarton_delivered.textbox('getValue') != $("#Total_Carton").val()) {
+                                $.messager.confirm('Warning!', 'The contents you have entered does not match the original PO information.  Please confirm whether to continue to enter!', function (r) {
+                                    if (r) {
+                                    }
+                                });
+                            }
+                        });
+                        $('input', PCBM.next('span')).blur(function () {
+                            if (PCBM.textbox('getValue') != $("#Total_Volume").val()) {
+                                $.messager.confirm('Warning!', 'The contents you have entered does not match the original PO information.  Please confirm whether to continue to enter!', function (r) {
+                                    if (r) {
+                                    }
+                                });
+                            }
+                        });
+ 
+                        Ppoid.textbox('setValue', pID);
+                        Pvid.textbox('setValue', '0');
+ 
+                    },
+
+                    onClose: function () {
+
+                        pAdd.dialog('destroy');//销毁
+                        //updateSelectedRow(node);
+                        //searchBooking();
+                    }
+                    //close: function () {
+                    //    aler("close dialog");
+                    //    pAdd.dialog('destroy')
+                    //}
+                    //onBeforeOpen: function () {
+
+                    //    //$("#vehicleType").combobox('select', vehicleType);
+
+                    //}
+                });
+            }
+     
+ 
+ 
+        
+
+        function ChangeDateFormat(jsondate) {
+            jsondate = jsondate.replace("/Date(", "").replace(")/", "");
+
+            if (jsondate.indexOf("+") > 0) {
+                jsondate = jsondate.substring(0, jsondate.indexOf("+"));
+            } else if (jsondate.indexOf("-") > 0) {
+                jsondate = jsondate.substring(0, jsondate.indexOf("-"));
+            }
+            var date = new Date(parseInt(jsondate, 10));
+            var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+            var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+            //return date.getFullYear() + "-" + month + "-" + currentDate;
+            return month + "/" + currentDate + "/" + date.getFullYear();
+        }
+
+ 
+ 
+
+        /*
+用途：将js字符串对象转换为js中的date对象
+输入：
+str：字符串日期 "2009-12-02 12:25";
+返回：
+js date日期对象
+*/
+        //function strToDate(str) {
+        //    var tempStrs = str.split(" ");
+        //    var dateStrs = tempStrs[0].split("/");
+        //    var year = parseInt(dateStrs[0], 10);
+        //    var month = parseInt(dateStrs[1], 10) - 1;
+        //    var day = parseInt(dateStrs[2], 10);
+        //    var timeStrs = tempStrs[1].split("/");
+        //    var hour = parseInt(timeStrs[0], 10);
+        //    var minute = parseInt(timeStrs[1], 10) - 1;
+        //    var second = parseInt(timeStrs[2], 10);
+        //    var date = new Date(year, month, day, hour, minute, second);
+        //    return date;
+        //}
+ 
+    </script> 

@@ -1,0 +1,47 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>FormatDataGridColumns</title>
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+  <h2>格式化数据表格列</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>市场价小于30的显示红色.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <table class="easyui-datagrid" title="格式化数据表格列" style="width:700px;height:250px"
+           data-options="rownumbers:true,singleSelect:true,iconCls:'icon-ok',url:'/EasyUI_Areas/AdminSys/GetUserInfo'">
+        <thead>
+            <tr>
+                <th data-options="field: 'uId', title: '用户编号', width: 100"></th>
+                <th data-options="field: 'uLoginName', title: '登录名', width: 100 "></th>
+                <th data-options="field:'uGender',width:80,align:'right',formatter:formatPrice">性别</th>
+                <th data-options="field: 'uRemark', title: '备注', width: 100"></th>
+                <th data-options="field: 'uPost', title: '邮编', width: 100"></th>
+            </tr>
+        </thead>
+    </table>
+    <script>
+        function formatPrice(val,row,rowindex) {
+            if (val == true) {
+                return '<span style="color:red;">(' + val + ')</span>';
+            } else {
+                return val;
+            }
+        }
+    </script>
+</body>
+</html>

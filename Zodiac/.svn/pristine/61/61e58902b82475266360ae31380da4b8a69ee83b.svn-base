@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ypmfdataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“ypmfdata.dbo.in_MF”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="in_MF">
+    <Key>
+      <PropertyRef Name="Receive_Date" />
+      <PropertyRef Name="In_House_No" />
+      <PropertyRef Name="Item_No" />
+    </Key>
+    <Property Name="Receive_Date" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="In_House_No" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Item_No" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="PKGS" Type="nvarchar" MaxLength="50" />
+    <Property Name="INNER_PKGS" Type="nvarchar" MaxLength="50" />
+    <Property Name="KGS" Type="nvarchar" MaxLength="50" />
+    <Property Name="CBM" Type="nvarchar" MaxLength="50" />
+    <Property Name="L" Type="nvarchar" MaxLength="50" />
+    <Property Name="W" Type="nvarchar" MaxLength="50" />
+    <Property Name="H" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityContainer Name="ypmfdataModelStoreContainer">
+    <EntitySet Name="in_MF" EntityType="Self.in_MF" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[in_MF].[Receive_Date] AS [Receive_Date], 
+[in_MF].[In_House_No] AS [In_House_No], 
+[in_MF].[Item_No] AS [Item_No], 
+[in_MF].[PKGS] AS [PKGS], 
+[in_MF].[INNER_PKGS] AS [INNER_PKGS], 
+[in_MF].[KGS] AS [KGS], 
+[in_MF].[CBM] AS [CBM], 
+[in_MF].[L] AS [L], 
+[in_MF].[W] AS [W], 
+[in_MF].[H] AS [H]
+FROM [dbo].[in_MF] AS [in_MF]</DefiningQuery>
+    </EntitySet>
+  </EntityContainer>
+</Schema>

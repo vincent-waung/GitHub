@@ -1,0 +1,230 @@
+﻿@{
+    ViewBag.Title = "TruckingMaintenance";
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>TruckingOrderSearchIndex</title>
+    <script src="~/Areas/Scripts/easyui/jquery.min.js"></script>
+    <script src="~/Areas/Scripts/easyui/jquery.easyui.min.js"></script>
+    <script src="~/Areas/Scripts/ToolKit.js"></script>
+
+    <link href="~/Areas/Content/Site.css" rel="stylesheet" />
+    <link href="~/Areas/Content/easyui/icon.css" rel="stylesheet" />
+    <link href="~/Areas/Content/easyui/bootstrap/easyui.css" rel="stylesheet" />
+    <script type="text/javascript">
+        $(function () {
+
+            $('#ccFees').combobox({
+                url: '/TMS_Areas/TruckingCompany/GetTruckingCharge',
+                method: 'post',
+                valueField: 'name',
+                textField: 'name',
+                selected: 'selected'
+            });
+            GetTimeList();
+            $.ajax({
+                url: '/TMS_Areas/TruckingCompany/GetTruckingChargeList',
+                type: 'POST',
+                dataType: 'json',
+                success:
+                    function (json) {
+                        var tbody = $("#tbody1");
+                        var json = eval(json);
+                        $.each(json, function (index, item) {
+                            tbody.append("<tr >" +
+                                "<td width='120px'>" +
+                                item.Seq +
+                                "</td>" +
+                                "<td width='120px'>" +
+                                item.Charge +
+                                "</td>" +
+                                "<td width='120px'>" +
+                                item.ChargeName +
+                                "</td>" +
+                                "<td width='90px'><a href='javascript:void();' id='btnDel' onclick='DelList(" + item.Seq + ")'>删除</a></td>" +
+                                "</tr>");
+                        });
+                    }
+            })
+            $(".Add").click(function () {
+
+                var Fees = $("#ccFees").combobox('getValue');
+                var Cost = $("#ttCost").textbox('getValue');
+                $('#tbody1').empty();
+                $.ajax({
+                    url: '/TMS_Areas/TruckingCompany/AddTruckingCharge',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { Fees: Fees, Cost: Cost },
+                    success:
+                        function (json) {
+                            var tbody = $("#tbody1");
+                            var json = eval(json);
+                            if (json.msg == "1") {
+                                window.parent.$.messager.alert('reminder', 'Session timeout please log in again', 'info');
+                            } else {
+                                $.each(json, function (index, item) {
+                                    tbody.append("<tr >" +
+                                        "<td width='120px'>" +
+                                        item.Seq +
+                                        "</td>" +
+                                        "<td width='120px'>" +
+                                        item.Charge +
+                                        "</td>" +
+                                        "<td width='120px'>" +
+                                        item.ChargeName +
+                                        "</td>" +
+                                        "<td width='90px'><a href='javascript:void();' id='btnDel' onclick='DelList(" + item.Seq + ")'>删除</a></td>" +
+                                        "</tr>");
+                                });
+                            }
+                        }
+                })
+            });
+            $(".Save").click(function () {
+
+                $.ajax({
+                    url: '/TMS_Areas/TruckingCompany/SaveTruckingCharge',
+                    type: 'POST',
+                    dataType: 'json',
+                    success:
+                        function (json) {
+                            var json = eval(json);
+                            if (json.msg == "0") {
+                                window.parent.$.messager.alert('reminder', 'Save successful!', 'info');
+                            }
+                            if (json.msg == "1") {
+                                window.parent.$.messager.alert('reminder', 'Save failed,' + json.err, 'info');
+                            }
+
+                        }
+                })
+            });
+            $(".SaveTime").click(function () {
+                var ArrivalTime = $("#ddArrival").datetimebox('getValue');
+                var DepartureTime = $("#ddDeparture").datetimebox('getValue');
+                alert(ArrivalTime);
+                $.ajax({
+                    url: '/TMS_Areas/TruckingCompany/SaveTruckingTime',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { ArrivalTime: ArrivalTime, DepartureTime: DepartureTime },
+                    success:
+                        function (json) {
+                            var json = eval(json);
+                            if (json.msg == "0") {
+                                window.parent.$.messager.alert('reminder', 'Save successful!', 'info');
+                            }
+                            if (json.msg == "1") {
+                                window.parent.$.messager.alert('reminder', 'Save failed,' + json.err, 'info');
+                            }
+
+                        }
+                })
+            });
+        });
+        function DelList(id) {
+
+            $('#tbody1').empty();
+            $.ajax({
+                url: '/TMS_Areas/TruckingCompany/DelTruckingCharge',
+                type: 'POST',
+                dataType: 'json',
+                data: { id: id },
+                success:
+                    function (json) {
+                        var tbody = $("#tbody1");
+                        var json = eval(json);
+                        $.each(json, function (index, item) {
+                            tbody.append("<tr >" +
+                                "<td width='120px'>" +
+                                item.Seq +
+                                "</td>" +
+                                "<td width='120px'>" +
+                                item.Charge +
+                                "</td>" +
+                                "<td width='120px'>" +
+                                item.ChargeName +
+                                "</td>" +
+                                "<td width='90px'><a href='javascript:void();' id='btnDel' onclick='DelList(" + item.Seq + ")'>删除</a></td>" +
+                                "</tr>");
+                        });
+                    }
+            })
+        }
+        function GetTimeList() {
+
+            $.ajax({
+                url: '/TMS_Areas/TruckingCompany/GetTruckingTimeList',
+                type: 'POST',
+                dataType: 'json',
+                success:
+                    function (json) {
+                        var item = eval(json);
+                        $("#ddArrival").datebox('setValue', item.Arrive_factory_time);
+                        $("#ddDeparture").datebox('setValue', item.Leave_factory_time);
+
+
+                    }
+            })
+        }
+
+    </script>
+
+</head>
+<body>
+    <div>
+
+        <div id="tt" class="easyui-tabs" style="height:auto;">
+            <div title="Cost Maintenance" style="padding:20px;background-color:#F2F2F2">
+                <a href="javascript:void(0)" class="easyui-linkbutton Save" iconcls="icon-save">Save</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton Add" iconcls="icon-add">Add</a>
+                <table>
+
+                    <tr>
+                        <td>Fees</td>
+                        <td>
+                            <input id="ccFees" class="easyui-combobox" style="width:175px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Cost</td>
+                        <td><input id="ttCost" class="easyui-textbox"></td>
+                    </tr>
+
+                </table>
+                <table id="table1" style="text-align:center">
+                    <thead>
+                        <tr>
+                            <th width="120px">Seq</th>
+                            <th width="120px">ChargeName</th>
+                            <th width="120px">Charge </th>
+                            <th width="120px">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody1"></tbody>
+                </table>
+            </div>
+            <div title="Time Maintenance" style="padding:20px;background-color:#F2F2F2">
+                <a href="javascript:void(0)" class="easyui-linkbutton SaveTime" iconcls="icon-save">Save</a>
+                <table>
+
+                    <tr>
+                        <td>Arrival time</td>
+                        <td><input id="ddArrival" class="easyui-datetimebox" name="birthday" data-options="showSeconds:false"></td>
+                    </tr>
+                    <tr>
+                        <td>Departure time</td>
+                        <td><input id="ddDeparture" class="easyui-datetimebox" name="birthday" data-options="showSeconds:false"></td>
+                    </tr>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+</body>
+</html>

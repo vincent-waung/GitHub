@@ -1,0 +1,57 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>MenuEvents</title>
+     <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#mm").menu({
+                onClick: function (item) {
+                    alert(item.name);
+                }
+            });
+        });
+        //function menuHandler(item) {
+        //    alert(item.name);
+        //}
+    </script>
+</head>
+<body>
+   <h2>菜单事件</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>在页面上右击点击菜单项.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div id="mm" class="easyui-menu"  style="width:120px;">
+        <div data-options="name:'new'">新建</div>
+        <div data-options="name:'save',iconCls:'icon-save'">保存</div>
+        <div data-options="name:'print',iconCls:'icon-print'">打印</div>
+        <div class="menu-sep"></div>
+        <div data-options="name:'exit'">退出</div>
+    </div>
+    <script>
+     
+        $(function () {
+            $(document).bind('contextmenu', function (e) {
+                e.preventDefault();
+                $('#mm').menu('show', {
+                    left: e.pageX,
+                    top: e.pageY
+                });
+            });
+        });
+    </script>
+</body>
+</html>

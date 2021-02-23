@@ -1,0 +1,188 @@
+﻿@{
+    Layout = null;
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>TruckingOrderSearchIndex</title>
+    <script src="~/Areas/Scripts/easyui/jquery.min.js"></script>
+    <script src="~/Areas/Scripts/easyui/jquery.easyui.min.js"></script>
+    <script src="~/Areas/Scripts/ToolKit.js"></script>
+
+    <link href="~/Areas/Content/Site.css" rel="stylesheet" />
+    <link href="~/Areas/Content/easyui/icon.css" rel="stylesheet" />
+    <link href="~/Areas/Content/easyui/bootstrap/easyui.css" rel="stylesheet" />
+
+
+    <script type="text/javascript">
+            $(function () {
+                $('#BookingInfo').datagrid({
+
+                    fitColumns: false,
+                    pagination: false,
+                    singleSelect: true,
+                    url: '',
+                    columns: [[
+                        {
+                            field: 'oid', title: 'Seq', width: 60,
+                            formatter: function (value, row, index) {//设置自动增长列
+                                index += 1;//设置起始序号为1，如果不加这行代码序号就会从0开始
+                                return index++;//根据行的数量不断自增
+                            }
+                        },
+                        {
+                            field: 'Operator', title: 'Operator', width: 150,
+                            formatter: function (value, row) {
+                                return row.Operator;
+                            }
+                        },
+                        {
+                            field: 'BookingNo', title: 'BookingNo', width: 150,
+                            formatter: function (value, row) {
+                                return row.BookingNo;
+                            }
+                        },
+                        {
+                            field: 'InvoiceNo', title: 'InvoiceNo', width: 100,
+                            formatter: function (value, row) {
+                                return row.InvoiceNo;
+                            }
+                        },
+                        {
+                            field: 'ContState', title: 'ContType', width: 150,
+                            formatter: function (value, row) {
+                                return row.ContState;
+                            }
+                        },
+                        {
+                            field: 'Ctn', title: 'Ctn', width: 100,
+                            formatter: function (value, row) {
+                                return row.Ctn;
+                            }
+                        },
+                        {
+                            field: 'Cbm', title: 'Cbm', width: 100,
+                            formatter: function (value, row) {
+                                return row.Cbm;
+                            }
+                        },
+                        {
+                            field: 'ContNo_SailNo', title: 'ContNo_SailNo', width: 100,
+                            formatter: function (value, row) {
+                                return row.ContNo_SailNo;
+                            }
+                        },
+                        {
+                            field: 'CarNo', title: 'CarNo', width: 150,
+                            formatter: function (value, row) {
+                                return row.CarNo;
+                            }
+                        },
+                        {
+                            field: 'Phone', title: 'Phone', width: 150,
+                            formatter: function (value, row) {
+                                return row.Phone;
+                            }
+                        },
+                        {
+                            field: 'ArriveTime', title: '	ArriveTime', width: 150,
+                            formatter: function (value, row) {
+                                return row.ArriveTime;
+                            }
+                        },
+                        {
+                            field: 'LeaveTime', title: 'LeaveTime', width: 150,
+                            formatter: function (value, row) {
+                                return row.LeaveTime;
+                            }
+                        }
+                        ,
+                        {
+                            field: 'ActLeaveTime', title: 'ActArriveTime', width: 150,
+                            formatter: function (value, row) {
+                                return row.ActLeaveTime;
+                            }
+                        }
+                        ,
+                        {
+                            field: 'Pick_address', title: 'ActLeaveTime', width: 150,
+                            formatter: function (value, row) {
+                                return row.ArriveTime;
+                            }
+                        }
+                        ,
+                        {
+                            field: 'ContState', title: 'ContState', width: 150,
+                            formatter: function (value, row) {
+                                return row.ContState;
+                            }
+                        },
+                        {
+                            field: 'LoadingGate', title: 'LoadingGate', width: 150,
+                            formatter: function (value, row) {
+                                return row.LoadingGate;
+                            }
+                        },
+                        {
+                            field: 'TranWay', title: 'TranWay', width: 150,
+                            formatter: function (value, row) {
+                                return row.TranWay;
+                            }
+                        },
+                        {
+                            field: 'Remark', title: 'Remark', width: 150,
+                            formatter: function (value, row) {
+                                return row.Remark;
+                            }
+                        },
+                        {
+                            field: 'Client', title: 'Client', width: 150,
+                            formatter: function (value, row) {
+                                return row.Client;
+                            }
+                        }
+
+                    ]],
+
+                    toolbar: "#tb"
+                });
+                //查询
+                $(".Search").click(function () {
+                    var options = $('#BookingInfo').datagrid('options');
+                    options.url = '/TMS_Areas/TruckingCompany/GetFGsummary';
+                    options.queryParams = { data1: $('#ddDate1').datebox('getValue'), data2: $('#ddDate2').datebox('getValue') };
+                    $('#BookingInfo').datagrid(options);
+
+
+                });
+                $(".Export").click(function () {
+
+                    window.location = '/TMS_Areas/TruckingCompany/ExportFGsummary';
+                });
+
+
+            });
+
+
+    </script>
+
+</head>
+<body>
+    <div>
+        <div id="tb" style="padding: 5px; height: auto">
+
+            <div>
+                Data:
+                <input id="ddDate1" type="text" class="easyui-datebox">
+                <input id="ddDate2" type="text" class="easyui-datebox">
+                <a href="javascript:void(0)" class="easyui-linkbutton Search" iconcls="icon-search">Search</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton Export" iconcls="excel-in">Export</a>
+
+            </div>
+        </div>
+        <table id="BookingInfo" style="height:450px"></table>
+
+    </div>
+</body>
+</html>

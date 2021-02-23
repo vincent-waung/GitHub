@@ -1,0 +1,356 @@
+﻿@{
+    Layout = null;
+}
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>TruckingOrderSearchIndex</title>
+        <script src="~/Areas/Scripts/easyui/jquery.min.js"></script>
+        <script src="~/Areas/Scripts/easyui/jquery.easyui.min.js"></script>
+        <script src="~/Areas/Scripts/ToolKit.js"></script>
+
+        <link href="~/Areas/Content/Site.css" rel="stylesheet" />
+        <link href="~/Areas/Content/easyui/icon.css" rel="stylesheet" />
+        <link href="~/Areas/Content/easyui/bootstrap/easyui.css" rel="stylesheet" />
+
+
+        <script type="text/javascript">
+            $(function () {
+                $('#BookingInfo').datagrid({
+
+                    fitColumns: false,
+                    pagination: false,
+                    singleSelect: true,
+                    onClickRow: function (index, value) {
+
+                        $("#ttOrderNumber").textbox('setValue', value.book.Booking_Number);
+                        $("#ttLicenseplate").textbox('setValue', value.book.Vehicle_number);
+                        $("#ttDriver").textbox('setValue', value.book.Driver_Name);
+                        $("#ttTelephone").textbox('setValue', value.book.Driver_TelNo);
+                        $("#ttCustomsCode").textbox('setValue', value.book.CustomsNo);
+                        $("#ttSealNumbe").textbox('setValue', value.book.Seal_NO);
+                        $("#ttTrailerType").textbox('setValue', value.book.Frame_Type);
+                        $("#ttFrameWeight").textbox('setValue', value.book.FrameWeight);
+                        $("#ttHeadWeight").textbox('setValue', value.book.HeadStockWeight);
+                        $("#ttContainerWeight").textbox('setValue', value.book.ContainerWeight);
+                        $("#ttPassword").textbox('setValue', value.book.Customs_Password);
+                        $("#ttElectroniclock").textbox('setValue', value.book.Electronic_Lock);
+                        $("#ttPassNo").textbox('setValue', value.book.TongGuanCard);
+                        if (value.book.Release_Pass) {
+                            document.getElementById('Send-off').checked = true;
+                        } else {
+                            document.getElementById('Send-off').checked = false;
+                        }
+                    },
+                    url: '',
+                    columns: [[
+                        {
+                            field: 'Booking_Number112', title: '', width: 100,
+                            formatter: function (value, row) {
+                                return '<a href="javascript:void();" id="btnDow" onclick="Maintenance(\'' + row.book.Booking_Number + '\')">Maintenance</a>';
+
+                            }
+                        },
+                        {
+                            field: 'Booking_Number', title: 'Order number', width: 200,
+                            formatter: function (value, row) {
+                                return row.book.Booking_Number;
+                            }
+                        },
+                        {
+                            field: 'Transport_Type', title: 'Type', width: 100,
+                            formatter: function (value, row) {
+                                return row.book.Transport_Type;
+                            }
+                        },
+                        {
+                            field: 'Vdr_Pickup_date', title: 'Date of loading', width: 150,
+                            formatter: function (value, row) {
+                                return FormatJsonDate(row.book.Vdr_Pickup_date);
+                            }
+                        },
+                        {
+                            field: 'Vehicletype', title: 'Vehicle type', width: 100,
+                            formatter: function (value, row) {
+                                return row.book.Vehicletype;
+                            }
+                        },
+                        {
+                            field: 'CBM', title: 'CBM', width: 100,
+                            formatter: function (value, row) {
+                                return row.book.CBM;
+                            }
+                        },
+                        {
+                            field: 'GrossWeight', title: 'Total weight', width: 100,
+                            formatter: function (value, row) {
+                                return row.book.GrossWeight;
+                            }
+                        },
+                        {
+                            field: 'Vehicle_number', title: 'License plate', width: 150,
+                            formatter: function (value, row) {
+                                return row.book.Vehicle_number;
+                            }
+                        },
+                        {
+                            field: 'Driver_Name', title: 'Driver', width: 150,
+                            formatter: function (value, row) {
+                                return row.book.Driver_Name;
+                            }
+                        },
+                        {
+                            field: 'Driver_TelNo', title: 'Telephone', width: 250,
+                            formatter: function (value, row) {
+                                return row.book.Driver_TelNo;
+                            }
+                        },
+                        {
+                            field: 'CustomsNo', title: 'Driver-based Customs Code', width: 250,
+                            formatter: function (value, row) {
+                                return row.book.CustomsNo;
+                            }
+                        }
+                        ,
+                        {
+                            field: 'Cont_NO', title: 'Cabinet number', width: 250,
+                            formatter: function (value, row) {
+                                return row.book.Cont_NO;
+                            }
+                        }
+                        ,
+                        {
+                            field: 'Pick_address', title: 'Loading address', width: 300,
+                            formatter: function (value, row) {
+                                return row.book.Pick_address;
+                            }
+                        }
+
+
+                    ]],
+
+                    toolbar: "#tb"
+                });
+                //查询
+                $(".Search").click(function () {
+                    var options = $('#BookingInfo').datagrid('options');
+                    options.url = '/TMS_Areas/TruckingCompany/GetBookedHeadList';
+                    options.queryParams = { data1: $('#ddDate1').datebox('getValue'), data2: $('#ddDate2').datebox('getValue') };
+                    $('#BookingInfo').datagrid(options);
+
+          
+                });
+                $(".Save").click(function () {
+                
+                    var rows = $('#BookingInfo').datagrid('getSelected');
+                    var recieverArr = [];
+                    var recieverObj = {
+                        Booking_Number: $('#ttOrderNumber').textbox('getValue'),
+                        Vehicle_number: $('#ttLicenseplate').textbox('getValue'),
+                        Driver_name: $('#ttDriver').textbox('getValue'),
+                        Driver_telno: $('#ttTelephone').textbox('getValue'),
+                        CustomsNo: $('#ttCustomsCode').textbox('getValue'),
+                        Cont_no: $('#ttContainerNo').textbox('getValue'),
+                        Seal_no: $('#ttSealNumbe').textbox('getValue'),
+                        Frame_type: $('#ttTrailerType').textbox('getValue'),
+                        Frameweight: $('#ttFrameWeight').textbox('getValue'),
+                        Headstockweight: $('#ttHeadWeight').textbox('getValue'),
+                        Containerweight: $('#ttContainerWeight').textbox('getValue'),
+                        Customspassword: $('#ttPassword').textbox('getValue'),
+                        Electronic_lock: $('#ttElectroniclock').textbox('getValue'),
+                        Tongguancard: $('#ttPassNo').textbox('getValue'),
+                        Release_pass: document.getElementById('Send-off').checked,
+      
+                    };
+                    recieverMsg = JSON.stringify(recieverObj);
+
+                    $.ajax({
+                        url: '/TMS_Areas/TruckingCompany/GetBookedHeadSave',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: { 'booking': recieverMsg },
+                        success:
+                            function (json) {
+                                var json = eval(json);
+                                if (json.msg == "0") {
+                                    window.parent.$.messager.alert('reminder', 'Submitted successfully', 'info');
+                                }
+                                if (json.msg == "1") {
+                                    window.parent.$.messager.alert('reminder', json.err, 'info');
+                                }
+    
+                            }
+                    })
+                });
+
+                $(".Details").click(function () {
+
+                    var rows = $('#BookingInfo').datagrid('getSelected');
+                    if (rows == null)
+                    {
+                        window.parent.$.messager.alert('reminder', 'Please select a row of data!', 'info');
+                        return;
+                    }
+                    var id = rows.book.Booking_Number;
+                    var js = "/TMS_Areas/TruckingCompany/TruckingOrderDetails?id=" + id;
+                    $('#dd').dialog({
+
+                        title: 'Details',
+                        width: 1000,
+                        height: 450,
+                        minimizable: true,
+                        maximizable: true,
+                        content: '<iframe scrolling="auto" frameborder="0"  src="' + js + '" style="width:100%;height:90%;"></iframe>',
+                        modal: true
+
+                    });
+                   // window.open(js, 'Report', 'height=600,width=850,top=150,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,status=no')
+
+                });
+                $(".Maintenance").click(function () {
+
+                    var rows = $('#BookingInfo').datagrid('getSelected');
+                    if (rows == null) {
+                        window.parent.$.messager.alert('reminder', 'Please select a row of data!', 'info');
+                        return;
+                    }
+                    var id = rows.book.Booking_Number;
+                    var js = "/TMS_Areas/TruckingCompany/TruckingMaintenance?id=" + id;
+                    $('#dd').dialog({
+
+                        title: 'Maintenance',
+                        width: 1000,
+                        height: 450,
+                        minimizable: true,
+                        maximizable: true,
+                        content: '<iframe scrolling="auto" frameborder="0"  src="' + js + '" style="width:100%;height:90%;"></iframe>',
+                        modal: true
+
+                    });
+        
+                   // p = window.open(js, 'newwindow', 'height=350,width=800,top=150,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,status=no,alwaysRaised=yes');
+
+
+  
+
+                });
+                $(".Print").click(function () {
+
+                    var rows = $('#BookingInfo').datagrid('getSelected');
+                    if (rows == null) {
+                        window.parent.$.messager.alert('reminder', 'Please select a row of data!', 'info');
+                        return;
+                    }
+                    var id = rows.book.Booking_Number;
+                    var curWwwPath = window.document.location.href;
+                    //获取主机地址之后的目录，如： uimcardprj/share/meun.jsp
+                    var pathName = window.document.location.pathname;
+
+                    var pos = curWwwPath.indexOf(pathName);
+                    var localhostPaht = curWwwPath.substring(0, pos);
+
+                    //var js = "/AspWeb/TruckReportViewer.aspx?id=" + id;
+                    var js = localhostPaht + "/AspWeb/TruckReportViewer.aspx?id=" + id;
+                    $('#dd').dialog({
+
+                        title: 'Print',
+                        width: 1000,
+                        height: 450,
+                        minimizable: true,
+                        maximizable: true,
+                        content: '<iframe scrolling="auto" frameborder="0"  src="' + js + '" style="width:100%;height:90%;"></iframe>',
+                        modal: true
+
+                    });
+                    //window.open(js, 'Report', 'height=350,width=800,top=150,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,status=no')
+
+                });
+            });
+            function Maintenance(id) {
+
+                var js = "/TMS_Areas/TruckingCompany/TruckingMaintenance?id=" + id;
+                $('#dd').dialog({
+
+                    title: 'Maintenance',
+                    width: 1000,
+                    height: 450,
+                    minimizable: true,
+                    maximizable: true,
+                    content: '<iframe scrolling="auto" frameborder="0"  src="' + js + '" style="width:100%;height:90%;"></iframe>',
+                    modal: true
+
+                });
+                //window.open(js, 'Report', 'height=550,width=800,top=150,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,status=no')
+
+            }
+
+
+        </script>
+
+    </head>
+    <body>
+        <div>
+            <div id="tb" style="padding: 5px; height: auto">
+
+                <div>
+                    Data:
+                    <input id="ddDate1" type="text" class="easyui-datebox">
+                    <input id="ddDate2" type="text" class="easyui-datebox">
+                    <a href="javascript:void(0)" class="easyui-linkbutton Search" iconcls="icon-search">Search</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton Save" iconcls="icon-save">Save</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton Print" iconcls="icon-print">Print</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton Details" iconcls="icon-tip">Details</a>
+                    @*<a href="javascript:void(0)" class="easyui-linkbutton Maintenance" iconcls="icon-tip">Maintenance</a>*@
+
+                </div>
+            </div>
+            <table id="BookingInfo" style="height:400px"></table>
+            <div id="tt" class="easyui-tabs" style="height:auto;">
+                <div title="Vehicle Information" style="padding:20px;background-color:#F2F2F2">
+
+                    <table style="font-size:13px">
+                        <tr>
+                            <td>Order number</td>
+                            <td><input id="ttOrderNumber" class="easyui-textbox" readonly="readonly"></td>
+                            <td>Seal Number</td>
+                            <td><input id="ttSealNumbe" class="easyui-textbox" ></td>
+                            <td>Electronic lock</td>
+                            <td><input id="ttElectroniclock" class="easyui-textbox" ></td>
+                            <td></td>
+                            <td><input id="Send-off" type="checkbox" value="0" checked="checked" />Send-off strip</td>
+                            <td>Pass No.</td>
+                            <td><input id="ttPassNo" class="easyui-textbox" ></td>
+                        </tr>
+                        <tr>
+                            <td>License plate</td>
+                            <td><input id="ttLicenseplate" class="easyui-textbox"></td>
+                            <td>Driver</td>
+                            <td><input id="ttDriver" class="easyui-textbox"></td>
+                            <td>Telephone</td>
+                            <td><input id="ttTelephone" class="easyui-textbox"></td>
+                            <td>Driver-based Customs Code</td>
+                            <td><input id="ttCustomsCode" class="easyui-textbox"></td>
+                            <td>Password</td>
+                            <td><input id="ttPassword" class="easyui-textbox"></td>
+                        </tr>
+                        <tr>
+                            <td>Container No</td>
+                            <td><input id="ttContainerNo" class="easyui-textbox"></td>
+                            <td>Trailer type</td>
+                            <td><input id="ttTrailerType" class="easyui-textbox"></td>
+                            <td>Head weight</td>
+                            <td><input id="ttHeadWeight" class="easyui-textbox"></td>
+                            <td>Frame weight</td>
+                            <td><input id="ttFrameWeight" class="easyui-textbox"></td>
+                            <td>Container weight</td>
+                            <td><input id="ttContainerWeight" class="easyui-textbox"></td>
+                        </tr>
+
+                    </table>
+                </div>
+
+            </div>
+            <div id="dd"></div>
+        </div>
+    </body>
+    </html>

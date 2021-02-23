@@ -1,0 +1,79 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>DataGridSelection</title>
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript">
+        function getSelected() {
+            var row = $('#dg').datagrid('getSelected');
+            if (row) {
+                $.messager.alert('系统提示', row.uId + ":" + row.uLoginName + ":" + row.uGender);
+            }
+        }
+        function getSelections() {
+            var ss = [];
+            var rows = $('#dg').datagrid('getSelections');
+            for (var i = 0; i < rows.length; i++) {
+                var row = rows[i];
+                ss.push('<span>' + row.uId + ":" + row.uLoginName + ":" + row.uGender + '</span>');
+            }
+            $.messager.alert('系统提示', ss.join('<br/>'));
+        }
+
+        $(document).ready(function () {
+            $("#selctModel").change(function () {
+                $('#dg').datagrid({
+                    singleSelect: (this.value == 0)
+                })
+
+            });
+
+          
+
+        });
+    </script>
+</head>
+<body>
+   <h2>数据表格选择模型</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>选择一种选择模型并且选择一行或者多行.</div>
+    </div>
+    <div style="margin:10px 0;">
+        <a href="#" class="easyui-linkbutton" onclick="getSelected()">获取单选数据</a>
+        <a href="#" class="easyui-linkbutton" onclick="getSelections()">获取多选数据</a>
+    </div>
+    <table id="dg" class="easyui-datagrid" title="数据表格选择模型" style="width:705px;height:250px"
+           data-options="singleSelect:true,url:'/EasyUI_Areas/AdminSys/GetUserInfo'">
+        <thead>
+            <tr>
+                <th data-options="field: 'uId', title: '用户编号', width: 100"></th>
+                <th data-options="field: 'uLoginName', title: '登录名', width: 100 "></th>
+                <th data-options="field: 'uRemark', title: '备注', width: 100"></th>
+                <th data-options="field: 'uPost', title: '邮编', width: 100"></th>
+                <th data-options="field: 'uGender', title: '性别', width: 100, align: 'right'"></th>
+            </tr>
+        </thead>
+    </table>
+    <div style="margin:10px 0;">
+        <span>选择模型: </span>
+        <select id="selctModel">
+            <option value="0">单选</option>
+            <option value="1">多选</option>
+        </select>
+    </div>
+   
+
+</body>
+</html>

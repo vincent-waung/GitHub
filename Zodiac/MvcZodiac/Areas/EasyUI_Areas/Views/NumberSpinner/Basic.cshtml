@@ -1,0 +1,34 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Basic</title>
+      <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+   <h2>基本数字微调器组件</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>点击微调按钮来调整时间.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <input class="easyui-numberspinner" style="width:80px;" data-options="
+                onChange: function(value){
+                    $('#vv').text(value);
+                }
+            "></input>
+    <div style="margin:10px 0;">
+        值: <span id="vv"></span>
+    </div>
+</body>
+</html>

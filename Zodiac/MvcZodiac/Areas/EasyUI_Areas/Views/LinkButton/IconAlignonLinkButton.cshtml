@@ -1,0 +1,51 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>IconAlignonLinkButton</title>
+    <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#lbSelect").change(function () {
+                $('#button-bar a').linkbutton(
+                    {
+                        iconAlign: this.value
+                    }
+                    )
+            });
+        });
+    </script>
+</head>
+<body>
+    <h2>链接按钮的图标对齐位置</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>选择图标对齐方式，重置按钮图标左对齐或者右对齐.</div>
+    </div>
+    <div style="margin: 10px 0;"></div>
+    <div id="button-bar">
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">添加</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove'">删除</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cut',disabled:true">剪切</a>
+    </div>
+    <div style="margin: 10px 0">
+        <span>选择图标对齐位置: </span>
+        <select id="lbSelect">
+            <option value="left">左</option>
+            <option value="right">右</option>
+        </select>
+    </div>
+</body>
+</html>

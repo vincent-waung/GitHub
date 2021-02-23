@@ -1,0 +1,44 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width" charset="utf-8" />
+    <title>Snap - jQuery EasyUI Demo</title>
+     <link href="~/EasyUI/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/EasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/EasyUI/demo/demo.css" rel="stylesheet" />
+    <script src="~/EasyUI/jquery.min.js"></script>
+    <script src="~/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+    <h2>对齐拖拽</h2>
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+        <div>本示例展示如何将一个可拖拽对象拖到20*20的格子.</div>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div style="position:relative;overflow:hidden;border:1px solid #ccc;width:500px;height:300px">
+        <div class="easyui-draggable" data-options="onDrag:onDrag" style="width:100px;height:100px;background:#fafafa;border:1px solid #ccc;">
+        </div>
+    </div>
+    <script>
+        function onDrag(e) {
+            var d = e.data;
+            d.left = repair(d.left);
+            d.top = repair(d.top);
+            function repair(v) {
+                var r = parseInt(v / 20) * 20;
+                if (Math.abs(v % 20) > 10) {                   
+                    r += v > 0 ? 20 : -20;
+                }
+                return r;
+            }
+        }
+    </script>
+</body>
+</html>
